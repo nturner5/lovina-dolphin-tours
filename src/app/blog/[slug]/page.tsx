@@ -13,18 +13,18 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     { slug }
   );
 
-  if (!post) return <div className="p-24 text-center font-serif italic">Post not found</div>;
+  if (!post) return <div className="p-32 text-center font-serif italic text-deep-indigo/30">Story not found.</div>;
 
   return (
-    <article className="bg-soft-bone min-h-screen px-6 py-24 lg:px-12">
+    <article className="bg-cloud-dancer min-h-screen px-6 py-24 lg:px-12">
       <div className="max-w-3xl mx-auto">
-        <header className="mb-12">
-          <p className="text-sm text-muted-slate uppercase tracking-[0.2em] mb-4">
+        <header className="mb-16 text-center">
+          <p className="text-xs text-coral-pop uppercase tracking-[0.3em] font-bold mb-6">
             {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
-          <h1 className="text-5xl lg:text-6xl font-serif text-volcanic-navy mb-8 leading-tight">{post.title}</h1>
+          <h1 className="text-5xl lg:text-7xl font-serif text-deep-indigo mb-12 leading-[1.1]">{post.title}</h1>
           {post.mainImage && (
-            <div className="aspect-[16/9] rounded-3xl overflow-hidden bg-volcanic-navy/5 relative border border-sand-dune/20">
+            <div className="aspect-[16/9] rounded-[3rem] overflow-hidden bg-deep-indigo/5 relative border border-deep-indigo/5 shadow-2xl">
               <Image 
                 src={urlFor(post.mainImage).url()} 
                 alt={post.title}
@@ -35,7 +35,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           )}
         </header>
         
-        <div className="prose prose-lg prose-headings:font-serif prose-headings:text-volcanic-navy text-volcanic-navy/80 max-w-none">
+        <div className="prose prose-xl prose-headings:font-serif prose-headings:text-deep-indigo text-deep-indigo/80 max-w-none prose-p:leading-relaxed prose-p:font-light">
           <PortableText value={post.body} />
         </div>
       </div>

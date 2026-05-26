@@ -25,12 +25,21 @@ To become the #1 ethical booking gateway for independent dolphin captains in Lov
 - ✅ GitHub Repository created and pushed.
 
 ## Active "To-Do" List
-### Content & Social Proof
-- [ ] **Instagram Outreach:** Contact captains (@edipopeye, etc.) and regular travelers for Reel permissions.
-- [ ] **Sanity Population:** Upload high-res images and complete the full text for imported blogs.
+
+### Strategy & Branding
+- [ ] **Brand Audit:** Critically evaluate if "Warm Minimalism" is the optimal choice for a local tour brand.
+- [ ] **Emotional Storytelling:** Draft the "Process" copy that invokes peace and respect to make the 8 AM departure compelling.
 - [ ] **Logo Design:** Create a minimalist logo consistent with "Quiet Marine Sanctuary" style.
 
-### Operations & Tech
+### Content & Social Proof
+- [ ] **Logistics Copy:** Write "What to Expect," "The Schedule," and "What to Bring" sections.
+- [ ] **Instagram Outreach:** Contact captains (@edipopeye, etc.) and regular travelers for Reel permissions.
+- [ ] **Sanity Population:** Upload high-res images and complete the full text for imported blogs.
+
+### Product & Operations
+- [ ] **Pickup Logic:** Define pricing and product options for Canggu, Uluwatu, and Ubud pickups.
+- [ ] **Chat Implementation:** Decide on WhatsApp vs. Live Chat and integrate into the site.
+- [ ] **Language Switcher:** Implement i18n for English, Russian, and Chinese markets.
 - [ ] **Dispatch Automation:** Build Make.com scenario (Stripe Webhook -> WhatsApp Dispatch).
 - [ ] **Captain Audit Card:** Design the guest feedback PDF/digital card.
 - [ ] **Legal Docs:** Draft Refund Policy, Terms of Service, and Privacy Policy.

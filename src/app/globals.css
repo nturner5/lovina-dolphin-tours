@@ -2,25 +2,25 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  /* Branding Colors: Quiet Marine Sanctuary */
-  --soft-bone: #F4F1EB;
-  --volcanic-navy: #1A292F;
-  --muted-slate: #6B8E99;
-  --sand-dune: #DEBDA6;
+  /* Branding Colors: V2 High-Contrast Eco-Action */
+  --cloud-dancer: #F0EEE9;
+  --deep-indigo: #1B2B32;
+  --transformative-teal: #23545B;
+  --coral-pop: #FF6347;
   --sage-leaf: #929C92;
 
-  --background: var(--soft-bone);
-  --foreground: var(--volcanic-navy);
+  --background: var(--cloud-dancer);
+  --foreground: var(--deep-indigo);
 }
 
 @theme {
-  --color-soft-bone: var(--soft-bone);
-  --color-volcanic-navy: var(--volcanic-navy);
-  --color-muted-slate: var(--muted-slate);
-  --color-sand-dune: var(--sand-dune);
+  --color-cloud-dancer: var(--cloud-dancer);
+  --color-deep-indigo: var(--deep-indigo);
+  --color-transformative-teal: var(--transformative-teal);
+  --color-coral-pop: var(--coral-pop);
   --color-sage-leaf: var(--sage-leaf);
 
-  --font-serif: var(--font-cormorant);
+  --font-serif: var(--font-fraunces);
   --font-sans: var(--font-inter);
 }
 
@@ -31,5 +31,6 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-cormorant), serif;
+  font-family: var(--font-fraunces), serif;
+  font-weight: 600;
 }

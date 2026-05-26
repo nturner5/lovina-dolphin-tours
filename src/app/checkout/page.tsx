@@ -52,15 +52,15 @@ export default function CheckoutPage() {
   };
 
   return (
-    <main className="bg-soft-bone min-h-screen py-24 px-6 lg:px-12">
+    <main className="bg-cloud-dancer min-h-screen py-24 px-6 lg:px-12">
       <div className="max-w-xl mx-auto">
-        <h1 className="text-4xl font-serif text-volcanic-navy mb-8 text-center">Secure Your Private Boat</h1>
+        <h1 className="text-4xl lg:text-5xl font-serif text-deep-indigo mb-8 text-center">Secure Your Private Boat</h1>
         
-        <form onSubmit={handleCheckout} className="space-y-6 bg-white p-8 rounded-3xl shadow-sm border border-sand-dune/20">
+        <form onSubmit={handleCheckout} className="space-y-6 bg-white p-10 rounded-[2.5rem] shadow-sm border border-deep-indigo/5">
           <div>
-            <label className="block text-sm font-bold uppercase tracking-widest text-volcanic-navy/60 mb-2">Select Tour</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-3">Select Tour</label>
             <select 
-              className="w-full bg-soft-bone border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-muted-slate transition-all"
+              className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-transformative-teal transition-all text-deep-indigo font-medium"
               value={formData.tourId}
               onChange={(e) => setFormData({ ...formData, tourId: e.target.value })}
             >
@@ -70,25 +70,25 @@ export default function CheckoutPage() {
             </select>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-bold uppercase tracking-widest text-volcanic-navy/60 mb-2">Date</label>
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-3">Date</label>
               <input 
                 type="date" 
                 required
-                className="w-full bg-soft-bone border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-muted-slate"
+                className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-transformative-teal text-deep-indigo"
                 value={formData.date}
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
               />
             </div>
             <div>
-              <label className="block text-sm font-bold uppercase tracking-widest text-volcanic-navy/60 mb-2">Guests</label>
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-3">Guests</label>
               <input 
                 type="number" 
                 min="1" 
                 max="10"
                 required
-                className="w-full bg-soft-bone border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-muted-slate"
+                className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-transformative-teal text-deep-indigo"
                 value={formData.guests}
                 onChange={(e) => setFormData({ ...formData, guests: parseInt(e.target.value) })}
               />
@@ -96,24 +96,24 @@ export default function CheckoutPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-bold uppercase tracking-widest text-volcanic-navy/60 mb-2">Your Name</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-3">Your Name</label>
             <input 
               type="text" 
               required
               placeholder="Full Name"
-              className="w-full bg-soft-bone border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-muted-slate"
+              className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-transformative-teal text-deep-indigo"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-bold uppercase tracking-widest text-volcanic-navy/60 mb-2">Email Address</label>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-3">Email Address</label>
             <input 
               type="email" 
               required
               placeholder="you@example.com"
-              className="w-full bg-soft-bone border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-muted-slate"
+              className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-transformative-teal text-deep-indigo"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
@@ -122,14 +122,16 @@ export default function CheckoutPage() {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full bg-volcanic-navy text-soft-bone py-4 rounded-full text-lg font-medium hover:bg-muted-slate transition-all shadow-md disabled:opacity-50"
+            className="w-full bg-coral-pop text-cloud-dancer py-5 rounded-full text-lg font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-95 disabled:opacity-50 mt-4"
           >
-            {loading ? 'Processing...' : 'Continue to Payment'}
+            {loading ? 'Opening Secure Checkout...' : 'Continue to Payment'}
           </button>
 
-          <p className="text-[10px] text-center text-volcanic-navy/40 uppercase tracking-widest">
-            Secure USD payment via Stripe. Payouts directly support local Lovina captains.
-          </p>
+          <div className="flex items-center justify-center gap-4 pt-4 border-t border-deep-indigo/5 mt-6">
+            <span className="text-[9px] uppercase tracking-tighter text-deep-indigo/30">Secure USD via Stripe</span>
+            <div className="w-1 h-1 bg-deep-indigo/10 rounded-full" />
+            <span className="text-[9px] uppercase tracking-tighter text-deep-indigo/30">Immediate Confirmation</span>
+          </div>
         </form>
       </div>
     </main>

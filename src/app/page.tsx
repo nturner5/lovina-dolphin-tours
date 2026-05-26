@@ -160,7 +160,7 @@ export default async function Home() {
 
       {/* Booking CTA Footer */}
       <section id="booking" className="py-32 px-6 text-center bg-transformative-teal relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/ocean-texture.jpg')] opacity-10 mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-[url('/ocean-texture.svg')] opacity-10 mix-blend-overlay"></div>
         <div className="relative z-10 max-w-2xl mx-auto">
           <h2 className="text-5xl lg:text-6xl font-serif text-cloud-dancer mb-8 leading-tight">Ready for a <span className="italic text-coral-pop">peaceful</span> morning?</h2>
           <p className="text-lg text-cloud-dancer/70 mb-12 font-light">

@@ -1,65 +1,233 @@
-import Image from "next/image";
+import Link from "next/link";
+import { client } from '@/sanity/lib/client';
+import { groq } from 'next-sanity';
+import Image from 'next/image';
+import { urlFor } from '@/sanity/lib/image';
 
-export default function Home() {
+export const revalidate = 60;
+
+export default async function Home() {
+  const reels = await client.fetch(groq`*[_type == "reel"] | order(_createdAt desc)[0...4]`);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="flex-1 overflow-x-hidden">
+      {/* Navigation */}
+      <nav className="flex items-center justify-between px-6 py-6 lg:px-12">
+        <div className="flex items-center gap-2">
+          <span className="font-serif text-2xl font-bold tracking-tight text-volcanic-navy">
+            Lovina <span className="font-light italic text-muted-slate underline decoration-sand-dune decoration-2 underline-offset-4">Ethical</span>
+          </span>
+        </div>
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide uppercase">
+          <Link href="#ethics" className="hover:text-muted-slate transition-colors">The Protocol</Link>
+          <Link href="#tours" className="hover:text-muted-slate transition-colors">Tours</Link>
+          <Link href="#faq" className="hover:text-muted-slate transition-colors">FAQ</Link>
+          <Link href="/blog" className="hover:text-muted-slate transition-colors">Journal</Link>
+          <Link 
+            href="#booking" 
+            className="bg-volcanic-navy text-soft-bone px-6 py-3 rounded-full hover:bg-muted-slate transition-all duration-300 shadow-sm"
+          >
+            Book Now
+          </Link>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-6 pt-20 pb-32 overflow-hidden bg-[url('/hero-mesh.svg')] bg-cover">
+        <div className="max-w-4xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          <h1 className="text-5xl lg:text-7xl font-serif text-volcanic-navy mb-6 leading-[1.1]">
+            See Lovina’s Dolphins—<br />
+            <span className="italic font-light">Without the Chase.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-lg lg:text-xl text-volcanic-navy/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+            Experience a quieter, more respectful encounter. Our vetted independent captains prioritize animal welfare and your peace of mind. We exclusively depart after the sunrise crowds have gone home.
           </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              href="#booking" 
+              className="bg-volcanic-navy text-soft-bone px-10 py-4 rounded-full text-lg font-medium hover:bg-muted-slate transition-all shadow-md active:scale-95"
+            >
+              Book Private Ethical Tour
+            </Link>
+            <Link 
+              href="#ethics" 
+              className="bg-transparent border border-volcanic-navy/20 text-volcanic-navy px-10 py-4 rounded-full text-lg font-medium hover:bg-sand-dune/20 transition-all active:scale-95"
+            >
+              Our Protocol
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        
+        {/* Placeholder for Hero Video/Image */}
+        <div className="mt-16 w-full max-w-5xl aspect-video rounded-2xl overflow-hidden bg-volcanic-navy/5 shadow-2xl border border-soft-bone relative group">
+          <div className="absolute inset-0 flex items-center justify-center text-volcanic-navy/20">
+            <p className="font-serif italic text-xl">Ambient, slow-motion dolphin footage goes here</p>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* The Ethical Difference (Moat) */}
+      <section id="ethics" className="py-24 bg-sand-dune/10 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-sm font-medium tracking-[0.2em] uppercase text-muted-slate mb-4">The Ethical Difference</h2>
+            <h3 className="text-4xl font-serif text-volcanic-navy">Why conscious travelers choose us</h3>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-12">
+            {[
+              {
+                title: "8:00 AM Departures",
+                desc: "While 100 boats crowd the sunrise, we wait. By 8:00 AM, the dolphins are still active, but the 'mob' has gone home. You get the ocean to yourself.",
+                icon: "🌅"
+              },
+              {
+                title: "Engines in Neutral",
+                desc: "Our captains follow a strict 'No-Chase' protocol. We move parallel to pods and switch to neutral within 30 meters, letting the dolphins come to us.",
+                icon: "🔇"
+              },
+              {
+                title: "Vetted Local Legends",
+                desc: "We don't book random boats. We work with a small circle of Lovina's most respected independent captains, chosen for their experience and ethics.",
+                icon: "🎖️"
+              }
+            ].map((item, i) => (
+              <div key={i} className="flex flex-col items-center text-center p-8 rounded-3xl bg-soft-bone border border-sand-dune/20 shadow-sm hover:shadow-md transition-shadow">
+                <span className="text-4xl mb-6">{item.icon}</span>
+                <h4 className="text-xl font-serif text-volcanic-navy mb-4">{item.title}</h4>
+                <p className="text-volcanic-navy/70 leading-relaxed font-light">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Social Proof (Reels Grid Placeholder) */}
+      <section className="py-24 px-6 bg-soft-bone">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div>
+              <h2 className="text-4xl font-serif text-volcanic-navy mb-4">Real Moments. <span className="italic font-light">Real Ethics.</span></h2>
+              <p className="text-volcanic-navy/60 max-w-md">See why our guests and captains love the quiet mornings in North Bali.</p>
+            </div>
+            <Link href="https://instagram.com" className="text-muted-slate hover:text-volcanic-navy font-medium flex items-center gap-2">
+              Follow us on Instagram <span>→</span>
+            </Link>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {reels.map((reel: any) => (
+              <Link 
+                key={reel._id} 
+                href={reel.url || "#"} 
+                target="_blank"
+                className="aspect-[9/16] rounded-2xl bg-volcanic-navy/5 overflow-hidden relative border border-sand-dune/10 hover:border-muted-slate/30 transition-all group"
+              >
+                {reel.thumbnail ? (
+                  <Image 
+                    src={urlFor(reel.thumbnail).url()} 
+                    alt={reel.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
+                    <p className="text-xs font-serif italic text-volcanic-navy/30 group-hover:text-volcanic-navy/60">{reel.title}</p>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-volcanic-navy/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </Link>
+            ))}
+
+            {reels.length === 0 && [1, 2, 3, 4].map((i) => (
+              <div key={i} className="aspect-[9/16] rounded-2xl bg-volcanic-navy/5 flex items-center justify-center p-6 text-center border border-sand-dune/10">
+                <p className="text-xs font-serif italic text-volcanic-navy/30">Reel Coming Soon</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-24 px-6 bg-volcanic-navy text-soft-bone">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-4xl font-serif mb-12 text-center">Frequently Asked Questions</h2>
+          <div className="space-y-8">
+            {[
+              {
+                q: "Will we still see dolphins at 8:00 AM?",
+                a: "Yes. Dolphins in Lovina are active feeders until mid-morning. While the 6:00 AM 'sunrise rush' is popular for photos, the 8:00 AM window often offers more intimate sightings with 90% fewer boats."
+              },
+              {
+                q: "Why is the price higher than the beach touts?",
+                a: "You are paying for a private boat, a vetted ethical captain, and our strict 'No-Chase' guarantee. A portion of your fee also goes directly into our local sustainability fund."
+              },
+              {
+                q: "What if we don't see any dolphins?",
+                a: "While they are wild animals and sightings aren't 100% guaranteed, we have an 85% success rate. If you don't see any, you can join us the following day for free."
+              }
+            ].map((item, i) => (
+              <div key={i} className="border-b border-soft-bone/10 pb-8">
+                <h4 className="text-xl font-serif mb-4 flex items-start gap-4">
+                  <span className="text-sand-dune font-light">0{i+1}</span>
+                  {item.q}
+                </h4>
+                <p className="text-soft-bone/60 leading-relaxed font-light pl-10">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Booking CTA Footer */}
+      <section id="booking" className="py-32 px-6 text-center bg-[url('/footer-mesh.svg')] bg-cover relative overflow-hidden">
+        <div className="absolute inset-0 bg-sand-dune/10 pointer-events-none"></div>
+        <div className="relative z-10 max-w-2xl mx-auto">
+          <h2 className="text-5xl font-serif text-volcanic-navy mb-8">Ready for a <span className="italic">peaceful</span> morning?</h2>
+          <p className="text-lg text-volcanic-navy/70 mb-12 font-light">
+            Secure your private boat with one of Lovina’s legendary captains. 
+            Limited to 5 ethical departures per day.
+          </p>
+          <Link 
+            href="/checkout" 
+            className="bg-volcanic-navy text-soft-bone px-12 py-5 rounded-full text-xl font-medium hover:bg-muted-slate transition-all shadow-xl inline-block"
+          >
+            Book Your Experience
+          </Link>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-soft-bone border-t border-sand-dune/20 py-12 px-6 lg:px-12 text-sm text-volcanic-navy/40">
+        <div className="flex flex-col md:flex-row justify-between gap-8">
+          <div>
+            <span className="font-serif text-xl font-bold tracking-tight text-volcanic-navy opacity-100 mb-4 block">
+              Lovina Ethical
+            </span>
+            <p className="max-w-xs mb-4">North Bali’s premium gateway for respectful dolphin encounters.</p>
+            <p>&copy; 2026 Lovina Ethical Tours. All rights reserved.</p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-12">
+            <div className="flex flex-col gap-4">
+              <span className="text-volcanic-navy opacity-100 font-bold uppercase tracking-widest text-[10px]">Navigate</span>
+              <Link href="#ethics" className="hover:text-muted-slate">Protocol</Link>
+              <Link href="#tours" className="hover:text-muted-slate">Tours</Link>
+              <Link href="/blog" className="hover:text-muted-slate">Journal</Link>
+            </div>
+            <div className="flex flex-col gap-4">
+              <span className="text-volcanic-navy opacity-100 font-bold uppercase tracking-widest text-[10px]">Legal</span>
+              <Link href="/privacy" className="hover:text-muted-slate">Privacy</Link>
+              <Link href="/terms" className="hover:text-muted-slate">Terms</Link>
+              <Link href="/refunds" className="hover:text-muted-slate">Refund Policy</Link>
+            </div>
+            <div className="flex flex-col gap-4">
+              <span className="text-volcanic-navy opacity-100 font-bold uppercase tracking-widest text-[10px]">Connect</span>
+              <Link href="https://instagram.com" className="hover:text-muted-slate">Instagram</Link>
+              <Link href="https://wa.me/..." className="hover:text-muted-slate">WhatsApp</Link>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </main>
   );
 }

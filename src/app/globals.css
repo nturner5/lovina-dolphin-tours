@@ -1,26 +1,35 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Branding Colors: Quiet Marine Sanctuary */
+  --soft-bone: #F4F1EB;
+  --volcanic-navy: #1A292F;
+  --muted-slate: #6B8E99;
+  --sand-dune: #DEBDA6;
+  --sage-leaf: #929C92;
+
+  --background: var(--soft-bone);
+  --foreground: var(--volcanic-navy);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  --color-soft-bone: var(--soft-bone);
+  --color-volcanic-navy: var(--volcanic-navy);
+  --color-muted-slate: var(--muted-slate);
+  --color-sand-dune: var(--sand-dune);
+  --color-sage-leaf: var(--sage-leaf);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-inter);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-cormorant), serif;
 }

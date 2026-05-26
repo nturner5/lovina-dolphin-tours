@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(req: Request) {
   try {
-    const { tourId, date, guests, tourName, price, pickupLocation } = await req.json();
+    const { tourId, date, guests, tourName, price, pickupLocation, whatsappNumber, hotelDetails } = await req.json();
 
     // Calculate pickup price and name
     let pickupFee = 0;
@@ -68,6 +68,8 @@ export async function POST(req: Request) {
         pickupLocation: pickupLocation || 'none',
         pickupFee: pickupFee.toString(),
         pickupDescription: pickupName || 'None',
+        whatsappNumber: whatsappNumber || 'none',
+        hotelDetails: hotelDetails || 'none',
       },
     });
 

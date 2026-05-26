@@ -41,7 +41,7 @@ To become the definitive standard for ethical marine encounters in North Bali. O
 - [x] **Chat**: Integrate a direct WhatsApp button (The "operating system" of Bali).
 - [ ] **WhatsApp Configuration**: Update the placeholder phone number `6281234567890` in `src/components/WhatsAppButton.tsx` with your official Balinese WhatsApp number.
 - [ ] **Language Switcher**: Add support for Russian and Chinese markets.
-- [ ] **Dispatch Automation**: Build Make.com scenario (Stripe Webhook -> WhatsApp Dispatch).
+- [x] **Dispatch Automation**: Build Make.com scenario (Stripe Webhook -> WhatsApp Dispatch).
 
 ## Referenced Files
 - `.agents/branding-guide.md`: The visual "Bible" (Colors, Fonts, Logo rules).

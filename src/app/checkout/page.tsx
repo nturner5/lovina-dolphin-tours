@@ -22,8 +22,11 @@ export default function CheckoutPage() {
     guests: 2,
     name: '',
     email: '',
+    whatsappNumber: '',
+    hotelDetails: '',
     pickupLocation: 'none',
   });
+
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -128,6 +131,34 @@ export default function CheckoutPage() {
           </div>
 
           <div>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-3">WhatsApp Number</label>
+            <input 
+              type="tel" 
+              required
+              placeholder="e.g. +62 812-3456-7890"
+              className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-transformative-teal text-deep-indigo"
+              value={formData.whatsappNumber}
+              onChange={(e) => setFormData({ ...formData, whatsappNumber: e.target.value })}
+            />
+            <p className="text-[10px] text-deep-indigo/40 mt-1.5 pl-1">Required for immediate captain coordination and pickup scheduling.</p>
+          </div>
+
+          {formData.pickupLocation !== 'none' && (
+            <div>
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-3">Hotel Name & Room/Address</label>
+              <textarea 
+                required
+                rows={2}
+                placeholder="Hotel or Villa Name, Address, and Room Number (if known)"
+                className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-transformative-teal text-deep-indigo resize-none"
+                value={formData.hotelDetails}
+                onChange={(e) => setFormData({ ...formData, hotelDetails: e.target.value })}
+              />
+            </div>
+          )}
+
+          <div>
+
             <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-3">Add Return Pickup (Optional)</label>
             <select 
               className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-transformative-teal transition-all text-deep-indigo font-medium"

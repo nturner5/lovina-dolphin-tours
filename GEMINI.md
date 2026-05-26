@@ -26,19 +26,20 @@ To become the definitive standard for ethical marine encounters in North Bali. O
 ## Active "To-Do" List
 
 ### Strategy & Branding
-- [ ] **Brand Audit:** Confirm if "V2 Coastal Noir" resonates during initial traveler testing.
-- [ ] **Emotional Storytelling:** Draft the "Process" copy (The Feeling of the 8 AM Sea).
-- [ ] **Logo Refinement:** Play with `w-10 h-10` size in `Navbar.tsx` as needed.
+- [x] **Brand Audit:** Confirm if "V2 Coastal Noir" resonates during initial traveler testing.
+- [x] **Emotional Storytelling:** Draft the "Process" copy (The Feeling of the 8 AM Sea).
+- [x] **Logo Refinement:** Play with `w-10 h-10` size in `Navbar.tsx` as needed.
 
 ### Content & Social Proof
 - [ ] **Instagram Outreach:** Contact regular travelers using the script in our history for Reel permissions.
 - [ ] **Placeholders**: Replace "Ambient Video" and "Ocean Texture" SVG placeholders with high-res 4K assets.
-- [ ] **Thorough Blogs:** Expand the 3 imported posts into long-form authority pillars (1,500+ words).
+- [x] **Thorough Blogs:** Expand the 3 imported posts into long-form authority pillars (1,500+ words).
 
 ### Product & Operations
-- [ ] **Logistics**: Write "What to Bring" (Reef booties, polarized glasses, etc.) and the "8 AM Schedule" copy.
-- [ ] **Pickups**: Implement Add-on pricing for Ubud ($35) and Canggu ($50) in Stripe.
-- [ ] **Chat**: Integrate a direct WhatsApp button (The "operating system" of Bali).
+- [x] **Logistics**: Write "What to Bring" (Reef booties, polarized glasses, etc.) and the "8 AM Schedule" copy.
+- [x] **Pickups**: Implement Add-on pricing for Ubud ($35) and Canggu/Seminyak/Kuta ($50) in Stripe.
+- [x] **Chat**: Integrate a direct WhatsApp button (The "operating system" of Bali).
+- [ ] **WhatsApp Configuration**: Update the placeholder phone number `6281234567890` in `src/components/WhatsAppButton.tsx` with your official Balinese WhatsApp number.
 - [ ] **Language Switcher**: Add support for Russian and Chinese markets.
 - [ ] **Dispatch Automation**: Build Make.com scenario (Stripe Webhook -> WhatsApp Dispatch).
 

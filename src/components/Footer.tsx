@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="flex flex-col md:flex-row justify-between gap-12">
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-3">
-            <div className="relative w-8 h-8 opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all">
+            <div className="relative w-8 h-8 opacity-60 grayscale hover:opacity-100 hover:grayscale-0 hover:scale-105 transition-all duration-500">
               <Image 
                 src="/logo.svg" 
                 alt="Lovina Ethical Marine Logo" 
@@ -20,7 +20,7 @@ export default function Footer() {
             </span>
           </div>
           <p className="max-w-xs leading-relaxed">
-            North Bali’s definitive standard for respectful marine encounters. 
+            North Bali’s definitive standard for respectful dolphin tours. 
             Dedicated to the protection and quiet observation of Lovina’s wild dolphin pods.
           </p>
           <p>&copy; 2026 Lovina Ethical Marine. All rights reserved.</p>
@@ -28,9 +28,9 @@ export default function Footer() {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-16">
           <div className="flex flex-col gap-4">
             <span className="text-deep-indigo opacity-100 font-bold uppercase tracking-widest text-[10px]">Navigate</span>
-            <Link href="/#ethics" className="hover:text-transformative-teal">Protocol</Link>
-            <Link href="/#tours" className="hover:text-transformative-teal">Encounters</Link>
-            <Link href="/blog" className="hover:text-transformative-teal">Journal</Link>
+            <Link href="/#ethics" className="hover:text-transformative-teal">Dolphin Rules</Link>
+            <Link href="/#tours" className="hover:text-transformative-teal">Tours</Link>
+            <Link href="/blog" className="hover:text-transformative-teal">Blog</Link>
           </div>
           <div className="flex flex-col gap-4">
             <span className="text-deep-indigo opacity-100 font-bold uppercase tracking-widest text-[10px]">Legal</span>

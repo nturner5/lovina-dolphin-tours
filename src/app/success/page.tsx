@@ -9,7 +9,7 @@ export default function SuccessPage() {
         </div>
         <h1 className="text-4xl font-serif text-volcanic-navy mb-4">Payment Confirmed</h1>
         <p className="text-volcanic-navy/60 mb-10 leading-relaxed font-light">
-          Your ethical dolphin encounter is secured. We are now dispatching your request to our vetted local captains. 
+          Your ethical dolphin tour is secured. We are now dispatching your booking details directly to our team of captains. 
           <br /><br />
           You will receive a confirmation via email and a WhatsApp message within the next few hours.
         </p>

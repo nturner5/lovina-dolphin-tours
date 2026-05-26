@@ -7,6 +7,13 @@ const TOURS = [
   { id: 'swim-snorkel', name: 'Private Swim & Snorkel', price: 65, time: '8:30 AM' },
 ];
 
+const PICKUP_OPTIONS = [
+  { id: 'none', name: 'No Pickup (Meet at Lovina Beach)', price: 0 },
+  { id: 'lovina', name: 'Free Local Pickup (Within 2km of Lovina Beach)', price: 0 },
+  { id: 'ubud', name: 'Ubud Return Transfer', price: 35 },
+  { id: 'canggu-kuta', name: 'Canggu, Seminyak, Kuta Return Transfer', price: 50 },
+];
+
 export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -15,6 +22,7 @@ export default function CheckoutPage() {
     guests: 2,
     name: '',
     email: '',
+    pickupLocation: 'none',
   });
 
   const handleCheckout = async (e: React.FormEvent) => {
@@ -52,7 +60,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <main className="bg-cloud-dancer min-h-screen py-24 px-6 lg:px-12">
+    <main className="bg-cloud-dancer min-h-screen px-6 pt-12 pb-24 lg:pt-16 lg:px-12">
       <div className="max-w-xl mx-auto">
         <h1 className="text-4xl lg:text-5xl font-serif text-deep-indigo mb-8 text-center">Secure Your Private Boat</h1>
         
@@ -117,6 +125,48 @@ export default function CheckoutPage() {
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-3">Add Return Pickup (Optional)</label>
+            <select 
+              className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-transformative-teal transition-all text-deep-indigo font-medium"
+              value={formData.pickupLocation}
+              onChange={(e) => setFormData({ ...formData, pickupLocation: e.target.value })}
+            >
+              {PICKUP_OPTIONS.map(option => (
+                <option key={option.id} value={option.id}>
+                  {option.name} {option.price > 0 ? `— $${option.price} USD` : '— Free'}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Pricing Summary */}
+          <div className="bg-cloud-dancer/30 p-6 rounded-2xl border border-deep-indigo/5 space-y-3 text-sm">
+            <div className="flex justify-between text-deep-indigo/60">
+              <span>{TOURS.find(t => t.id === formData.tourId)?.name}</span>
+              <span>${TOURS.find(t => t.id === formData.tourId)?.price} USD</span>
+            </div>
+            {formData.pickupLocation !== 'none' && (
+              <div className="flex justify-between text-deep-indigo/60">
+                <span>{PICKUP_OPTIONS.find(p => p.id === formData.pickupLocation)?.name}</span>
+                <span>
+                  {PICKUP_OPTIONS.find(p => p.id === formData.pickupLocation)?.price === 0 
+                    ? 'Free' 
+                    : `$${PICKUP_OPTIONS.find(p => p.id === formData.pickupLocation)?.price} USD`
+                  }
+                </span>
+              </div>
+            )}
+            <div className="border-t border-deep-indigo/10 pt-3 flex justify-between font-bold text-deep-indigo text-base">
+              <span>Total Price</span>
+              <span>
+                ${(TOURS.find(t => t.id === formData.tourId)?.price || 0) + 
+                  (PICKUP_OPTIONS.find(p => p.id === formData.pickupLocation)?.price || 0)
+                } USD
+              </span>
+            </div>
           </div>
 
           <button 

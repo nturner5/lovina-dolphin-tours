@@ -10,11 +10,11 @@ export default async function BlogIndex() {
   const posts = await client.fetch(groq`*[_type == "post"] | order(publishedAt desc)`);
 
   return (
-    <main className="bg-cloud-dancer min-h-screen px-6 py-24 lg:px-12">
+    <main className="bg-cloud-dancer min-h-screen px-6 pt-12 pb-24 lg:pt-16 lg:px-12">
       <div className="max-w-6xl mx-auto">
         <div className="mb-20 text-center">
-          <h1 className="text-6xl lg:text-7xl font-serif text-deep-indigo mb-6">Ethical Journal</h1>
-          <p className="text-lg text-deep-indigo/60 font-light max-w-xl mx-auto italic">Stories and science from the North Bali Sea.</p>
+          <h1 className="text-6xl lg:text-7xl font-serif text-deep-indigo mb-6">Our Blog</h1>
+          <p className="text-lg text-deep-indigo/60 font-light max-w-xl mx-auto italic">Stories and tips for travelers in Lovina.</p>
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-16">
@@ -40,7 +40,7 @@ export default async function BlogIndex() {
 
           {posts.length === 0 && (
             <div className="col-span-full text-center py-32 border-2 border-dashed border-deep-indigo/10 rounded-[3rem]">
-              <p className="font-serif italic text-2xl text-deep-indigo/20">The journal is awaiting its first entry.</p>
+              <p className="font-serif italic text-2xl text-deep-indigo/20">The blog is currently empty.</p>
             </div>
           )}
         </div>

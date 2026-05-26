@@ -16,8 +16,8 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Lovina Ethical Dolphin Tours | Beyond the Sunrise",
-  description: "Experience the magic of Lovina's dolphins without the chase. Private, quiet, and ethical dolphin watching tours starting after the sunrise crowds.",
+  title: "Lovina Ethical Marine | The Quiet Encounter",
+  description: "Experience the magic of Lovina's dolphins without the chase. Private, quiet, and ethical marine encounters led by our vetted professional captains.",
 };
 
 export default function RootLayout({

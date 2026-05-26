@@ -5,12 +5,12 @@ export default function Navbar() {
     <nav className="flex items-center justify-between px-6 py-6 lg:px-12 bg-cloud-dancer border-b border-deep-indigo/10">
       <div className="flex items-center gap-2">
         <Link href="/" className="font-serif text-2xl font-bold tracking-tight text-deep-indigo">
-          Lovina <span className="font-light italic text-transformative-teal underline decoration-coral-pop decoration-2 underline-offset-4">Ethical</span>
+          Lovina <span className="font-light italic text-transformative-teal underline decoration-coral-pop decoration-2 underline-offset-4">Ethical</span> Marine
         </Link>
       </div>
       <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide uppercase">
         <Link href="/#ethics" className="hover:text-transformative-teal transition-colors">The Protocol</Link>
-        <Link href="/#tours" className="hover:text-transformative-teal transition-colors">Tours</Link>
+        <Link href="/#tours" className="hover:text-transformative-teal transition-colors">Encounters</Link>
         <Link href="/#faq" className="hover:text-transformative-teal transition-colors">FAQ</Link>
         <Link href="/blog" className="hover:text-transformative-teal transition-colors">Journal</Link>
         <Link 

@@ -6,17 +6,17 @@ export default function Footer() {
       <div className="flex flex-col md:flex-row justify-between gap-8">
         <div>
           <span className="font-serif text-xl font-bold tracking-tight text-deep-indigo opacity-100 mb-4 block">
-            Lovina Ethical
+            Lovina Ethical Marine
           </span>
-          <p className="max-w-xs mb-4">North Bali’s premium gateway for respectful dolphin encounters.</p>
-          <p>&copy; 2026 Lovina Ethical Tours. All rights reserved.</p>
+          <p className="max-w-xs mb-4">North Bali’s definitive standard for respectful marine encounters.</p>
+          <p>&copy; 2026 Lovina Ethical Marine. All rights reserved.</p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-12">
           <div className="flex flex-col gap-4">
             <span className="text-deep-indigo opacity-100 font-bold uppercase tracking-widest text-[10px]">Navigate</span>
             <Link href="/#ethics" className="hover:text-transformative-teal">Protocol</Link>
-            <Link href="/#tours" className="hover:text-transformative-teal">Tours</Link>
-            <Link href="/blog" className="hover:text-muted-slate">Journal</Link>
+            <Link href="/#tours" className="hover:text-transformative-teal">Encounters</Link>
+            <Link href="/blog" className="hover:text-transformative-teal">Journal</Link>
           </div>
           <div className="flex flex-col gap-4">
             <span className="text-deep-indigo opacity-100 font-bold uppercase tracking-widest text-[10px]">Legal</span>

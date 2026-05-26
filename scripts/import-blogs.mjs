@@ -8,6 +8,9 @@ const client = createClient({
   apiVersion: '2024-05-26',
 });
 
+// Helper to generate Sanity-compatible unique keys
+const generateKey = () => Math.random().toString(36).substring(2, 11);
+
 const posts = [
   {
     _type: 'post',
@@ -16,14 +19,16 @@ const posts = [
     publishedAt: new Date().toISOString(),
     body: [
       {
+        _key: generateKey(),
         _type: 'block',
-        children: [{ _type: 'span', text: 'There is a common sight in Lovina at 6:15 AM: fifty boats racing at full speed toward a single dorsal fin. For many travelers, this "chase" feels less like a nature encounter and more like a hunt.' }],
+        children: [{ _key: generateKey(), _type: 'span', text: 'There is a common sight in Lovina at 6:15 AM: fifty boats racing at full speed toward a single dorsal fin. For many travelers, this "chase" feels less like a nature encounter and more like a hunt.' }],
         markDefs: [],
         style: 'normal',
       },
       {
+        _key: generateKey(),
         _type: 'block',
-        children: [{ _type: 'span', text: 'At Lovina Ethical, we believe the best way to see a dolphin is on their terms, not ours. Our "No-Chase" protocol isn’t just a marketing slogan; it’s a commitment to passive observation.' }],
+        children: [{ _key: generateKey(), _type: 'span', text: 'At Lovina Ethical, we believe the best way to see a dolphin is on their terms, not ours. Our "No-Chase" protocol isn’t just a marketing slogan; it’s a commitment to passive observation.' }],
         markDefs: [],
         style: 'normal',
       }
@@ -36,8 +41,9 @@ const posts = [
     publishedAt: new Date().toISOString(),
     body: [
       {
+        _key: generateKey(),
         _type: 'block',
-        children: [{ _type: 'span', text: 'The "Sunrise Tour" is the most famous experience in North Bali. But is it actually the best? We compare the two windows for sighting probability and experience quality.' }],
+        children: [{ _key: generateKey(), _type: 'span', text: 'The "Sunrise Tour" is the most famous experience in North Bali. But is it actually the best? We compare the two windows for sighting probability and experience quality.' }],
         markDefs: [],
         style: 'normal',
       }
@@ -50,8 +56,9 @@ const posts = [
     publishedAt: new Date().toISOString(),
     body: [
       {
+        _key: generateKey(),
         _type: 'block',
-        children: [{ _type: 'span', text: 'Lovina is often treated as a "one-night stand" on the way to West Bali. But this stretch of volcanic sand has a soul that southern Bali has lost.' }],
+        children: [{ _key: generateKey(), _type: 'span', text: 'Lovina is often treated as a "one-night stand" on the way to West Bali. But this stretch of volcanic sand has a soul that southern Bali has lost.' }],
         markDefs: [],
         style: 'normal',
       }
@@ -65,7 +72,21 @@ async function importPosts() {
     return;
   }
 
-  console.log('🚀 Starting import...');
+  console.log('🧹 Cleaning up broken posts...');
+  try {
+    // Delete any existing posts of type 'post' to avoid duplicates and fix the key error
+    const query = '*[_type == "post"]';
+    const existingPosts = await client.fetch(query);
+    
+    for (const p of existingPosts) {
+      await client.delete(p._id);
+      console.log('🗑️ Deleted existing post: ' + p.title);
+    }
+  } catch (err) {
+    console.warn('⚠️ Cleanup warning:', err.message);
+  }
+
+  console.log('🚀 Starting re-import with keys...');
   for (const post of posts) {
     try {
       const result = await client.create(post);
@@ -74,7 +95,7 @@ async function importPosts() {
       console.error('❌ Failed to create post: ' + post.title, err.message);
     }
   }
-  console.log('🏁 Import complete!');
+  console.log('🏁 Import complete and keys fixed!');
 }
 
 importPosts();

@@ -11,27 +11,6 @@ export default async function Home() {
 
   return (
     <main className="flex-1 overflow-x-hidden">
-      {/* Navigation */}
-      <nav className="flex items-center justify-between px-6 py-6 lg:px-12">
-        <div className="flex items-center gap-2">
-          <span className="font-serif text-2xl font-bold tracking-tight text-volcanic-navy">
-            Lovina <span className="font-light italic text-muted-slate underline decoration-sand-dune decoration-2 underline-offset-4">Ethical</span>
-          </span>
-        </div>
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide uppercase">
-          <Link href="#ethics" className="hover:text-muted-slate transition-colors">The Protocol</Link>
-          <Link href="#tours" className="hover:text-muted-slate transition-colors">Tours</Link>
-          <Link href="#faq" className="hover:text-muted-slate transition-colors">FAQ</Link>
-          <Link href="/blog" className="hover:text-muted-slate transition-colors">Journal</Link>
-          <Link 
-            href="#booking" 
-            className="bg-volcanic-navy text-soft-bone px-6 py-3 rounded-full hover:bg-muted-slate transition-all duration-300 shadow-sm"
-          >
-            Book Now
-          </Link>
-        </div>
-      </nav>
-
       {/* Hero Section */}
       <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-6 pt-20 pb-32 overflow-hidden bg-[url('/hero-mesh.svg')] bg-cover">
         <div className="max-w-4xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
@@ -196,38 +175,6 @@ export default async function Home() {
           </Link>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-soft-bone border-t border-sand-dune/20 py-12 px-6 lg:px-12 text-sm text-volcanic-navy/40">
-        <div className="flex flex-col md:flex-row justify-between gap-8">
-          <div>
-            <span className="font-serif text-xl font-bold tracking-tight text-volcanic-navy opacity-100 mb-4 block">
-              Lovina Ethical
-            </span>
-            <p className="max-w-xs mb-4">North Bali’s premium gateway for respectful dolphin encounters.</p>
-            <p>&copy; 2026 Lovina Ethical Tours. All rights reserved.</p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-12">
-            <div className="flex flex-col gap-4">
-              <span className="text-volcanic-navy opacity-100 font-bold uppercase tracking-widest text-[10px]">Navigate</span>
-              <Link href="#ethics" className="hover:text-muted-slate">Protocol</Link>
-              <Link href="#tours" className="hover:text-muted-slate">Tours</Link>
-              <Link href="/blog" className="hover:text-muted-slate">Journal</Link>
-            </div>
-            <div className="flex flex-col gap-4">
-              <span className="text-volcanic-navy opacity-100 font-bold uppercase tracking-widest text-[10px]">Legal</span>
-              <Link href="/privacy" className="hover:text-muted-slate">Privacy</Link>
-              <Link href="/terms" className="hover:text-muted-slate">Terms</Link>
-              <Link href="/refunds" className="hover:text-muted-slate">Refund Policy</Link>
-            </div>
-            <div className="flex flex-col gap-4">
-              <span className="text-volcanic-navy opacity-100 font-bold uppercase tracking-widest text-[10px]">Connect</span>
-              <Link href="https://instagram.com" className="hover:text-muted-slate">Instagram</Link>
-              <Link href="https://wa.me/..." className="hover:text-muted-slate">WhatsApp</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
     </main>
   );
 }

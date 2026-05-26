@@ -26,3 +26,9 @@ Lovina Ethical Marine represents the definitive standard for marine encounters i
 ## 5. Primary Domain
 **Primary:** `lovinaethicalmarine.com`
 **Secondary (SEO Redirect):** `lovinadolphin.tours`
+
+## 7. Logo Assets
+- **Primary Logo:** `public/logo.svg`
+- **Style:** Single-line abstract dolphin silhouette.
+- **Color:** Hardcoded to `Deep Indigo (#1B2B32)` for maximum authority.
+- **Usage:** Appears in the Navbar (10x10) and Footer (8x8) as a primary brand anchor.

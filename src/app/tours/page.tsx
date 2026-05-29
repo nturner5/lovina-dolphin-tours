@@ -3,8 +3,8 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Private Dolphin & Snorkeling Tours in Lovina | Lovina Ethical Marine',
-  description: 'Select between our premium 8:00 AM private dolphin watching tour or the complete wild dolphin swim and coral reef snorkeling encounter. Vetted local captains, no-chase animal welfare standards.',
+  title: 'Private Dolphin Watching & Snorkeling Tours | Lovina Ethical Marine',
+  description: 'Choose between our private 8:00 AM dolphin watching tour or the complete private dolphin watching + coral reef snorkeling boat tour. Vetted local captains, no-chase animal welfare standards.',
 };
 
 export default function ToursPage() {
@@ -13,13 +13,13 @@ export default function ToursPage() {
       {/* Editorial Luxury Hero Section */}
       <section className="px-4 sm:px-6 pt-16 pb-12 lg:pt-24 lg:pb-16 text-center max-w-4xl mx-auto">
         <span className="text-[10px] font-bold text-transformative-teal uppercase tracking-[0.2em] bg-transformative-teal/5 px-4 py-1.5 rounded-full border border-transformative-teal/10 inline-block mb-4">
-          Maritime Curation
+          Private Boat Tours
         </span>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-deep-indigo mb-6 leading-tight">
-          Select Your <span className="italic font-light text-transformative-teal">Private Encounter</span>
+          Select Your <span className="italic font-light text-transformative-teal">Private Dolphin Tour</span>
         </h1>
         <p className="text-base lg:text-lg text-deep-indigo/70 font-light leading-relaxed">
-          Skip the sunrise chaos. Our private outrigger tours depart at <strong>8:00 AM</strong>—long after the 100+ mass-market tourist boats go home. Enjoy a calm, quiet sea and premium service with vetted local captains who prioritize animal welfare.
+          Skip the sunrise chaos. Our private dolphin watching boat tours depart at <strong>8:00 AM</strong>—long after the 100+ crowded tourist boats go home. Enjoy a calm, quiet sea and excellent service with vetted local captains who prioritize dolphin welfare.
         </p>
       </section>
 
@@ -27,7 +27,7 @@ export default function ToursPage() {
       <section className="px-4 sm:px-6 pb-24 lg:pb-32 max-w-5xl mx-auto">
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
           
-          {/* Card 1: 8:00 AM Private Ethical Tour */}
+          {/* Card 1: 8:00 AM Private Dolphin Watching Tour */}
           <div className="group bg-white rounded-[2.5rem] border border-deep-indigo/5 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between">
             <div>
               {/* Image Banner */}
@@ -48,8 +48,8 @@ export default function ToursPage() {
               {/* Card Body */}
               <div className="p-8 sm:p-10 space-y-6">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">8:00 AM Private Ethical Tour</h2>
-                  <p className="text-xs text-deep-indigo/50 font-light uppercase tracking-widest">The crowd-free sustainable standard</p>
+                  <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">8:00 AM Private Dolphin Watching Tour</h2>
+                  <p className="text-xs text-deep-indigo/50 font-light uppercase tracking-widest">Skip the crowds on a private dolphin watching boat</p>
                 </div>
 
                 <div className="flex items-baseline gap-2 border-b border-deep-indigo/5 pb-5">
@@ -67,8 +67,8 @@ export default function ToursPage() {
                     <li className="flex gap-3 items-start">
                       <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
                       <div>
-                        <strong className="text-deep-indigo block font-bold">Private Jukung Outrigger</strong>
-                        <span>Reserved strictly for your group only (up to 4 per boat).</span>
+                        <strong className="text-deep-indigo block font-bold">Private Dolphin Boat</strong>
+                        <span>Reserved strictly for your group only (accommodates up to 8 people per boat).</span>
                       </div>
                     </li>
                     <li className="flex gap-3 items-start">
@@ -104,12 +104,12 @@ export default function ToursPage() {
                 id="cta-select-ethical-tour"
                 className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md active:scale-98"
               >
-                Book Private Tour ($45)
+                Book Dolphin Watching Tour ($45)
               </Link>
             </div>
           </div>
 
-          {/* Card 2: 8:00 AM Private Dolphin Tour + Swim & Snorkel (RECOMMENDED) */}
+          {/* Card 2: 8:00 AM Private Dolphin Watching Tour + Swim & Snorkel (RECOMMENDED) */}
           <div className="group bg-white rounded-[2.5rem] border-2 border-transformative-teal shadow-md hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between relative">
             
             {/* Highly Recommended Float Tag */}
@@ -136,7 +136,7 @@ export default function ToursPage() {
               {/* Card Body */}
               <div className="p-8 sm:p-10 space-y-6">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">8:00 AM Private Dolphin Tour + Swim & Snorkel</h2>
+                  <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">8:00 AM Private Dolphin Watching Tour + Swim & Snorkel</h2>
                   <p className="text-xs text-transformative-teal font-bold uppercase tracking-widest">Our signature double encounter</p>
                 </div>
 
@@ -152,10 +152,17 @@ export default function ToursPage() {
                 <div className="space-y-4">
                   <span className="text-[10px] font-bold text-deep-indigo/40 uppercase tracking-widest block">Inclusions</span>
                   <ul className="space-y-3.5 text-xs text-deep-indigo/80 font-light leading-relaxed">
+                    <li className="flex gap-3 items-start">
+                      <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                      <div>
+                        <strong className="text-deep-indigo block font-bold">All 8:00 AM Tour Inclusions</strong>
+                        <span>Includes private boat (accommodates up to 8 people), vetted captain, parallel cruise, fruits, and hot Balinese coffee.</span>
+                      </div>
+                    </li>
                     <li className="flex gap-3 items-start text-transformative-teal bg-transformative-teal/5 p-4 rounded-2xl border border-transformative-teal/10 -mx-2">
                       <span className="text-lg leading-none shrink-0">✦</span>
                       <div>
-                        <strong className="block text-sm font-bold leading-tight">Coral Reef Snorkeling stop</strong>
+                        <strong className="block text-sm font-bold leading-tight">Coral Reef Snorkeling Stop</strong>
                         <span className="text-[11px] text-transformative-teal/80 block mt-1 leading-normal">
                           Anchor at Lovina's best protected coral reefs. Swim alongside wild sea turtles, colorful reef fish, and spot wild dolphins underwater!
                         </span>
@@ -164,22 +171,8 @@ export default function ToursPage() {
                     <li className="flex gap-3 items-start">
                       <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
                       <div>
-                        <strong className="text-deep-indigo block font-bold">Premium Sanitized Gear</strong>
-                        <span>Professional-grade masks, dry snorkels, and custom fins provided.</span>
-                      </div>
-                    </li>
-                    <li className="flex gap-3 items-start">
-                      <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                      <div>
-                        <strong className="text-deep-indigo block font-bold">Underwater View Frames</strong>
-                        <span>Equipped with glass-bottom outrigger view frames for spotting reef life.</span>
-                      </div>
-                    </li>
-                    <li className="flex gap-3 items-start">
-                      <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                      <div>
-                        <strong className="text-deep-indigo block font-bold">All 8:00 AM Tour Inclusions</strong>
-                        <span>Includes private boat, vetted captain, parallel cruise, fruits, and hot Balinese coffee.</span>
+                        <strong className="text-deep-indigo block font-bold">Sanitized Snorkel Gear</strong>
+                        <span>Standard sanitized masks, snorkels, and fins provided for all guests.</span>
                       </div>
                     </li>
                   </ul>
@@ -195,7 +188,7 @@ export default function ToursPage() {
                 className="block w-full bg-coral-pop text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-98 relative group"
               >
                 <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
-                Book Swim & Snorkel ($65)
+                Book Dolphin Watching + Snorkel ($65)
               </Link>
             </div>
           </div>
@@ -250,7 +243,7 @@ export default function ToursPage() {
               <div className="border-b border-cloud-dancer/10 pb-6">
                 <h4 className="font-bold text-base mb-2">Is the pricing per-person or per-boat?</h4>
                 <p className="text-cloud-dancer/70 font-light leading-relaxed">
-                  Our tickets are priced per-person. However, to maintain high boat safety and our elite service standard, we guarantee that all bookings are private. You will secure your own exclusive jukung boat—we never mix bookings. A minimum of 2 guest tickets ($90 total) is required to secure the charter.
+                  Our tickets are priced per-person. However, to maintain high boat safety and our elite service standard, we guarantee that all bookings are private. You will secure your own exclusive private boat—we never mix bookings. A minimum of 2 guest tickets ($90 total) is required to secure the charter.
                 </p>
               </div>
 

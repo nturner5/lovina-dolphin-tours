@@ -146,7 +146,7 @@ export default async function Home() {
               >
                 {/* Pulsing ring outer container */}
                 <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
-                Book Private Ethical Tour
+                Book Dolphin Watching Tour
               </Link>
               <Link 
                 href="#ethics" 
@@ -306,7 +306,7 @@ export default async function Home() {
                 <ul className="space-y-4">
                   {[
                     { label: "Our Professional Captains", desc: "Vetted local experts from our dedicated team." },
-                    { label: "Private Jukung Outrigger", desc: "Comfortable seating and private space for your group." },
+                    { label: "Private Dolphin Boat", desc: "Comfortable seating and private space for your group." },
                     { label: "Snorkel Gear", desc: "Standard masks and snorkels for exploring the reef." },
                     { label: "Safety Vests", desc: "Standard safety jackets for your peace of mind." },
                     { label: "Island Refreshments", desc: "Fresh seasonal fruits along with hot coffee and tea." }

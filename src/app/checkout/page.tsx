@@ -5,8 +5,8 @@ import 'react-phone-number-input/style.css';
 import PhoneInput, { isValidPhoneNumber, getCountryCallingCode } from 'react-phone-number-input';
 
 const TOURS = [
-  { id: 'eight-am-ethical', name: '8:00 AM Private Ethical Tour', price: 45, time: '8:00 AM' },
-  { id: 'swim-snorkel', name: '8:00 AM Private Dolphin Tour + Swim & Snorkel', price: 65, time: '8:00 AM' },
+  { id: 'eight-am-ethical', name: '8:00 AM Private Dolphin Watching Tour', price: 45, time: '8:00 AM' },
+  { id: 'swim-snorkel', name: '8:00 AM Private Dolphin Watching Tour + Swim & Snorkel', price: 65, time: '8:00 AM' },
 ];
 
 const PICKUP_OPTIONS = [
@@ -138,20 +138,20 @@ export default function CheckoutPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-3">Guests (Min. 2)</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-3">Guests (Min. 2, Max. 8)</label>
                   <input 
                     type="number" 
                     min="2" 
-                    max="10"
+                    max="8"
                     required
                     className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-transformative-teal text-deep-indigo font-bold"
                     value={formData.guests}
-                    onChange={(e) => setFormData({ ...formData, guests: Math.max(2, parseInt(e.target.value) || 2) })}
+                    onChange={(e) => setFormData({ ...formData, guests: Math.max(2, Math.min(8, parseInt(e.target.value) || 2)) })}
                   />
                 </div>
               </div>
               <p className="text-[10px] text-deep-indigo/40 -mt-3 pl-1 leading-normal">
-                Private boat charter requires a minimum of 2 guest tickets to book. Solo travelers are welcome, but the 2-guest minimum rate ($90 USD) applies to secure the private outrigger.
+                Private boat charter requires a minimum of 2 guest tickets to book. Solo travelers are welcome, but the 2-guest minimum rate ($90 USD) applies to secure the private boat (accommodates up to 8 guests).
               </p>
 
               <div>
@@ -339,8 +339,8 @@ export default function CheckoutPage() {
                       <li className="flex gap-3 items-start">
                         <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
                         <div>
-                          <strong className="text-deep-indigo block font-bold">Private Jukung Outrigger</strong>
-                          <span className="text-deep-indigo/60 font-light">Exclusive boat for your group only (no sharing).</span>
+                          <strong className="text-deep-indigo block font-bold">Private Dolphin Boat</strong>
+                          <span className="text-deep-indigo/60 font-light">Exclusive boat for your group only (up to 8 people).</span>
                         </div>
                       </li>
                       <li className="flex gap-3 items-start">
@@ -379,22 +379,15 @@ export default function CheckoutPage() {
                       <li className="flex gap-3 items-start">
                         <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
                         <div>
-                          <strong className="text-deep-indigo block font-bold">Private Jukung Outrigger</strong>
-                          <span className="text-deep-indigo/60 font-light">Exclusive boat for your group only (no sharing).</span>
+                          <strong className="text-deep-indigo block font-bold">Private Dolphin Boat</strong>
+                          <span className="text-deep-indigo/60 font-light">Exclusive boat for your group only (up to 8 people).</span>
                         </div>
                       </li>
                       <li className="flex gap-3 items-start">
                         <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
                         <div>
-                          <strong className="text-deep-indigo block font-bold">Premium Snorkel Gear</strong>
-                          <span className="text-deep-indigo/60 font-light">Sanitized standard masks, snorkels, and fins.</span>
-                        </div>
-                      </li>
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">Underwater View Frames</strong>
-                          <span className="text-deep-indigo/60 font-light">Unique glass outrigger view frames for spotting sea life.</span>
+                          <strong className="text-deep-indigo block font-bold">Sanitized Snorkel Gear</strong>
+                          <span className="text-deep-indigo/60 font-light">Standard sanitized masks, snorkels, and fins.</span>
                         </div>
                       </li>
                       <li className="flex gap-3 items-start">

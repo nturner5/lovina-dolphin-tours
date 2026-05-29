@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
 export async function POST(req: Request) {
   try {
@@ -8,12 +10,44 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'API Key is required to run the AI Writer.' }, { status: 400 });
     }
 
+    // Read local project marketing and branding guidelines
+    let marketingContext = '';
+    let brandingContext = '';
+    
+    try {
+      const pmPath = path.join(process.cwd(), '.agents/product-marketing.md');
+      if (fs.existsSync(pmPath)) {
+        marketingContext = fs.readFileSync(pmPath, 'utf8');
+      }
+    } catch (e) {
+      console.warn('Could not read product-marketing.md context:', e);
+    }
+
+    try {
+      const bgPath = path.join(process.cwd(), '.agents/branding-guide.md');
+      if (fs.existsSync(bgPath)) {
+        brandingContext = fs.readFileSync(bgPath, 'utf8');
+      }
+    } catch (e) {
+      console.warn('Could not read branding-guide.md context:', e);
+    }
+
     const prompt = `
 You are an elite travel writer and conversion rate optimization (CRO) expert. Your goal is to write a highly detailed, comprehensive, 1,500+ word "authority" travel blog post about the following topic:
 Topic: "${topic}"
 Target Focus Keywords (incorporate these naturally throughout the headings and body text): "${keywords}"
 Target Traveler Persona: "${persona}"
 Writing Tone: "${tone || 'Expert, informative, engaging, and premium (similar to the famous Finns Beach Club Bali blog)'}"
+
+Below is the SPECIFIC local marketing and branding context for this website. You MUST align all tour details, prices, guidelines, tone of voice, and value propositions EXACTLY with these guidelines:
+
+--- START OF PRODUCT MARKETING CONTEXT ---
+${marketingContext || 'Operating under Lovina Ethical Marine, departing at 8:00 AM to skip sunrise swarms, vetted captains, 30m buffer, parallel approach, private dolphin boat.'}
+--- END OF PRODUCT MARKETING CONTEXT ---
+
+--- START OF BRANDING & VISUAL CONTEXT ---
+${brandingContext || 'V2 Coastal Noir branding, editorial & minimal style, "The Quiet Encounter", "Maritime Excellence", "Private Dolphin Boat".'}
+--- END OF BRANDING & VISUAL CONTEXT ---
 
 Structure and formatting rules:
 1. Editorial H1 Title: Create a high-click-through-rate, catchy title optimized for SEO.

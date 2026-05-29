@@ -6,7 +6,7 @@ import PhoneInput, { isValidPhoneNumber, getCountryCallingCode } from 'react-pho
 
 const TOURS = [
   { id: 'eight-am-ethical', name: '8:00 AM Private Ethical Tour', price: 45, time: '8:00 AM' },
-  { id: 'swim-snorkel', name: '+ Private Swim & Snorkel', price: 65, time: '8:30 AM' },
+  { id: 'swim-snorkel', name: '8:00 AM Private Dolphin Tour + Swim & Snorkel', price: 65, time: '8:00 AM' },
 ];
 
 const PICKUP_OPTIONS = [

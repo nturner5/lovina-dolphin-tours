@@ -109,7 +109,7 @@ export default function ToursPage() {
             </div>
           </div>
 
-          {/* Card 2: + Private Swim & Snorkel (RECOMMENDED) */}
+          {/* Card 2: 8:00 AM Private Dolphin Tour + Swim & Snorkel (RECOMMENDED) */}
           <div className="group bg-white rounded-[2.5rem] border-2 border-transformative-teal shadow-md hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between relative">
             
             {/* Highly Recommended Float Tag */}
@@ -136,7 +136,7 @@ export default function ToursPage() {
               {/* Card Body */}
               <div className="p-8 sm:p-10 space-y-6">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">+ Private Swim & Snorkel</h2>
+                  <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">8:00 AM Private Dolphin Tour + Swim & Snorkel</h2>
                   <p className="text-xs text-transformative-teal font-bold uppercase tracking-widest">Our signature double encounter</p>
                 </div>
 

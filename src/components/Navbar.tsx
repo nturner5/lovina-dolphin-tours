@@ -28,11 +28,11 @@ export default function Navbar() {
       {/* Desktop Menu */}
       <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide uppercase">
         <Link href="/#ethics" className="hover:text-transformative-teal transition-colors">Dolphin Rules</Link>
-        <Link href="/#tours" className="hover:text-transformative-teal transition-colors">Tours</Link>
+        <Link href="/tours" className="hover:text-transformative-teal transition-colors">Tours</Link>
         <Link href="/#faq" className="hover:text-transformative-teal transition-colors">FAQ</Link>
         <Link href="/blog" className="hover:text-transformative-teal transition-colors">Blog</Link>
         <Link 
-          href="/#booking" 
+          href="/tours" 
           className="bg-deep-indigo text-cloud-dancer px-6 py-3 rounded-full hover:bg-transformative-teal transition-all duration-300 shadow-sm text-center"
         >
           Book Now
@@ -67,7 +67,7 @@ export default function Navbar() {
             Dolphin Rules
           </Link>
           <Link 
-            href="/#tours" 
+            href="/tours" 
             onClick={() => setIsOpen(false)}
             className="text-base font-medium text-deep-indigo py-2 border-b border-deep-indigo/5 hover:text-transformative-teal transition-colors"
           >
@@ -88,7 +88,7 @@ export default function Navbar() {
             Blog
           </Link>
           <Link 
-            href="/#booking" 
+            href="/tours" 
             onClick={() => setIsOpen(false)}
             className="bg-deep-indigo text-cloud-dancer px-6 py-4 rounded-full hover:bg-transformative-teal transition-all duration-300 shadow-sm text-center font-bold mt-2"
           >

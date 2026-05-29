@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'react-phone-number-input/style.css';
 import PhoneInput, { isValidPhoneNumber, getCountryCallingCode } from 'react-phone-number-input';
 
@@ -29,6 +29,16 @@ export default function CheckoutPage() {
     hotelDetails: '',
     pickupLocation: 'none',
   });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tourParam = params.get('tour');
+      if (tourParam && TOURS.some(t => t.id === tourParam)) {
+        setFormData(prev => ({ ...prev, tourId: tourParam }));
+      }
+    }
+  }, []);
 
   // Dynamic WhatsApp validation using Google's libphonenumber engine
   const [whatsappNumber, setWhatsappNumber] = useState<string>('');

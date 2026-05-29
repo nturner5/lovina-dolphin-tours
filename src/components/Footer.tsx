@@ -29,7 +29,7 @@ export default function Footer() {
           <div className="flex flex-col gap-4">
             <span className="text-deep-indigo opacity-100 font-bold uppercase tracking-widest text-[10px]">Navigate</span>
             <Link href="/#ethics" className="hover:text-transformative-teal">Dolphin Rules</Link>
-            <Link href="/#tours" className="hover:text-transformative-teal">Tours</Link>
+            <Link href="/tours" className="hover:text-transformative-teal">Tours</Link>
             <Link href="/blog" className="hover:text-transformative-teal">Blog</Link>
           </div>
           <div className="flex flex-col gap-4">
@@ -41,7 +41,7 @@ export default function Footer() {
           <div className="flex flex-col gap-4">
             <span className="text-deep-indigo opacity-100 font-bold uppercase tracking-widest text-[10px]">Connect</span>
             <Link href="https://instagram.com" className="hover:text-transformative-teal">Instagram</Link>
-            <Link href="https://wa.me/..." className="hover:text-transformative-teal">WhatsApp</Link>
+            <Link href="https://wa.me/6285190422839" className="hover:text-transformative-teal">WhatsApp</Link>
           </div>
         </div>
       </div>

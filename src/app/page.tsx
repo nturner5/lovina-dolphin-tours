@@ -141,7 +141,7 @@ export default async function Home() {
             {/* Action CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <Link 
-                href="#booking" 
+                href="/tours" 
                 className="bg-coral-pop text-cloud-dancer px-10 py-4 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group"
               >
                 {/* Pulsing ring outer container */}
@@ -470,7 +470,7 @@ export default async function Home() {
             Limited to 5 ethical departures per day.
           </p>
           <Link 
-            href="/checkout" 
+            href="/tours" 
             className="bg-coral-pop text-cloud-dancer px-12 py-5 rounded-full text-xl font-medium hover:bg-deep-indigo transition-all shadow-xl inline-block active:scale-95"
           >
             Book Your Experience

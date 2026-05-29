@@ -1,0 +1,591 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+
+const TOPIC_PRESETS = [
+  {
+    title: 'Sekumpul Waterfall & Munduk Lake Descent',
+    keywords: 'Sekumpul waterfall, Munduk twin lakes, Bedugul roadtrip, Bali highlands, North Bali waterfalls',
+    persona: 'Adventure & Nature Explorers',
+    tone: 'Slow travel, rich detailed guides with exact prices, driving routes, and physical difficulty levels.'
+  },
+  {
+    title: 'The Ultimate Guide to Snorkeling in Lovina Reef',
+    keywords: 'Lovina reef snorkeling, swim with sea turtles Bali, Lovina coral garden, Bali wild sea turtles',
+    persona: 'Marine Enthusiasts & Slow Travelers',
+    tone: 'Expert, highly practical, focusing on sanitized gear, local warung spots, and zero-chase environmental ethics.'
+  },
+  {
+    title: 'Canggu to Lovina: The Scenic 3-Day Volcanic Roadtrip',
+    keywords: 'Canggu to Lovina, Bali roadtrip itinerary, Banjar hot springs, Bedugul strawberries, Munduk villas',
+    persona: 'Aesthetic Travelers & Couples',
+    tone: 'Sophisticated, premium, editorially styled with romantic sunset viewpoints and boutique dining locations.'
+  }
+];
+
+export default function SeoWriterPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
+
+  // Key and Form states
+  const [apiKey, setApiKey] = useState('');
+  const [topic, setTopic] = useState('');
+  const [keywords, setKeywords] = useState('');
+  const [persona, setPersona] = useState('Conscious Explorer');
+  const [tone, setTone] = useState('Finns-style Travel Authority');
+  
+  // Generation & Workspace states
+  const [generating, setGenerating] = useState(false);
+  const [markdown, setMarkdown] = useState('');
+  const [generationError, setGenerationError] = useState('');
+  const [loadingStep, setLoadingStep] = useState(0);
+  
+  // Publishing states
+  const [publishing, setPublishing] = useState(false);
+  const [publishSuccess, setPublishSuccess] = useState(false);
+  const [publishError, setPublishError] = useState('');
+  const [publishedDocId, setPublishedDocId] = useState('');
+
+  // Auto-load keys on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedKey = localStorage.getItem('lovina_writer_key');
+      const savedAuth = localStorage.getItem('lovina_admin_auth');
+      if (savedKey) setApiKey(savedKey);
+      if (savedAuth === 'true') setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleAuth = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordInput === 'lovina-sea-2026') {
+      setIsAuthenticated(true);
+      setPasswordError(false);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('lovina_admin_auth', 'true');
+      }
+    } else {
+      setPasswordError(true);
+    }
+  };
+
+  const handleSaveKey = (key: string) => {
+    setApiKey(key);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('lovina_writer_key', key);
+    }
+  };
+
+  const selectPreset = (preset: typeof TOPIC_PRESETS[0]) => {
+    setTopic(preset.title);
+    setKeywords(preset.keywords);
+    setPersona(preset.persona);
+    setTone(preset.tone);
+  };
+
+  // Simulated loading steps for luxurious visual feedback during AI compilation
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (generating) {
+      const steps = [
+        'Mapping North Bali coordinates and local warung spots...',
+        'Compiling 1,500+ words of helpful, non-fluff travel advice...',
+        'Injecting high-converting CRO dolphin tour callouts...',
+        'Drafting photorealistic Midjourney & Flux image prompts...',
+        'Optimizing heading hierarchy and search keyword densities...',
+        'Polishing editorial tone to Finns Beach Club authority standards...'
+      ];
+      
+      const nextStep = () => {
+        setLoadingStep((prev) => {
+          if (prev < steps.length - 1) {
+            timer = setTimeout(nextStep, 3500);
+            return prev + 1;
+          }
+          return prev;
+        });
+      };
+      
+      timer = setTimeout(nextStep, 3000);
+    } else {
+      setLoadingStep(0);
+    }
+    return () => clearTimeout(timer);
+  }, [generating]);
+
+  const handleGenerate = async () => {
+    if (!apiKey) {
+      alert('Please configure your Gemini or OpenAI API key first.');
+      return;
+    }
+    setGenerating(true);
+    setGenerationError('');
+    setMarkdown('');
+    setPublishSuccess(false);
+
+    try {
+      const response = await fetch('/api/seo-writer/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apiKey, topic, keywords, persona, tone }),
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        setGenerationError(data.error);
+      } else if (data.markdown) {
+        setMarkdown(data.markdown);
+      }
+    } catch (err: any) {
+      setGenerationError(err.message || 'An error occurred during AI generation.');
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  const handlePublish = async () => {
+    if (!markdown) return;
+    setPublishing(true);
+    setPublishError('');
+    setPublishSuccess(false);
+
+    // Extract Title from markdown (first H1 line starting with # )
+    const titleLine = markdown.split('\n').find(l => l.trim().startsWith('# '));
+    const title = titleLine ? titleLine.replace('# ', '').trim() : topic;
+    
+    // Generate clean URL slug from title
+    const slug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // remove special chars
+      .replace(/\s+/g, '-') // spaces to dashes
+      .replace(/-+/g, '-') // collapse consecutive dashes
+      .trim();
+
+    try {
+      const response = await fetch('/api/seo-writer/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, slug, markdown }),
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        setPublishError(data.error);
+      } else if (data.success) {
+        setPublishSuccess(true);
+        setPublishedDocId(data.docId);
+      }
+    } catch (err: any) {
+      setPublishError(err.message || 'Failed to publish to Sanity.');
+    } finally {
+      setPublishing(false);
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('lovina_admin_auth');
+    }
+  };
+
+  // Render HTML preview of the generated markdown (custom lightweight parser)
+  const renderPreview = () => {
+    if (!markdown) return null;
+
+    const sections = markdown.split('\n');
+    let inCroBox = false;
+    let inImagePrompt = false;
+    let croLines: string[] = [];
+    let imageLines: string[] = [];
+
+    return (
+      <div className="space-y-6 text-sm text-deep-indigo/80 font-light leading-relaxed">
+        {sections.map((line, idx) => {
+          const trimmed = line.trim();
+
+          // Match CRO block syntax
+          if (trimmed === ':::cro-box') {
+            inCroBox = true;
+            croLines = [];
+            return null;
+          }
+          if (trimmed === ':::') {
+            if (inCroBox) {
+              inCroBox = false;
+              // Render CRO Callout
+              const croTitle = croLines.find(l => l.startsWith('### '))?.replace('### ', '') || 'Ready to Book?';
+              const croText = croLines.filter(l => !l.startsWith('### ') && !l.startsWith('['))[0] || '';
+              return (
+                <div key={idx} className="bg-transformative-teal/5 p-6 rounded-3xl border border-transformative-teal/15 my-6 animate-in zoom-in duration-300">
+                  <h4 className="text-lg font-serif text-transformative-teal font-bold mb-2">🐢 {croTitle}</h4>
+                  <p className="text-xs text-deep-indigo/80 mb-4">{croText}</p>
+                  <Link href="/tours" className="inline-block bg-coral-pop text-cloud-dancer px-6 py-2 rounded-full text-xs font-bold hover:bg-deep-indigo transition-all">
+                    Book Your Private Boat Tour Now
+                  </Link>
+                </div>
+              );
+            }
+            if (inImagePrompt) {
+              inImagePrompt = false;
+              // Render Image Prompt Capsule
+              const promptText = imageLines.join(' ');
+              return (
+                <div key={idx} className="bg-cloud-dancer/50 p-5 rounded-2xl border border-deep-indigo/10 border-dashed my-5">
+                  <span className="text-[9px] font-bold text-coral-pop uppercase tracking-wider block mb-1">📸 Midjourney / Flux Asset Prompt</span>
+                  <p className="text-xs text-deep-indigo/60 italic font-mono bg-white p-3 rounded-lg border border-deep-indigo/5 mb-3 leading-normal select-all">
+                    {promptText.replace('**Midjourney Image Prompt:**', '').trim()}
+                  </p>
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(promptText.replace('**Midjourney Image Prompt:**', '').trim());
+                      alert('Prompt copied to clipboard!');
+                    }}
+                    className="text-[10px] font-bold text-transformative-teal hover:underline flex items-center gap-1"
+                  >
+                    📋 Copy Prompt
+                  </button>
+                </div>
+              );
+            }
+            return null;
+          }
+
+          if (inCroBox) {
+            croLines.push(trimmed);
+            return null;
+          }
+
+          if (trimmed === ':::image-prompt') {
+            inImagePrompt = true;
+            imageLines = [];
+            return null;
+          }
+
+          if (inImagePrompt) {
+            imageLines.push(trimmed);
+            return null;
+          }
+
+          // Render Normal Markdown Tags
+          if (trimmed.startsWith('# ')) {
+            return <h1 key={idx} className="text-3xl font-serif text-deep-indigo mt-8 mb-4 border-b border-deep-indigo/10 pb-2">{trimmed.substring(2)}</h1>;
+          }
+          if (trimmed.startsWith('## ')) {
+            return <h2 key={idx} className="text-2xl font-serif text-deep-indigo mt-6 mb-3">{trimmed.substring(3)}</h2>;
+          }
+          if (trimmed.startsWith('### ')) {
+            return <h3 key={idx} className="text-xl font-serif text-deep-indigo mt-6 mb-2">{trimmed.substring(4)}</h3>;
+          }
+          if (trimmed.startsWith('#### ')) {
+            return <h4 key={idx} className="text-base font-serif text-deep-indigo mt-4 mb-2">{trimmed.substring(5)}</h4>;
+          }
+          if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
+            return <li key={idx} className="list-disc list-inside pl-4 text-xs">{trimmed.substring(2)}</li>;
+          }
+          if (/^\d+\.\s+/.test(trimmed)) {
+            return <li key={idx} className="list-decimal list-inside pl-4 text-xs">{trimmed.replace(/^\d+\.\s+/, '')}</li>;
+          }
+
+          // Bold rendering helper
+          if (trimmed) {
+            return <p key={idx} className="mb-4 text-xs leading-relaxed" dangerouslySetInnerHTML={{
+              __html: trimmed
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            }} />;
+          }
+
+          return null;
+        })}
+      </div>
+    );
+  };
+
+  // Auth Protection Gate Overlay
+  if (!isAuthenticated) {
+    return (
+      <main className="bg-cloud-dancer min-h-screen flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-white p-8 sm:p-10 rounded-[2.5rem] shadow-lg border border-deep-indigo/10 text-center animate-in fade-in zoom-in duration-500">
+          <div className="w-16 h-16 bg-transformative-teal/10 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+            🔒
+          </div>
+          <h1 className="text-3xl font-serif text-deep-indigo mb-2">Admin Dashboard</h1>
+          <p className="text-xs text-deep-indigo/50 mb-6">Enter your security key to access the Lovina SEO Travel Writer</p>
+          
+          <form onSubmit={handleAuth} className="space-y-4">
+            <input 
+              type="password"
+              placeholder="Admin Security Password"
+              required
+              className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-6 py-4 text-center focus:ring-2 focus:ring-transformative-teal text-deep-indigo"
+              value={passwordInput}
+              onChange={(e) => setPasswordInput(e.target.value)}
+            />
+            {passwordError && (
+              <p className="text-xs text-coral-pop font-bold bg-coral-pop/5 py-2 px-4 rounded-xl">❌ Access Denied: Invalid Security Key</p>
+            )}
+            <button 
+              type="submit"
+              className="w-full bg-coral-pop text-cloud-dancer py-4 rounded-full text-sm font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 cursor-pointer"
+            >
+              Unlock Terminal
+            </button>
+          </form>
+          
+          <p className="text-[10px] text-deep-indigo/30 mt-6 font-mono">LOVINA ETHICAL MARINE CO. 2026</p>
+        </div>
+      </main>
+    );
+  }
+
+  const stepsList = [
+    'Mapping North Bali coordinates and local warung spots...',
+    'Compiling 1,500+ words of helpful, non-fluff travel advice...',
+    'Injecting high-converting CRO dolphin tour callouts...',
+    'Drafting photorealistic Midjourney & Flux image prompts...',
+    'Optimizing heading hierarchy and search keyword densities...',
+    'Polishing editorial tone to Finns Beach Club authority standards...'
+  ];
+
+  return (
+    <main className="bg-cloud-dancer min-h-screen px-4 sm:px-6 py-10 lg:px-12 font-sans text-deep-indigo">
+      <div className="max-w-7xl mx-auto space-y-8">
+        
+        {/* Header Block */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-deep-indigo/10 pb-6">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-bold uppercase tracking-widest text-transformative-teal bg-transformative-teal/10 px-3 py-1 rounded-md">PRO EDITION</span>
+              <span className="w-2 h-2 bg-transformative-teal rounded-full animate-ping" />
+            </div>
+            <h1 className="text-4xl font-serif text-deep-indigo">SEO Blog Writer & Publisher</h1>
+          </div>
+          <div className="flex gap-3">
+            <Link 
+              href="/admin" 
+              className="bg-white border border-deep-indigo/10 text-deep-indigo px-5 py-2.5 rounded-full text-xs font-bold hover:bg-cloud-dancer/50 transition-all shadow-sm"
+            >
+              Open Sanity Studio
+            </Link>
+            <button 
+              onClick={handleLogout}
+              className="bg-deep-indigo text-cloud-dancer px-5 py-2.5 rounded-full text-xs font-bold hover:bg-coral-pop transition-all shadow-sm cursor-pointer"
+            >
+              Lock Terminal
+            </button>
+          </div>
+        </div>
+
+        {/* Dashboard Grid */}
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Left Block: Prompt Parameters (5 cols) */}
+          <div className="lg:col-span-5 space-y-6">
+            
+            {/* Setup Block */}
+            <div className="bg-white p-6 rounded-3xl shadow-sm border border-deep-indigo/5 space-y-4">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-deep-indigo/40 border-b border-deep-indigo/5 pb-2">AI Configuration</h3>
+              <div>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/60 mb-2">Gemini or OpenAI API Key</label>
+                <input 
+                  type="password"
+                  placeholder="Enter Gemini key or sk-... for OpenAI"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-5 py-3.5 focus:ring-2 focus:ring-transformative-teal text-xs text-deep-indigo font-mono"
+                  value={apiKey}
+                  onChange={(e) => handleSaveKey(e.target.value)}
+                />
+                <span className="text-[9px] text-deep-indigo/40 mt-1.5 block">Stored securely in your local browser sandbox. Supports both platforms.</span>
+              </div>
+            </div>
+
+            {/* Presets Block */}
+            <div className="bg-white p-6 rounded-3xl shadow-sm border border-deep-indigo/5 space-y-4">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-deep-indigo/40 border-b border-deep-indigo/5 pb-2">Finns-Style Presets</h3>
+              <div className="space-y-3">
+                {TOPIC_PRESETS.map((preset, index) => (
+                  <button
+                    key={index}
+                    onClick={() => selectPreset(preset)}
+                    className="w-full text-left bg-cloud-dancer/30 hover:bg-transformative-teal/5 p-4 rounded-2xl border border-deep-indigo/5 hover:border-transformative-teal/20 transition-all text-xs"
+                  >
+                    <span className="font-serif font-bold text-deep-indigo block mb-1">✍️ {preset.title}</span>
+                    <span className="text-[10px] text-deep-indigo/50 font-light line-clamp-1">Keywords: {preset.keywords}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Writer Parameters Form */}
+            <div className="bg-white p-6 rounded-3xl shadow-sm border border-deep-indigo/5 space-y-4">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-deep-indigo/40 border-b border-deep-indigo/5 pb-2">Prompt Parameters</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/60 mb-2">Blog Topic / H1 Title Goal</label>
+                  <textarea 
+                    rows={2}
+                    placeholder="e.g. The Ultimate Guide to Munduk Waterfalls & Highlands"
+                    className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-5 py-3.5 focus:ring-2 focus:ring-transformative-teal text-xs text-deep-indigo resize-none"
+                    value={topic}
+                    onChange={(e) => setTopic(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/60 mb-2">Focus Keywords (Comma separated)</label>
+                  <input 
+                    type="text"
+                    placeholder="e.g. Munduk waterfalls, Bali highlands, hiking Bali"
+                    className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-5 py-3.5 focus:ring-2 focus:ring-transformative-teal text-xs text-deep-indigo"
+                    value={keywords}
+                    onChange={(e) => setKeywords(e.target.value)}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/60 mb-2">Traveler Persona</label>
+                    <select
+                      className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-transformative-teal text-xs text-deep-indigo cursor-pointer"
+                      value={persona}
+                      onChange={(e) => setPersona(e.target.value)}
+                    >
+                      <option value="Conscious Explorer">Conscious Explorer</option>
+                      <option value="Luxury Villa Guest">Luxury Villa Guest</option>
+                      <option value="Slow-Travel Family">Slow-Travel Family</option>
+                      <option value="Aesthetic Backpacker">Aesthetic Backpacker</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/60 mb-2">Editorial Style</label>
+                    <select
+                      className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-transformative-teal text-xs text-deep-indigo cursor-pointer"
+                      value={tone}
+                      onChange={(e) => setTone(e.target.value)}
+                    >
+                      <option value="Finns-style Travel Authority">Finns-Style (Rich Listicles)</option>
+                      <option value="Boutique Luxury Editorial">Boutique Luxury Editorial</option>
+                      <option value="Practical Backpacker Route">Practical Backpacker Route</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleGenerate}
+                  disabled={generating || !topic || !apiKey}
+                  className="w-full bg-coral-pop text-cloud-dancer py-4 rounded-full text-xs font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  {generating ? 'Drafting Article...' : 'Generate Rich Authority Post (AI)'}
+                </button>
+
+                {generationError && (
+                  <p className="text-xs text-coral-pop bg-coral-pop/5 py-2 px-4 rounded-xl leading-normal">❌ AI Writer Error: {generationError}</p>
+                )}
+              </div>
+            </div>
+
+          </div>
+
+          {/* Right Block: Live Editor & visual Preview workspace (7 cols) */}
+          <div className="lg:col-span-7 h-[70vh] lg:h-[80vh] flex flex-col">
+            
+            {generating ? (
+              /* Luxurious Generating Screen */
+              <div className="bg-white p-10 rounded-[2.5rem] shadow-sm border border-deep-indigo/5 flex-1 flex flex-col items-center justify-center text-center space-y-6">
+                <div className="w-20 h-20 bg-transformative-teal/15 rounded-full flex items-center justify-center text-4xl animate-bounce">
+                  🌴
+                </div>
+                <h3 className="text-2xl font-serif text-deep-indigo">AI Travel Writer Compiling...</h3>
+                
+                {/* Active Loading step */}
+                <div className="max-w-md w-full bg-cloud-dancer/50 px-6 py-4 rounded-2xl border border-deep-indigo/5 text-xs text-transformative-teal font-medium tracking-wide animate-pulse">
+                  {stepsList[loadingStep]}
+                </div>
+
+                {/* Progress Indicators */}
+                <div className="flex gap-2.5">
+                  {stepsList.map((_, i) => (
+                    <div 
+                      key={i} 
+                      className={`w-3 h-3 rounded-full transition-all duration-500 ${i <= loadingStep ? 'bg-transformative-teal scale-110' : 'bg-deep-indigo/10'}`} 
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : markdown ? (
+              /* Rich Editor and Preview Split Workspace */
+              <div className="bg-white rounded-[2.5rem] shadow-sm border border-deep-indigo/5 flex-1 flex flex-col overflow-hidden">
+                {/* Publish & Publish Options Toolbar */}
+                <div className="bg-cloud-dancer/30 px-6 py-4 border-b border-deep-indigo/5 flex flex-wrap items-center justify-between gap-4">
+                  <span className="text-[10px] font-bold text-deep-indigo/40 uppercase tracking-widest">
+                    ✏️ Sandbox Article Draft
+                  </span>
+                  
+                  <div className="flex gap-3">
+                    <button
+                      onClick={handlePublish}
+                      disabled={publishing}
+                      className="bg-transformative-teal text-cloud-dancer px-6 py-2.5 rounded-full text-xs font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 disabled:opacity-50 cursor-pointer"
+                    >
+                      {publishing ? 'Publishing to Sanity...' : 'Publish Directly to Sanity'}
+                    </button>
+                  </div>
+                </div>
+
+                {publishSuccess && (
+                  <div className="bg-transformative-teal/15 text-transformative-teal px-6 py-3.5 text-xs border-b border-transformative-teal/10 flex items-center justify-between">
+                    <span>
+                      🎉 <strong>Successfully Published!</strong> Your post is live in Sanity dataset (ID: {publishedDocId}).
+                    </span>
+                    <Link href="/admin" target="_blank" className="font-bold underline decoration-2 hover:text-deep-indigo transition-colors">
+                      View in Sanity Studio →
+                    </Link>
+                  </div>
+                )}
+
+                {publishError && (
+                  <div className="bg-coral-pop/10 text-coral-pop px-6 py-3.5 text-xs border-b border-coral-pop/10">
+                    ❌ <strong>Publishing failed:</strong> {publishError}
+                  </div>
+                )}
+
+                {/* Editor Split Layout */}
+                <div className="flex-1 grid md:grid-cols-2 divide-x divide-deep-indigo/10 overflow-hidden">
+                  {/* Left Column: Editable Raw Textarea */}
+                  <div className="flex flex-col h-full overflow-hidden">
+                    <textarea
+                      className="w-full flex-1 p-6 text-xs font-mono text-deep-indigo/90 bg-white border-none focus:ring-0 resize-none overflow-y-auto leading-relaxed outline-none"
+                      value={markdown}
+                      onChange={(e) => setMarkdown(e.target.value)}
+                    />
+                  </div>
+
+                  {/* Right Column: Visual Styled Render Preview */}
+                  <div className="p-6 h-full overflow-y-auto bg-cloud-dancer/10 prose prose-slate max-w-none">
+                    {renderPreview()}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* Idle Workspace Empty state */
+              <div className="bg-white p-10 rounded-[2.5rem] shadow-sm border border-deep-indigo/5 flex-1 flex flex-col items-center justify-center text-center text-deep-indigo/40 space-y-4">
+                <span className="text-4xl select-none">✍️</span>
+                <div>
+                  <h3 className="text-lg font-serif font-bold text-deep-indigo">Workspace Ready</h3>
+                  <p className="text-xs text-deep-indigo/50 max-w-xs mt-1">Configure your API credentials, click a Finns-style preset topic, and generate an authority post.</p>
+                </div>
+              </div>
+            )}
+
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+  );
+}

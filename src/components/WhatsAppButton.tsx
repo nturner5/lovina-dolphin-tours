@@ -5,8 +5,8 @@ import { useState } from 'react';
 export default function WhatsAppButton() {
   const [hovered, setHovered] = useState(false);
   
-  // Balinese placeholder phone number to be configured by the user
-  const phoneNumber = '6281234567890';
+  // Official Balinese phone number
+  const phoneNumber = '6285190422839';
   const prefilledMessage = encodeURIComponent("Hi Lovina Ethical Marine! I'd like to inquire about booking a private dolphin tour.");
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${prefilledMessage}`;
 

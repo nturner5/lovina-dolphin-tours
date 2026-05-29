@@ -22,6 +22,10 @@ export async function POST(req: Request) {
       pickupFee = 50;
       pickupName = 'Private Return Transfer — Canggu, Seminyak, Kuta';
       pickupDesc = `Private roundtrip transport from your hotel in Canggu, Seminyak, or Kuta to Lovina for your dolphin tour on ${date}.`;
+    } else if (pickupLocation === 'uluwatu') {
+      pickupFee = 65;
+      pickupName = 'Private Return Transfer — Uluwatu, Nusa Dua, Jimbaran';
+      pickupDesc = `Private roundtrip transport from your hotel in Uluwatu, Nusa Dua, or Jimbaran to Lovina for your dolphin tour on ${date}.`;
     } else if (pickupLocation === 'lovina') {
       pickupName = 'Free Local Pickup — Lovina Beach Area';
       pickupDesc = `Complimentary local pickup within 2km of Lovina Beach on ${date}.`;
@@ -32,12 +36,13 @@ export async function POST(req: Request) {
         price_data: {
           currency: 'usd',
           product_data: {
-            name: tourName,
+            name: `${tourName} (Private Boat)`,
             description: `Ethical Dolphin Tour for ${guests} guests on ${date}`,
           },
           unit_amount: price * 100,
         },
-        quantity: 1,
+        // Enforce guest count scaling by using quantity
+        quantity: Math.max(2, Number(guests) || 2),
       },
     ];
 

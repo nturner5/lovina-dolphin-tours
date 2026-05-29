@@ -34,3 +34,101 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-fraunces), serif;
   font-weight: 600;
 }
+
+/* Custom overrides for react-phone-number-input to align with Coastal Noir */
+.PhoneInput {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  width: 100% !important;
+}
+
+.PhoneInputCountry {
+  background-color: rgba(240, 238, 233, 0.5) !important; /* cloud-dancer/50 */
+  border-radius: 1rem !important;
+  padding: 1rem 1.25rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  cursor: pointer !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+}
+
+.PhoneInputCountry:focus-within {
+  box-shadow: 0 0 0 2px #23545B !important; /* transformative-teal */
+}
+
+.PhoneInputCountrySelect {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+  z-index: 10 !important;
+  opacity: 0 !important;
+  cursor: pointer !important;
+}
+
+.PhoneInputCountry::after {
+  content: var(--calling-code) !important;
+  font-size: 0.875rem !important;
+  font-weight: 700 !important;
+  color: #1B2B32 !important; /* deep-indigo */
+  margin-left: 0.15rem !important;
+  display: inline-block !important;
+  transition: all 0.3s ease !important;
+}
+
+.PhoneInputCountryIcon {
+  width: 1.5rem !important;
+  height: 1.125rem !important;
+  border-radius: 0.25rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.PhoneInputCountryIcon--square {
+  width: 1.125rem !important;
+}
+
+.PhoneInputCountryIconImg {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.PhoneInputCountrySelectArrow {
+  border-style: solid !important;
+  border-width: 0.15em 0.15em 0 0 !important;
+  content: '' !important;
+  display: inline-block !important;
+  height: 0.35em !important;
+  width: 0.35em !important;
+  transform: rotate(135deg) !important;
+  color: #1B2B32 !important; /* deep-indigo */
+  opacity: 0.7 !important;
+  margin-left: 0.25rem !important;
+}
+
+.PhoneInputInput {
+  flex: 1 !important;
+  min-width: 0 !important; /* Fix flexbox input overflow on mobile */
+  background-color: rgba(240, 238, 233, 0.5) !important; /* cloud-dancer/50 */
+  border: none !important;
+  border-radius: 1rem !important;
+  padding: 1rem 1.5rem !important;
+  color: #1B2B32 !important; /* deep-indigo */
+  font-weight: 700 !important;
+  font-size: 0.875rem !important;
+  outline: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.PhoneInputInput:focus {
+  box-shadow: 0 0 0 2px #23545B !important; /* transformative-teal */
+}
+

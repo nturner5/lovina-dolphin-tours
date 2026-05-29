@@ -95,26 +95,52 @@ Write the entire, complete blog post in high-quality markdown, maintaining deep 
       const data = await response.json();
       generatedText = data.choices[0]?.message?.content || '';
     } else {
-      // Call Gemini API
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.7,
-          },
-        }),
-      });
+      // Call Gemini API with automatic endpoint/model fallback loop
+      const geminiModels = [
+        { version: 'v1', name: 'gemini-1.5-flash' },
+        { version: 'v1beta', name: 'gemini-1.5-flash' },
+        { version: 'v1', name: 'gemini-2.5-flash' },
+        { version: 'v1', name: 'gemini-1.5-pro' },
+        { version: 'v1beta', name: 'gemini-pro' }
+      ];
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData?.error?.message || `Gemini API returned status ${response.status}`);
+      let lastError = '';
+      
+      for (const model of geminiModels) {
+        try {
+          const url = `https://generativelanguage.googleapis.com/${model.version}/models/${model.name}:generateContent?key=${apiKey}`;
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: {
+                temperature: 0.7,
+              },
+            }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+            if (generatedText) {
+              console.log(`✅ Success using Gemini model: ${model.name} (${model.version})`);
+              break;
+            }
+          } else {
+            const errBody = await response.json().catch(() => ({}));
+            lastError = errBody?.error?.message || `Status ${response.status} for ${model.name}`;
+            console.warn(`⚠️ Failed for model ${model.name} (${model.version}):`, lastError);
+          }
+        } catch (e: any) {
+          lastError = e.message || 'Network error';
+          console.warn(`⚠️ Network failure for ${model.name}:`, lastError);
+        }
       }
 
-      const data = await response.json();
-      generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      if (!generatedText) {
+        throw new Error(`Gemini API failed on all fallback models. Last error: ${lastError}`);
+      }
     }
 
     if (!generatedText) {

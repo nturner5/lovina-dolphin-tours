@@ -354,6 +354,43 @@ export default async function Home() {
               </div>
             </div>
           </div>
+
+          {/* Full-Width Brand Promise & CTA Conversion Banner */}
+          <div className="mt-16 pt-12 border-t border-deep-indigo/10 text-center space-y-8 animate-in fade-in duration-700">
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="flex items-start gap-3 text-left">
+                <span className="text-transformative-teal font-bold text-lg leading-none mt-0.5">✦</span>
+                <div>
+                  <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">The 8:00 AM Sea</span>
+                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">Sail in total peace after the 100+ sunrise outriggers go home.</span>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 text-left">
+                <span className="text-transformative-teal font-bold text-lg leading-none mt-0.5">✦</span>
+                <div>
+                  <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">Strict No-Chase</span>
+                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">Engines shifted to neutral within 30m; parallel viewing only.</span>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 text-left">
+                <span className="text-transformative-teal font-bold text-lg leading-none mt-0.5">✦</span>
+                <div>
+                  <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">Curated Crew</span>
+                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">Book directly with our own vetted, professional local captains.</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-4">
+              <Link 
+                href="/tours" 
+                className="inline-block bg-coral-pop text-cloud-dancer px-12 py-4 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group"
+              >
+                <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
+                Reserve Your Private Outrigger Now
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -375,37 +412,28 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-16">
-            {[
-              {
-                title: "Quiet Mornings",
-                subtitle: "Calm & Clear Water",
-                desc: "There is a brief, magical window between the morning mist and the midday heat when the sea becomes completely flat. Water matches sky, making it very easy to see active dolphin families swimming around."
-              },
-              {
-                title: "Respectful Distance",
-                subtitle: "Our No-Chase Rules",
-                desc: "We never chase or surround the dolphins. Our captains keep a respectful distance and turn engines to neutral, creating a quiet space where curious dolphins often choose to swim right up to our boats."
-              },
-              {
-                title: "Our Dedicated Team",
-                subtitle: "Respected Local Captains",
-                desc: "When you book with us, you are booking directly with a professional team. Our captains are part of our company, using clean, premium boats and keeping your safety first."
-              }
-            ].map((pillar, i) => (
-              <div key={i} className="flex flex-col gap-6 group">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-coral-pop">
-                  Pillar 0{i + 1}
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start mt-12 lg:mt-16">
+            <div className="lg:col-span-7 space-y-6">
+              <p className="text-base text-deep-indigo/70 font-light leading-relaxed">
+                Lovina does not require waking up in the dark. While the sunrise fleets of up to a hundred high-RPM diesel outriggers launch at 6:00 AM—crowding the pods, filling the morning air with exhaust fumes, and placing immense acoustic stress on the animals—we choose a different path. We believe that the best way to appreciate Bali's wild marine life is respectfully, and on their own terms.
+              </p>
+              <p className="text-base text-deep-indigo/70 font-light leading-relaxed">
+                By 8:00 AM, the entire crowded fleet has returned to shore for hotel breakfasts. The ocean falls into a deep, meditative silence. The warm volcanic black sand beneath reflects the clean blue of the sky, turning the sea into a vast, glassy mirror. Mount Agung stands clear on the horizon, outlined in soft morning light, and the only sound is the gentle lap of water against our wooden outrigger. This is the quiet encounter.
+              </p>
+            </div>
+            <div className="lg:col-span-5 bg-transformative-teal/5 p-8 sm:p-10 rounded-[3rem] border border-transformative-teal/10 space-y-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 transform translate-x-4 -translate-y-4 text-transformative-teal/5 text-9xl font-serif select-none pointer-events-none">“</div>
+              <p className="text-sm sm:text-base text-deep-indigo/80 font-light leading-relaxed italic relative z-10">
+                "When you cut the motor noise, the acoustic stress disappears. Dolphins are naturally highly social, curious creatures. In the silent 8:00 AM water, they often choose to glide right under our outrigger wings, rolling on their sides to look up at us. It is an intimate, eye-to-eye connection that a high-speed chase makes entirely impossible."
+              </p>
+              <div className="flex items-center gap-3 pt-2 relative z-10">
+                <div className="w-10 h-10 rounded-full bg-deep-indigo/5 border border-deep-indigo/10 flex items-center justify-center text-lg">⛵</div>
+                <div>
+                  <span className="text-xs font-bold text-deep-indigo block leading-none">Ethical Viewing Protocol</span>
+                  <span className="text-[10px] text-deep-indigo/50 font-light">Engines shifted to neutral within 30 meters</span>
                 </div>
-                <h4 className="text-3xl font-serif text-deep-indigo leading-tight">
-                  {pillar.title}<br />
-                  <span className="text-sm font-sans font-light italic text-transformative-teal block mt-1">{pillar.subtitle}</span>
-                </h4>
-                <p className="text-deep-indigo/70 font-light leading-relaxed text-sm">
-                  {pillar.desc}
-                </p>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>

@@ -97,7 +97,11 @@ Structure and formatting rules:
    :::
 6. Comprehensive FAQ Section: Include a list of answers to common traveler concerns about this topic at the end of the post.
 
-7. Enriched Metadata Block: At the very end of your output, you MUST append a structured metadata block enclosed in [METADATA] and [/METADATA] tags. This metadata will be parsed by our backend to populate rich fields in our database. Do NOT output this block anywhere else or in any other format.
+7. Strict Factuality & Zero Hallucination Constraint: Factual correctness is absolutely paramount. Under no circumstances should you invent, guess, or hallucinate specific menu items, prices, opening hours, or operational details for real-world establishments.
+   - If you are not 100% sure about a specific detail (e.g. exactly what dishes are currently served, exact pricing, specific shop layouts), you MUST default to describing the general culinary style, vibe, and concept of the establishment (e.g., "renowned for their signature wood-fired sourdough breakfasts", "known for their artisanal eggs benedict variations", "sourcing local organic Kintamani coffee beans", "offering premium, minimalist resort-wear") rather than mentioning high-fidelity, made-up dish names, prices, or details.
+   - The ONLY highly specific dish names, menu items, or quotes you may include are those directly supplied by the user under the "PERSONAL TRAVEL EXPERIENCES (E-E-A-T Booster)" section, as these are verified first-hand details.
+
+8. Enriched Metadata Block: At the very end of your output, you MUST append a structured metadata block enclosed in [METADATA] and [/METADATA] tags. This metadata will be parsed by our backend to populate rich fields in our database. Do NOT output this block anywhere else or in any other format.
 Format:
 [METADATA]
 TAGS: Sekumpul, North Bali, Waterfalls, Hiking, Travel Guide
@@ -114,6 +118,7 @@ A: Answer 2.
 [/METADATA]
 
 Write the entire, complete blog post in high-quality markdown, maintaining deep local context, slow-travel values, and the Coastal Noir luxury aesthetic. Do not summarize or abbreviate sections—write it in full.
+
 `;
 
     let generatedText = '';
@@ -129,7 +134,7 @@ Write the entire, complete blog post in high-quality markdown, maintaining deep 
         body: JSON.stringify({
           model: 'gpt-4o-mini',
           messages: [{ role: 'user', content: prompt }],
-          temperature: 0.7,
+          temperature: 0.2,
         }),
       });
 
@@ -209,7 +214,7 @@ Write the entire, complete blog post in high-quality markdown, maintaining deep 
             body: JSON.stringify({
               contents: [{ parts: [{ text: prompt }] }],
               generationConfig: {
-                temperature: 0.7,
+                temperature: 0.2,
               },
             }),
           });

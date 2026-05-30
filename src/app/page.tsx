@@ -251,7 +251,7 @@ export default async function Home() {
               <svg className="w-3.5 h-3.5 text-transformative-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
-              From $45 USD • Private Vetted Outrigger
+              From $45 USD • Private Wooden Boat
             </div>
           </div>
 
@@ -266,13 +266,13 @@ export default async function Home() {
                 },
                 {
                   time: "08:00 AM",
-                  title: "The Quiet Departure",
-                  desc: "Step onto your private, comfortable outrigger boat. While the 100+ crowded sunrise boats return to shore, we sail out into a peaceful, empty sea."
+                  title: "Start Your Tour",
+                  desc: "Step onto your private wooden boat. While the 100+ crowded sunrise boats return to shore, we head out into a quiet, calm sea."
                 },
                 {
                   time: "08:30 AM",
-                  title: "Quiet Dolphin Watching",
-                  desc: "We cruise parallel to active dolphin families. Within 30 meters, we turn our engines to neutral and let the curious dolphins swim right up to our boat."
+                  title: "Watch Dolphins Play",
+                  desc: "We drive slowly alongside active dolphin families. When they swim near, we turn our engines to neutral so it is completely quiet, letting the curious dolphins swim right next to us."
                 },
                 {
                   time: "10:00 AM",
@@ -362,21 +362,21 @@ export default async function Home() {
                 <span className="text-transformative-teal font-bold text-lg leading-none mt-0.5">✦</span>
                 <div>
                   <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">The 8:00 AM Sea</span>
-                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">Sail in total peace after the 100+ sunrise outriggers go home.</span>
+                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">Sail in total peace after the 100+ sunrise tourist boats go home.</span>
                 </div>
               </div>
               <div className="flex items-start gap-3 text-left">
                 <span className="text-transformative-teal font-bold text-lg leading-none mt-0.5">✦</span>
                 <div>
                   <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">Strict No-Chase</span>
-                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">Engines shifted to neutral within 30m; parallel viewing only.</span>
+                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">We turn off our engines when dolphins are close and never chase them.</span>
                 </div>
               </div>
               <div className="flex items-start gap-3 text-left">
                 <span className="text-transformative-teal font-bold text-lg leading-none mt-0.5">✦</span>
                 <div>
-                  <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">Curated Crew</span>
-                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">Book directly with our own vetted, professional local captains.</span>
+                  <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">Friendly Local Team</span>
+                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">Book directly with our own team of trusted, professional local captains.</span>
                 </div>
               </div>
             </div>
@@ -387,7 +387,7 @@ export default async function Home() {
                 className="inline-block bg-coral-pop text-cloud-dancer px-12 py-4 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group"
               >
                 <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
-                Reserve Your Private Outrigger Now
+                Book Your Private Boat Now
               </Link>
             </div>
           </div>
@@ -415,22 +415,22 @@ export default async function Home() {
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start mt-12 lg:mt-16">
             <div className="lg:col-span-7 space-y-6">
               <p className="text-base text-deep-indigo/70 font-light leading-relaxed">
-                Lovina does not require waking up in the dark. While the sunrise fleets of up to a hundred high-RPM diesel outriggers launch at 6:00 AM—crowding the pods, filling the morning air with exhaust fumes, and placing immense acoustic stress on the animals—we choose a different path. We believe that the best way to appreciate Bali's wild marine life is respectfully, and on their own terms.
+                Lovina dolphin trips do not require waking up in the dark! While over a hundred noisy tourist boats launch at 6:00 AM—crowding the dolphins, filling the air with diesel fumes, and making loud underwater noise that scares the animals—we choose a different path. We believe that the best way to see wild dolphins is with respect, keeping them happy and safe.
               </p>
               <p className="text-base text-deep-indigo/70 font-light leading-relaxed">
-                By 8:00 AM, the entire crowded fleet has returned to shore for hotel breakfasts. The ocean falls into a deep, meditative silence. The warm volcanic black sand beneath reflects the clean blue of the sky, turning the sea into a vast, glassy mirror. Mount Agung stands clear on the horizon, outlined in soft morning light, and the only sound is the gentle lap of water against our wooden outrigger. This is the quiet encounter.
+                By 8:00 AM, the crowded sunrise boats have returned to the beach for hotel breakfast. The ocean becomes completely quiet. The volcanic black sand beneath reflects the blue sky, turning the sea into a vast, glassy mirror. The giant mountains of Bali stand clear on the horizon, and there is no sound except for the water splashing gently against our wooden boat. It is a magical, peaceful morning.
               </p>
             </div>
             <div className="lg:col-span-5 bg-transformative-teal/5 p-8 sm:p-10 rounded-[3rem] border border-transformative-teal/10 space-y-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 transform translate-x-4 -translate-y-4 text-transformative-teal/5 text-9xl font-serif select-none pointer-events-none">“</div>
               <p className="text-sm sm:text-base text-deep-indigo/80 font-light leading-relaxed italic relative z-10">
-                "When you cut the motor noise, the acoustic stress disappears. Dolphins are naturally highly social, curious creatures. In the silent 8:00 AM water, they often choose to glide right under our outrigger wings, rolling on their sides to look up at us. It is an intimate, eye-to-eye connection that a high-speed chase makes entirely impossible."
+                "When we turn off the engine, the loud noise stops. Dolphins are naturally friendly and curious. In the quiet 8:00 AM water, they often choose to swim right next to our boat, rolling on their sides to look up at us. It is a wonderful, personal connection that you can never experience if you are chasing them."
               </p>
               <div className="flex items-center gap-3 pt-2 relative z-10">
                 <div className="w-10 h-10 rounded-full bg-deep-indigo/5 border border-deep-indigo/10 flex items-center justify-center text-lg">⛵</div>
                 <div>
-                  <span className="text-xs font-bold text-deep-indigo block leading-none">Ethical Viewing Protocol</span>
-                  <span className="text-[10px] text-deep-indigo/50 font-light">Engines shifted to neutral within 30 meters</span>
+                  <span className="text-xs font-bold text-deep-indigo block leading-none">Our Safety Protocol</span>
+                  <span className="text-[10px] text-deep-indigo/50 font-light">We turn off engines when dolphins are close</span>
                 </div>
               </div>
             </div>

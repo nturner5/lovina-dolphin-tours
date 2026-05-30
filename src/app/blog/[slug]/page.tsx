@@ -73,6 +73,29 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         return <h4 id={id} className="text-xl font-serif text-deep-indigo mt-6 mb-2 scroll-mt-24">{children}</h4>;
       },
     },
+    types: {
+      image: ({ value }: any) => {
+        if (!value?.asset?._ref) return null;
+        return (
+          <figure className="my-10 space-y-2.5 max-w-4xl mx-auto">
+            <div className="relative aspect-[16/9] w-full rounded-3xl overflow-hidden border border-deep-indigo/5 shadow-lg bg-deep-indigo/5">
+              <Image 
+                src={urlFor(value).url()} 
+                alt={value.alt || 'Lovina travel scene'}
+                fill
+                sizes="(max-w-768px) 100vw, 80vw"
+                className="object-cover"
+              />
+            </div>
+            {(value.caption || value.alt) && (
+              <figcaption className="text-center text-[10px] sm:text-xs font-serif italic text-deep-indigo/40 mt-2 block">
+                {value.caption || value.alt}
+              </figcaption>
+            )}
+          </figure>
+        );
+      }
+    },
     marks: {
       link: ({ children, value }: any) => {
         const href = value?.href || '#';

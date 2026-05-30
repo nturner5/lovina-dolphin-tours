@@ -39,7 +39,33 @@ export const schemaTypes = [
           }
         ]
       },
-      { name: 'body', title: 'Body', type: 'array', of: [{ type: 'block' }] },
+      {
+        name: 'body',
+        title: 'Body',
+        type: 'array',
+        of: [
+          { type: 'block' },
+          {
+            type: 'image',
+            title: 'Inline Image',
+            options: { hotspot: true },
+            fields: [
+              {
+                name: 'alt',
+                type: 'string',
+                title: 'Alternative Text',
+                description: 'Crucial for search engines and accessibility.'
+              },
+              {
+                name: 'caption',
+                type: 'string',
+                title: 'Caption',
+                description: 'Optional text displayed under the image.'
+              }
+            ]
+          }
+        ]
+      },
     ],
   },
   {

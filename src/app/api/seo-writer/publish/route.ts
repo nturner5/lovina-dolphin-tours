@@ -11,6 +11,65 @@ const client = createClient({
 
 const generateKey = () => Math.random().toString(36).substring(2, 11);
 
+// Robust parser to scan a string for markdown links [Anchor Text](URL) and compile them into structured spans and mark definitions
+function parseTextWithLinks(text: string) {
+  const children: any[] = [];
+  const markDefs: any[] = [];
+  
+  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  let lastIndex = 0;
+  let match;
+  
+  while ((match = linkRegex.exec(text)) !== null) {
+    const matchIndex = match.index;
+    const anchorText = match[1];
+    const linkUrl = match[2];
+    
+    if (matchIndex > lastIndex) {
+      children.push({
+        _key: generateKey(),
+        _type: 'span',
+        text: text.substring(lastIndex, matchIndex)
+      });
+    }
+    
+    const markKey = generateKey();
+    
+    children.push({
+      _key: generateKey(),
+      _type: 'span',
+      text: anchorText,
+      marks: [markKey]
+    });
+    
+    markDefs.push({
+      _key: markKey,
+      _type: 'link',
+      href: linkUrl
+    });
+    
+    lastIndex = linkRegex.lastIndex;
+  }
+  
+  if (lastIndex < text.length) {
+    children.push({
+      _key: generateKey(),
+      _type: 'span',
+      text: text.substring(lastIndex)
+    });
+  }
+  
+  if (children.length === 0) {
+    children.push({
+      _key: generateKey(),
+      _type: 'span',
+      text: text
+    });
+  }
+  
+  return { children, markDefs };
+}
+
 // Robust markdown line parser to compile paragraphs, lists, and headings into standard Sanity PortableText
 function markdownToPortableText(markdownText: string) {
   const lines = markdownText.split('\n');
@@ -22,69 +81,81 @@ function markdownToPortableText(markdownText: string) {
     
     // Check for headings
     if (line.startsWith('#### ')) {
+      const text = line.substring(5);
+      const { children, markDefs } = parseTextWithLinks(text);
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'h4',
-        children: [{ _key: generateKey(), _type: 'span', text: line.substring(5) }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     } else if (line.startsWith('### ')) {
+      const text = line.substring(4);
+      const { children, markDefs } = parseTextWithLinks(text);
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'h3',
-        children: [{ _key: generateKey(), _type: 'span', text: line.substring(4) }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     } else if (line.startsWith('## ')) {
+      const text = line.substring(3);
+      const { children, markDefs } = parseTextWithLinks(text);
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'h2',
-        children: [{ _key: generateKey(), _type: 'span', text: line.substring(3) }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     } else if (line.startsWith('# ')) {
+      const text = line.substring(2);
+      const { children, markDefs } = parseTextWithLinks(text);
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'h1',
-        children: [{ _key: generateKey(), _type: 'span', text: line.substring(2) }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     }
     // Check for bullet lists
     else if (line.startsWith('* ') || line.startsWith('- ')) {
+      const text = line.substring(2);
+      const { children, markDefs } = parseTextWithLinks(text);
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'normal',
         listItem: 'bullet',
-        children: [{ _key: generateKey(), _type: 'span', text: line.substring(2) }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     }
     // Check for numbered lists
     else if (/^\d+\.\s+/.test(line)) {
       const text = line.replace(/^\d+\.\s+/, '');
+      const { children, markDefs } = parseTextWithLinks(text);
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'normal',
         listItem: 'number',
-        children: [{ _key: generateKey(), _type: 'span', text: text }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     }
     // Otherwise regular paragraph
     else {
+      const { children, markDefs } = parseTextWithLinks(line);
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'normal',
-        children: [{ _key: generateKey(), _type: 'span', text: line }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     }
   }

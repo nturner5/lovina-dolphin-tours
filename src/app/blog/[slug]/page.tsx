@@ -62,6 +62,22 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         const id = text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').trim();
         return <h4 id={id} className="text-xl font-serif text-deep-indigo mt-6 mb-2 scroll-mt-24">{children}</h4>;
       },
+    },
+    marks: {
+      link: ({ children, value }: any) => {
+        const href = value?.href || '#';
+        const isExternal = href.startsWith('http://') || href.startsWith('https://');
+        return (
+          <a 
+            href={href} 
+            target={isExternal ? '_blank' : undefined} 
+            rel={isExternal ? 'noopener noreferrer' : undefined} 
+            className="text-transformative-teal underline hover:text-coral-pop transition-colors duration-200 font-medium"
+          >
+            {children}
+          </a>
+        );
+      }
     }
   };
 

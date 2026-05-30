@@ -46,6 +46,102 @@ const sanityClient = createClient({
 
 const generateKey = () => Math.random().toString(36).substring(2, 11);
 
+function parseInlineFormatting(text) {
+  const children = [];
+  const markDefs = [];
+  
+  const segments = [];
+  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  let lastIndex = 0;
+  let match;
+  
+  while ((match = linkRegex.exec(text)) !== null) {
+    const matchIndex = match.index;
+    const anchorText = match[1];
+    const linkUrl = match[2];
+    
+    if (matchIndex > lastIndex) {
+      segments.push({
+        text: text.substring(lastIndex, matchIndex),
+        isLink: false
+      });
+    }
+    
+    segments.push({
+      text: anchorText,
+      isLink: true,
+      href: linkUrl
+    });
+    
+    lastIndex = linkRegex.lastIndex;
+  }
+  
+  if (lastIndex < text.length) {
+    segments.push({
+      text: text.substring(lastIndex),
+      isLink: false
+    });
+  }
+  
+  if (segments.length === 0) {
+    segments.push({
+      text: text,
+      isLink: false
+    });
+  }
+  
+  for (const seg of segments) {
+    const boldParts = seg.text.split('**');
+    
+    for (let i = 0; i < boldParts.length; i++) {
+      const partText = boldParts[i];
+      if (!partText) continue;
+      
+      const isBold = (i % 2 === 1);
+      const marks = [];
+      
+      if (isBold) {
+        marks.push('strong');
+      }
+      
+      if (seg.isLink) {
+        const markKey = generateKey();
+        marks.push(markKey);
+        
+        children.push({
+          _key: generateKey(),
+          _type: 'span',
+          text: partText,
+          marks
+        });
+        
+        markDefs.push({
+          _key: markKey,
+          _type: 'link',
+          href: seg.href
+        });
+      } else {
+        children.push({
+          _key: generateKey(),
+          _type: 'span',
+          text: partText,
+          marks: marks.length > 0 ? marks : undefined
+        });
+      }
+    }
+  }
+  
+  if (children.length === 0) {
+    children.push({
+      _key: generateKey(),
+      _type: 'span',
+      text: text
+    });
+  }
+  
+  return { children, markDefs };
+}
+
 // Helper to translate markdown to Sanity PortableText
 function markdownToPortableText(markdownText) {
   const lines = markdownText.split('\n');
@@ -57,69 +153,76 @@ function markdownToPortableText(markdownText) {
     
     // Check for headings
     if (line.startsWith('#### ')) {
+      const { children, markDefs } = parseInlineFormatting(line.substring(5));
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'h4',
-        children: [{ _key: generateKey(), _type: 'span', text: line.substring(5) }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     } else if (line.startsWith('### ')) {
+      const { children, markDefs } = parseInlineFormatting(line.substring(4));
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'h3',
-        children: [{ _key: generateKey(), _type: 'span', text: line.substring(4) }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     } else if (line.startsWith('## ')) {
+      const { children, markDefs } = parseInlineFormatting(line.substring(3));
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'h2',
-        children: [{ _key: generateKey(), _type: 'span', text: line.substring(3) }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     } else if (line.startsWith('# ')) {
+      const { children, markDefs } = parseInlineFormatting(line.substring(2));
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'h1',
-        children: [{ _key: generateKey(), _type: 'span', text: line.substring(2) }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     }
     // Check for bullet lists
     else if (line.startsWith('* ') || line.startsWith('- ')) {
+      const { children, markDefs } = parseInlineFormatting(line.substring(2));
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'normal',
         listItem: 'bullet',
-        children: [{ _key: generateKey(), _type: 'span', text: line.substring(2) }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     }
     // Check for numbered lists
     else if (/^\d+\.\s+/.test(line)) {
-      const text = line.replace(/^\d+\.\s+/, '');
+      const rawText = line.replace(/^\d+\.\s+/, '');
+      const { children, markDefs } = parseInlineFormatting(rawText);
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'normal',
         listItem: 'number',
-        children: [{ _key: generateKey(), _type: 'span', text: text }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     }
     // Otherwise regular paragraph
     else {
+      const { children, markDefs } = parseInlineFormatting(line);
       blocks.push({
         _key: generateKey(),
         _type: 'block',
         style: 'normal',
-        children: [{ _key: generateKey(), _type: 'span', text: line }],
-        markDefs: [],
+        children,
+        markDefs,
       });
     }
   }

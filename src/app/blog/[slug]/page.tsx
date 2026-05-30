@@ -78,7 +78,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         if (!value?.asset?._ref) return null;
         
         // Dynamically parse Sanity asset reference to extract exact original dimensions
-        // Format: image-assetId-widthxheight-format
         const ref = value.asset._ref;
         const parts = ref.split('-');
         const dimensions = parts[2];
@@ -88,8 +87,14 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         const hasDimensions = !isNaN(width) && !isNaN(height);
         const aspectRatio = hasDimensions ? `${width} / ${height}` : '16/9';
 
+        // Premium Layout Scaling: If the image is vertical/square (portrait or 1:1), 
+        // constrain the width to a compact max-w-md so it doesn't take up too much vertical space.
+        // If it is horizontal (landscape), constrain it to a beautiful max-w-2xl (matches text width).
+        const isTallOrSquare = hasDimensions && height >= width;
+        const widthClass = isTallOrSquare ? 'max-w-md' : 'max-w-2xl';
+
         return (
-          <figure className="my-10 space-y-2.5 max-w-4xl mx-auto">
+          <figure className={`my-10 space-y-2.5 mx-auto ${widthClass}`}>
             <div 
               className="relative w-full rounded-3xl overflow-hidden border border-deep-indigo/5 shadow-lg bg-deep-indigo/5"
               style={{ aspectRatio }}
@@ -98,7 +103,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 src={urlFor(value).url()} 
                 alt={value.alt || 'Lovina travel scene'}
                 fill
-                sizes="(max-w-768px) 100vw, 80vw"
+                sizes="(max-w-768px) 100vw, 60vw"
                 className="object-cover"
               />
             </div>

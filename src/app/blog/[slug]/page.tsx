@@ -76,9 +76,24 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     types: {
       image: ({ value }: any) => {
         if (!value?.asset?._ref) return null;
+        
+        // Dynamically parse Sanity asset reference to extract exact original dimensions
+        // Format: image-assetId-widthxheight-format
+        const ref = value.asset._ref;
+        const parts = ref.split('-');
+        const dimensions = parts[2];
+        const [w, h] = dimensions ? dimensions.split('x') : [];
+        const width = parseInt(w, 10);
+        const height = parseInt(h, 10);
+        const hasDimensions = !isNaN(width) && !isNaN(height);
+        const aspectRatio = hasDimensions ? `${width} / ${height}` : '16/9';
+
         return (
           <figure className="my-10 space-y-2.5 max-w-4xl mx-auto">
-            <div className="relative aspect-[16/9] w-full rounded-3xl overflow-hidden border border-deep-indigo/5 shadow-lg bg-deep-indigo/5">
+            <div 
+              className="relative w-full rounded-3xl overflow-hidden border border-deep-indigo/5 shadow-lg bg-deep-indigo/5"
+              style={{ aspectRatio }}
+            >
               <Image 
                 src={urlFor(value).url()} 
                 alt={value.alt || 'Lovina travel scene'}
@@ -199,18 +214,37 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </div>
           </header>
 
-          {/* Hero Banner Image */}
+          {/* Hero Cover Banner Image */}
           {post.mainImage && (
-            <div className="aspect-[16/9] w-full rounded-[2.5rem] sm:rounded-[3.5rem] overflow-hidden bg-deep-indigo/5 relative border border-deep-indigo/5 shadow-2xl mb-16 max-w-5xl mx-auto">
-              <Image 
-                src={urlFor(post.mainImage).url()} 
-                alt={post.title}
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover"
-              />
-            </div>
+            (() => {
+              const ref = post.mainImage.asset?._ref;
+              let aspectRatio = '16/9';
+              if (ref) {
+                const parts = ref.split('-');
+                const dimensions = parts[2];
+                const [w, h] = dimensions ? dimensions.split('x') : [];
+                const width = parseInt(w, 10);
+                const height = parseInt(h, 10);
+                if (!isNaN(width) && !isNaN(height)) {
+                  aspectRatio = `${width} / ${height}`;
+                }
+              }
+              return (
+                <div 
+                  className="w-full rounded-[2.5rem] sm:rounded-[3.5rem] overflow-hidden bg-deep-indigo/5 relative border border-deep-indigo/5 shadow-2xl mb-16 max-w-5xl mx-auto max-h-[65vh]"
+                  style={{ aspectRatio }}
+                >
+                  <Image 
+                    src={urlFor(post.mainImage).url()} 
+                    alt={post.title}
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                </div>
+              );
+            })()
           )}
 
           {/* Core Layout Split */}

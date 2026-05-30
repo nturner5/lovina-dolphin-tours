@@ -286,6 +286,14 @@ async function recompile() {
   // Cafe 7: Satu-Satu Coffee Company
   addHeading("7. Satu-Satu Coffee Company (Jalan Raya Pantai Berawa)", 'h3'); // Upgraded to H3!
   addParagraph("If you want an authentic, direct-trade local Balinese coffee experience, head to [Satu-Satu Coffee Company on Google Maps](https://maps.google.com/?q=Satu-Satu+Coffee+Company+Canggu) on Jalan Raya Pantai Berawa. Operated by a local Balinese family who grows their own coffee on their plantation in the volcanic highlands of Kintamani, Satu-Satu serves exceptional organic coffee and delicious western-local breakfast items at local prices.");
+  
+  // Insert Satu-Satu Photo
+  addImageBlock(
+    'image-f1c36acc28f69d15b8727cc10b99e7b798abf9ff-1024x1024-jpg',
+    'Organic coffee roast and local breakfast at Satu-Satu Coffee Company',
+    'Signature estate-grown organic Kintamani coffee latte and handcrafted local breakfast at Satu-Satu Coffee Company.'
+  );
+
   addParagraph("**The Critique:** Satu-Satu is a local legend. The coffee is exceptionally rich, smooth, and served at a fraction of standard tourist cafe prices. Order their classic scrambled eggs on toast or a traditional Balinese breakfast, paired with a double espresso made with their estate-grown Kintamani beans. It is warm, unpretentious, and highly authentic.");
   addParagraph("**Price Range:** 45,000 IDR – 80,000 IDR ($3.00 – $5.50 USD) per dish.");
 
@@ -312,10 +320,41 @@ async function recompile() {
 
   console.log('📤 Patching and updating Sanity document with rich H3/H4 typography, Rider Cafe, and inline photos...');
 
+  const structuredFaqs = [
+    {
+      _key: generateKey(),
+      question: "What is the average price of breakfast in Canggu?",
+      answer: "A high-quality brunch dish with a specialty coffee typically costs between 100,000 IDR and 180,000 IDR ($7 - $12 USD), making it exceptionally reasonable compared to Western cities."
+    },
+    {
+      _key: generateKey(),
+      question: "Which Canggu cafe has the best coffee?",
+      answer: "ZIN Cafe and Satu-Satu Coffee Company are highly regarded for their house-roasted, locally sourced Balinese single-origin beans."
+    },
+    {
+      _key: generateKey(),
+      question: "Do Canggu cafes accommodate gluten-free and vegan dietary restrictions?",
+      answer: "Yes, Canggu is exceptionally dietary-friendly. Almost every modern cafe offers gluten-free sourdough replacements, plant milks (oat, almond, coconut), and comprehensive vegan/vegetarian options. The Shady Shack and Crate are especially renowned for their extensive dietary-friendly menus."
+    },
+    {
+      _key: generateKey(),
+      question: "Are credit cards widely accepted in Canggu cafes?",
+      answer: "Most modern Canggu cafes accept Visa and Mastercard, though a small 1% to 3% transaction fee is sometimes added. A few highly popular spots (like Crate Cafe) operate on a cash-only basis, and smaller local spots (warungs) still require cash. We recommend always carrying at least 150,000 to 200,000 IDR in cash."
+    },
+    {
+      _key: generateKey(),
+      question: "What is the tipping culture like at Bali cafes?",
+      answer: "Tipping is not strictly expected in Bali, but it is highly appreciated. Most modern cafes automatically include a 10% Government Tax and a 5% to 7% Service Charge to your final bill (often marked as 'plus plus' or '++'). If the service was outstanding, leaving a cash tip of 20,000 to 50,000 IDR is a generous gesture that directly supports local staff."
+    }
+  ];
+
   try {
     const result = await client
       .patch(post._id)
-      .set({ body: bodyBlocks })
+      .set({ 
+        body: bodyBlocks,
+        faqs: structuredFaqs
+      })
       .commit();
     console.log(`🎉 Success! Recompiled and updated Canggu Brunch Guide in Sanity under ID: "${result._id}"`);
   } catch (err) {

@@ -78,13 +78,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         if (!value?.asset?._ref) return null;
         
         return (
-          <figure className="my-10 space-y-2.5 mx-auto max-w-md">
-            <div className="relative w-full aspect-square rounded-3xl overflow-hidden border border-deep-indigo/5 shadow-lg bg-deep-indigo/5">
+          <figure className="not-prose my-10 space-y-2.5 mx-auto max-w-2xl">
+            <div className="relative w-full aspect-[3/2] rounded-3xl overflow-hidden border border-deep-indigo/5 shadow-lg bg-deep-indigo/5">
               <Image 
                 src={urlFor(value).url()} 
                 alt={value.alt || 'Lovina travel scene'}
                 fill
-                sizes="(max-w-768px) 100vw, 40vw"
+                sizes="(max-w-768px) 100vw, 60vw"
                 className="object-cover"
               />
             </div>
@@ -200,15 +200,15 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </div>
           </header>
 
-          {/* Hero Cover Banner Image - Perfect Centered Square */}
+          {/* Hero Cover Banner Image - Cinematic 16:9 Landscape */}
           {post.mainImage && (
-            <div className="w-full max-w-lg aspect-square rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden bg-deep-indigo/5 relative border border-deep-indigo/5 shadow-2xl mb-16 mx-auto">
+            <div className="w-full max-w-5xl aspect-[16/9] rounded-[2.5rem] sm:rounded-[3.5rem] overflow-hidden bg-deep-indigo/5 relative border border-deep-indigo/5 shadow-2xl mb-16 mx-auto">
               <Image 
                 src={urlFor(post.mainImage).url()} 
                 alt={post.title}
                 fill
                 priority
-                sizes="(max-w-768px) 100vw, 50vw"
+                sizes="100vw"
                 className="object-cover"
               />
             </div>

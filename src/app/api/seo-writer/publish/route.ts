@@ -94,7 +94,7 @@ function markdownToPortableText(markdownText: string) {
 
 export async function POST(req: Request) {
   try {
-    const { title, slug, markdown } = await req.json();
+    const { title, slug, markdown, excerpt, author, tags, keyTakeaways, faqs } = await req.json();
 
     if (!title || !slug || !markdown) {
       return NextResponse.json({ error: 'Title, slug, and markdown content are required.' }, { status: 400 });
@@ -109,6 +109,15 @@ export async function POST(req: Request) {
       title,
       slug: { _type: 'slug', current: slug },
       publishedAt: new Date().toISOString(),
+      excerpt: excerpt || '',
+      author: author || 'Lovina Ethical Marine Team',
+      tags: tags || [],
+      keyTakeaways: keyTakeaways || [],
+      faqs: faqs ? faqs.map((f: any) => ({
+        _key: generateKey(),
+        question: f.question || '',
+        answer: f.answer || ''
+      })) : [],
       body: markdownToPortableText(markdown),
     };
 

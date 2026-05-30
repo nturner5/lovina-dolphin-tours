@@ -8,6 +8,37 @@ export const schemaTypes = [
       { name: 'slug', title: 'Slug', type: 'slug', options: { source: 'title' } },
       { name: 'mainImage', title: 'Main Image', type: 'image', options: { hotspot: true } },
       { name: 'publishedAt', title: 'Published at', type: 'datetime' },
+      { name: 'excerpt', title: 'Excerpt (SEO Description)', type: 'text', rows: 3 },
+      { name: 'author', title: 'Author Name', type: 'string' },
+      {
+        name: 'keyTakeaways',
+        title: 'Key Takeaways (Sidebar Bullet Points)',
+        type: 'array',
+        of: [{ type: 'string' }],
+        description: 'A brief list of bullet point summaries for the sidebar box.'
+      },
+      {
+        name: 'tags',
+        title: 'Tags / Categories',
+        type: 'array',
+        of: [{ type: 'string' }]
+      },
+      {
+        name: 'faqs',
+        title: 'Structured FAQs',
+        type: 'array',
+        of: [
+          {
+            type: 'object',
+            name: 'faqItem',
+            title: 'FAQ Item',
+            fields: [
+              { name: 'question', title: 'Question', type: 'string' },
+              { name: 'answer', title: 'Answer', type: 'text', rows: 3 }
+            ]
+          }
+        ]
+      },
       { name: 'body', title: 'Body', type: 'array', of: [{ type: 'block' }] },
     ],
   },

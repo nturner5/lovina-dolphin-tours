@@ -39,11 +39,12 @@ const client = createClient({
 
 const generateKey = () => Math.random().toString(36).substring(2, 11);
 
-// Upgrade markdown link parsing
-function parseTextWithLinks(text) {
+// Upgrade markdown link and bold parsing
+function parseInlineFormatting(text) {
   const children = [];
   const markDefs = [];
   
+  const segments = [];
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
   let lastIndex = 0;
   let match;
@@ -54,25 +55,15 @@ function parseTextWithLinks(text) {
     const linkUrl = match[2];
     
     if (matchIndex > lastIndex) {
-      children.push({
-        _key: generateKey(),
-        _type: 'span',
-        text: text.substring(lastIndex, matchIndex)
+      segments.push({
+        text: text.substring(lastIndex, matchIndex),
+        isLink: false
       });
     }
     
-    const markKey = generateKey();
-    
-    children.push({
-      _key: generateKey(),
-      _type: 'span',
+    segments.push({
       text: anchorText,
-      marks: [markKey]
-    });
-    
-    markDefs.push({
-      _key: markKey,
-      _type: 'link',
+      isLink: true,
       href: linkUrl
     });
     
@@ -80,11 +71,58 @@ function parseTextWithLinks(text) {
   }
   
   if (lastIndex < text.length) {
-    children.push({
-      _key: generateKey(),
-      _type: 'span',
-      text: text.substring(lastIndex)
+    segments.push({
+      text: text.substring(lastIndex),
+      isLink: false
     });
+  }
+  
+  if (segments.length === 0) {
+    segments.push({
+      text: text,
+      isLink: false
+    });
+  }
+  
+  for (const seg of segments) {
+    const boldParts = seg.text.split('**');
+    
+    for (let i = 0; i < boldParts.length; i++) {
+      const partText = boldParts[i];
+      if (!partText) continue;
+      
+      const isBold = (i % 2 === 1);
+      const marks = [];
+      
+      if (isBold) {
+        marks.push('strong');
+      }
+      
+      if (seg.isLink) {
+        const markKey = generateKey();
+        marks.push(markKey);
+        
+        children.push({
+          _key: generateKey(),
+          _type: 'span',
+          text: partText,
+          marks
+        });
+        
+        markDefs.push({
+          _key: markKey,
+          _type: 'link',
+          href: seg.href
+        });
+      } else {
+        children.push({
+          _key: generateKey(),
+          _type: 'span',
+          text: partText,
+          marks: marks.length > 0 ? marks : undefined
+        });
+      }
+    }
   }
   
   if (children.length === 0) {
@@ -99,7 +137,7 @@ function parseTextWithLinks(text) {
 }
 
 async function migrate() {
-  console.log('🧹 Starting self-healing blog links migration...');
+  console.log('🧹 Starting self-healing blog links and bold formatting migration...');
   
   try {
     const posts = await client.fetch('*[_type == "post"]');
@@ -117,16 +155,13 @@ async function migrate() {
       
       for (const block of post.body) {
         if (block._type === 'block') {
-          // Construct the block's text
           const blockText = block.children?.map(c => c.text).join('') || '';
           
-          if (/\[([^\]]+)\]\(([^)]+)\)/.test(blockText)) {
-            console.log(`   💡 Found raw markdown links in text: "${blockText}"`);
+          if (/\[([^\]]+)\]\(([^)]+)\)/.test(blockText) || /\*\*/.test(blockText)) {
+            console.log(`   💡 Found raw markdown formatting (links or bold) in text: "${blockText}"`);
             
-            // Re-parse with links
-            const { children, markDefs } = parseTextWithLinks(blockText);
+            const { children, markDefs } = parseInlineFormatting(blockText);
             
-            // Keep style, list, and indent configurations of the original block
             updatedBody.push({
               ...block,
               children,
@@ -142,14 +177,14 @@ async function migrate() {
       }
       
       if (hasUpdates) {
-        console.log(`   📤 Patching post in database with fully compiled structured links...`);
+        console.log(`   📤 Patching post in database with fully compiled structured markup...`);
         await client
           .patch(post._id)
           .set({ body: updatedBody })
           .commit();
         console.log(`   ✅ Successfully updated: "${post.title}"`);
       } else {
-        console.log(`   👍 No raw markdown links found in this post.`);
+        console.log(`   👍 No raw markdown formatting found in this post.`);
       }
     }
     

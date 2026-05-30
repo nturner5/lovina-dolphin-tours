@@ -29,6 +29,16 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     : 0;
   const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
+  // Filter out the duplicate H1 or H2 title block from the body content
+  const bodyBlocks = post.body && Array.isArray(post.body)
+    ? post.body.filter((block: any, index: number) => {
+        if (index === 0 && (block.style === 'h1' || block.style === 'h2')) {
+          return false;
+        }
+        return true;
+      })
+    : [];
+
   // Parse Headings dynamically from Sanity PortableText for the Interactive TOC
   const headings: { text: string; id: string; style: string }[] = post.body
     ? post.body
@@ -142,7 +152,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         <div className="max-w-6xl mx-auto">
           
           {/* Header Section */}
-          <header className="mb-12 lg:mb-16 text-center max-w-3xl mx-auto">
+          <header className="mb-12 lg:mb-16 text-center max-w-5xl mx-auto">
             <span className="text-[10px] font-bold text-coral-pop uppercase tracking-[0.2em] bg-coral-pop/5 px-4 py-1.5 rounded-full border border-coral-pop/10 inline-block mb-6">
               Bali Travel Guide
             </span>
@@ -235,7 +245,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
               {/* Main PortableText Content */}
               <div className="prose prose-xl prose-headings:font-serif prose-headings:text-deep-indigo text-deep-indigo/80 max-w-none prose-p:leading-relaxed prose-p:font-light prose-li:text-xs">
-                <PortableText value={post.body} components={portableTextComponents} />
+                <PortableText value={bodyBlocks} components={portableTextComponents} />
               </div>
             </div>
 

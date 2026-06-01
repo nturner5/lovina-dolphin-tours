@@ -141,7 +141,7 @@ export default function PrivacyPolicyPage() {
               <li>The right to request immediate and permanent deletion of your customer history (the &ldquo;Right to be Forgotten&rdquo;).</li>
             </ul>
             <p>
-              To exercise any of these rights, please contact our legal desk directly via email at <a href="mailto:legal@lovinaethicalmarine.com" className="text-transformative-teal font-semibold hover:text-coral-pop underline transition-all">legal@lovinaethicalmarine.com</a>.
+              To exercise any of these rights, please contact our legal desk directly via email at <a href="mailto:nthn6828@gmail.com" className="text-transformative-teal font-semibold hover:text-coral-pop underline transition-all">nthn6828@gmail.com</a>.
             </p>
           </section>
 
@@ -155,8 +155,8 @@ export default function PrivacyPolicyPage() {
             <div className="bg-deep-indigo/[0.02] border border-deep-indigo/5 p-6 rounded-2xl space-y-2 text-xs sm:text-sm font-medium">
               <p><span className="text-deep-indigo/40 uppercase font-bold text-[9px] block">Operator Brand</span> Lovina Ethical Marine</p>
               <p><span className="text-deep-indigo/40 uppercase font-bold text-[9px] block">Base of Operations</span> Lovina Beach Road, Kalibukbuk, North Bali, Indonesia</p>
-              <p><span className="text-deep-indigo/40 uppercase font-bold text-[9px] block">Primary Inquiries</span> <a href="mailto:contact@lovinaethicalmarine.com" className="text-transformative-teal hover:underline">contact@lovinaethicalmarine.com</a></p>
-              <p><span className="text-deep-indigo/40 uppercase font-bold text-[9px] block">Legal & Privacy desk</span> <a href="mailto:legal@lovinaethicalmarine.com" className="text-transformative-teal hover:underline">legal@lovinaethicalmarine.com</a></p>
+              <p><span className="text-deep-indigo/40 uppercase font-bold text-[9px] block">Primary Inquiries</span> <a href="mailto:nthn6828@gmail.com" className="text-transformative-teal hover:underline">nthn6828@gmail.com</a></p>
+              <p><span className="text-deep-indigo/40 uppercase font-bold text-[9px] block">Legal & Privacy desk</span> <a href="mailto:nthn6828@gmail.com" className="text-transformative-teal hover:underline">nthn6828@gmail.com</a></p>
             </div>
           </section>
 

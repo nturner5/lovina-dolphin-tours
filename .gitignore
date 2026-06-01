@@ -33,6 +33,11 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# n8n backup files and temporary exports
+scripts/*backup.json
+scripts/*nodes.json
+scripts/*connections.json
+
 # vercel
 .vercel
 

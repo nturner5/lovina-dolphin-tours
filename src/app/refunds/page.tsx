@@ -148,7 +148,7 @@ export default function RefundPolicyPage() {
               6. Claims & Customer Support
             </h2>
             <p>
-              To file a cancellation, submit a reschedule request, or claim a second excursion voucher under our Dolphin Sighting Guarantee, please message our support desk directly via email at <a href="mailto:refunds@lovinaethicalmarine.com" className="text-transformative-teal font-semibold hover:text-coral-pop underline transition-all">refunds@lovinaethicalmarine.com</a>. Please include your Stripe Transaction ID or booking confirmation code.
+              To file a cancellation, submit a reschedule request, or claim a second excursion voucher under our Dolphin Sighting Guarantee, please message our support desk directly via email at <a href="mailto:nthn6828@gmail.com" className="text-transformative-teal font-semibold hover:text-coral-pop underline transition-all">nthn6828@gmail.com</a>. Please include your Stripe Transaction ID or booking confirmation code.
             </p>
           </section>
 

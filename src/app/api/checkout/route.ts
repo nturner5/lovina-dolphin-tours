@@ -61,12 +61,21 @@ export async function POST(req: Request) {
       });
     }
 
+    // Generate a 4-character pronounceable uppercase booking code (e.g. LEM-K3RF)
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let shortCode = '';
+    for (let i = 0; i < 4; i++) {
+      shortCode += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    const bookingCode = `LEM-${shortCode}`;
+
     const session = await stripe.checkout.sessions.create({
       line_items: lineItems,
       mode: 'payment',
       success_url: `${req.headers.get('origin')}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get('origin')}/checkout`,
       metadata: {
+        bookingCode,
         tourId,
         date,
         guests: guests.toString(),

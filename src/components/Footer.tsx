@@ -23,7 +23,7 @@ export default function Footer() {
             North Bali’s definitive standard for respectful dolphin tours. 
             Dedicated to the protection and quiet observation of Lovina’s wild dolphin pods.
           </p>
-          <p>&copy; 2026 Lovina Ethical Marine. All rights reserved.</p>
+          <p>&copy; 2026 Lovina Ethical Marine. Operated by Turner Industries LLC. All rights reserved.</p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-16">
           <div className="flex flex-col gap-4">

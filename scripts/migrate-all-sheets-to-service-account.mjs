@@ -51,15 +51,17 @@ async function main() {
           // Switch credentials to Service Account type (googleApi)
           node.credentials = { ...SERVICE_ACCOUNT_CREDENTIALS };
           
-          // Ensure authentication parameter in parameters is deleted or set to serviceAccount if it has authentication field
-          if (node.parameters && node.parameters.authentication) {
-            node.parameters.authentication = 'serviceAccount';
+          // Ensure authentication parameter in parameters is set to serviceAccount
+          if (!node.parameters) {
+            node.parameters = {};
           }
+          node.parameters.authentication = 'serviceAccount';
 
           // Specially restore erased logic for "Get Guest & Stripe Details"
           if (node.name === 'Get Guest & Stripe Details') {
             console.log(`    ⚠️ RESTORING ERASED LOGIC for "Get Guest & Stripe Details"...`);
             node.parameters = {
+              authentication: 'serviceAccount',
               options: {},
               filtersUI: {
                 values: [

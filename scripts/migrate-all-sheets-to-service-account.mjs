@@ -84,6 +84,67 @@ async function main() {
             };
           }
 
+          // Specially restore erased logic for "Check Current Assignment"
+          if (node.name === 'Check Current Assignment') {
+            console.log(`    ⚠️ RESTORING ERASED LOGIC for "Check Current Assignment"...`);
+            node.parameters = {
+              authentication: 'serviceAccount',
+              options: {},
+              filtersUI: {
+                values: [
+                  {
+                    lookupValue: '={{ $json.bookingCode }}',
+                    lookupColumn: 'BookingCode'
+                  }
+                ]
+              },
+              sheetName: {
+                __rl: true,
+                mode: 'list',
+                value: 1618477771
+              },
+              documentId: {
+                __rl: true,
+                mode: 'list',
+                value: '1r3dhgV_Du2wFK8hqOr_lZexS-wrxI9Xv6QQiyr2APd8'
+              }
+            };
+          }
+
+          // Specially restore erased logic for "Assign Captain in Sheets"
+          if (node.name === 'Assign Captain in Sheets') {
+            console.log(`    ⚠️ RESTORING ERASED LOGIC for "Assign Captain in Sheets"...`);
+            node.parameters = {
+              authentication: 'serviceAccount',
+              options: {},
+              fieldsUi: {
+                values: [
+                  {
+                    column: 'AssignedCaptain',
+                    fieldValue: "={{ $('Parse Payload Data').item.json.captainName }}"
+                  },
+                  {
+                    column: 'CaptainPhone',
+                    fieldValue: "={{ $('Parse Payload Data').item.json.captainPhone }}"
+                  }
+                ]
+              },
+              operation: 'update',
+              sheetName: {
+                __rl: true,
+                mode: 'list',
+                value: 1618477771
+              },
+              documentId: {
+                __rl: true,
+                mode: 'list',
+                value: '1r3dhgV_Du2wFK8hqOr_lZexS-wrxI9Xv6QQiyr2APd8'
+              },
+              valueToMatchOn: "={{ $('Parse Payload Data').item.json.bookingCode }}",
+              columnToMatchOn: 'BookingCode'
+            };
+          }
+
           updatedCount++;
         }
       }

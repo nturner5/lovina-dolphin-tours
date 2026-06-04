@@ -91,6 +91,23 @@ const templates = [
         }
       }
     ]
+  },
+  {
+    name: 'bidding_missed_alert',
+    category: 'UTILITY',
+    language: 'id',
+    allow_category_change: true,
+    components: [
+      {
+        type: 'BODY',
+        text: 'Halo {{1}}! Maaf, tugas dengan kode booking {{2}} sudah diambil oleh kapten lain. Terima kasih atas responnya dan sampai jumpa di tugas berikutnya! ⛵🐬',
+        example: {
+          body_text: [
+            ['Wayan', 'LEM-K3RF']
+          ]
+        }
+      }
+    ]
   }
 ];
 

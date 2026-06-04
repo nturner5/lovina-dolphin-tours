@@ -25,17 +25,17 @@ const GRAPH_API_URL = `https://graph.facebook.com/v20.0/${WABA_ID}/message_templ
 
 const templates = [
   {
-    name: 'lem_guest_confirmation',
+    name: 'lem_guest_confirmation_v2',
     category: 'UTILITY',
     language: 'en_US',
     allow_category_change: true,
     components: [
       {
         type: 'BODY',
-        text: 'Hi {{1}}! 🐬 Your private dolphin encounter with Lovina Ethical Marine is confirmed for {{2}} ({{3}} guests).\n\nDetails:\n- Tour: {{4}}\n- Return Pickup: {{5}}\n\nOur captain will reach out to you via WhatsApp shortly to coordinate pickup. Get ready for a premium, quiet sea experience! ⛵',
+        text: 'Hi {{1}}! 🐬 Your private dolphin encounter with Lovina Ethical Marine is confirmed for {{2}} ({{3}} guests).\n\nDetails:\n- Tour: {{4}}\n- Pickup/Meetup: {{5}}\n\nIf you selected Self-Drive (No Driver), we will meet at the Lovina Beach Dolphin Statue (Kalibukbuk) at 7:30 AM (Google Maps: https://www.google.com/maps/search/?api=1&query=Lovina+Dolphin+Statue).\n\nOtherwise, our captain will coordinate your pickup details via WhatsApp shortly. Get ready for a premium, quiet sea experience! ⛵',
         example: {
           body_text: [
-            ['Nathan', 'May 29, 2026', '2', 'Private Anti-Sunrise Dolphin Encounter', 'Ubud Add-on ($35)']
+            ['Nathan', 'May 29, 2026', '2', 'Private Anti-Sunrise Dolphin Encounter', 'Self-Drive (Meet at 7:30 AM)']
           ]
         }
       }

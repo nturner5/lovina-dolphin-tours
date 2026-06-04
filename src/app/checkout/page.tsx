@@ -242,7 +242,31 @@ export default function CheckoutPage() {
               </div>
 
               {/* Dynamic Transfer Details Box */}
-              {formData.pickupLocation !== 'none' && (
+              {formData.pickupLocation === 'none' ? (
+                <div className="bg-transformative-teal/5 p-6 rounded-3xl border border-transformative-teal/10 space-y-3 text-xs leading-normal animate-in fade-in duration-300">
+                  <div className="flex items-center gap-2 text-transformative-teal font-bold">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Self-Drive Meeting Details</span>
+                  </div>
+                  <div className="text-deep-indigo/80 space-y-2 font-light">
+                    <p>
+                      • <strong>Meeting Location:</strong> Meet at the <a href="https://www.google.com/maps/search/?api=1&query=Lovina+Dolphin+Statue" target="_blank" rel="noopener noreferrer" className="font-bold underline text-deep-indigo hover:text-transformative-teal transition-colors">Lovina Beach Dolphin Statue (Kalibukbuk)</a>.
+                    </p>
+                    <p>
+                      • <strong>Arrival Time:</strong> Please arrive by <strong>7:30 AM</strong>. Our quiet-departure private boat leaves promptly at <strong>8:00 AM</strong> to ensure a private encounter away from the sunrise rush.
+                    </p>
+                    <p>
+                      • <strong>Parking:</strong> Secure public parking is available directly at the main entrance area next to the monument. The captain will meet you by the statue.
+                    </p>
+                    <p className="text-[10px] text-deep-indigo/50 italic mt-2 border-t border-transformative-teal/10 pt-2">
+                      * Note: Our captain will reach out to you via WhatsApp the day before to confirm your arrival.
+                    </p>
+                  </div>
+                </div>
+              ) : (
                 <div className="bg-transformative-teal/5 p-6 rounded-3xl border border-transformative-teal/10 space-y-3 text-xs leading-normal animate-in fade-in duration-300">
                   <div className="flex items-center gap-2 text-transformative-teal font-bold">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

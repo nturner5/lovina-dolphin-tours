@@ -5,6 +5,8 @@ import { t } from '@/locales/i18n';
 import { useLocale } from '@/locales/i18n-client';
 import 'react-phone-number-input/style.css';
 import PhoneInput, { isValidPhoneNumber, getCountryCallingCode } from 'react-phone-number-input';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
+
 
 const TOURS = [
   { id: 'seven-am-ethical', name: '7:00 AM Private Dolphin Watching Tour', price: 45, time: '7:00 AM' },
@@ -56,21 +58,54 @@ function CheckoutForm() {
       return;
     }
 
-    if (selectedCountry) {
+    let currentCountry = selectedCountry;
+
+    if (currentCountry) {
       try {
-        const code = getCountryCallingCode(selectedCountry as any);
-        const prefix = `+${code}${code}`;
+        const code = getCountryCallingCode(currentCountry as any);
+        const prefix = `+${code}`;
+        
+        // If it starts with +{callingCode} followed by something
         if (val.startsWith(prefix)) {
-          const corrected = `+${code}${val.slice(prefix.length)}`;
-          setWhatsappNumber(corrected);
-          return;
+          const rest = val.slice(prefix.length);
+          if (rest.startsWith('+') || /^\d+$/.test(rest)) {
+            const testVal = rest.startsWith('+') ? rest : `+${rest}`;
+            const parsed = parsePhoneNumberFromString(testVal);
+            if (parsed && parsed.isValid()) {
+              setWhatsappNumber(parsed.number as string);
+              if (parsed.country && parsed.country !== currentCountry) {
+                setSelectedCountry(parsed.country);
+              }
+              return;
+            }
+          }
         }
       } catch (e) {
         // Fallback
       }
     }
+
+    // Fallback double prefix check (e.g., while typing or if invalid)
+    if (currentCountry) {
+      try {
+        const code = getCountryCallingCode(currentCountry as any);
+        const doublePrefix = `+${code}${code}`;
+        if (val.startsWith(doublePrefix)) {
+          const corrected = `+${code}${val.slice(doublePrefix.length)}`;
+          setWhatsappNumber(corrected);
+          
+          const parsed = parsePhoneNumberFromString(corrected);
+          if (parsed && parsed.country && parsed.country !== currentCountry) {
+            setSelectedCountry(parsed.country);
+          }
+          return;
+        }
+      } catch (e) {}
+    }
+
     setWhatsappNumber(val);
   };
+
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();

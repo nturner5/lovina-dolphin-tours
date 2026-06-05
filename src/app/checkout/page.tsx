@@ -50,6 +50,28 @@ function CheckoutForm() {
   const isValidPhone = whatsappNumber ? isValidPhoneNumber(whatsappNumber) : false;
   const callingCode = selectedCountry ? `+${getCountryCallingCode(selectedCountry as any)}` : '';
 
+  const handlePhoneChange = (val: string) => {
+    if (!val) {
+      setWhatsappNumber('');
+      return;
+    }
+
+    if (selectedCountry) {
+      try {
+        const code = getCountryCallingCode(selectedCountry as any);
+        const prefix = `+${code}${code}`;
+        if (val.startsWith(prefix)) {
+          const corrected = `+${code}${val.slice(prefix.length)}`;
+          setWhatsappNumber(corrected);
+          return;
+        }
+      } catch (e) {
+        // Fallback
+      }
+    }
+    setWhatsappNumber(val);
+  };
+
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -199,7 +221,7 @@ function CheckoutForm() {
                     country={selectedCountry as any}
                     onCountryChange={(country) => setSelectedCountry(country || 'AU')}
                     value={whatsappNumber}
-                    onChange={(val) => setWhatsappNumber(val || '')}
+                    onChange={(val) => handlePhoneChange(val || '')}
                     required
                     autoComplete="tel"
                     placeholder={t("phonePlaceholder", locale)}

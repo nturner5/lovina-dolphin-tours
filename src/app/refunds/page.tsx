@@ -3,8 +3,8 @@ import Link from "next/link";
 import { CloudRain, Calendar, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Refund & Cancellation Policy | Lovina Ethical Marine",
-  description: "Read the Refund & Cancellation Policy for Lovina Ethical Marine. Learn about our 24-hour flexible window, weather safety cancellations, and our unique Dolphin Sighting Guarantee.",
+  title: "Refund & Cancellation Policy | Bali Dolphin Tours",
+  description: "Read the Refund & Cancellation Policy for Bali Dolphin Tours. Learn about our 24-hour flexible window, weather safety cancellations, and our unique Dolphin Sighting Guarantee.",
 };
 
 export default function RefundPolicyPage() {
@@ -25,7 +25,7 @@ export default function RefundPolicyPage() {
 
         {/* Elegant Header */}
         <div className="mb-14 border-b border-deep-indigo/10 pb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-coral-pop block mb-3">Lovina Ethical Marine</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-coral-pop block mb-3">Bali Dolphin Tours</span>
           <h1 className="text-4xl sm:text-5xl font-serif text-deep-indigo mb-4 tracking-tight leading-none">
             Refund & Cancellation Policy
           </h1>

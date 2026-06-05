@@ -1,4 +1,4 @@
-# Branding & Visual Identity Guide: Lovina Ethical Marine
+# Branding & Visual Identity Guide: Bali Dolphin Tours
 
 *Last updated: May 2026*
 *Concept: Approachable, Ethical, Fun, and Crystal-Clear*

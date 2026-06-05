@@ -1,4 +1,4 @@
-# Lovina Ethical Marine: Project Context
+# Bali Dolphin Tours: Project Context
 
 ## Project Mission
 To become the definitive standard for ethical marine encounters in North Bali. Operating under the "Integrated Brand" model, we provide white-labeled, elite maritime services that out-design and out-SEO local competitors.
@@ -7,7 +7,7 @@ To become the definitive standard for ethical marine encounters in North Bali. O
 - **Frontend:** Next.js 15+ (App Router), TypeScript, Tailwind CSS.
 - **CMS:** Sanity.io (Headless) for Blogs, Encounters, and Reels.
 - **Payments:** Stripe Checkout (USD).
-- **Domain:** lovinaethicalmarine.com
+- **Domain:** balidolphintours.com
 - **Repo:** https://github.com/nturner5/lovina-dolphin-tours
 
 ## Key Differentiators
@@ -16,7 +16,7 @@ To become the definitive standard for ethical marine encounters in North Bali. O
 3. **Integrated Brand:** Unified quality and "Four Seasons" level maritime excellence.
 
 ## Current Progress (Final Snapshot)
-- ✅ **Rebranded**: Full transition to "Lovina Ethical Marine."
+- ✅ **Rebranded**: Full transition to "Bali Dolphin Tours."
 - ✅ **Visual Identity**: V2 "Coastal Noir" implemented (Fraunces serif, Deep Indigo palette).
 - ✅ **Logo**: Integrated custom single-line silhouette into Navbar/Footer.
 - ✅ **CMS**: Sanity Studio functional at `/admin`; 3 SEO posts imported and keys fixed.
@@ -39,7 +39,7 @@ To become the definitive standard for ethical marine encounters in North Bali. O
 - [x] **Logistics**: Write "What to Bring" (Reef booties, polarized glasses, etc.) and the "8 AM Schedule" copy.
 - [x] **Pickups**: Implement Add-on pricing for Ubud ($35) and Canggu/Seminyak/Kuta ($50) in Stripe.
 - [x] **Chat**: Integrate a direct WhatsApp button (The "operating system" of Bali).
-- [ ] **WhatsApp Configuration**: Update the placeholder phone number `6281234567890` in `src/components/WhatsAppButton.tsx` with your official Balinese WhatsApp number.
+- [x] **WhatsApp Configuration**: Update the placeholder phone number `6281234567890` in `src/components/WhatsAppButton.tsx` with your official Balinese WhatsApp number.
 - [ ] **Language Switcher**: Add support for Russian and Chinese markets.
 - [x] **Dispatch Automation**: Build Make.com scenario (Stripe Webhook -> WhatsApp Dispatch).
 

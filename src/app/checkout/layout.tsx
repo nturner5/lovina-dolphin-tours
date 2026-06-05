@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Secure Booking | Lovina Ethical Marine",
+  title: "Secure Booking | Bali Dolphin Tours",
   description: "Secure your private outrigger boat for a quiet, ethical dolphin tour in Lovina, Bali.",
   robots: {
     index: false,

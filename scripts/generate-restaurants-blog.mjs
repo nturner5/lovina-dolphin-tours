@@ -254,7 +254,7 @@ async function fetchWithRetry(url, options, retries = 3, delay = 1500) {
 }
 
 async function run() {
-  console.log('🌴 Initializing Lovina Ethical Marine AI Restaurant Guide Generator...');
+  console.log('🌴 Initializing Bali Dolphin Tours AI Restaurant Guide Generator...');
   
   const allowedModels = [];
   try {
@@ -320,11 +320,11 @@ Specific Writing Instructions:
    - [Warung Ayu on Google Maps](https://www.google.com/maps/search/?api=1&query=Warung+Ayu+Lovina)
    - [Warung Nemo Lovina on Google Maps](https://www.google.com/maps/search/?api=1&query=Warung+Nemo+Lovina)
    Indicate exact pricing in both IDR and USD for each restaurant to be factually helpful.
-5. Call-to-Action (CRO) Callouts: Embed 2 to 3 beautiful CRO callout boxes that pitch Lovina Dolphin Watching & Snorkeling Tours naturally at logical transition points (e.g., contrasting Canggu's crowded brunch waiting lines with the quiet, peaceful empty ocean of North Bali on a private 8:00 AM dolphin watching outrigger).
+5. Call-to-Action (CRO) Callouts: Embed 2 to 3 beautiful CRO callout boxes that pitch Lovina Dolphin Watching & Snorkeling Tours naturally at logical transition points (e.g., contrasting Canggu's crowded brunch waiting lines with the quiet, peaceful empty ocean of North Bali on a private 7:00 AM dolphin watching outrigger).
    Format:
    :::cro-box
    ### Tired of the Southern Chaos?
-   Escape the crowded beaches for a weekend. Dress in your breathable resort linens and book our private, ethical 8:00 AM Dolphin Watching & Snorkeling Tour in Lovina. Experience an empty, silent ocean while the Spinner dolphins play right next to your boat. 
+   Escape the crowded beaches for a weekend. Dress in your breathable resort linens and book our private, ethical 7:00 AM Dolphin Watching & Snorkeling Tour in Lovina. Experience an empty, silent ocean while the Spinner dolphins play right next to your boat. 
    [Book Your Private Quiet Encounter Now](/tours)
    :::
 6. Advanced Photorealistic Image Prompts: Insert 3 to 4 detailed image prompts placed naturally between paragraphs.
@@ -462,7 +462,7 @@ Write the entire, complete blog post in high-quality markdown, maintaining deep 
     slug: { _type: 'slug', current: postSlug },
     publishedAt: new Date().toISOString(),
     excerpt: excerpt,
-    author: 'Lovina Ethical Marine Team',
+    author: 'Bali Dolphin Tours Team',
     tags: tags.length > 0 ? tags : ['Lovina', 'Restaurant Guide', 'Bali Food', 'Fine Dining', 'Local Warungs'],
     keyTakeaways: keyTakeaways.length > 0 ? keyTakeaways : [
       'Tanda Pizza serves the best Sardinian wood-fired pizza and pillow-soft four-cheese gnocchi in North Bali.',

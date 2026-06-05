@@ -71,7 +71,7 @@ ${personalExperience ? `Crucial Guideline: You MUST naturally weave in the follo
 Below is the SPECIFIC local marketing and branding context for this website. You MUST align all tour details, prices, guidelines, tone of voice, and value propositions EXACTLY with these guidelines:
 
 --- START OF PRODUCT MARKETING CONTEXT ---
-${marketingContext || 'Operating under Lovina Ethical Marine, departing at 8:00 AM to skip sunrise swarms, vetted captains, 30m buffer, parallel approach, private dolphin boat.'}
+${marketingContext || 'Operating under Bali Dolphin Tours, departing at 7:00 AM to skip sunrise swarms, vetted captains, parallel approach, private dolphin boat.'}
 --- END OF PRODUCT MARKETING CONTEXT ---
 
 --- START OF BRANDING & VISUAL CONTEXT ---
@@ -86,7 +86,7 @@ Structure and formatting rules:
    Format them exactly like this in the markdown:
    :::cro-box
    ### Ready to Experience Lovina Beach?
-   Skip the crowded sunrise chase. Book our private 8:00 AM Dolphin Watching Tour or Dolphin Watching + Snorkel Tour with vetted local captains. 
+   Skip the crowded sunrise chase. Book our private 7:00 AM Dolphin Watching Tour or Dolphin Watching + Snorkel Tour with vetted local captains. 
    [Book Your Private Boat Tour Now](/tours)
    :::
 5. Advanced Photorealistic Image Prompts: Insert 3 to 4 detailed, photorealistic image prompts placed naturally between paragraphs where an image should go. These will serve as copy-paste prompts for Midjourney/Flux.

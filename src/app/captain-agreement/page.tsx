@@ -23,7 +23,17 @@ function CaptainAgreementContent() {
       const params = new URLSearchParams(window.location.search);
       setBookingId(params.get('bookingId') || 'LEM-TEMP');
       setCaptainName(params.get('name') || '');
-      setCaptainPhone(params.get('phone') || '');
+      
+      let rawPhone = params.get('phone') || '';
+      // Sanitize phone: replace leading spaces (which is how the browser decodes '+' from URL) with '+'
+      let cleanPhone = rawPhone.trim().replace(/^ +/, '+');
+      if (cleanPhone && !cleanPhone.startsWith('+')) {
+        cleanPhone = '+' + cleanPhone;
+      }
+      // Keep only leading '+' and digits
+      cleanPhone = cleanPhone.replace(/^\++/, '+');
+      cleanPhone = '+' + cleanPhone.replace(/[^\d]/g, '');
+      setCaptainPhone(cleanPhone === '+' ? '' : cleanPhone);
     }
   }, []);
 
@@ -94,13 +104,13 @@ function CaptainAgreementContent() {
           <div className="relative w-16 h-16 mx-auto mb-4 transition-transform duration-500 hover:scale-105">
             <Image 
               src="/logo.svg" 
-              alt="Lovina Ethical Marine Logo" 
+              alt="Bali Dolphin Tours Logo" 
               fill
               className="object-contain filter drop-shadow-sm"
               priority
             />
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-transformative-teal block mb-2">Lovina Ethical Marine</span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-transformative-teal block mb-2">Bali Dolphin Tours</span>
           <h1 className="text-4xl font-serif text-deep-indigo mb-3 font-semibold tracking-tight leading-tight">Kontrak Perilaku Kapten</h1>
           <p className="text-xs text-deep-indigo/70 max-w-sm mx-auto leading-relaxed">
             Harap setujui standar keselamatan dan kelestarian laut kami untuk membuka kunci kontak tamu untuk pesanan:
@@ -203,8 +213,8 @@ function CaptainAgreementContent() {
                 {rules.neutralEngines && <Check className="w-3 h-3" strokeWidth={3.5} />}
               </div>
               <div>
-                <h4 className="text-xs font-bold text-deep-indigo tracking-tight">Mesin Netral & Jarak Aman</h4>
-                <p className="text-[10px] text-deep-indigo/60 leading-relaxed mt-1">Saya akan mematikan mesin ke posisi netral saat berada dalam jarak 30 meter dari lumba-lumba untuk kenyamanan habitat mereka.</p>
+                <h4 className="text-xs font-bold text-deep-indigo tracking-tight">Jarak Aman & Kecepatan Lambat</h4>
+                <p className="text-[10px] text-deep-indigo/60 leading-relaxed mt-1">Saya akan menjaga jarak aman minimal 30 meter dan berlayar secara tenang di dekat lumba-lumba tanpa melakukan gerakan mendadak.</p>
               </div>
             </div>
 

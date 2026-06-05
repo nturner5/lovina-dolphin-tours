@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Shield, Lock, Eye, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Lovina Ethical Marine",
-  description: "Learn how Lovina Ethical Marine collects, protects, and uses guest and captain information to deliver premium, ethical marine experiences in North Bali.",
+  title: "Privacy Policy | Bali Dolphin Tours",
+  description: "Learn how Bali Dolphin Tours collects, protects, and uses guest and captain information to deliver premium, ethical marine experiences in North Bali.",
 };
 
 export default function PrivacyPolicyPage() {
@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
 
         {/* Elegant Editorial Header */}
         <div className="mb-14 border-b border-deep-indigo/10 pb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-coral-pop block mb-3">Lovina Ethical Marine</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-coral-pop block mb-3">Bali Dolphin Tours</span>
           <h1 className="text-4xl sm:text-5xl font-serif text-deep-indigo mb-4 tracking-tight leading-none">
             Privacy Policy
           </h1>
@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
               1. Our Ethical Commitment
             </h2>
             <p>
-              At <strong>Lovina Ethical Marine</strong>, our mission is to establish the absolute standard for premium, respectful marine encounters in North Bali. Operating under an integrated brand model, we coordinate elite outrigger excursions that protect natural dolphin habitats and respect local marine regulations. 
+              At <strong>Bali Dolphin Tours</strong>, our mission is to establish the absolute standard for premium, respectful marine encounters in North Bali. Operating under an integrated brand model, we coordinate elite outrigger excursions that protect natural dolphin habitats and respect local marine regulations. 
             </p>
             <p>
               We believe privacy is an extension of respect. Whether you are a traveler booking a private tour or a certified local captain joining our vetted fleet, we secure and manage your personal data with the highest standards of maritime professionalism.
@@ -85,13 +85,13 @@ export default function PrivacyPolicyPage() {
               <li className="flex items-start gap-3">
                 <CheckCircle className="w-4 h-4 text-transformative-teal shrink-0 mt-1" />
                 <div>
-                  <strong className="font-semibold text-deep-indigo">Captain Network Data:</strong> Captain name, WhatsApp number, and digital logs of signed <em>Captain Behavioral Agreements</em> (recording rules compliance like parallel dolphin approach and engines to neutral within 30 meters).
+                  <strong className="font-semibold text-deep-indigo">Captain Network Data:</strong> Captain name, WhatsApp number, and digital logs of signed <em>Captain Behavioral Agreements</em> (recording rules compliance like parallel dolphin approach and maintaining a safe 30-meter buffer).
                 </div>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle className="w-4 h-4 text-transformative-teal shrink-0 mt-1" />
                 <div>
-                  <strong className="font-semibold text-deep-indigo">Transaction Metadata:</strong> Stripe checkout tokens. All financial payments are processed off-site via SSL-secured Stripe Checkout. Lovina Ethical Marine does not store, see, or hold credit card details.
+                  <strong className="font-semibold text-deep-indigo">Transaction Metadata:</strong> Stripe checkout tokens. All financial payments are processed off-site via SSL-secured Stripe Checkout. Bali Dolphin Tours does not store, see, or hold credit card details.
                 </div>
               </li>
             </ul>
@@ -153,7 +153,7 @@ export default function PrivacyPolicyPage() {
               For general inquiries regarding our visual guidelines, ethical captain contract, automated data routing, or this Privacy Policy, please reach out to us:
             </p>
             <div className="bg-deep-indigo/[0.02] border border-deep-indigo/5 p-6 rounded-2xl space-y-2 text-xs sm:text-sm font-medium">
-              <p><span className="text-deep-indigo/40 uppercase font-bold text-[9px] block">Operator Brand</span> Lovina Ethical Marine</p>
+              <p><span className="text-deep-indigo/40 uppercase font-bold text-[9px] block">Operator Brand</span> Bali Dolphin Tours</p>
               <p><span className="text-deep-indigo/40 uppercase font-bold text-[9px] block">Base of Operations</span> Lovina Beach Road, Kalibukbuk, North Bali, Indonesia</p>
               <p><span className="text-deep-indigo/40 uppercase font-bold text-[9px] block">Primary Inquiries</span> <a href="mailto:nthn6828@gmail.com" className="text-transformative-teal hover:underline">nthn6828@gmail.com</a></p>
               <p><span className="text-deep-indigo/40 uppercase font-bold text-[9px] block">Legal & Privacy desk</span> <a href="mailto:nthn6828@gmail.com" className="text-transformative-teal hover:underline">nthn6828@gmail.com</a></p>

@@ -151,7 +151,7 @@ async function fetchWithRetry(url, options, retries = 3, delay = 1500) {
 }
 
 async function run() {
-  console.log('🌴 Initializing Lovina Ethical Marine AI Blog Generator...');
+  console.log('🌴 Initializing Bali Dolphin Tours AI Blog Generator...');
   
   // Dynamic Model Resolver
   const allowedModels = [];
@@ -219,7 +219,7 @@ Structure and formatting rules:
    Format them exactly like this in the markdown:
    :::cro-box
    ### Ready to Experience Lovina Beach?
-   Skip the crowded sunrise chase. Dress in your breathable new Bali linens and book our private 8:00 AM Dolphin Watching Tour with vetted local captains. 
+   Skip the crowded sunrise chase. Dress in your breathable new Bali linens and book our private 7:00 AM Dolphin Watching Tour with vetted local captains. 
    [Book Your Private Boat Tour Now](/tours)
    :::
 5. Advanced Photorealistic Image Prompts: Insert 3 to 4 detailed, photorealistic image prompts placed naturally between paragraphs where an image should go. These will serve as copy-paste prompts for Midjourney/Flux.
@@ -361,7 +361,7 @@ Write the entire, complete blog post in high-quality markdown, maintaining deep 
     slug: { _type: 'slug', current: postSlug },
     publishedAt: new Date().toISOString(),
     excerpt: excerpt,
-    author: 'Lovina Ethical Marine Team',
+    author: 'Bali Dolphin Tours Team',
     tags: tags.length > 0 ? tags : ['Linen', 'Shopping', 'Seminyak', 'Canggu', 'Ubud', 'Bali Guide'],
     keyTakeaways: keyTakeaways.length > 0 ? keyTakeaways : [
       'Linen is the most breathable, lightweight, and perfect attire for Bali\'s tropical climate.',

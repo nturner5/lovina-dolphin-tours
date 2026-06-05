@@ -4,11 +4,25 @@ import { groq } from 'next-sanity';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
 import ReelsGrid from '@/components/ReelsGrid';
-
+import { t } from '@/locales/i18n';
+import { getLocaleServer } from '@/locales/i18n-server';
 
 export const revalidate = 60;
 
-export default async function Home() {
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export default async function Home({ searchParams }: PageProps) {
+  const resolvedParams = await searchParams;
+  const locale = await getLocaleServer(resolvedParams);
+
+  const hrefFor = (path: string) => {
+    if (locale === 'en') return path;
+    const separator = path.includes('?') ? '&' : '?';
+    return `${path}${separator}lang=${locale}`;
+  };
+
   const sanityReels = await client.fetch(groq`*[_type == "reel"] | order(_createdAt desc)[0...4]`);
 
   // Pre-serialize Sanity image URLs so we don't pass functions to a Client Component
@@ -64,12 +78,12 @@ export default async function Home() {
               <svg className="w-3.5 h-3.5 text-transformative-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v3m0 12v3m9-9h-3M6 12H3m14.243-6.243l-2.122 2.122M8.879 15.121l-2.122 2.122M17.243 17.243l-2.122-2.122M8.879 8.879L6.757 6.757M12 8a4 4 0 014 4H8a4 4 0 014-4zM4 20h16" />
               </svg>
-              Skip the Sunrise Boat Crowds
+              {t('heroBadge', locale)}
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-serif text-deep-indigo mb-6 leading-[1.1] tracking-tight">
-              See Lovina’s Dolphins—<br />
-              <span className="italic font-light text-transformative-teal">Without the Chase.</span>
+              {t('heroTitle', locale)}<br />
+              <span className="italic font-light text-transformative-teal">{t('heroTitleItalic', locale)}</span>
             </h1>
 
             {/* Mobile-only Dolphin Image Card */}
@@ -77,7 +91,7 @@ export default async function Home() {
               <div className="aspect-[16/9] w-full rounded-[2rem] overflow-hidden bg-deep-indigo/5 shadow-xl border border-deep-indigo/10 relative group">
                 <Image 
                   src="/hero_dolphins.png" 
-                  alt="Two sleek wild dolphins gliding peacefully in the calm, misty morning ocean of North Bali" 
+                  alt={t('heroAltText', locale)} 
                   fill
                   priority
                   sizes="(max-width: 1023px) 100vw, 1px"
@@ -85,14 +99,14 @@ export default async function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-deep-indigo/40 via-transparent to-transparent opacity-60" />
                 <div className="absolute bottom-4 left-4 right-4 bg-white/80 backdrop-blur-md px-4 py-2 rounded-xl border border-white/20 shadow-md flex items-center justify-between text-[10px]">
-                  <span className="font-bold text-deep-indigo">★ 4.9 Guest Rating</span>
+                  <span className="font-bold text-deep-indigo">{t('ratingText', locale)}</span>
                   <div className="w-1.5 h-1.5 bg-transformative-teal rounded-full animate-ping" />
                 </div>
               </div>
             </div>
 
             <p className="text-base lg:text-lg text-deep-indigo/70 max-w-xl mb-10 leading-relaxed font-light">
-              Enjoy a peaceful morning on the water. Book a private, comfortable outrigger boat with our professional local captains. By departing after the sunrise rush, you skip the chaotic boat crowds and enjoy the wild dolphin pods in a much quieter, peaceful setting.
+              {t('heroDesc', locale)}
             </p>
 
             {/* Three Scannable Promise Highlights */}
@@ -104,8 +118,8 @@ export default async function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6h2.25l5.03-5.03c.37-.37.97-.11.97.41v14.14c0 .52-.6.78-.97.41L11.25 15.75H9A3 3 0 016 12.75v-1.5A3 3 0 019 9.75z" />
                     </svg>
                   ),
-                  title: "Zero Swarming",
-                  desc: "We maintain a respectful parallel distance and neutral engines."
+                  title: t('zeroSwarmingTitle', locale),
+                  desc: t('zeroSwarmingDesc', locale)
                 },
                 {
                   icon: (
@@ -113,8 +127,8 @@ export default async function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v3m0 12v3m9-9h-3M6 12H3m14.243-6.243l-2.122 2.122M8.879 15.121l-2.122 2.122M17.243 17.243l-2.122-2.122M8.879 8.879L6.757 6.757M12 8a4 4 0 014 4H8a4 4 0 014-4zM4 20h16" />
                     </svg>
                   ),
-                  title: "No Crowds or Chaos",
-                  desc: "We sail out when the 100+ sunrise tourist boats go home, giving you a quiet sea."
+                  title: t('noCrowdsTitle', locale),
+                  desc: t('noCrowdsDesc', locale)
                 },
                 {
                   icon: (
@@ -122,8 +136,8 @@ export default async function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v13.5m0-13.5L5.25 14.25H12m0-11.25l6.75 11.25H12m-9 3h18c-1.5 3-4.5 3-9 3s-7.5 0-9-3z" />
                     </svg>
                   ),
-                  title: "Private Comfort",
-                  desc: "Your own premium, hand-restored outrigger with comfortable seating."
+                  title: t('privateComfortTitle', locale),
+                  desc: t('privateComfortDesc', locale)
                 }
               ].map((item, index) => (
                 <div key={index} className="flex gap-4 items-center group">
@@ -141,18 +155,18 @@ export default async function Home() {
             {/* Action CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <Link 
-                href="/tours" 
+                href={hrefFor("/tours")} 
                 className="bg-coral-pop text-cloud-dancer px-10 py-4 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group"
               >
                 {/* Pulsing ring outer container */}
                 <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
-                Book Dolphin Watching Tour
+                {t('btnBookTour', locale)}
               </Link>
               <Link 
-                href="#ethics" 
+                href={hrefFor("#ethics")} 
                 className="bg-white border border-deep-indigo/10 text-deep-indigo px-10 py-4 rounded-full text-base font-bold hover:bg-cloud-dancer/50 transition-all active:scale-95 text-center shadow-sm"
               >
-                Dolphin Rules
+                {t('dolphinRules', locale)}
               </Link>
             </div>
           </div>
@@ -178,7 +192,7 @@ export default async function Home() {
               <div className="absolute bottom-6 left-6 right-6 bg-white/80 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/20 shadow-lg flex items-center justify-between text-xs transition-transform duration-500 group-hover:translate-y-[-4px]">
                 <div className="flex flex-col">
                   <span className="font-bold text-deep-indigo">★ 4.9 Guest Rating</span>
-                  <span className="text-[10px] text-deep-indigo/60 font-light">From premium villa travelers</span>
+                  <span className="text-[10px] text-deep-indigo/60 font-light">{t('ratingSubtext', locale)}</span>
                 </div>
                 <div className="w-1.5 h-1.5 bg-transformative-teal rounded-full animate-ping" />
               </div>
@@ -192,15 +206,15 @@ export default async function Home() {
       <section id="ethics" className="py-16 lg:py-24 bg-deep-indigo px-6 text-cloud-dancer">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-sm font-medium tracking-[0.2em] uppercase text-sage-leaf mb-4">What Makes Us Different</h2>
-            <h3 className="text-4xl lg:text-5xl font-serif">Why travelers choose our tours</h3>
+            <h2 className="text-sm font-medium tracking-[0.2em] uppercase text-sage-leaf mb-4">{t('whatMakesUsDifferent', locale)}</h2>
+            <h3 className="text-4xl lg:text-5xl font-serif">{t('whyChooseUs', locale)}</h3>
           </div>
           
           <div className="grid md:grid-cols-3 gap-12">
             {[
               {
-                title: "Skip the Sunrise Rush",
-                desc: "While 100+ boats chase dolphins at sunrise, we wait until the crowds go home. You get a calm, empty ocean where the dolphins are still active and playful.",
+                title: t('promise1Title', locale),
+                desc: t('promise1Desc', locale),
                 icon: (
                   <svg className="w-12 h-12 text-sage-leaf" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v3m0 12v3m9-9h-3M6 12H3m14.243-6.243l-2.122 2.122M8.879 15.121l-2.122 2.122M17.243 17.243l-2.122-2.122M8.879 8.879L6.757 6.757M12 8a4 4 0 014 4H8a4 4 0 014-4zM4 20h16" />
@@ -208,8 +222,8 @@ export default async function Home() {
                 )
               },
               {
-                title: "Engines in Neutral",
-                desc: "Our captains follow a strict 'No-Chase' rule. We move parallel to pods and switch to neutral within 30 meters, letting the dolphins come to us.",
+                title: t('promise2Title', locale),
+                desc: t('promise2Desc', locale),
                 icon: (
                   <svg className="w-12 h-12 text-sage-leaf" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6h2.25l5.03-5.03c.37-.37.97-.11.97.41v14.14c0 .52-.6.78-.97.41L11.25 15.75H9A3 3 0 016 12.75v-1.5A3 3 0 019 9.75z" />
@@ -217,8 +231,8 @@ export default async function Home() {
                 )
               },
               {
-                title: "Our Local Captains",
-                desc: "We operate with a dedicated team of Lovina's most respected local captains, chosen for their experience, safety record, and love for the ocean.",
+                title: t('promise3Title', locale),
+                desc: t('promise3Desc', locale),
                 icon: (
                   <svg className="w-12 h-12 text-sage-leaf" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.2">
                     <circle cx="12" cy="12" r="4" />
@@ -242,16 +256,16 @@ export default async function Home() {
       <section id="tours" className="py-16 lg:py-28 px-6 bg-white border-t border-b border-deep-indigo/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 lg:mb-20">
-            <h2 className="text-sm font-medium tracking-[0.2em] uppercase text-transformative-teal mb-4">The Itinerary</h2>
-            <h3 className="text-4xl lg:text-5xl font-serif text-deep-indigo">Your Morning Schedule</h3>
+            <h2 className="text-sm font-medium tracking-[0.2em] uppercase text-transformative-teal mb-4">{t('timelineHeader', locale)}</h2>
+            <h3 className="text-4xl lg:text-5xl font-serif text-deep-indigo">{t('timelineTitle', locale)}</h3>
             <p className="text-deep-indigo/60 max-w-lg mx-auto mt-4 font-light text-sm">
-              Our schedule is designed to keep the dolphins safe and make you comfortable. Here is what to expect.
+              {t('timelineDesc', locale)}
             </p>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cloud-dancer text-deep-indigo text-xs font-semibold tracking-wide border border-deep-indigo/10 mt-6 shadow-sm">
               <svg className="w-3.5 h-3.5 text-transformative-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
-              From $45 USD • Private Wooden Boat
+              {t('timelinePriceBadge', locale)}
             </div>
           </div>
 
@@ -260,29 +274,29 @@ export default async function Home() {
             <div className="lg:col-span-7 space-y-12 relative before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-[1px] before:bg-deep-indigo/10">
               {[
                 {
-                  time: "07:30 AM",
-                  title: "Meet Up & Coffee",
-                  desc: "Meet at our quiet beach spot in Lovina. Enjoy a hot local coffee or tea while your captain explains our simple boat safety and dolphin-friendly rules."
+                  time: t("time1", locale),
+                  title: t("title1", locale),
+                  desc: t("desc1", locale)
                 },
                 {
-                  time: "08:00 AM",
-                  title: "Start Your Tour",
-                  desc: "Step onto your private wooden boat. While the 100+ crowded sunrise boats return to shore, we head out into a quiet, calm sea."
+                  time: t("time2", locale),
+                  title: t("title2", locale),
+                  desc: t("desc2", locale)
                 },
                 {
-                  time: "08:30 AM",
-                  title: "Watch Dolphins Play",
-                  desc: "We drive slowly alongside active dolphin families. When they swim near, we turn our engines to neutral so it is completely quiet, letting the curious dolphins swim right next to us."
+                  time: t("time3", locale),
+                  title: t("title3", locale),
+                  desc: t("desc3", locale)
                 },
                 {
-                  time: "10:00 AM",
-                  title: "Snorkeling & Fresh Fruits",
-                  desc: "We anchor near Lovina's vibrant coral reefs. Swim and snorkel with local sea turtles and colorful reef fish in the crystal-clear water, then enjoy fresh seasonal local fruits along with hot coffee and tea."
+                  time: t("time4", locale),
+                  title: t("title4", locale),
+                  desc: t("desc4", locale)
                 },
                 {
-                  time: "11:00 AM",
-                  title: "Back to the Beach",
-                  desc: "Return to the beach with beautiful memories and the good feeling of having respected Bali's wild marine life."
+                  time: t("time5", locale),
+                  title: t("title5", locale),
+                  desc: t("desc5", locale)
                 }
               ].map((step, i) => (
                 <div key={i} className="flex gap-8 relative group">
@@ -302,14 +316,14 @@ export default async function Home() {
             {/* Right Column: Gear and Details */}
             <div className="lg:col-span-5 space-y-10 lg:sticky lg:top-8 bg-cloud-dancer/30 p-10 rounded-[3rem] border border-deep-indigo/5">
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-deep-indigo mb-6 border-b border-deep-indigo/10 pb-3">What's Included</h4>
+                <h4 className="text-xs font-bold uppercase tracking-widest text-deep-indigo mb-6 border-b border-deep-indigo/10 pb-3">{t("includedHeader", locale)}</h4>
                 <ul className="space-y-4">
                   {[
-                    { label: "Our Professional Captains", desc: "Vetted local experts from our dedicated team." },
-                    { label: "Private Dolphin Boat", desc: "Comfortable seating and private space for your group." },
-                    { label: "Snorkel Gear", desc: "Standard masks and snorkels for exploring the reef." },
-                    { label: "Safety Vests", desc: "Standard safety jackets for your peace of mind." },
-                    { label: "Island Refreshments", desc: "Fresh seasonal fruits along with hot coffee and tea." }
+                    { label: t("inc1Title", locale), desc: t("inc1Desc", locale) },
+                    { label: t("inc2Title", locale), desc: t("inc2Desc", locale) },
+                    { label: t("inc3Title", locale), desc: t("inc3Desc", locale) },
+                    { label: t("inc4Title", locale), desc: t("inc4Desc", locale) },
+                    { label: t("inc5Title", locale), desc: t("inc5Desc", locale) }
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <span className="text-transformative-teal font-bold text-lg leading-none">✓</span>
@@ -323,13 +337,13 @@ export default async function Home() {
               </div>
 
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-deep-indigo mb-6 border-b border-deep-indigo/10 pb-3">What to Bring</h4>
+                <h4 className="text-xs font-bold uppercase tracking-widest text-deep-indigo mb-6 border-b border-deep-indigo/10 pb-3">{t("bringHeader", locale)}</h4>
                 <ul className="space-y-4">
                   {[
-                    { label: "Swimsuit", desc: "Essential for snorkeling and swimming near the reef." },
-                    { label: "Reef-Safe Sunscreen & Hat", desc: "Protect your skin and Lovina's coral ecosystems." },
-                    { label: "Light Windbreaker", desc: "Early mornings on the open sea can be breezy and fresh." },
-                    { label: "Polarized Sunglasses (Optional)", desc: "Helpful for spotting dolphins swimming beneath the surface." }
+                    { label: t("bring1Title", locale), desc: t("bring1Desc", locale) },
+                    { label: t("bring2Title", locale), desc: t("bring2Desc", locale) },
+                    { label: t("bring3Title", locale), desc: t("bring3Desc", locale) },
+                    { label: t("bring4Title", locale), desc: t("bring4Desc", locale) }
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <span className="text-coral-pop font-bold text-lg leading-none">✦</span>
@@ -348,8 +362,8 @@ export default async function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
                 <div className="text-[11px] font-light leading-normal">
-                  <span className="font-semibold text-deep-indigo block">Secure Booking Guarantee</span>
-                  Secure payment in USD with Stripe Checkout. Immediate confirmation via email and WhatsApp.
+                  <span className="font-semibold text-deep-indigo block">{t("secureGuaranteeTitle", locale)}</span>
+                  {t("secureGuaranteeDesc", locale)}
                 </div>
               </div>
             </div>
@@ -361,33 +375,33 @@ export default async function Home() {
               <div className="flex items-start gap-3 text-left">
                 <span className="text-transformative-teal font-bold text-lg leading-none mt-0.5">✦</span>
                 <div>
-                  <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">The 8:00 AM Sea</span>
-                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">Sail in total peace after the 100+ sunrise tourist boats go home.</span>
+                  <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">{t("promise1Title", locale)}</span>
+                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">{t("promise1Desc", locale)}</span>
                 </div>
               </div>
               <div className="flex items-start gap-3 text-left">
                 <span className="text-transformative-teal font-bold text-lg leading-none mt-0.5">✦</span>
                 <div>
-                  <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">Strict No-Chase</span>
-                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">We turn off our engines when dolphins are close and never chase them.</span>
+                  <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">{t("promise2Title", locale)}</span>
+                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">{t("promise2Desc", locale)}</span>
                 </div>
               </div>
               <div className="flex items-start gap-3 text-left">
                 <span className="text-transformative-teal font-bold text-lg leading-none mt-0.5">✦</span>
                 <div>
-                  <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">Friendly Local Team</span>
-                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">Book directly with our own team of trusted, professional local captains.</span>
+                  <span className="text-xs font-bold text-deep-indigo block uppercase tracking-wider">{t("promise3Title", locale)}</span>
+                  <span className="text-[11px] text-deep-indigo/60 font-light leading-normal">{t("promise3Desc", locale)}</span>
                 </div>
               </div>
             </div>
 
             <div className="pt-4">
               <Link 
-                href="/tours" 
+                href={hrefFor("/tours")} 
                 className="inline-block bg-coral-pop text-cloud-dancer px-12 py-4 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group"
               >
                 <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
-                Book Your Private Boat Now
+                {t("btnBookNow", locale)}
               </Link>
             </div>
           </div>
@@ -399,15 +413,15 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-12 lg:mb-24">
             <div className="lg:col-span-7">
-              <h2 className="text-sm font-medium tracking-[0.2em] uppercase text-transformative-teal mb-6">The Lovina Experience</h2>
+              <h2 className="text-sm font-medium tracking-[0.2em] uppercase text-transformative-teal mb-6">{t("experienceHeader", locale)}</h2>
               <h3 className="text-5xl lg:text-7xl font-serif text-deep-indigo leading-[1.1] mb-8">
-                A Peaceful Morning:<br />
-                <span className="italic font-light text-transformative-teal">The 8:00 AM Sea</span>
+                {t("experienceTitle", locale)}<br />
+                <span className="italic font-light text-transformative-teal">{t("experienceSubtitle", locale)}</span>
               </h3>
             </div>
             <div className="lg:col-span-5">
               <p className="text-xl text-deep-indigo/80 font-light leading-relaxed italic border-l-2 border-coral-pop pl-6">
-                "By 8:00 AM, the crowded sunrise boats have returned to shore. What remains is a perfectly calm, glassy sea."
+                {t("quoteText", locale)}
               </p>
             </div>
           </div>
@@ -415,22 +429,22 @@ export default async function Home() {
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start mt-12 lg:mt-16">
             <div className="lg:col-span-7 space-y-6">
               <p className="text-base text-deep-indigo/70 font-light leading-relaxed">
-                Lovina dolphin trips do not require waking up in the dark! While over a hundred noisy tourist boats launch at 6:00 AM—crowding the dolphins, filling the air with diesel fumes, and making loud underwater noise that scares the animals—we choose a different path. We believe that the best way to see wild dolphins is with respect, keeping them happy and safe.
+                {t("paragraph1", locale)}
               </p>
               <p className="text-base text-deep-indigo/70 font-light leading-relaxed">
-                By 8:00 AM, the crowded sunrise boats have returned to the beach for hotel breakfast. The ocean becomes completely quiet. The volcanic black sand beneath reflects the blue sky, turning the sea into a vast, glassy mirror. The giant mountains of Bali stand clear on the horizon, and there is no sound except for the water splashing gently against our wooden boat. It is a magical, peaceful morning.
+                {t("paragraph2", locale)}
               </p>
             </div>
             <div className="lg:col-span-5 bg-transformative-teal/5 p-8 sm:p-10 rounded-[3rem] border border-transformative-teal/10 space-y-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 transform translate-x-4 -translate-y-4 text-transformative-teal/5 text-9xl font-serif select-none pointer-events-none">“</div>
               <p className="text-sm sm:text-base text-deep-indigo/80 font-light leading-relaxed italic relative z-10">
-                "When we turn off the engine, the loud noise stops. Dolphins are naturally friendly and curious. In the quiet 8:00 AM water, they often choose to swim right next to our boat, rolling on their sides to look up at us. It is a wonderful, personal connection that you can never experience if you are chasing them."
+                {t("sidebarQuote", locale)}
               </p>
               <div className="flex items-center gap-3 pt-2 relative z-10">
                 <div className="w-10 h-10 rounded-full bg-deep-indigo/5 border border-deep-indigo/10 flex items-center justify-center text-lg">⛵</div>
                 <div>
-                  <span className="text-xs font-bold text-deep-indigo block leading-none">Our Safety Protocol</span>
-                  <span className="text-[10px] text-deep-indigo/50 font-light">We turn off engines when dolphins are close</span>
+                  <span className="text-xs font-bold text-deep-indigo block leading-none">{t("sidebarTitle", locale)}</span>
+                  <span className="text-[10px] text-deep-indigo/50 font-light">{t("sidebarDesc", locale)}</span>
                 </div>
               </div>
             </div>
@@ -443,11 +457,11 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
             <div>
-              <h2 className="text-4xl lg:text-5xl font-serif text-deep-indigo mb-4">Real Moments. <span className="italic font-light text-transformative-teal">Real Ethics.</span></h2>
-              <p className="text-deep-indigo/60 max-w-md text-sm">See why our guests and captains love the quiet mornings in North Bali.</p>
+              <h2 className="text-4xl lg:text-5xl font-serif text-deep-indigo mb-4">{t("socialTitle", locale)} <span className="italic font-light text-transformative-teal">{t("socialTitleItalic", locale)}</span></h2>
+              <p className="text-deep-indigo/60 max-w-md text-sm">{t("socialSubtitle", locale)}</p>
             </div>
             <Link href="https://instagram.com" className="text-coral-pop hover:text-deep-indigo font-medium flex items-center gap-2 transition-colors uppercase tracking-widest text-sm">
-              Follow us on Instagram <span>→</span>
+              {t("followInstagram", locale)} <span>→</span>
             </Link>
           </div>
           
@@ -460,20 +474,20 @@ export default async function Home() {
       {/* FAQ Section */}
       <section id="faq" className="py-16 lg:py-24 px-6 bg-cloud-dancer border-t border-deep-indigo/5">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-4xl lg:text-5xl font-serif text-deep-indigo mb-12 lg:mb-16 text-center">Questions & Logistics</h2>
+          <h2 className="text-4xl lg:text-5xl font-serif text-deep-indigo mb-12 lg:mb-16 text-center">{t("faqTitle", locale)}</h2>
           <div className="space-y-8 lg:space-y-12">
             {[
               {
-                q: "Will we still see dolphins at 8:00 AM?",
-                a: "Yes. Dolphins in Lovina are active and look for food until mid-morning. While the 6:00 AM 'sunrise rush' is crowded, the 8:00 AM window gives you a much quieter experience with 90% fewer boats."
+                q: t("q1", locale),
+                a: t("a1", locale)
               },
               {
-                q: "Why is the price higher than the beach touts?",
-                a: "You are paying for a private boat, a professional local captain, and our strict 'No-Chase' promise. We also share a part of your booking directly with our local community to protect the ocean."
+                q: t("q2", locale),
+                a: t("a2", locale)
               },
               {
-                q: "What if we don't see any dolphins?",
-                a: "While they are wild animals and we cannot promise 100% that we will see them, we have an 85% success rate. If we don't see any, you can join us on another day for free."
+                q: t("q3", locale),
+                a: t("a3", locale)
               }
             ].map((item, i) => (
               <div key={i} className="group">
@@ -492,16 +506,15 @@ export default async function Home() {
       <section id="booking" className="py-20 lg:py-32 px-6 text-center bg-transformative-teal relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/ocean-texture.svg')] opacity-10 mix-blend-overlay"></div>
         <div className="relative z-10 max-w-2xl mx-auto">
-          <h2 className="text-5xl lg:text-6xl font-serif text-cloud-dancer mb-8 leading-tight">Ready for a <span className="italic text-coral-pop">peaceful</span> morning?</h2>
+          <h2 className="text-5xl lg:text-6xl font-serif text-cloud-dancer mb-8 leading-tight">{t("ctaTitle", locale)} <span className="italic text-coral-pop">peaceful</span> {t("ctaTitleEnd", locale)}</h2>
           <p className="text-lg text-cloud-dancer/70 mb-12 font-light">
-            Secure your private boat with one of Lovina’s legendary captains. 
-            Limited to 5 ethical departures per day.
+            {t("ctaDesc", locale)}
           </p>
           <Link 
-            href="/tours" 
+            href={hrefFor("/tours")} 
             className="bg-coral-pop text-cloud-dancer px-12 py-5 rounded-full text-xl font-medium hover:bg-deep-indigo transition-all shadow-xl inline-block active:scale-95"
           >
-            Book Your Experience
+            {t("ctaBtn", locale)}
           </Link>
         </div>
       </section>

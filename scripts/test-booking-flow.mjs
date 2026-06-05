@@ -59,7 +59,7 @@ const askQuestion = (query) => new Promise((resolve) => rl.question(query, resol
 
 async function main() {
   console.clear();
-  console.log(`\n${colors.cyan}${colors.bold}⛵ LOVINA ETHICAL MARINE — WORKFLOW TEST SUITE ⛵${colors.reset}`);
+  console.log(`\n${colors.cyan}${colors.bold}⛵ BALI DOLPHIN TOURS — WORKFLOW TEST SUITE ⛵${colors.reset}`);
   console.log(`${colors.gray}Verify and test your n8n workflows and Meta WhatsApp integration end-to-end.${colors.reset}\n`);
 
   // Verify basic configurations
@@ -91,7 +91,7 @@ async function main() {
     } else if (choice === '4') {
       await configureSettings();
     } else if (choice === '5') {
-      console.log(`\n${colors.green}Exiting Lovina Ethical Marine testing tool. Fair winds! ⛵ Dolphin speed!${colors.reset}\n`);
+      console.log(`\n${colors.green}Exiting Bali Dolphin Tours testing tool. Fair winds! ⛵ Dolphin speed!${colors.reset}\n`);
       rl.close();
       break;
     } else {
@@ -108,9 +108,9 @@ async function simulateStripeWebhook() {
   const guestName = (await askQuestion(`${colors.yellow}Guest Name [Nathan Turner]: ${colors.reset}`)).trim() || 'Nathan Turner';
   const guestPhone = (await askQuestion(`${colors.yellow}Guest WhatsApp Number [+61412345678]: ${colors.reset}`)).trim() || '+61412345678';
   const tourChoice = await askQuestion(`${colors.yellow}Tour type (1 for 8AM ethical, 2 for swim-snorkel) [2]: ${colors.reset}`);
-  const tourId = tourChoice === '1' ? 'eight-am-ethical' : 'swim-snorkel';
-  const tourName = tourId === 'eight-am-ethical' ? '8:00 AM Private Dolphin Watching Tour' : '8:00 AM Private Dolphin Watching Tour + Swim & Snorkel';
-  const tourPrice = tourId === 'eight-am-ethical' ? 45 : 65;
+  const tourId = tourChoice === '1' ? 'seven-am-ethical' : 'swim-snorkel';
+  const tourName = tourId === 'seven-am-ethical' ? '7:00 AM Private Dolphin Watching Tour' : '7:00 AM Private Dolphin Watching Tour + Swim & Snorkel';
+  const tourPrice = tourId === 'seven-am-ethical' ? 45 : 65;
   const guestCount = (await askQuestion(`${colors.yellow}Number of guests [2]: ${colors.reset}`)).trim() || '2';
   const date = (await askQuestion(`${colors.yellow}Booking Date (YYYY-MM-DD) [2026-06-08]: ${colors.reset}`)).trim() || '2026-06-08';
   const pickup = await askQuestion(`${colors.yellow}Pickup Option (none, lovina, ubud, canggu-kuta, uluwatu) [ubud]: ${colors.reset}`) || 'ubud';
@@ -186,7 +186,7 @@ async function simulateStripeWebhook() {
       console.log(`\n${colors.bold}💡 NEXT STEP FOR MANUAL END-TO-END FLOW:${colors.reset}`);
       console.log(`Your n8n workflow should now parse this and send a WhatsApp message to the captain.`);
       console.log(`The captain's message should contain this link for signing the agreement:`);
-      console.log(`${colors.cyan}http://localhost:3000/captain-agreement?bookingId=${mockSessionId}&name=Wayan&phone=%2B6281234567890${colors.reset}`);
+      console.log(`${colors.cyan}http://localhost:3000/captain-agreement?bookingId=${mockSessionId}&name=Wayan&phone=%2B12083164406${colors.reset}`);
       console.log(`${colors.gray}(Replace localhost:3000 with your production domain as needed.)${colors.reset}`);
     } else {
       console.error(`\n${colors.red}✖ Failed to dispatch webhook (HTTP ${response.status}):${colors.reset}`, responseText);
@@ -206,7 +206,7 @@ async function simulateCaptainSignature() {
   // Gather parameters
   const bookingId = (await askQuestion(`${colors.yellow}Booking ID (e.g. cs_test_...) [cs_test_placeholder]: ${colors.reset}`)).trim() || 'cs_test_placeholder';
   const captainName = (await askQuestion(`${colors.yellow}Captain Name [Wayan]: ${colors.reset}`)).trim() || 'Wayan';
-  const captainPhone = (await askQuestion(`${colors.yellow}Captain WhatsApp Phone Number [+6281234567890]: ${colors.reset}`)).trim() || '+6281234567890';
+  const captainPhone = (await askQuestion(`${colors.yellow}Captain WhatsApp Phone Number [+12083164406]: ${colors.reset}`)).trim() || '+12083164406';
   
   // Format local API URL
   const localApiUrl = 'http://localhost:3000/api/captain-agreement';
@@ -302,8 +302,8 @@ async function sendLiveWhatsAppTemplate() {
             { type: 'text', text: 'Nathan' }, // Guest name
             { type: 'text', text: 'June 8, 2026' }, // Date
             { type: 'text', text: '3' }, // Guests count
-            { type: 'text', text: '8:00 AM Private Dolphin Watching Tour + Swim & Snorkel' }, // Tour
-            { type: 'text', text: 'Self-Drive (Meet at 7:30 AM)' } // Pickup
+            { type: 'text', text: '7:00 AM Private Dolphin Watching Tour + Swim & Snorkel' }, // Tour
+            { type: 'text', text: 'Self-Drive (Meet at 6:30 AM)' } // Pickup
           ]
         }
       ]
@@ -353,7 +353,7 @@ async function sendLiveWhatsAppTemplate() {
           parameters: [
             { type: 'text', text: 'Nathan' },
             { type: 'text', text: 'DOLPHIN10' },
-            { type: 'text', text: 'https://lovinaethicalmarine.com/checkout' }
+            { type: 'text', text: 'https://balidolphintours.com/checkout' }
           ]
         }
       ]

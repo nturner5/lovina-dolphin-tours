@@ -19,7 +19,7 @@
 - Support local independent operators who practice sustainable tourism.
 **Use cases:**
 - "Ethical Sunrise": A 6 AM tour that stays back from the pods.
-- "Quiet Mid-Morning": A 7:30/8:00 AM tour to avoid the main crowds.
+- "Quiet Mid-Morning": A 7:30/7:00 AM tour to avoid the main crowds.
 - "Swim & Snorkel": Premium private boat with underwater view frames and reef snorkeling.
 
 ## Personas

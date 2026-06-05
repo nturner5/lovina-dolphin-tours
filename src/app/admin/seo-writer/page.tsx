@@ -39,7 +39,7 @@ export default function SeoWriterPage() {
 
   // Metadata states (for publishing)
   const [excerpt, setExcerpt] = useState('');
-  const [author, setAuthor] = useState('Lovina Ethical Marine Team');
+  const [author, setAuthor] = useState('Bali Dolphin Tours Team');
   const [tagsInput, setTagsInput] = useState('');
   const [takeawaysInput, setTakeawaysInput] = useState('');
   const [faqsInput, setFaqsInput] = useState('');
@@ -105,7 +105,7 @@ export default function SeoWriterPage() {
       if (firstParagraph) {
         setExcerpt(firstParagraph.substring(0, 160) + '...');
       } else {
-        setExcerpt(`Explore ${topic} with Lovina Ethical Marine's expert travel guide.`);
+        setExcerpt(`Explore ${topic} with Bali Dolphin Tours's expert travel guide.`);
       }
     }
   }, [markdown, topic]);
@@ -481,7 +481,7 @@ export default function SeoWriterPage() {
             </button>
           </form>
           
-          <p className="text-[10px] text-deep-indigo/30 mt-6 font-mono">LOVINA ETHICAL MARINE CO. 2026</p>
+          <p className="text-[10px] text-deep-indigo/30 mt-6 font-mono">BALI DOLPHIN TOURS CO. 2026</p>
         </div>
       </main>
     );

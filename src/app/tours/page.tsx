@@ -1,25 +1,51 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
+import { t } from '@/locales/i18n';
+import { getLocaleServer } from '@/locales/i18n-server';
+
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
 
 export const metadata: Metadata = {
-  title: 'Private Dolphin Watching & Snorkeling Tours | Lovina Ethical Marine',
-  description: 'Choose between our private 8:00 AM dolphin watching tour or the complete private dolphin watching + coral reef snorkeling boat tour. Vetted local captains, no-chase animal welfare standards.',
+  title: 'Private Dolphin Watching & Snorkeling Tours | Bali Dolphin Tours',
+  description: 'Choose between our private 7:00 AM dolphin watching tour or the complete private dolphin watching + coral reef snorkeling boat tour. Vetted local captains, no-chase animal welfare standards.',
 };
 
-export default function ToursPage() {
+export default async function ToursPage({ searchParams }: PageProps) {
+  const resolvedParams = await searchParams;
+  const locale = await getLocaleServer(resolvedParams);
+  
+  const hrefFor = (path: string) => {
+    if (locale === 'en') return path;
+    const separator = path.includes('?') ? '&' : '?';
+    return `${path}${separator}lang=${locale}`;
+  };
   return (
     <main className="bg-cloud-dancer min-h-screen">
       {/* Editorial Luxury Hero Section */}
       <section className="px-4 sm:px-6 pt-16 pb-12 lg:pt-24 lg:pb-16 text-center max-w-4xl mx-auto">
         <span className="text-[10px] font-bold text-transformative-teal uppercase tracking-[0.2em] bg-transformative-teal/5 px-4 py-1.5 rounded-full border border-transformative-teal/10 inline-block mb-4">
-          Private Boat Tours
+          {t("privateBoatTours", locale)}
         </span>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-deep-indigo mb-6 leading-tight">
-          Select Your <span className="italic font-light text-transformative-teal">Private Dolphin Tour</span>
+          {locale === 'en' ? (
+    <>Select Your <span className="italic font-light text-transformative-teal">Private Dolphin Tour</span></>
+  ) : locale === 'ru' ? (
+    <>Выберите свой <span className="italic font-light text-transformative-teal">частный тур к дельфинам</span></>
+  ) : (
+    <>选择您的<span className="italic font-light text-transformative-teal">私人海豚之旅</span></>
+  )}
         </h1>
         <p className="text-base lg:text-lg text-deep-indigo/70 font-light leading-relaxed">
-          Skip the sunrise chaos. Our private dolphin watching boat tours depart at <strong>8:00 AM</strong>—long after the 100+ crowded tourist boats go home. Enjoy a calm, quiet sea and excellent service with vetted local captains who prioritize dolphin welfare.
+          {locale === 'en' ? (
+    <>Skip the sunrise chaos. Our private dolphin watching boat tours depart at <strong>7:00 AM</strong>—as the early crowded tourist boats return to shore. Enjoy a calm, quiet sea and excellent service with vetted local captains who prioritize dolphin welfare.</>
+  ) : locale === 'ru' ? (
+    <>Избегайте утреннего хаоса. Наши частные туры к дельфинам отправляются в <strong>7:00 утра</strong> — когда ранние переполненные туристические лодки возвращаются на берег. Наслаждайтесь спокойным морем и отличным сервисом с проверенными местными капитанами.</>
+  ) : (
+    <>避开日出的混乱。我们的私人海豚观赏船游于<strong>上午7:00</strong>出发——此时早起拥挤的旅游船正返回岸边。与优先考虑海豚福利的经审核的当地船长一起，享受风平浪静的海面和优质的服务。</>
+  )}
         </p>
       </section>
 
@@ -41,55 +67,55 @@ export default function ToursPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-deep-indigo/40 via-transparent to-transparent opacity-60" />
                 <span className="absolute bottom-4 left-6 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-xl border border-white/20 text-[10px] font-bold uppercase tracking-wider text-deep-indigo shadow-sm">
-                  🐬 Quiet 8:00 AM Start
+                  🐬 {t("heroBadge", locale)}
                 </span>
               </div>
 
               {/* Card Body */}
               <div className="p-8 sm:p-10 space-y-6">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">8:00 AM Private Dolphin Watching Tour</h2>
-                  <p className="text-xs text-deep-indigo/50 font-light uppercase tracking-widest">Skip the crowds on a private dolphin watching boat</p>
+                  <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">{t("tour1Title", locale)}</h2>
+                  <p className="text-xs text-deep-indigo/50 font-light uppercase tracking-widest">{t("tour1Subtitle", locale)}</p>
                 </div>
 
                 <div className="flex items-baseline gap-2 border-b border-deep-indigo/5 pb-5">
                   <span className="text-3xl font-bold text-deep-indigo">$45</span>
-                  <span className="text-sm font-light text-deep-indigo/60">USD per guest</span>
+                  <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
                   <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
-                    Min. 2 guests
+                    {t("tour1MinGuests", locale)}
                   </span>
                 </div>
 
                 {/* Inclusions list */}
                 <div className="space-y-4">
-                  <span className="text-[10px] font-bold text-deep-indigo/40 uppercase tracking-widest block">Inclusions</span>
+                  <span className="text-[10px] font-bold text-deep-indigo/40 uppercase tracking-widest block">{t("inclusions", locale)}</span>
                   <ul className="space-y-3.5 text-xs text-deep-indigo/80 font-light leading-relaxed">
                     <li className="flex gap-3 items-start">
                       <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
                       <div>
-                        <strong className="text-deep-indigo block font-bold">Private Dolphin Boat</strong>
-                        <span>Reserved strictly for your group only (accommodates up to 8 people per boat).</span>
+                        <strong className="text-deep-indigo block font-bold">{t("tour1Inc1Title", locale)}</strong>
+                        <span>{t("tour1Inc1Desc", locale)}</span>
                       </div>
                     </li>
                     <li className="flex gap-3 items-start">
                       <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
                       <div>
-                        <strong className="text-deep-indigo block font-bold">Vetted Local Captain</strong>
-                        <span>Parallel approach cruising following strict animal welfare rules.</span>
+                        <strong className="text-deep-indigo block font-bold">{t("tour1Inc2Title", locale)}</strong>
+                        <span>{t("tour1Inc2Desc", locale)}</span>
                       </div>
                     </li>
                     <li className="flex gap-3 items-start">
                       <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
                       <div>
-                        <strong className="text-deep-indigo block font-bold">Post-Sunrise Glassy Sea</strong>
-                        <span>Skip the 6:00 AM swarms—enjoy dolphins without 100 boats racing.</span>
+                        <strong className="text-deep-indigo block font-bold">{t("tour1Inc3Title", locale)}</strong>
+                        <span>{t("tour1Inc3Desc", locale)}</span>
                       </div>
                     </li>
                     <li className="flex gap-3 items-start">
                       <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
                       <div>
-                        <strong className="text-deep-indigo block font-bold">Island Refreshments</strong>
-                        <span>Hot Balinese coffee, local premium tea, and fresh fruits served on board.</span>
+                        <strong className="text-deep-indigo block font-bold">{t("tour1Inc4Title", locale)}</strong>
+                        <span>{t("tour1Inc4Desc", locale)}</span>
                       </div>
                     </li>
                   </ul>
@@ -100,11 +126,11 @@ export default function ToursPage() {
             {/* Card Action */}
             <div className="p-8 sm:p-10 pt-0">
               <Link 
-                href="/checkout?tour=eight-am-ethical"
+                href={hrefFor("/checkout?tour=seven-am-ethical")}
                 id="cta-select-ethical-tour"
                 className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md active:scale-98"
               >
-                Book Dolphin Watching Tour ($45)
+                {t("tour1Btn", locale)}
               </Link>
             </div>
           </div>
@@ -114,7 +140,7 @@ export default function ToursPage() {
             
             {/* Highly Recommended Float Tag */}
             <span className="absolute top-4 right-6 bg-transformative-teal text-cloud-dancer px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest shadow-md z-20">
-              ✦ Highly Recommended
+              ✦ {t("recommended", locale)}
             </span>
 
             <div>
@@ -129,15 +155,15 @@ export default function ToursPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-deep-indigo/40 via-transparent to-transparent opacity-60" />
                 <span className="absolute bottom-4 left-6 bg-transformative-teal text-cloud-dancer px-4 py-1.5 rounded-xl border border-transformative-teal/20 text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                  🐢 Dolphin Swim & Reef Snorkel
+                  🐢 {t("signatureTag", locale)}
                 </span>
               </div>
 
               {/* Card Body */}
               <div className="p-8 sm:p-10 space-y-6">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">8:00 AM Private Dolphin Watching Tour + Swim & Snorkel</h2>
-                  <p className="text-xs text-transformative-teal font-bold uppercase tracking-widest">Our signature double encounter</p>
+                  <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">{t("tour2Title", locale)}</h2>
+                  <p className="text-xs text-transformative-teal font-bold uppercase tracking-widest">{t("tour2Subtitle", locale)}</p>
                 </div>
 
                 <div className="flex items-baseline gap-2 border-b border-deep-indigo/5 pb-5">
@@ -155,7 +181,7 @@ export default function ToursPage() {
                     <li className="flex gap-3 items-start">
                       <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
                       <div>
-                        <strong className="text-deep-indigo block font-bold">All 8:00 AM Tour Inclusions</strong>
+                        <strong className="text-deep-indigo block font-bold">All 7:00 AM Tour Inclusions</strong>
                         <span>Includes private boat (accommodates up to 8 people), vetted captain, parallel cruise, fruits, and hot Balinese coffee.</span>
                       </div>
                     </li>
@@ -183,7 +209,7 @@ export default function ToursPage() {
             {/* Card Action */}
             <div className="p-8 sm:p-10 pt-0">
               <Link 
-                href="/checkout?tour=swim-snorkel"
+                href={hrefFor("/checkout?tour=swim-snorkel")}
                 id="cta-select-snorkel-tour"
                 className="block w-full bg-coral-pop text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-98 relative group"
               >
@@ -216,7 +242,7 @@ export default function ToursPage() {
               <span className="text-3xl select-none block">🛡️</span>
               <h3 className="text-lg font-serif font-bold">100% Ethical Pledge</h3>
               <p className="text-xs text-cloud-dancer/70 font-light leading-relaxed">
-                We refuse to swarm or chase. Our captains cut engines to neutral within 30 meters and sail parallel, letting the curious pods choose to approach us.
+                We refuse to swarm or chase. Our captains maintain a safe parallel distance and sail slowly, letting the curious pods choose to approach us.
               </p>
             </div>
             <div className="space-y-3">
@@ -234,9 +260,9 @@ export default function ToursPage() {
             
             <div className="space-y-6 text-sm">
               <div className="border-b border-cloud-dancer/10 pb-6">
-                <h4 className="font-bold text-base mb-2">Why depart at 8:00 AM instead of 6:00 AM?</h4>
+                <h4 className="font-bold text-base mb-2">Why depart at 7:00 AM instead of 6:00 AM?</h4>
                 <p className="text-cloud-dancer/70 font-light leading-relaxed">
-                  The 6:00 AM sunrise departures are heavily crowded, with up to 100+ outrigger boats chasing a single dolphin pod. By departing at 8:00 AM, the mass tourist boats have returned to shore, the dolphin pods are relaxed and playful, and the ocean is quiet and glassy.
+                  The 6:00 AM sunrise departures are heavily crowded, with up to 100+ outrigger boats chasing a single dolphin pod. By departing at 7:00 AM, the early sunrise boats have begun to clear out and return to shore, leaving the ocean quiet, glassy, and peaceful.
                 </p>
               </div>
 
@@ -250,7 +276,7 @@ export default function ToursPage() {
               <div className="pb-6">
                 <h4 className="font-bold text-base mb-2">How do driver pick-ups and transfer times work?</h4>
                 <p className="text-cloud-dancer/70 font-light leading-relaxed">
-                  Lovina is located in North Bali. Driving from Ubud takes ~2 hours (5:30 AM pickup), Canggu/Seminyak takes ~2.5 to 3 hours (5:00 AM pickup), and Uluwatu takes ~3.5 to 4 hours (4:30 AM pickup). Your private driver will pick you up directly from your villa, wait in Lovina during your tour, and return you afterward.
+                  Lovina is located in North Bali. Driving from Ubud takes ~2 hours (4:30 AM pickup), Canggu/Seminyak takes ~2.5 to 3 hours (4:00 AM pickup), and Uluwatu takes ~3.5 to 4 hours (3:30 AM pickup). Your private driver will pick you up directly from your villa, wait in Lovina during your tour, and return you afterward.
                 </p>
               </div>
             </div>

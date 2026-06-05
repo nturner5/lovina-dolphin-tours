@@ -151,7 +151,7 @@ async function fetchWithRetry(url, options, retries = 3, delay = 1500) {
 }
 
 async function run() {
-  console.log('🌴 Initializing Lovina Ethical Marine AI Brunch Guide Generator...');
+  console.log('🌴 Initializing Bali Dolphin Tours AI Brunch Guide Generator...');
   
   const allowedModels = [];
   try {
@@ -207,11 +207,11 @@ Specific Writing Instructions:
    - "At Crate Cafe, the queue can look intimidating, but it moves fast. Order the 'Why Not' or 'Vador'—you get massive plates of fresh avo, poached eggs, and bacon for a fraction of Western prices."
    - "For a quiet, crowd-free morning, we sneak into ZIN Cafe. The bamboo architecture makes you feel like you're in Ubud, and their house-roasted coffee is some of the best on Jalan Nelayan."
 4. Highly Practical & Real Shop Recommendations: Feature highly rated institutions (Crate Cafe, Milk & Madu, Sensorium, Shady Shack) AND lesser-known hidden gems (Zin Cafe, Satu-Satu Coffee Company, Rider Cafe). For every single cafe, provide a descriptive markdown link to their actual Google Maps coordinates (e.g. [Milk & Madu Berawa on Google Maps](https://maps.google.com/?q=Milk+and+Madu+Berawa+Canggu)). Indicate exact pricing in both IDR and USD.
-5. Call-to-Action (CRO) Callouts: Embed 2 to 3 beautiful CRO callout boxes that pitch Lovina Dolphin Watching Tours naturally at logical transition points (e.g., contrast Canggu's crowded brunch waiting lines with the quiet, peaceful empty ocean of North Bali on a private 8:00 AM dolphin watching outrigger).
+5. Call-to-Action (CRO) Callouts: Embed 2 to 3 beautiful CRO callout boxes that pitch Lovina Dolphin Watching Tours naturally at logical transition points (e.g., contrast Canggu's crowded brunch waiting lines with the quiet, peaceful empty ocean of North Bali on a private 7:00 AM dolphin watching outrigger).
    Format:
    :::cro-box
    ### Tired of the Canggu Cafe Queues?
-   Escape the crowds for a weekend. Dress in your breathable resort linens and book our private, ethical 8:00 AM Dolphin Watching Tour in Lovina. Enjoy an empty, silent ocean while the Spinner dolphins play right next to your boat. 
+   Escape the crowds for a weekend. Dress in your breathable resort linens and book our private, ethical 7:00 AM Dolphin Watching Tour in Lovina. Enjoy an empty, silent ocean while the Spinner dolphins play right next to your boat. 
    [Book Your Private Quiet Encounter Now](/tours)
    :::
 6. Advanced Photorealistic Image Prompts: Insert 3 to 4 detailed image prompts placed naturally between paragraphs.
@@ -349,7 +349,7 @@ Write the entire, complete blog post in high-quality markdown, maintaining deep 
     slug: { _type: 'slug', current: postSlug },
     publishedAt: new Date().toISOString(),
     excerpt: excerpt,
-    author: 'Lovina Ethical Marine Team',
+    author: 'Bali Dolphin Tours Team',
     tags: tags.length > 0 ? tags : ['Canggu', 'Brunch', 'Breakfast', 'Food Guide', 'Bali Guide'],
     keyTakeaways: keyTakeaways.length > 0 ? keyTakeaways : [
       'Crate Cafe is an institution offering massive portions at incredible budget-friendly prices.',

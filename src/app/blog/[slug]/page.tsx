@@ -4,11 +4,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { urlFor } from '@/sanity/lib/image';
 import { PortableText } from '@portabletext/react';
+import { t } from '@/locales/i18n';
+import { getLocaleServer } from '@/locales/i18n-server';
 
 export const revalidate = 60;
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+interface PageProps {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function BlogPost({ params, searchParams }: PageProps) {
   const { slug } = await params;
+  const resolvedParams = await searchParams;
+  const locale = await getLocaleServer(resolvedParams);
+
+  const hrefFor = (path: string) => {
+    if (locale === 'en') return path;
+    const separator = path.includes('?') ? '&' : '?';
+    return `${path}${separator}lang=${locale}`;
+  };
   
   // Fetch detailed blog post including our new enriched metadata fields
   const post = await client.fetch(
@@ -16,7 +31,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     { slug }
   );
 
-  if (!post) return <div className="p-32 text-center font-serif italic text-deep-indigo/30">Story not found.</div>;
+  if (!post) return <div className="p-32 text-center font-serif italic text-deep-indigo/30">{t('storyNotFound', locale)}</div>;
 
   // Calculate Reading Time (200 words per minute average)
   const wordCount = post.body
@@ -120,26 +135,26 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": post.title,
-    "description": post.excerpt || "Premium travel authority article by Lovina Ethical Marine.",
-    "image": post.mainImage ? urlFor(post.mainImage).url() : "https://lovinaethicalmarine.com/hero_dolphins.png",
+    "description": post.excerpt || "Premium travel authority article by Bali Dolphin Tours.",
+    "image": post.mainImage ? urlFor(post.mainImage).url() : "https://balidolphintours.com/hero_dolphins.png",
     "datePublished": post.publishedAt,
     "dateModified": post.publishedAt,
     "author": {
       "@type": "Person",
-      "name": post.author || "Lovina Ethical Marine Team",
-      "url": "https://lovinaethicalmarine.com"
+      "name": post.author || "Bali Dolphin Tours Team",
+      "url": "https://balidolphintours.com"
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Lovina Ethical Marine",
+      "name": "Bali Dolphin Tours",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://lovinaethicalmarine.com/logo.svg"
+        "url": "https://balidolphintours.com/logo.svg"
       }
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://lovinaethicalmarine.com/blog/${slug}`
+      "@id": `https://balidolphintours.com/blog/${slug}`
     }
   };
 
@@ -178,7 +193,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           {/* Header Section */}
           <header className="mb-12 lg:mb-16 text-center max-w-5xl mx-auto">
             <span className="text-[10px] font-bold text-coral-pop uppercase tracking-[0.2em] bg-coral-pop/5 px-4 py-1.5 rounded-full border border-coral-pop/10 inline-block mb-6">
-              Bali Travel Guide
+              {t('travelGuide', locale)}
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-deep-indigo mb-8 leading-tight">
               {post.title}
@@ -190,11 +205,14 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 🌴
               </div>
               <div className="text-left leading-tight">
-                <span className="block font-bold text-deep-indigo">{post.author || 'Lovina Ethical Marine Team'}</span>
+                <span className="block font-bold text-deep-indigo">{post.author || 'Bali Dolphin Tours Team'}</span>
                 <span className="text-[10px] text-deep-indigo/50 font-light">
-                  {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  {new Date(post.publishedAt).toLocaleDateString(
+                    locale === 'zh' ? 'zh-CN' : locale === 'ru' ? 'ru-RU' : 'en-US', 
+                    { month: 'long', day: 'numeric', year: 'numeric' }
+                  )}
                   <span className="mx-2">•</span>
-                  ⏱️ {readingTime} min read
+                  ⏱️ {readingTime} {t('minRead', locale)}
                 </span>
               </div>
             </div>
@@ -225,7 +243,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 {post.keyTakeaways && post.keyTakeaways.length > 0 && (
                   <div className="bg-transformative-teal/5 p-6 rounded-3xl border border-transformative-teal/15 space-y-3">
                     <span className="text-[10px] font-bold text-transformative-teal block border-b border-transformative-teal/10 pb-2 uppercase tracking-wider">
-                      🎯 Chapter Summaries
+                      🎯 {t('takeawaysTitle', locale)}
                     </span>
                     <ul className="space-y-2 text-xs">
                       {post.keyTakeaways.map((takeaway: string, i: number) => {
@@ -252,7 +270,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
                 {headings.length > 0 && (
                   <div className="bg-white p-6 rounded-3xl border border-deep-indigo/5 shadow-sm space-y-3">
-                    <span className="text-xs font-bold text-deep-indigo block border-b border-deep-indigo/5 pb-2">📋 Table of Contents</span>
+                    <span className="text-xs font-bold text-deep-indigo block border-b border-deep-indigo/5 pb-2">📋 {t('tocTitle', locale)}</span>
                     <ul className="space-y-2 text-xs">
                       {headings.map((h, i) => (
                         <li key={i} className={`${h.style === 'h4' ? 'pl-4 text-deep-indigo/50' : 'font-semibold text-deep-indigo/70'}`}>
@@ -279,7 +297,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               {post.keyTakeaways && post.keyTakeaways.length > 0 && (
                 <div className="bg-transformative-teal/5 p-6 rounded-[2rem] border border-transformative-teal/15 space-y-4">
                   <span className="text-[10px] font-bold text-transformative-teal uppercase tracking-widest border-b border-transformative-teal/10 pb-2 block">
-                    🎯 Quick Section Takeaways
+                    🎯 {t('takeawaysTitle', locale)}
                   </span>
                   <ul className="space-y-3 text-[11px] leading-relaxed">
                     {post.keyTakeaways.map((takeaway: string, i: number) => {
@@ -307,7 +325,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               {headings.length > 0 && (
                 <div className="bg-white p-6 rounded-[2rem] border border-deep-indigo/5 shadow-sm space-y-4">
                   <span className="text-[10px] font-bold text-coral-pop uppercase tracking-widest border-b border-deep-indigo/5 pb-2 block">
-                    📋 Guide Chapters
+                    📋 {t('tocTitle', locale)}
                   </span>
                   <ul className="space-y-3 text-[11px] leading-tight">
                     {headings.map((h, i) => (
@@ -327,30 +345,30 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 <div className="absolute inset-0 bg-[url('/ocean-texture.svg')] opacity-10 mix-blend-overlay"></div>
                 <div className="relative z-10 space-y-4">
                   <span className="text-[9px] font-bold uppercase tracking-widest text-coral-pop bg-coral-pop/10 px-3 py-1 rounded-md border border-coral-pop/10 inline-block">
-                    ✦ Limited Departures
+                    ✦ {t('limitedDepartures', locale)}
                   </span>
-                  <h3 className="text-2xl font-serif leading-tight">Ready to see Lovina's Dolphins?</h3>
+                  <h3 className="text-2xl font-serif leading-tight">{t('ctaTitleSidebar', locale)}</h3>
                   <p className="text-xs text-cloud-dancer/80 font-light leading-relaxed">
-                    Skip the crowded 6:00 AM chasing swarm. Depart at <strong>8:00 AM</strong> on your own exclusive private boat with vetted captains who practice 100% ethical viewing.
+                    {t('ctaDescSidebar', locale)}
                   </p>
                   
                   <div className="border-t border-cloud-dancer/10 pt-4 space-y-2 text-[11px] font-light">
                     <div className="flex justify-between">
-                      <span>• Private Dolphin Watching Tour</span>
+                      <span>• {t('tour1Title', locale)}</span>
                       <span className="font-bold">$45 USD</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>• Dolphin Tour + Reef Snorkel</span>
+                      <span>• {t('tour2Title', locale)}</span>
                       <span className="font-bold">$65 USD</span>
                     </div>
                   </div>
 
                   <Link 
-                    href="/tours"
+                    href={hrefFor('/tours')}
                     className="block w-full bg-coral-pop text-cloud-dancer py-3.5 rounded-full text-center text-xs font-bold hover:bg-white hover:text-deep-indigo transition-all shadow-md active:scale-95 relative group"
                   >
                     <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
-                    Choose Your Private Boat
+                    {t('choosePrivateBoat', locale)}
                   </Link>
                 </div>
               </div>
@@ -363,9 +381,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             <div className="mt-20 pt-16 border-t border-deep-indigo/10 space-y-8 max-w-4xl mx-auto">
               <div className="text-center max-w-lg mx-auto mb-6">
                 <span className="text-[10px] font-bold text-transformative-teal uppercase tracking-[0.2em] bg-transformative-teal/5 px-4 py-1.5 rounded-full border border-transformative-teal/10 inline-block mb-3">
-                  Common Questions
+                  {t('faqBadge', locale)}
                 </span>
-                <h2 className="text-3xl sm:text-4xl font-serif text-deep-indigo">Frequently Asked Questions</h2>
+                <h2 className="text-3xl sm:text-4xl font-serif text-deep-indigo">{t('faqHeading', locale)}</h2>
               </div>
               
               <div className="space-y-4">
@@ -389,3 +407,4 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     </main>
   );
 }
+

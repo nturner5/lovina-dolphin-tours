@@ -59,7 +59,7 @@ async function main() {
     const cleanL3 = redact(lovina3);
 
     // Build the complete markdown content
-    const markdownContent = `# Lovina Ethical Marine: Complete Production n8n Workflows
+    const markdownContent = `# Bali Dolphin Tours: Complete Production n8n Workflows
 
 You can import any of these production workflows into n8n in **2 seconds**:
 1. Open n8n in your browser.

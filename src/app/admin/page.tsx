@@ -14,15 +14,27 @@ export default function AdminDashboard() {
     date: '2026-06-08',
     guests: '2',
     pickupLocation: 'none',
-    whatsappNumber: '+6281234567890',
+    whatsappNumber: '+12083164406',
     hotelDetails: 'Ubud Hanging Gardens Villa 4',
     bookingCode: 'LEM-MOCK',
-    n8nStripeUrl: 'http://localhost:5678/webhook/stripe-webhook',
-    n8nMetaUrl: 'http://localhost:5678/webhook/meta-whatsapp-callback',
+    n8nStripeUrl: 'https://majestic-noisomely-alexandria.ngrok-free.dev/webhook/stripe-webhook',
+    n8nMetaUrl: 'https://majestic-noisomely-alexandria.ngrok-free.dev/webhook/meta-whatsapp-callback',
+    n8nCaptainUrl: 'https://majestic-noisomely-alexandria.ngrok-free.dev/webhook-test/captain-signed-webhook',
   });
 
+  const [webhookBaseUrl, setWebhookBaseUrl] = useState('https://majestic-noisomely-alexandria.ngrok-free.dev');
   const [logs, setLogs] = useState<{ time: string; type: string; url: string; status: string; details: any }[]>([]);
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
+
+  const handleBaseUrlChange = (newBaseUrl: string) => {
+    setWebhookBaseUrl(newBaseUrl);
+    setFormData(prev => ({
+      ...prev,
+      n8nStripeUrl: `${newBaseUrl}/webhook/stripe-webhook`,
+      n8nMetaUrl: `${newBaseUrl}/webhook/meta-whatsapp-callback`,
+      n8nCaptainUrl: `${newBaseUrl}/webhook-test/captain-signed-webhook`
+    }));
+  };
 
   // Authenticate using localStorage to remember the session during development
   useEffect(() => {
@@ -98,7 +110,7 @@ export default function AdminDashboard() {
           },
           metadata: {
             bookingCode: formData.bookingCode,
-            tourId: 'eight-am-ethical',
+            tourId: 'seven-am-ethical',
             date: formData.date,
             guests: formData.guests.toString(),
             pickupLocation: formData.pickupLocation,
@@ -159,17 +171,17 @@ export default function AdminDashboard() {
                     profile: {
                       name: 'Wayan'
                     },
-                    wa_id: '6281234567890'
+                    wa_id: '12083164406'
                   }
                 ],
                 messages: [
                   {
-                    from: '6281234567890',
+                    from: '12083164406',
                     id: 'wamid.HBgNNjI4MTIzNDU2Nzg5MBQVAw0ALTI1NTI1NTIyNzM2MzU1NTA1MzQyMjk4OTg3Njc3Mzk3MTUzNTk4NTA5AA==',
                     timestamp: Math.floor(Date.now() / 1000).toString(),
                     type: 'button',
                     button: {
-                      payload: `claim_${formData.bookingCode}_Wayan_+6281234567890`,
+                      payload: `claim_${formData.bookingCode}_Wayan_+12083164406`,
                       text: 'Terima Tugas'
                     }
                   }
@@ -213,23 +225,29 @@ export default function AdminDashboard() {
     const signaturePayload = {
       bookingId: formData.bookingCode,
       captainName: 'Wayan',
-      captainPhone: '+6281234567890',
-      signedAt: new Date().toISOString()
+      captainPhone: '+12083164406',
+      signedAt: new Date().toISOString(),
+      status: 'signed'
     };
 
     try {
-      const response = await fetch('/api/captain-agreement', {
+      const response = await fetch('/api/admin/proxy', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-admin-password': 'lovina-sea-2026'
         },
-        body: JSON.stringify(signaturePayload)
+        body: JSON.stringify({
+          url: formData.n8nCaptainUrl,
+          headers: {},
+          body: signaturePayload
+        })
       });
 
       const resData = await response.json();
-      logResponse('Captain Signed Webhook (Lovina 3)', '/api/captain-agreement', `${response.status} ${response.statusText}`, resData);
+      logResponse('Captain Signed Webhook (Lovina 3)', formData.n8nCaptainUrl, `${resData.status || response.status} ${resData.statusText || ''}`, resData.data || resData);
     } catch (err: any) {
-      logResponse('Captain Signed Webhook (Lovina 3)', '/api/captain-agreement', 'Error', err.message);
+      logResponse('Captain Signed Webhook (Lovina 3)', formData.n8nCaptainUrl, 'Error', err.message);
     } finally {
       setLoadingAction(null);
     }
@@ -275,7 +293,7 @@ export default function AdminDashboard() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-deep-indigo/10 pb-6">
           <div>
             <span className="text-[10px] font-bold text-transformative-teal uppercase tracking-widest block mb-1">Administrative Center</span>
-            <h1 className="text-3xl font-serif text-deep-indigo">Lovina Ethical Marine Dashboard</h1>
+            <h1 className="text-3xl font-serif text-deep-indigo">Bali Dolphin Tours Dashboard</h1>
           </div>
           <div className="flex gap-3">
             <button
@@ -398,7 +416,7 @@ export default function AdminDashboard() {
                 <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">WhatsApp Number (For Alerts)</label>
                 <input
                   type="text"
-                  placeholder="e.g. +6281234567890"
+                  placeholder="e.g. +12083164406"
                   className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
                   value={formData.whatsappNumber}
                   onChange={(e) => setFormData({ ...formData, whatsappNumber: e.target.value })}
@@ -442,6 +460,17 @@ export default function AdminDashboard() {
             <div className="space-y-4 border-t border-deep-indigo/5 pt-6">
               <h3 className="text-sm font-bold uppercase tracking-wider text-deep-indigo/60">Target Webhook Endpoints</h3>
               <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Shared Webhook Base URL</label>
+                <input
+                  type="text"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-bold"
+                  placeholder="https://majestic-noisomely-alexandria.ngrok-free.dev"
+                  value={webhookBaseUrl}
+                  onChange={(e) => handleBaseUrlChange(e.target.value)}
+                />
+                <p className="text-[9px] text-deep-indigo/40 mt-1">Updates the base domain for all three endpoints below automatically.</p>
+              </div>
+              <div>
                 <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">n8n Stripe Webhook URL</label>
                 <input
                   type="text"
@@ -457,6 +486,15 @@ export default function AdminDashboard() {
                   className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
                   value={formData.n8nMetaUrl}
                   onChange={(e) => setFormData({ ...formData, n8nMetaUrl: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">n8n Captain Signed Webhook URL (3rd Workflow)</label>
+                <input
+                  type="text"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-semibold"
+                  value={formData.n8nCaptainUrl}
+                  onChange={(e) => setFormData({ ...formData, n8nCaptainUrl: e.target.value })}
                 />
               </div>
             </div>

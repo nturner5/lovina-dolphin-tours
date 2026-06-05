@@ -3,39 +3,54 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { t } from "@/locales/i18n";
+import { useLocale } from "@/locales/i18n-client";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const locale = useLocale();
+
+  // Helper to persist language query param during navigation
+  const hrefFor = (path: string) => {
+    if (locale === 'en') return path;
+    const separator = path.includes('?') ? '&' : '?';
+    return `${path}${separator}lang=${locale}`;
+  };
 
   return (
-    <nav className="relative flex items-center justify-between px-6 py-4 lg:px-12 bg-cloud-dancer border-b border-deep-indigo/10">
+    <nav className="relative flex items-center justify-between px-6 py-4 lg:px-12 bg-cloud-dancer border-b border-deep-indigo/10 z-40">
       <div className="flex items-center gap-4">
-        <Link href="/" className="flex items-center gap-3 group">
+        <Link href={hrefFor("/")} className="flex items-center gap-3 group">
           <div className="relative w-[60px] h-[60px] transition-transform duration-500 group-hover:scale-110">
             <Image 
               src="/logo.svg" 
-              alt="Lovina Ethical Marine Logo" 
+              alt="Bali Dolphin Tours Logo" 
               fill
               className="object-contain"
             />
           </div>
           <span className="font-serif text-2xl font-bold tracking-tight text-deep-indigo">
-            Lovina <span className="font-light italic text-transformative-teal underline decoration-coral-pop decoration-2 underline-offset-4">Ethical</span> Marine
+            Bali <span className="font-light italic text-transformative-teal underline decoration-coral-pop decoration-2 underline-offset-4">Dolphin</span> Tours
           </span>
         </Link>
       </div>
 
       {/* Desktop Menu */}
-      <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide uppercase">
-        <Link href="/#ethics" className="hover:text-transformative-teal transition-colors">Dolphin Rules</Link>
-        <Link href="/tours" className="hover:text-transformative-teal transition-colors">Tours</Link>
-        <Link href="/#faq" className="hover:text-transformative-teal transition-colors">FAQ</Link>
-        <Link href="/blog" className="hover:text-transformative-teal transition-colors">Blog</Link>
+      <div className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium tracking-wide uppercase">
+        <Link href={hrefFor("/#ethics")} className="hover:text-transformative-teal transition-colors">{t('dolphinRules', locale)}</Link>
+        <Link href={hrefFor("/tours")} className="hover:text-transformative-teal transition-colors">{t('tours', locale)}</Link>
+        <Link href={hrefFor("/#faq")} className="hover:text-transformative-teal transition-colors">{t('faq', locale)}</Link>
+        <Link href={hrefFor("/blog")} className="hover:text-transformative-teal transition-colors">{t('blog', locale)}</Link>
+        
+        {/* Language Switcher next to the Call to Action */}
+        <LanguageSwitcher />
+
         <Link 
-          href="/tours" 
-          className="bg-deep-indigo text-cloud-dancer px-6 py-3 rounded-full hover:bg-transformative-teal transition-all duration-300 shadow-sm text-center"
+          href={hrefFor("/tours")} 
+          className="bg-deep-indigo text-cloud-dancer px-6 py-3 rounded-full hover:bg-transformative-teal transition-all duration-300 shadow-sm text-center font-bold tracking-wider"
         >
-          Book Now
+          {t('bookNow', locale)}
         </Link>
       </div>
 
@@ -60,39 +75,45 @@ export default function Navbar() {
       {isOpen && (
         <div className="absolute top-full left-0 right-0 bg-cloud-dancer border-b border-deep-indigo/10 shadow-2xl flex flex-col p-6 gap-4 z-40 md:hidden animate-in fade-in slide-in-from-top-4 duration-300">
           <Link 
-            href="/#ethics" 
+            href={hrefFor("/#ethics")} 
             onClick={() => setIsOpen(false)}
             className="text-base font-medium text-deep-indigo py-2 border-b border-deep-indigo/5 hover:text-transformative-teal transition-colors"
           >
-            Dolphin Rules
+            {t('dolphinRules', locale)}
           </Link>
           <Link 
-            href="/tours" 
+            href={hrefFor("/tours")} 
             onClick={() => setIsOpen(false)}
             className="text-base font-medium text-deep-indigo py-2 border-b border-deep-indigo/5 hover:text-transformative-teal transition-colors"
           >
-            Tours
+            {t('tours', locale)}
           </Link>
           <Link 
-            href="/#faq" 
+            href={hrefFor("/#faq")} 
             onClick={() => setIsOpen(false)}
             className="text-base font-medium text-deep-indigo py-2 border-b border-deep-indigo/5 hover:text-transformative-teal transition-colors"
           >
-            FAQ
+            {t('faq', locale)}
           </Link>
           <Link 
-            href="/blog" 
+            href={hrefFor("/blog")} 
             onClick={() => setIsOpen(false)}
             className="text-base font-medium text-deep-indigo py-2 border-b border-deep-indigo/5 hover:text-transformative-teal transition-colors"
           >
-            Blog
+            {t('blog', locale)}
           </Link>
+          
+          <div className="flex items-center justify-between py-2 border-b border-deep-indigo/5">
+            <span className="text-sm font-medium text-deep-indigo/60 uppercase">Language</span>
+            <LanguageSwitcher />
+          </div>
+
           <Link 
-            href="/tours" 
+            href={hrefFor("/tours")} 
             onClick={() => setIsOpen(false)}
             className="bg-deep-indigo text-cloud-dancer px-6 py-4 rounded-full hover:bg-transformative-teal transition-all duration-300 shadow-sm text-center font-bold mt-2"
           >
-            Book Now
+            {t('bookNow', locale)}
           </Link>
         </div>
       )}

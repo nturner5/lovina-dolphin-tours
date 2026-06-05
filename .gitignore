@@ -44,3 +44,9 @@ scripts/*connections.json
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# scratch directories & temporary configs
+/scratch/
+/.antigravitycli/
+/meta_callback_payload.json
+

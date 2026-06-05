@@ -16,7 +16,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Lovina Ethical Marine | Private Dolphin Tours",
+  title: "Bali Dolphin Tours | Private Dolphin Tours",
   description: "Experience the magic of Lovina's wild dolphins without the chase. Private, quiet, and respectful tours led by our professional team of captains.",
 };
 
@@ -30,11 +30,11 @@ export default function RootLayout({
     "@graph": [
       {
         "@type": "LocalBusiness",
-        "@id": "https://lovinaethicalmarine.com/#organization",
-        "name": "Lovina Ethical Marine",
-        "url": "https://lovinaethicalmarine.com",
-        "logo": "https://lovinaethicalmarine.com/logo.svg",
-        "image": "https://lovinaethicalmarine.com/hero_dolphins.png",
+        "@id": "https://balidolphintours.com/#organization",
+        "name": "Bali Dolphin Tours",
+        "url": "https://balidolphintours.com",
+        "logo": "https://balidolphintours.com/logo.svg",
+        "image": "https://balidolphintours.com/hero_dolphins.png",
         "telephone": "+6285190422839",
         "priceRange": "$$",
         "address": {
@@ -53,17 +53,17 @@ export default function RootLayout({
       },
       {
         "@type": "Product",
-        "@id": "https://lovinaethicalmarine.com/#tour",
+        "@id": "https://balidolphintours.com/#tour",
         "name": "Private Anti-Sunrise Ethical Dolphin Tour",
-        "description": "Premium 8:00 AM private outrigger tour to view wild Spinner and Bottlenose dolphins in Lovina, Bali with zero chasing. Includes reef snorkeling, coffee, and refreshments.",
-        "image": "https://lovinaethicalmarine.com/hero_dolphins.png",
+        "description": "Premium 7:00 AM private outrigger tour to view wild Spinner and Bottlenose dolphins in Lovina, Bali with zero chasing. Includes reef snorkeling, coffee, and refreshments.",
+        "image": "https://balidolphintours.com/hero_dolphins.png",
         "brand": {
           "@type": "Brand",
-          "name": "Lovina Ethical Marine"
+          "name": "Bali Dolphin Tours"
         },
         "offers": {
           "@type": "Offer",
-          "url": "https://lovinaethicalmarine.com/checkout",
+          "url": "https://balidolphintours.com/checkout",
           "priceCurrency": "USD",
           "price": "45.00",
           "valueAddedTaxIncluded": "true",

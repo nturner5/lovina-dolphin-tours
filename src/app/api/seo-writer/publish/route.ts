@@ -221,7 +221,7 @@ export async function POST(req: Request) {
       slug: { _type: 'slug', current: slug },
       publishedAt: new Date().toISOString(),
       excerpt: excerpt || '',
-      author: author || 'Lovina Ethical Marine Team',
+      author: author || 'Bali Dolphin Tours Team',
       tags: tags || [],
       keyTakeaways: keyTakeaways || [],
       faqs: faqs ? faqs.map((f: any) => ({

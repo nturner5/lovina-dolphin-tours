@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Scale, Anchor, LifeBuoy } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Lovina Ethical Marine",
-  description: "Read the Terms of Service for Lovina Ethical Marine. Learn about our strict wildlife-first policies, guest responsibilities, and booking conditions in North Bali.",
+  title: "Terms of Service | Bali Dolphin Tours",
+  description: "Read the Terms of Service for Bali Dolphin Tours. Learn about our strict wildlife-first policies, guest responsibilities, and booking conditions in North Bali.",
 };
 
 export default function TermsOfServicePage() {
@@ -25,7 +25,7 @@ export default function TermsOfServicePage() {
 
         {/* Elegant Header */}
         <div className="mb-14 border-b border-deep-indigo/10 pb-8">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-coral-pop block mb-3">Lovina Ethical Marine</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-coral-pop block mb-3">Bali Dolphin Tours</span>
           <h1 className="text-4xl sm:text-5xl font-serif text-deep-indigo mb-4 tracking-tight leading-none">
             Terms of Service
           </h1>
@@ -61,7 +61,7 @@ export default function TermsOfServicePage() {
               1. Acceptance of Contract
             </h2>
             <p>
-              Welcome to the digital portal of <strong>Lovina Ethical Marine</strong> (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;). By accessing our website, completing a booking request, or paying via Stripe Checkout, you enter into a legally binding contract governed by these Terms of Service. If you do not agree to these terms, please do not book a tour or engage our fleet.
+              Welcome to the digital portal of <strong>Bali Dolphin Tours</strong> (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;). By accessing our website, completing a booking request, or paying via Stripe Checkout, you enter into a legally binding contract governed by these Terms of Service. If you do not agree to these terms, please do not book a tour or engage our fleet.
             </p>
           </section>
 
@@ -75,7 +75,7 @@ export default function TermsOfServicePage() {
             <div className="bg-transformative-teal/[0.03] border-l-2 border-transformative-teal p-6 rounded-r-2xl space-y-3 mt-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-transformative-teal">Environmental Protection Mandate</h4>
               <p className="text-xs sm:text-sm text-deep-indigo/80 leading-relaxed">
-                All captains within our vetted network have digitally signed a strict **Behavioral Agreement** requiring them to maintain a parallel sailing trajectory, keep engines in neutral when within 30 meters of a pod, and strictly prohibit chasing, boxing in, or cornering dolphins.
+                All captains within our vetted network have digitally signed a strict **Behavioral Agreement** requiring them to maintain a parallel sailing trajectory, maintain a safe 30-meter distance from the pods, and strictly prohibit chasing, boxing in, or cornering dolphins.
               </p>
               <p className="text-xs sm:text-sm text-deep-indigo/80 leading-relaxed font-semibold">
                 Crucial Guest Policy: Guests cannot instruct, bribe, or demand that their captain chase or accelerate toward dolphins. If a guest acts in a hostile manner or demands a violation of our wildlife safety policies, the captain is authorized to immediately terminate the charter and return to shore. In this event, no refunds will be issued.
@@ -117,7 +117,7 @@ export default function TermsOfServicePage() {
               5. Intellectual Property
             </h2>
             <p>
-              The visual identity, single-line dolphin silhouette logo, typography mappings, digital layouts, automated dispatch logic, and custom written content contained on lovinaethicalmarine.com are protected brand assets of Lovina Ethical Marine. Unauthorized reproduction or reverse engineering of our brand assets is strictly prohibited.
+              The visual identity, single-line dolphin silhouette logo, typography mappings, digital layouts, automated dispatch logic, and custom written content contained on balidolphintours.com are protected brand assets of Bali Dolphin Tours. Unauthorized reproduction or reverse engineering of our brand assets is strictly prohibited.
             </p>
           </section>
 
@@ -126,7 +126,7 @@ export default function TermsOfServicePage() {
               6. Limitation of Liability
             </h2>
             <p>
-              Lovina Ethical Marine and its network of certified local captains shall not be held liable for any loss of personal items, camera gear, or personal injuries resulting from rough sea swells, failure to wear life jackets, or non-compliance with the captain&apos;s safety directions. By boarding the outrigger boat, you voluntarily assume all standard open-water recreation risks.
+              Bali Dolphin Tours and its network of certified local captains shall not be held liable for any loss of personal items, camera gear, or personal injuries resulting from rough sea swells, failure to wear life jackets, or non-compliance with the captain&apos;s safety directions. By boarding the outrigger boat, you voluntarily assume all standard open-water recreation risks.
             </p>
           </section>
 

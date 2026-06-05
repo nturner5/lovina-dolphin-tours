@@ -32,10 +32,10 @@ const templates = [
     components: [
       {
         type: 'BODY',
-        text: 'Hi {{1}}! 🐬 Your private dolphin encounter with Lovina Ethical Marine is confirmed for {{2}} ({{3}} guests).\n\nDetails:\n- Tour: {{4}}\n- Pickup/Meetup: {{5}}\n\nIf you selected Self-Drive (No Driver), we will meet at the Lovina Beach Dolphin Statue (Kalibukbuk) at 7:30 AM (Google Maps: https://www.google.com/maps/search/?api=1&query=Lovina+Dolphin+Statue).\n\nOtherwise, our captain will coordinate your pickup details via WhatsApp shortly. Get ready for a premium, quiet sea experience! ⛵',
+        text: 'Hi {{1}}! 🐬 Your private dolphin encounter with Bali Dolphin Tours is confirmed for {{2}} ({{3}} guests).\n\nDetails:\n- Tour: {{4}}\n- Pickup/Meetup: {{5}}\n\nIf you selected Self-Drive (No Driver), we will meet at the Lovina Beach Dolphin Statue (Kalibukbuk) at 6:30 AM (Google Maps: https://www.google.com/maps/search/?api=1&query=Lovina+Dolphin+Statue).\n\nOtherwise, our captain will coordinate your pickup details via WhatsApp shortly. Get ready for a premium, quiet sea experience! ⛵',
         example: {
           body_text: [
-            ['Nathan', 'May 29, 2026', '2', 'Private Anti-Sunrise Dolphin Encounter', 'Self-Drive (Meet at 7:30 AM)']
+            ['Nathan', 'May 29, 2026', '2', 'Private Anti-Sunrise Dolphin Encounter', 'Self-Drive (Meet at 6:30 AM)']
           ]
         }
       }
@@ -49,10 +49,10 @@ const templates = [
     components: [
       {
         type: 'BODY',
-        text: 'Halo Kapten {{1}}! Ada tugas baru untuk Lovina Ethical Marine.\n\nDetail Tugas:\n- Kode Booking: {{2}}\n- Tanggal: {{3}}\n- Jumlah Tamu: {{4}}\n\nUntuk membuka detail kontak tamu dan alamat hotel, silakan baca dan tanda tangani Kontrak Perilaku Kapten di link berikut:\n{{5}}\n\nHarap selesaikan tanda tangan sebelum memulai pelayaran. Terima kasih!',
+        text: 'Halo Kapten {{1}}! Ada tugas baru untuk Bali Dolphin Tours.\n\nDetail Tugas:\n- Kode Booking: {{2}}\n- Tanggal: {{3}}\n- Jumlah Tamu: {{4}}\n\nUntuk membuka detail kontak tamu dan alamat hotel, silakan baca dan tanda tangani Kontrak Perilaku Kapten di link berikut:\n{{5}}\n\nHarap selesaikan tanda tangan sebelum memulai pelayaran. Terima kasih!',
         example: {
           body_text: [
-            ['Wayan', 'LEM-1024', '29 Mei 2026', '2', 'https://lovinaethicalmarine.com/captain-agreement?bookingId=LEM-1024']
+            ['Wayan', 'LEM-1024', '29 Mei 2026', '2', 'https://balidolphintours.com/captain-agreement?bookingId=LEM-1024']
           ]
         }
       }
@@ -69,7 +69,7 @@ const templates = [
         text: 'Terima kasih Kapten {{1}}! Kontrak Perilaku Kapten untuk Booking {{2}} telah ditandatangani. Berikut adalah detail kontak tamu untuk koordinasi penjemputan:\n\n- Nama Tamu: {{3}}\n- WhatsApp Tamu: {{4}}\n- Alamat/Hotel Tamu: {{5}}\n- Penjemputan: {{6}}\n\nSelamat berlayar! Pastikan standar Four Seasons tetap terjaga ⛵🐬',
         example: {
           body_text: [
-            ['Wayan', 'LEM-1024', 'Nathan', '+6281234567890', 'Ubud Hanging Gardens Villa 4', 'Ubud Add-on ($35)']
+            ['Wayan', 'LEM-1024', 'Nathan', '+12083164406', 'Ubud Hanging Gardens Villa 4', 'Ubud Add-on ($35)']
           ]
         }
       }
@@ -83,10 +83,10 @@ const templates = [
     components: [
       {
         type: 'BODY',
-        text: 'Hi {{1}}! 🐬 Ready for the ultimate sea experience in Bali? Book your private \'Anti-Sunrise\' dolphin tour with Lovina Ethical Marine.\n\nWe start at 8:00 AM after the crowds leave for a quiet, respectful encounter. Save 10% on your booking today!\n\nDiscount Code: {{2}}\nBook Now: {{3}}\n\nWe look forward to welcoming you on board!',
+        text: 'Hi {{1}}! 🐬 Ready for the ultimate sea experience in Bali? Book your private \'Anti-Sunrise\' dolphin tour with Bali Dolphin Tours.\n\nWe start at 7:00 AM after the crowds leave for a quiet, respectful encounter. Save 10% on your booking today!\n\nDiscount Code: {{2}}\nBook Now: {{3}}\n\nWe look forward to welcoming you on board!',
         example: {
           body_text: [
-            ['Nathan', 'DOLPHIN10', 'https://lovinaethicalmarine.com/checkout']
+            ['Nathan', 'DOLPHIN10', 'https://balidolphintours.com/checkout']
           ]
         }
       }

@@ -39,7 +39,7 @@ export default function TermsOfServicePage() {
           <div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-deep-indigo/5 flex flex-col gap-3">
             <Anchor className="w-6 h-6 text-transformative-teal" />
             <h3 className="text-xs font-bold text-deep-indigo uppercase tracking-wider">Wildlife First</h3>
-            <p className="text-[11px] text-deep-indigo/60 leading-relaxed font-light">Captains strictly follow the &ldquo;No-Chase&rdquo; protocol. Wildlife safety is absolute and non-negotiable.</p>
+            <p className="text-[11px] text-deep-indigo/60 leading-relaxed font-light">Captains follow a quiet, respectful wildlife viewing protocol. Wildlife safety is key to our mission.</p>
           </div>
           <div className="bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-deep-indigo/5 flex flex-col gap-3">
             <LifeBuoy className="w-6 h-6 text-transformative-teal" />
@@ -67,18 +67,18 @@ export default function TermsOfServicePage() {
 
           <section className="space-y-4">
             <h2 className="text-lg sm:text-xl font-serif text-deep-indigo font-bold tracking-tight border-b border-deep-indigo/5 pb-2">
-              2. Strict Wildlife Conservation & &ldquo;No-Chase&rdquo; Rules
+              2. Wildlife Conservation & Respectful Viewing Rules
             </h2>
             <p>
-              We pride ourselves on providing the premier standard for ethical dolphin encounters in North Bali. We are committed to a strict, non-negotiable marine charter that prioritizes the acoustic and physical safety of Lovina&apos;s wild cetacean pods.
+              We pride ourselves on providing a high standard for ethical dolphin encounters in North Bali. We are committed to a marine charter that prioritizes the acoustic and physical safety of Lovina&apos;s wild cetacean pods.
             </p>
             <div className="bg-transformative-teal/[0.03] border-l-2 border-transformative-teal p-6 rounded-r-2xl space-y-3 mt-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-transformative-teal">Environmental Protection Mandate</h4>
               <p className="text-xs sm:text-sm text-deep-indigo/80 leading-relaxed">
-                All captains within our vetted network have digitally signed a strict **Behavioral Agreement** requiring them to maintain a parallel sailing trajectory, maintain a safe 30-meter distance from the pods, and strictly prohibit chasing, boxing in, or cornering dolphins.
+                All captains within our vetted network have digitally signed a **Behavioral Agreement** requiring them to maintain a parallel sailing trajectory, keep a respectful distance from the pods, and avoid chasing, boxing in, or cornering dolphins.
               </p>
               <p className="text-xs sm:text-sm text-deep-indigo/80 leading-relaxed font-semibold">
-                Crucial Guest Policy: Guests cannot instruct, bribe, or demand that their captain chase or accelerate toward dolphins. If a guest acts in a hostile manner or demands a violation of our wildlife safety policies, the captain is authorized to immediately terminate the charter and return to shore. In this event, no refunds will be issued.
+                Crucial Guest Policy: Guests cannot instruct, bribe, or demand that their captain chase or accelerate toward dolphins. If a guest acts in a hostile manner or demands a violation of our wildlife safety guidelines, the captain is authorized to immediately terminate the charter and return to shore. In this event, no refunds will be issued.
               </p>
             </div>
           </section>

@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: "Bali Dolphin Tours | Private Dolphin Tours",
-  description: "Experience the magic of Lovina's wild dolphins without the chase. Private, quiet, and respectful tours led by our professional team of captains.",
+  description: "Experience the magic of Lovina's wild dolphins in a quiet, respectful setting. Private, peaceful tours led by our professional team of captains.",
 };
 
 export default function RootLayout({

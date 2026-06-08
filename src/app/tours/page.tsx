@@ -10,7 +10,7 @@ interface PageProps {
 
 export const metadata: Metadata = {
   title: 'Private Dolphin Watching & Snorkeling Tours | Bali Dolphin Tours',
-  description: 'Choose between our private 7:00 AM dolphin watching tour or the complete private dolphin watching + coral reef snorkeling boat tour. Vetted local captains, no-chase animal welfare standards.',
+  description: 'Choose between our private 7:00 AM dolphin watching tour or the complete private dolphin watching + coral reef snorkeling boat tour. Vetted local captains, and respectful wildlife viewing guidelines.',
 };
 
 export default async function ToursPage({ searchParams }: PageProps) {
@@ -240,9 +240,9 @@ export default async function ToursPage({ searchParams }: PageProps) {
             </div>
             <div className="space-y-3">
               <span className="text-3xl select-none block">🛡️</span>
-              <h3 className="text-lg font-serif font-bold">100% Ethical Pledge</h3>
+              <h3 className="text-lg font-serif font-bold">Respectful Approach</h3>
               <p className="text-xs text-cloud-dancer/70 font-light leading-relaxed">
-                We refuse to swarm or chase. Our captains maintain a safe parallel distance and sail slowly, letting the curious pods choose to approach us.
+                We avoid swarming the dolphins. Our captains prioritize the animals' comfort, maintaining a safe parallel distance and sailing slowly so you get a peaceful, natural view.
               </p>
             </div>
             <div className="space-y-3">

@@ -117,7 +117,7 @@ export default function RefundPolicyPage() {
               4. Our Unique &ldquo;Dolphin Sighting Guarantee&rdquo;
             </h2>
             <p>
-              Wild spinner and bottle-nose dolphins roam freely across the Bali Sea. Because we operate an **ethical, respectful, eco-conscious charter**, we strictly refuse to chase, surround, or stress the animals to force an encounter. Our historical sighting probability stands at a phenomenal <strong>95%+</strong>, but nature remains wild.
+              Wild spinner and bottle-nose dolphins roam freely across the Bali Sea. Because we operate an **ethical, respectful, eco-conscious charter**, we prioritize respectful wildlife viewing. Our captains do not crowd, surround, or stress the animals to force an encounter. Our historical sighting probability stands at a phenomenal <strong>95%+</strong>, but nature remains wild.
             </p>
             <div className="bg-transformative-teal/[0.03] border border-transformative-teal/20 p-6 rounded-2xl space-y-3 mt-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-transformative-teal">Conservation Honesty Policy</h4>

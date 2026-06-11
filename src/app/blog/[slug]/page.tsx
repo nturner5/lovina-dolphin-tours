@@ -14,7 +14,7 @@ interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-// Parse custom CRO Boxes (e.g. :::cro-box) for inline conversion blocks
+// Parse custom CRO Boxes (e.g. :::cro-box) and horizontal dividers (---) for inline conversion blocks
 function parseCroBoxes(blocks: any[]) {
   const result: any[] = [];
   let inCroBox = false;
@@ -23,6 +23,14 @@ function parseCroBoxes(blocks: any[]) {
   for (const block of blocks) {
     if (block._type === 'block') {
       const text = block.children?.map((c: any) => c.text).join('').trim() || '';
+      
+      if (!inCroBox && text === '---') {
+        result.push({
+          _key: block._key || Math.random().toString(36).substring(2, 11),
+          _type: 'divider'
+        });
+        continue;
+      }
       
       if (text === ':::cro-box') {
         inCroBox = true;
@@ -195,6 +203,9 @@ export default async function BlogPost({ params, searchParams }: PageProps) {
             </Link>
           </div>
         );
+      },
+      divider: () => {
+        return <hr className="my-12 border-t border-deep-indigo/10 max-w-2xl mx-auto" />;
       }
     },
     marks: {

@@ -14,6 +14,74 @@ interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
+// Parse custom CRO Boxes (e.g. :::cro-box) for inline conversion blocks
+function parseCroBoxes(blocks: any[]) {
+  const result: any[] = [];
+  let inCroBox = false;
+  let croContent: any[] = [];
+  
+  for (const block of blocks) {
+    if (block._type === 'block') {
+      const text = block.children?.map((c: any) => c.text).join('').trim() || '';
+      
+      if (text === ':::cro-box') {
+        inCroBox = true;
+        croContent = [];
+        continue;
+      }
+      
+      if (text === ':::') {
+        if (inCroBox) {
+          inCroBox = false;
+          
+          const headingBlock = croContent.find(b => b.style === 'h3' || b.style === 'h4' || b.style === 'h2');
+          const heading = headingBlock ? headingBlock.children?.map((c: any) => c.text).join('').trim() : 'Ready to Book?';
+          
+          let linkText = 'Book Now';
+          let linkUrl = '/tours';
+          
+          for (const b of croContent) {
+            if (b.children && Array.isArray(b.children)) {
+              for (const c of b.children) {
+                if (c.marks && c.marks.length > 0 && b.markDefs) {
+                  const def = b.markDefs.find((d: any) => c.marks.includes(d._key) && d._type === 'link');
+                  if (def) {
+                    linkUrl = def.href;
+                    linkText = c.text;
+                    break;
+                  }
+                }
+              }
+            }
+            if (linkUrl !== '/tours') break;
+          }
+          
+          const descBlocks = croContent.filter(b => b !== headingBlock && !b.children?.some((c: any) => c.text === linkText));
+          const description = descBlocks.map(b => b.children?.map((c: any) => c.text).join('').trim()).filter(Boolean).join(' ');
+          
+          result.push({
+            _key: Math.random().toString(36).substring(2, 11),
+            _type: 'croBox',
+            heading,
+            description,
+            linkText,
+            linkUrl
+          });
+          continue;
+        }
+      }
+    }
+    
+    if (inCroBox) {
+      croContent.push(block);
+    } else {
+      result.push(block);
+    }
+  }
+  
+  return result;
+}
+
 export default async function BlogPost({ params, searchParams }: PageProps) {
   const { slug } = await params;
   const resolvedParams = await searchParams;
@@ -45,7 +113,7 @@ export default async function BlogPost({ params, searchParams }: PageProps) {
   const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
   // Filter out the duplicate H1 or H2 title block from the body content
-  const bodyBlocks = post.body && Array.isArray(post.body)
+  let bodyBlocks = post.body && Array.isArray(post.body)
     ? post.body.filter((block: any, index: number) => {
         if (index === 0 && (block.style === 'h1' || block.style === 'h2')) {
           return false;
@@ -54,9 +122,12 @@ export default async function BlogPost({ params, searchParams }: PageProps) {
       })
     : [];
 
+  // Parse custom CRO Boxes (e.g. :::cro-box) for inline conversion blocks
+  bodyBlocks = parseCroBoxes(bodyBlocks);
+
   // Parse Headings dynamically from Sanity PortableText for the Interactive TOC
-  const headings: { text: string; id: string; style: string }[] = post.body
-    ? post.body
+  const headings: { text: string; id: string; style: string }[] = bodyBlocks
+    ? bodyBlocks
         .filter((b: any) => b._type === 'block' && /^h[234]/.test(b.style || ''))
         .map((b: any) => {
           const text = b.children?.map((c: any) => c.text).join('') || '';
@@ -109,6 +180,20 @@ export default async function BlogPost({ params, searchParams }: PageProps) {
               </figcaption>
             )}
           </figure>
+        );
+      },
+      croBox: ({ value }: any) => {
+        return (
+          <div className="bg-transformative-teal/5 p-8 rounded-3xl border border-transformative-teal/15 my-8">
+            <h4 className="text-xl font-serif text-transformative-teal font-bold mb-3">🐢 {value.heading}</h4>
+            <p className="text-sm text-deep-indigo/80 font-light mb-5 leading-relaxed">{value.description}</p>
+            <Link 
+              href={hrefFor(value.linkUrl)} 
+              className="inline-block bg-coral-pop text-cloud-dancer px-8 py-3.5 rounded-full text-xs font-bold hover:bg-deep-indigo hover:text-white transition-all hover:scale-[1.03] active:scale-95 shadow-md"
+            >
+              {value.linkText}
+            </Link>
+          </div>
         );
       }
     },

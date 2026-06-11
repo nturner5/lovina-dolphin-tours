@@ -331,6 +331,8 @@ Specific Writing Instructions:
    Format:
    :::image-prompt
    **Midjourney Image Prompt:** A photorealistic, cinematic shot of [description], captured on a Sony a7R V with a 50mm f/1.2 prime lens for dramatic depth-of-field, shutter speed 1/500s, volumetric morning sunbeams, Coastal Noir style with rich deep indigo and seafoam teal color grading, realistic skin textures, 8k resolution, --ar 16:9
+   **SEO Alt Text:** [Highly descriptive, keyword-rich alt text for search engine optimization]
+   **Caption:** [A friendly, editorial caption to display beneath the image]
    :::
 7. Comprehensive FAQ Section: Include a list of answers to common traveler concerns about dining in Lovina at the end of the post.
 8. Enriched Metadata Block: Append a structured metadata block enclosed in [METADATA] and [/METADATA] tags at the very end.

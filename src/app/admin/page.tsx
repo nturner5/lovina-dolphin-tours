@@ -11,18 +11,19 @@ export default function AdminDashboard() {
   // Test form values
   const [formData, setFormData] = useState({
     guestName: 'John Doe',
+    guestEmail: 'john.doe@example.com',
     date: '2026-06-08',
     guests: '2',
     pickupLocation: 'none',
     whatsappNumber: '+6281234567890',
     hotelDetails: 'Ubud Hanging Gardens Villa 4',
     bookingCode: 'LEM-MOCK',
-    n8nStripeUrl: 'https://majestic-noisomely-alexandria.ngrok-free.dev/webhook/stripe-webhook',
-    n8nMetaUrl: 'https://majestic-noisomely-alexandria.ngrok-free.dev/webhook/meta-whatsapp-callback',
-    n8nCaptainUrl: 'https://majestic-noisomely-alexandria.ngrok-free.dev/webhook-test/captain-signed-webhook',
+    n8nStripeUrl: 'https://n8n.balidolphintours.com/webhook/stripe-webhook',
+    n8nMetaUrl: 'https://n8n.balidolphintours.com/webhook/meta-whatsapp-callback',
+    n8nCaptainUrl: 'https://n8n.balidolphintours.com/webhook-test/captain-signed-webhook',
   });
 
-  const [webhookBaseUrl, setWebhookBaseUrl] = useState('https://majestic-noisomely-alexandria.ngrok-free.dev');
+  const [webhookBaseUrl, setWebhookBaseUrl] = useState('https://n8n.balidolphintours.com');
   const [logs, setLogs] = useState<{ time: string; type: string; url: string; status: string; details: any }[]>([]);
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
 
@@ -132,7 +133,7 @@ export default function AdminDashboard() {
           amount_total: (tourPrice * Number(formData.guests) + fee) * 100,
           currency: 'usd',
           customer_details: {
-            email: `${formData.guestName.toLowerCase().replace(/\s+/g, '')}@example.com`,
+            email: formData.guestEmail,
             name: formData.guestName,
             phone: formData.whatsappNumber
           },
@@ -408,6 +409,15 @@ export default function AdminDashboard() {
                 />
               </div>
               <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Guest Email</label>
+                <input
+                  type="email"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
+                  value={formData.guestEmail || ''}
+                  onChange={(e) => setFormData({ ...formData, guestEmail: e.target.value })}
+                />
+              </div>
+              <div>
                 <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Excursion Date</label>
                 <input
                   type="date"
@@ -493,7 +503,7 @@ export default function AdminDashboard() {
                 <input
                   type="text"
                   className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-bold"
-                  placeholder="https://majestic-noisomely-alexandria.ngrok-free.dev"
+                  placeholder="https://n8n.balidolphintours.com"
                   value={webhookBaseUrl}
                   onChange={(e) => handleBaseUrlChange(e.target.value)}
                 />

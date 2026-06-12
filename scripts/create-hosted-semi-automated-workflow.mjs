@@ -173,7 +173,7 @@ const nodes = [
   {
     "parameters": {
       "method": "POST",
-      "url": "https://graph.facebook.com/v19.0/1248861244970433/messages",
+      "url": "https://graph.facebook.com/v19.0/1204724732717395/messages",
       "sendHeaders": true,
       "headerParameters": {
         "parameters": [
@@ -204,7 +204,7 @@ const nodes = [
   {
     "parameters": {
       "method": "POST",
-      "url": "https://graph.facebook.com/v19.0/1248861244970433/messages",
+      "url": "https://graph.facebook.com/v19.0/1204724732717395/messages",
       "sendHeaders": true,
       "headerParameters": {
         "parameters": [

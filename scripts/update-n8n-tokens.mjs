@@ -51,7 +51,7 @@ async function main() {
 
   // Also replace any production WABA Phone ID (1248861244970433) with current sandbox Phone ID (1146773325183741)
   // in all workflows (entity and history) so that it routes via Sandbox during local dev testing
-  const oldProductionPhoneId = '1248861244970433';
+  const oldProductionPhoneId = '1204724732717395';
   const updatePhoneIdQuery = `
     UPDATE workflow_entity 
     SET nodes = replace(nodes::text, '${oldProductionPhoneId}', '${currentPhoneId}')::jsonb 

@@ -21,6 +21,17 @@ const PICKUP_OPTIONS = [
   { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Private Driver (Pickup ~3:30 AM)', price: 65 },
 ];
 
+const getBaliDateString = (offsetDays = 0) => {
+  const tzDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Makassar' }));
+  if (offsetDays !== 0) {
+    tzDate.setDate(tzDate.getDate() + offsetDays);
+  }
+  const y = tzDate.getFullYear();
+  const m = String(tzDate.getMonth() + 1).padStart(2, '0');
+  const d = String(tzDate.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+
 function CheckoutForm() {
   const locale = useLocale();
   const [loading, setLoading] = useState(false);
@@ -34,6 +45,22 @@ function CheckoutForm() {
     hotelDetails: '',
     pickupLocation: 'none',
   });
+
+  const [minDate, setMinDate] = useState<string>('');
+  const [isLastMinute, setIsLastMinute] = useState(false);
+
+  useEffect(() => {
+    setMinDate(getBaliDateString(0));
+  }, []);
+
+  useEffect(() => {
+    if (!formData.date) {
+      setIsLastMinute(false);
+      return;
+    }
+    const tomorrowStr = getBaliDateString(1);
+    setIsLastMinute(formData.date <= tomorrowStr);
+  }, [formData.date]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -113,6 +140,18 @@ function CheckoutForm() {
 
     if (!isValidPhone) {
       alert(t('invalidPhoneAlert', locale));
+      setLoading(false);
+      return;
+    }
+
+    if (isLastMinute) {
+      const prefilledTemplate = t('lastMinuteMsgPrefilled', locale);
+      const messageText = prefilledTemplate
+        .replace('{date}', formData.date)
+        .replace('{guests}', String(formData.guests));
+
+      const whatsappUrl = `https://wa.me/18018556266?text=${encodeURIComponent(messageText)}`;
+      window.open(whatsappUrl, '_blank');
       setLoading(false);
       return;
     }
@@ -197,6 +236,7 @@ function CheckoutForm() {
                   <input 
                     type="date" 
                     required
+                    min={minDate}
                     className="w-full bg-cloud-dancer/50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-transformative-teal text-deep-indigo"
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
@@ -218,6 +258,19 @@ function CheckoutForm() {
               <p className="text-[10px] text-deep-indigo/40 -mt-3 pl-1 leading-normal">
                 {t('guestsDisclaimer', locale)}
               </p>
+
+              {/* Last Minute Alert Notice */}
+              {isLastMinute && (
+                <div className="bg-coral-pop/10 text-coral-pop p-5 rounded-3xl border border-coral-pop/20 text-xs leading-normal animate-in fade-in duration-300 flex items-start gap-3 mt-2">
+                  <span className="text-lg leading-none shrink-0 select-none">⚠️</span>
+                  <div>
+                    <strong className="block font-bold mb-1">
+                      {locale === 'en' ? 'Last-Minute Booking Notice' : locale === 'ru' ? 'Срочное бронирование' : '最后一刻预订须知'}
+                    </strong>
+                    <p className="opacity-90">{t('lastMinuteWarning', locale)}</p>
+                  </div>
+                </div>
+              )}
 
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-3">{t('nameLabel', locale)}</label>
@@ -531,7 +584,10 @@ function CheckoutForm() {
                 disabled={loading}
                 className="w-full bg-coral-pop text-cloud-dancer py-5 rounded-full text-lg font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-95 disabled:opacity-50 mt-4 cursor-pointer"
               >
-                {loading ? t('btnSubmitLoading', locale) : t('btnSubmit', locale)}
+                {loading 
+                  ? t('btnSubmitLoading', locale) 
+                  : (isLastMinute ? t('btnSubmitWhatsApp', locale) : t('btnSubmit', locale))
+                }
               </button>
 
               <div className="flex items-center justify-center gap-4 pt-4 border-t border-deep-indigo/5 mt-6">

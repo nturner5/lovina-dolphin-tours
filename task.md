@@ -1,0 +1,7 @@
+- `[x]` Create `/api/admin/bookings` endpoint in `src/app/api/admin/bookings/route.ts` using native fetch
+- `[x]` Revert changes to "End-to-End Excursion Test Suite" in `src/app/admin/page.tsx`
+- `[x]` Add states for Airtable bookings list, modal edits, search/filters, and errors in `src/app/admin/page.tsx`
+- `[x]` Add booking fetcher and update handlers (GET, PATCH, DELETE) in `src/app/admin/page.tsx`
+- `[x]` Render the Booking Manager UI table, search/filters, and detail update modals in `src/app/admin/page.tsx`
+- `[x]` Build manual booking form section in `src/app/admin/page.tsx`
+- `[x]` Run production build verification

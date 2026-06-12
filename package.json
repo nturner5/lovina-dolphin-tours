@@ -13,6 +13,7 @@
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.26.0",
     "@stripe/stripe-js": "^9.6.0",
+    "@supabase/supabase-js": "^2.108.1",
     "@tailwindcss/typography": "^0.5.19",
     "groq": "^5.26.0",
     "lucide-react": "^1.16.0",

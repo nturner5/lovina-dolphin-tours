@@ -8,13 +8,12 @@ export default function AdminDashboard() {
   const [passwordInput, setPasswordInput] = useState('');
   const [passwordError, setPasswordError] = useState(false);
 
-  // Test form values
+  // Test form values (reverted to original layout - no tourId)
   const [formData, setFormData] = useState({
     guestName: 'John Doe',
     guestEmail: 'john.doe@example.com',
     date: '2026-06-08',
     guests: '2',
-    tourId: 'seven-am-ethical',
     pickupLocation: 'none',
     whatsappNumber: '+6281234567890',
     hotelDetails: 'Ubud Hanging Gardens Villa 4',
@@ -27,7 +26,44 @@ export default function AdminDashboard() {
   const [webhookBaseUrl, setWebhookBaseUrl] = useState('https://n8n.balidolphintours.com');
   const [logs, setLogs] = useState<{ time: string; type: string; url: string; status: string; details: any }[]>([]);
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
-  const [generatedStripeUrl, setGeneratedStripeUrl] = useState<string>('');
+
+  // Live Dashboard States
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [isLoadingBookings, setIsLoadingBookings] = useState(false);
+  const [bookingsError, setBookingsError] = useState<string | null>(null);
+
+  // Filters and search
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterDate, setFilterDate] = useState<'all' | 'today' | 'future' | 'past'>('all');
+  const [filterCaptain, setFilterCaptain] = useState('all');
+
+  // Manual booking form state
+  const [manualForm, setManualForm] = useState({
+    guestName: '',
+    guestEmail: '',
+    whatsappNumber: '',
+    date: '',
+    guests: '2',
+    tourId: 'seven-am-ethical',
+    pickupLocation: 'none',
+    hotelDetails: '',
+    paymentType: 'cash',
+  });
+  const [manualCreatedLink, setManualCreatedLink] = useState('');
+  const [manualBookingError, setManualBookingError] = useState<string | null>(null);
+  const [isCreatingManual, setIsCreatingManual] = useState(false);
+
+  // Edit details modal state
+  const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
+  const [editFields, setEditFields] = useState<any>({});
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  // Transport upgrade link state
+  const [upgradeLocation, setUpgradeLocation] = useState('ubud');
+  const [generatedUpgradeUrl, setGeneratedUpgradeUrl] = useState('');
+  const [isGeneratingUpgrade, setIsGeneratingUpgrade] = useState(false);
 
   const handleBaseUrlChange = (newBaseUrl: string) => {
     setWebhookBaseUrl(newBaseUrl);
@@ -62,6 +98,13 @@ export default function AdminDashboard() {
       .finally(() => setIsVerifying(false));
     }
   }, []);
+
+  // Fetch bookings when authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchBookings();
+    }
+  }, [isAuthenticated]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,46 +149,296 @@ export default function AdminDashboard() {
     ]);
   };
 
-  // 1. Dispatch Stripe Webhook
-  const generatePaymentLink = async () => {
-    setLoadingAction('paymentLink');
-    setGeneratedStripeUrl('');
+  // Dashboard API Handlers
+  const fetchBookings = async () => {
+    setIsLoadingBookings(true);
+    setBookingsError(null);
+    try {
+      const response = await fetch('/api/admin/bookings', {
+        headers: {
+          'x-admin-password': localStorage.getItem('lovina_admin_pass') || '',
+        },
+      });
+      const data = await response.json();
+      if (data.error) {
+        setBookingsError(data.error);
+      } else {
+        setBookings(data.bookings || []);
+      }
+    } catch (err: any) {
+      setBookingsError(err.message || 'Failed to fetch bookings');
+    } finally {
+      setIsLoadingBookings(false);
+    }
+  };
+
+  const handleCreateManualBooking = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setManualBookingError(null);
+    setManualCreatedLink('');
+    setIsCreatingManual(true);
+
+    try {
+      const {
+        guestName,
+        guestEmail,
+        whatsappNumber,
+        date,
+        guests,
+        tourId,
+        pickupLocation,
+        hotelDetails,
+        paymentType,
+      } = manualForm;
+
+      if (!guestName || !whatsappNumber || !date || !guests) {
+        throw new Error('Please fill in Name, WhatsApp, Date, and Guest Count.');
+      }
+
+      // Generate shortcode
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let shortCode = '';
+      for (let i = 0; i < 4; i++) {
+        shortCode += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      const bookingCode = `LEM-${shortCode}`;
+
+      // Calculate transport names & labels
+      const pickupDescs: Record<string, string> = {
+        none: 'None',
+        lovina: 'Free Local Pickup — Lovina Beach Area',
+        ubud: 'Private Return Transfer — Ubud',
+        'canggu-kuta': 'Private Return Transfer — Canggu, Seminyak, Kuta',
+        uluwatu: 'Private Return Transfer — Uluwatu, Nusa Dua, Jimbaran',
+      };
+      const pickupDesc = pickupDescs[pickupLocation] || 'None';
+
+      if (paymentType === 'stripe') {
+        // Generate payment link
+        const response = await fetch('/api/admin/checkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-password': localStorage.getItem('lovina_admin_pass') || '',
+          },
+          body: JSON.stringify({
+            tourId,
+            date,
+            guests: Number(guests),
+            name: guestName,
+            email: guestEmail,
+            whatsappNumber,
+            pickupLocation,
+            hotelDetails,
+            bookingCode,
+          }),
+        });
+        const data = await response.json();
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        if (data.url) {
+          setManualCreatedLink(data.url);
+          alert('Stripe Payment Link Generated successfully!');
+        }
+      } else {
+        // Cash / bank transfer booking - directly post to Airtable
+        const fields = {
+          BookingCode: bookingCode,
+          Date: date,
+          Guests: Number(guests),
+          PickupLocation: pickupLocation,
+          PickupDescription: pickupDesc,
+          WhatsappNumber: whatsappNumber,
+          GuestPhone: whatsappNumber,
+          HotelDetails: hotelDetails,
+          GuestName: guestName,
+          GuestEmail: guestEmail,
+          AssignedCaptain: 'PENDING',
+          RulesSigned: 'PENDING',
+        };
+
+        const response = await fetch('/api/admin/bookings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-password': localStorage.getItem('lovina_admin_pass') || '',
+          },
+          body: JSON.stringify({
+            action: 'create',
+            fields,
+          }),
+        });
+
+        const data = await response.json();
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        alert('Cash booking logged in Airtable successfully!');
+        setManualForm({
+          guestName: '',
+          guestEmail: '',
+          whatsappNumber: '',
+          date: '',
+          guests: '2',
+          tourId: 'seven-am-ethical',
+          pickupLocation: 'none',
+          hotelDetails: '',
+          paymentType: 'cash',
+        });
+        fetchBookings();
+      }
+    } catch (err: any) {
+      setManualBookingError(err.message || 'Failed to create manual booking');
+    } finally {
+      setIsCreatingManual(false);
+    }
+  };
+
+  const openEditModal = (booking: any) => {
+    setSelectedBooking(booking);
+    setEditFields({
+      Date: booking.Date || '',
+      Guests: booking.Guests || '',
+      AssignedCaptain: booking.AssignedCaptain || '',
+      CaptainPhone: booking.CaptainPhone || '',
+      HotelDetails: booking.HotelDetails || '',
+      PickupLocation: booking.PickupLocation || 'none',
+      PickupDescription: booking.PickupDescription || 'None',
+      WhatsappNumber: booking.WhatsappNumber || '',
+    });
+    setUpgradeLocation('ubud');
+    setGeneratedUpgradeUrl('');
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditPickupChange = (loc: string) => {
+    const pickupDescs: Record<string, string> = {
+      none: 'None',
+      lovina: 'Free Local Pickup — Lovina Beach Area',
+      ubud: 'Private Return Transfer — Ubud',
+      'canggu-kuta': 'Private Return Transfer — Canggu, Seminyak, Kuta',
+      uluwatu: 'Private Return Transfer — Uluwatu, Nusa Dua, Jimbaran',
+    };
+    setEditFields((prev: any) => ({
+      ...prev,
+      PickupLocation: loc,
+      PickupDescription: pickupDescs[loc] || 'None',
+    }));
+  };
+
+  const handleUpdateBooking = async () => {
+    if (!selectedBooking) return;
+    setIsSavingEdit(true);
+    try {
+      const response = await fetch('/api/admin/bookings', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-password': localStorage.getItem('lovina_admin_pass') || '',
+        },
+        body: JSON.stringify({
+          id: selectedBooking.id,
+          fields: {
+            Date: editFields.Date,
+            Guests: Number(editFields.Guests),
+            AssignedCaptain: editFields.AssignedCaptain,
+            CaptainPhone: editFields.CaptainPhone,
+            HotelDetails: editFields.HotelDetails,
+            PickupLocation: editFields.PickupLocation,
+            PickupDescription: editFields.PickupDescription,
+            WhatsappNumber: editFields.WhatsappNumber,
+            GuestPhone: editFields.WhatsappNumber,
+          },
+        }),
+      });
+      const data = await response.json();
+      if (data.error) {
+        alert(data.error);
+      } else {
+        alert('Booking updated successfully!');
+        setIsEditModalOpen(false);
+        fetchBookings();
+      }
+    } catch (err: any) {
+      alert(err.message || 'Failed to update booking');
+    } finally {
+      setIsSavingEdit(false);
+    }
+  };
+
+  const handleCancelBooking = async () => {
+    if (!selectedBooking) return;
+    if (!confirm(`Are you absolutely sure you want to cancel and refund booking ${selectedBooking.BookingCode}? This will issue a full refund in Stripe and mark the booking status to CANCELLED in Airtable.`)) {
+      return;
+    }
+    setIsCancelling(true);
+    try {
+      const response = await fetch('/api/admin/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-password': localStorage.getItem('lovina_admin_pass') || '',
+        },
+        body: JSON.stringify({
+          action: 'cancel',
+          bookingCode: selectedBooking.BookingCode,
+          recordId: selectedBooking.id,
+        }),
+      });
+      const data = await response.json();
+      if (data.error) {
+        alert(data.error);
+      } else {
+        alert(`Booking cancelled successfully!\nStatus: ${data.refundStatus}`);
+        setIsEditModalOpen(false);
+        fetchBookings();
+      }
+    } catch (err: any) {
+      alert(err.message || 'Failed to cancel booking');
+    } finally {
+      setIsCancelling(false);
+    }
+  };
+
+  const handleGenerateTransportUpgradeLink = async () => {
+    if (!selectedBooking) return;
+    setIsGeneratingUpgrade(true);
+    setGeneratedUpgradeUrl('');
     try {
       const response = await fetch('/api/admin/checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-admin-password': localStorage.getItem('lovina_admin_pass') || ''
+          'x-admin-password': localStorage.getItem('lovina_admin_pass') || '',
         },
         body: JSON.stringify({
-          tourId: formData.tourId,
-          date: formData.date,
-          guests: formData.guests,
-          name: formData.guestName,
-          email: formData.guestEmail,
-          whatsappNumber: formData.whatsappNumber,
-          pickupLocation: formData.pickupLocation,
-          hotelDetails: formData.hotelDetails,
-          bookingCode: formData.bookingCode,
-        })
+          tourId: 'transport-only',
+          date: selectedBooking.Date || '',
+          guests: 1,
+          name: selectedBooking.GuestName || '',
+          email: selectedBooking.GuestEmail || '',
+          whatsappNumber: selectedBooking.WhatsappNumber || '',
+          pickupLocation: upgradeLocation,
+          hotelDetails: selectedBooking.HotelDetails || '',
+          bookingCode: selectedBooking.BookingCode,
+        }),
       });
-
       const data = await response.json();
       if (data.error) {
         alert(data.error);
-        logResponse('Generate Stripe Link', '/api/admin/checkout', 'Error', data.error);
       } else if (data.url) {
-        setGeneratedStripeUrl(data.url);
-        logResponse('Generate Stripe Link', '/api/admin/checkout', 'Success', data.url);
+        setGeneratedUpgradeUrl(data.url);
       }
     } catch (err: any) {
-      alert(err.message);
-      logResponse('Generate Stripe Link', '/api/admin/checkout', 'Error', err.message);
+      alert(err.message || 'Failed to generate upgrade link');
     } finally {
-      setLoadingAction(null);
+      setIsGeneratingUpgrade(false);
     }
   };
 
+  // Reverted Test Suite Stripe webhook dispatcher (price = 45, tourId = 'seven-am-ethical')
   const sendStripeWebhook = async () => {
     setLoadingAction('stripe');
     const pickupFees: Record<string, number> = { none: 0, lovina: 0, ubud: 35, 'canggu-kuta': 50, uluwatu: 65 };
@@ -157,14 +450,9 @@ export default function AdminDashboard() {
       uluwatu: 'Private Return Transfer — Uluwatu, Nusa Dua, Jimbaran'
     };
 
-    const tourPrices: Record<string, number> = {
-      'seven-am-ethical': 45,
-      'swim-snorkel': 65
-    };
-
     const fee = pickupFees[formData.pickupLocation] || 0;
     const desc = pickupDescs[formData.pickupLocation] || 'None';
-    const tourPrice = tourPrices[formData.tourId] || 45;
+    const tourPrice = 45;
     const mockSessionId = 'cs_test_' + Math.random().toString(36).substring(2, 15);
 
     const stripePayload = {
@@ -185,7 +473,7 @@ export default function AdminDashboard() {
           },
           metadata: {
             bookingCode: formData.bookingCode,
-            tourId: formData.tourId,
+            tourId: 'seven-am-ethical',
             date: formData.date,
             guests: formData.guests.toString(),
             pickupLocation: formData.pickupLocation,
@@ -328,6 +616,85 @@ export default function AdminDashboard() {
     }
   };
 
+  // Get unique captains from bookings list
+  const uniqueCaptains = Array.from(
+    new Set(
+      bookings
+        .map((b) => b.AssignedCaptain)
+        .filter((c) => c && c !== 'PENDING' && c !== 'CANCELLED')
+    )
+  );
+
+  // Filter logic
+  const filteredBookings = bookings.filter((booking) => {
+    // 1. Search Query
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch =
+      !searchQuery ||
+      (booking.GuestName || '').toLowerCase().includes(searchLower) ||
+      (booking.BookingCode || '').toLowerCase().includes(searchLower) ||
+      (booking.GuestEmail || '').toLowerCase().includes(searchLower) ||
+      (booking.WhatsappNumber || '').toLowerCase().includes(searchLower) ||
+      (booking.HotelDetails || '').toLowerCase().includes(searchLower);
+
+    if (!matchesSearch) return false;
+
+    // 2. Date Filter
+    if (filterDate !== 'all') {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const bookingDate = booking.Date; // e.g. "2026-06-12"
+      
+      if (filterDate === 'today' && bookingDate !== todayStr) return false;
+      if (filterDate === 'future' && bookingDate <= todayStr) return false;
+      if (filterDate === 'past' && bookingDate >= todayStr) return false;
+    }
+
+    // 3. Captain Filter
+    if (filterCaptain !== 'all') {
+      if (filterCaptain === 'unassigned') {
+        const isUnassigned = !booking.AssignedCaptain || booking.AssignedCaptain === 'PENDING' || booking.AssignedCaptain === '';
+        if (!isUnassigned) return false;
+      } else {
+        if (booking.AssignedCaptain !== filterCaptain) return false;
+      }
+    }
+
+    return true;
+  });
+
+  // Get status badges dynamically
+  const getStatusBadge = (booking: any) => {
+    const captain = booking.AssignedCaptain;
+    const rules = booking.RulesSigned;
+    
+    if (captain === 'CANCELLED' || rules === 'CANCELLED') {
+      return (
+        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-800 border border-red-200">
+          CANCELLED
+        </span>
+      );
+    }
+    if (!captain || captain === 'PENDING') {
+      return (
+        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-yellow-100 text-yellow-800 border border-yellow-200 animate-pulse">
+          PENDING CLAIM
+        </span>
+      );
+    }
+    if (rules === 'signed' || rules === 'Yes' || rules === 'true') {
+      return (
+        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+          CONFIRMED ({captain})
+        </span>
+      );
+    }
+    return (
+      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
+        CLAIMED ({captain})
+      </span>
+    );
+  };
+
   if (!isAuthenticated) {
     return (
       <main className="bg-cloud-dancer min-h-screen flex items-center justify-center px-4 font-sans">
@@ -417,20 +784,356 @@ export default function AdminDashboard() {
 
           <div className="bg-transformative-teal/5 p-6 rounded-3xl border border-transformative-teal/10 flex flex-col justify-between">
             <div>
-              <span className="text-[9px] font-bold text-transformative-teal uppercase tracking-widest block mb-1">Live Operation</span>
-              <h2 className="text-xl font-serif mb-2">Google Bookings Sheet</h2>
+              <span className="text-[9px] font-bold text-transformative-teal uppercase tracking-widest block mb-1">Live Database</span>
+              <h2 className="text-xl font-serif mb-2">Airtable Bookings Base</h2>
               <p className="text-xs text-deep-indigo/60 mb-6 font-light leading-relaxed">
-                View current bookings, assigned captains, and behavioral contract signing status.
+                View database tables, webhook execution paths, and live operations records.
               </p>
             </div>
             <a
-              href="https://docs.google.com/spreadsheets/d/1r3dhgV_Du2wFK8hqOr_lZexS-wrxI9Xv6QQiyr2APd8/edit"
+              href="https://airtable.com/applZ1nCH21kq42Tz"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block text-center bg-transformative-teal text-cloud-dancer py-2.5 rounded-full font-bold text-xs hover:bg-deep-indigo transition-all"
             >
-              Open Live Spreadsheet ↗
+              Open Airtable Base ↗
             </a>
+          </div>
+        </div>
+
+        {/* 1. MANUAL BOOKING COORDINATOR */}
+        <div className="bg-white rounded-[2rem] shadow-sm border border-deep-indigo/5 p-6 sm:p-10 space-y-6">
+          <div>
+            <h2 className="text-2xl font-serif text-deep-indigo">Manual Booking Coordinator</h2>
+            <p className="text-xs text-deep-indigo/50 mt-1">Manually register bookings bypassing date validation rules, or generate direct payment links to share.</p>
+          </div>
+
+          <form onSubmit={handleCreateManualBooking} className="space-y-6">
+            {manualBookingError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 text-xs p-4 rounded-xl">
+                {manualBookingError}
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 border-t border-deep-indigo/5 pt-6">
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Guest Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Jane Doe"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-bold"
+                  value={manualForm.guestName}
+                  onChange={(e) => setManualForm({ ...manualForm, guestName: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Guest Email (Optional)</label>
+                <input
+                  type="email"
+                  placeholder="jane@example.com"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
+                  value={manualForm.guestEmail}
+                  onChange={(e) => setManualForm({ ...manualForm, guestEmail: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">WhatsApp Number (With Country Code)</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="+6281234567890"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-bold"
+                  value={manualForm.whatsappNumber}
+                  onChange={(e) => setManualForm({ ...manualForm, whatsappNumber: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Excursion Date</label>
+                <input
+                  type="date"
+                  required
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
+                  value={manualForm.date}
+                  onChange={(e) => setManualForm({ ...manualForm, date: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Guest Count</label>
+                <input
+                  type="number"
+                  min="1"
+                  max="20"
+                  required
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-bold"
+                  value={manualForm.guests}
+                  onChange={(e) => setManualForm({ ...manualForm, guests: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Tour Type</label>
+                <select
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-medium cursor-pointer"
+                  value={manualForm.tourId}
+                  onChange={(e) => setManualForm({ ...manualForm, tourId: e.target.value as any })}
+                >
+                  <option value="seven-am-ethical">7:00 AM Private Dolphin watching ($45/person)</option>
+                  <option value="swim-snorkel">7:00 AM Private Dolphin + Swim & Snorkel ($65/person)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Pickup Location Option</label>
+                <select
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-medium cursor-pointer"
+                  value={manualForm.pickupLocation}
+                  onChange={(e) => setManualForm({ ...manualForm, pickupLocation: e.target.value as any })}
+                >
+                  <option value="none">No Driver (Self-Drive Meetup)</option>
+                  <option value="lovina">Free Local Shuttle (~7:30 AM)</option>
+                  <option value="ubud">Ubud Return Transfer (+$35)</option>
+                  <option value="canggu-kuta">Canggu/Kuta Return Transfer (+$50)</option>
+                  <option value="uluwatu">Uluwatu Return Transfer (+$65)</option>
+                </select>
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Hotel Details & Special Pickup Notes</label>
+                <input
+                  type="text"
+                  placeholder="Hotel name, room number, or meetup notes"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
+                  value={manualForm.hotelDetails}
+                  onChange={(e) => setManualForm({ ...manualForm, hotelDetails: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-between border-t border-deep-indigo/5 pt-6 gap-4">
+              {/* Payment Selection & Live Total */}
+              <div className="flex items-center gap-6 self-start">
+                <div>
+                  <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Payment Booking Type</label>
+                  <div className="flex gap-4">
+                    <label className="inline-flex items-center gap-2 text-xs font-bold cursor-pointer">
+                      <input
+                        type="radio"
+                        name="paymentType"
+                        value="cash"
+                        checked={manualForm.paymentType === 'cash'}
+                        onChange={() => setManualForm({ ...manualForm, paymentType: 'cash' })}
+                        className="accent-transformative-teal"
+                      />
+                      Cash / Bank Transfer
+                    </label>
+                    <label className="inline-flex items-center gap-2 text-xs font-bold cursor-pointer">
+                      <input
+                        type="radio"
+                        name="paymentType"
+                        value="stripe"
+                        checked={manualForm.paymentType === 'stripe'}
+                        onChange={() => setManualForm({ ...manualForm, paymentType: 'stripe' })}
+                        className="accent-transformative-teal"
+                      />
+                      Stripe Card Payment Link
+                    </label>
+                  </div>
+                </div>
+
+                <div className="border-l border-deep-indigo/10 pl-6">
+                  <span className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-1">Calculated Price</span>
+                  <span className="text-xl font-serif font-bold text-transformative-teal">
+                    ${(manualForm.tourId === 'seven-am-ethical' ? 45 : 65) * Number(manualForm.guests) + (manualForm.pickupLocation === 'ubud' ? 35 : manualForm.pickupLocation === 'canggu-kuta' ? 50 : manualForm.pickupLocation === 'uluwatu' ? 65 : 0)} USD
+                  </span>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isCreatingManual}
+                className="w-full sm:w-auto bg-coral-pop hover:bg-deep-indigo text-white rounded-full px-8 py-3.5 text-xs uppercase font-bold tracking-widest transition-all cursor-pointer disabled:opacity-50"
+              >
+                {isCreatingManual 
+                  ? 'Processing...' 
+                  : manualForm.paymentType === 'stripe' 
+                    ? '🔗 Generate Payment Link' 
+                    : '✍ Book Cash Excursion'
+                }
+              </button>
+            </div>
+
+            {manualCreatedLink && (
+              <div className="bg-transformative-teal/5 border border-transformative-teal/20 rounded-2xl p-5 space-y-3 animate-in fade-in duration-300">
+                <span className="text-[10px] font-bold text-transformative-teal uppercase tracking-widest block">Stripe Payment Link Generated!</span>
+                <div className="flex gap-2">
+                  <input 
+                    type="text" 
+                    readOnly
+                    className="flex-1 bg-white border border-deep-indigo/10 rounded-xl px-4 py-2 text-xs font-mono select-all"
+                    value={manualCreatedLink}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText(manualCreatedLink);
+                      alert('Copied to clipboard!');
+                    }}
+                    className="bg-deep-indigo text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-transformative-teal transition-all cursor-pointer shrink-0"
+                  >
+                    Copy
+                  </button>
+                </div>
+                <div className="flex gap-3 pt-2">
+                  <a
+                    href={`https://wa.me/${manualForm.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                      `Hi ${manualForm.guestName}! Here is the secure link to complete your private dolphin tour booking: ${manualCreatedLink}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-full font-bold text-xs transition-all flex items-center justify-center gap-1.5"
+                  >
+                    💬 Share on WhatsApp
+                  </a>
+                </div>
+              </div>
+            )}
+          </form>
+        </div>
+
+        {/* 2. AIRTABLE BOOKINGS MANAGER */}
+        <div className="bg-white rounded-[2rem] shadow-sm border border-deep-indigo/5 p-6 sm:p-10 space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-2xl font-serif text-deep-indigo">Airtable Bookings Manager</h2>
+              <p className="text-xs text-deep-indigo/50 mt-1">Real-time booking records from Airtable base `applZ1nCH21kq42Tz`.</p>
+            </div>
+            <button
+              onClick={fetchBookings}
+              disabled={isLoadingBookings}
+              className="self-start md:self-auto bg-deep-indigo/5 hover:bg-deep-indigo/10 text-deep-indigo px-5 py-2.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+            >
+              {isLoadingBookings ? 'Refreshing...' : '🔄 Refresh Bookings'}
+            </button>
+          </div>
+
+          {/* Search & Filter Bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-deep-indigo/5 pt-6">
+            <div>
+              <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Search Records</label>
+              <input
+                type="text"
+                placeholder="Name, email, phone, or code..."
+                className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-medium"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Filter by Excursion Date</label>
+              <select
+                className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-medium cursor-pointer"
+                value={filterDate}
+                onChange={(e) => setFilterDate(e.target.value as any)}
+              >
+                <option value="all">All Dates</option>
+                <option value="today">Today's Excursions</option>
+                <option value="future">Future Bookings</option>
+                <option value="past">Past Bookings</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Filter by Captain</label>
+              <select
+                className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-medium cursor-pointer"
+                value={filterCaptain}
+                onChange={(e) => setFilterCaptain(e.target.value)}
+              >
+                <option value="all">All Captains</option>
+                <option value="unassigned">Unassigned (Pending Claim)</option>
+                {uniqueCaptains.map((cap: any) => (
+                  <option key={cap} value={cap}>{cap}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Table */}
+          <div className="border-t border-deep-indigo/5 pt-6">
+            {bookingsError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 text-xs p-4 rounded-xl">
+                <strong>Error:</strong> {bookingsError}
+              </div>
+            )}
+
+            {isLoadingBookings && bookings.length === 0 ? (
+              <div className="text-center py-12 text-deep-indigo/40 text-xs animate-pulse">
+                Loading live bookings from Airtable...
+              </div>
+            ) : filteredBookings.length === 0 ? (
+              <div className="text-center py-12 text-deep-indigo/40 text-xs italic">
+                No bookings match your current search and filter criteria.
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-deep-indigo/10 text-[10px] font-bold uppercase tracking-wider text-deep-indigo/40">
+                      <th className="pb-3 pr-4">Code</th>
+                      <th className="pb-3 pr-4">Guest</th>
+                      <th className="pb-3 pr-4">Date</th>
+                      <th className="pb-3 pr-4 text-center">Guests</th>
+                      <th className="pb-3 pr-4">Pickup / Hotel</th>
+                      <th className="pb-3 pr-4">Status</th>
+                      <th className="pb-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-deep-indigo/5 text-xs">
+                    {filteredBookings.map((booking) => (
+                      <tr 
+                        key={booking.id}
+                        onClick={() => openEditModal(booking)}
+                        className="hover:bg-deep-indigo/5 transition-colors cursor-pointer group"
+                      >
+                        <td className="py-4 pr-4 font-mono font-bold text-transformative-teal">
+                          {booking.BookingCode || '—'}
+                        </td>
+                        <td className="py-4 pr-4">
+                          <div className="font-bold">{booking.GuestName || 'Unknown'}</div>
+                          <div className="text-[10px] text-deep-indigo/50 font-light">{booking.GuestEmail || 'No Email'}</div>
+                          <div className="text-[10px] text-deep-indigo/50 font-light">{booking.WhatsappNumber || booking.GuestPhone || 'No Phone'}</div>
+                        </td>
+                        <td className="py-4 pr-4 font-medium">
+                          {booking.Date || '—'}
+                        </td>
+                        <td className="py-4 pr-4 text-center font-bold">
+                          {booking.Guests || '—'}
+                        </td>
+                        <td className="py-4 pr-4 max-w-xs truncate">
+                          <div className="font-medium">{booking.PickupDescription || 'None'}</div>
+                          {booking.HotelDetails && (
+                            <div className="text-[10px] text-deep-indigo/50 truncate font-light">
+                              🏨 {booking.HotelDetails}
+                            </div>
+                          )}
+                        </td>
+                        <td className="py-4 pr-4">
+                          {getStatusBadge(booking)}
+                        </td>
+                        <td className="py-4 text-right">
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openEditModal(booking);
+                            }}
+                            className="text-[10px] uppercase font-bold tracking-wider text-deep-indigo hover:text-transformative-teal"
+                          >
+                            Manage
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
 
@@ -482,17 +1185,6 @@ export default function AdminDashboard() {
                   value={formData.guests}
                   onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
                 />
-              </div>
-              <div>
-                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Tour Type</label>
-                <select
-                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-medium cursor-pointer"
-                  value={formData.tourId}
-                  onChange={(e) => setFormData({ ...formData, tourId: e.target.value })}
-                >
-                  <option value="seven-am-ethical">7:00 AM Private Dolphin Watching Tour ($45)</option>
-                  <option value="swim-snorkel">7:00 AM Private Dolphin Watching Tour + Swim & Snorkel ($65)</option>
-                </select>
               </div>
               <div>
                 <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Pickup Location Option</label>
@@ -552,53 +1244,6 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {/* Generate Stripe Link Action */}
-            <div className="border-t border-deep-indigo/5 pt-6 space-y-4">
-              <button
-                type="button"
-                onClick={generatePaymentLink}
-                disabled={loadingAction !== null}
-                className="w-full bg-coral-pop text-white rounded-full py-4 text-xs uppercase font-bold tracking-widest hover:bg-deep-indigo transition-all cursor-pointer disabled:opacity-50"
-              >
-                {loadingAction === 'paymentLink' ? 'Generating Secure Link...' : '🔗 Generate Stripe Payment Link'}
-              </button>
-
-              {generatedStripeUrl && (
-                <div className="bg-transformative-teal/5 border border-transformative-teal/20 rounded-2xl p-5 space-y-3 animate-in fade-in duration-300">
-                  <span className="text-[10px] font-bold text-transformative-teal uppercase tracking-widest block">Stripe Payment Link Generated!</span>
-                  <div className="flex gap-2">
-                    <input 
-                      type="text" 
-                      readOnly
-                      className="flex-1 bg-white border border-deep-indigo/10 rounded-xl px-4 py-2 text-xs font-mono select-all"
-                      value={generatedStripeUrl}
-                    />
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(generatedStripeUrl);
-                        alert('Copied to clipboard!');
-                      }}
-                      className="bg-deep-indigo text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-transformative-teal transition-all cursor-pointer shrink-0"
-                    >
-                      Copy
-                    </button>
-                  </div>
-                  <div className="flex gap-3 pt-2">
-                    <a
-                      href={`https://wa.me/${formData.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-                        `Hi ${formData.guestName}! Here is the secure link to complete your private dolphin tour booking: ${generatedStripeUrl}`
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 text-center bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-full font-bold text-xs transition-all flex items-center justify-center gap-1.5"
-                    >
-                      💬 Share on WhatsApp
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>
-
             {/* Target webhook configurations */}
             <div className="space-y-4 border-t border-deep-indigo/5 pt-6">
               <h3 className="text-sm font-bold uppercase tracking-wider text-deep-indigo/60">Target Webhook Endpoints</h3>
@@ -652,9 +1297,9 @@ export default function AdminDashboard() {
                   disabled={loadingAction !== null}
                   className="flex flex-col justify-between items-center text-center p-5 rounded-2xl border border-deep-indigo/10 hover:border-transformative-teal bg-white hover:bg-transformative-teal/5 transition-all text-xs font-bold leading-normal disabled:opacity-50 cursor-pointer"
                 >
-                  <span className="text-xl mb-2">💵</span>
-                  <span>Confirm Cash Booking (Mock Webhook)</span>
-                  <span className="text-[9px] text-deep-indigo/40 font-normal mt-1">Directly registers booking & dispatches captains</span>
+                  <span className="text-xl mb-2">💳</span>
+                  <span>1. Stripe Checkout Completed</span>
+                  <span className="text-[9px] text-deep-indigo/40 font-normal mt-1">Triggers Lovina 1 sequential bidding</span>
                 </button>
 
                 <button
@@ -734,6 +1379,194 @@ export default function AdminDashboard() {
         </div>
 
       </div>
+
+      {/* EDIT / DETAILS MODAL */}
+      {isEditModalOpen && selectedBooking && (
+        <div className="fixed inset-0 bg-deep-indigo/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-200">
+          <div className="bg-white rounded-[2rem] max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-deep-indigo/10 shadow-2xl p-6 sm:p-10 space-y-6 animate-in zoom-in-95 duration-200">
+            
+            {/* Modal Header */}
+            <div className="flex justify-between items-start border-b border-deep-indigo/5 pb-4">
+              <div>
+                <span className="text-[9px] font-bold text-transformative-teal uppercase tracking-widest block">Manage Booking Details</span>
+                <h3 className="text-2xl font-serif text-deep-indigo">
+                  {selectedBooking.GuestName || 'Guest Record'} ({selectedBooking.BookingCode})
+                </h3>
+              </div>
+              <button
+                onClick={() => setIsEditModalOpen(false)}
+                className="text-deep-indigo/40 hover:text-deep-indigo font-bold text-lg cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Guest WhatsApp / Phone</label>
+                <input
+                  type="text"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-bold"
+                  value={editFields.WhatsappNumber}
+                  onChange={(e) => setEditFields({ ...editFields, WhatsappNumber: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Excursion Date</label>
+                <input
+                  type="date"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
+                  value={editFields.Date}
+                  onChange={(e) => setEditFields({ ...editFields, Date: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Number of Guests</label>
+                <input
+                  type="number"
+                  min="1"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-bold"
+                  value={editFields.Guests}
+                  onChange={(e) => setEditFields({ ...editFields, Guests: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Assigned Captain</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Wayan, Ketut (or PENDING)"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-semibold"
+                  value={editFields.AssignedCaptain}
+                  onChange={(e) => setEditFields({ ...editFields, AssignedCaptain: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Captain Phone Number</label>
+                <input
+                  type="text"
+                  placeholder="e.g. +6281234567890"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-mono"
+                  value={editFields.CaptainPhone}
+                  onChange={(e) => setEditFields({ ...editFields, CaptainPhone: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Pickup Location Option</label>
+                <select
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-medium cursor-pointer"
+                  value={editFields.PickupLocation}
+                  onChange={(e) => handleEditPickupChange(e.target.value)}
+                >
+                  <option value="none">No Driver (Self-Drive Meetup)</option>
+                  <option value="lovina">Free Local Shuttle (~7:30 AM)</option>
+                  <option value="ubud">Ubud Return Transfer</option>
+                  <option value="canggu-kuta">Canggu/Kuta Return Transfer</option>
+                  <option value="uluwatu">Uluwatu Return Transfer</option>
+                </select>
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Hotel Details & Shuttle Description</label>
+                <input
+                  type="text"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
+                  value={editFields.HotelDetails}
+                  onChange={(e) => setEditFields({ ...editFields, HotelDetails: e.target.value })}
+                />
+              </div>
+            </div>
+
+            {/* Upgrade Transport Payment Link Generator Section */}
+            <div className="border-t border-deep-indigo/5 pt-6 space-y-4">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-deep-indigo/60">Generate Driver Transport Upgrade</h4>
+              <p className="text-[10px] text-deep-indigo/40">If the guest requested return transport after booking, generate a Stripe checkout link and share on WhatsApp.</p>
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <select
+                  className="w-full sm:w-auto bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-medium cursor-pointer"
+                  value={upgradeLocation}
+                  onChange={(e) => setUpgradeLocation(e.target.value)}
+                >
+                  <option value="ubud">Ubud Return Transfer ($35)</option>
+                  <option value="canggu-kuta">Canggu/Kuta Return Transfer ($50)</option>
+                  <option value="uluwatu">Uluwatu Return Transfer ($65)</option>
+                </select>
+                <button
+                  onClick={handleGenerateTransportUpgradeLink}
+                  disabled={isGeneratingUpgrade}
+                  className="w-full sm:w-auto bg-deep-indigo hover:bg-transformative-teal text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all cursor-pointer disabled:opacity-50"
+                >
+                  {isGeneratingUpgrade ? 'Generating...' : '🔗 Generate Upgrade Link'}
+                </button>
+              </div>
+              
+              {generatedUpgradeUrl && (
+                <div className="bg-transformative-teal/5 border border-transformative-teal/20 rounded-2xl p-4 space-y-3 animate-in fade-in duration-300">
+                  <div className="flex gap-2">
+                    <input 
+                      type="text" 
+                      readOnly
+                      className="flex-1 bg-white border border-deep-indigo/10 rounded-xl px-3 py-1.5 text-xs font-mono select-all"
+                      value={generatedUpgradeUrl}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(generatedUpgradeUrl);
+                        alert('Copied to clipboard!');
+                      }}
+                      className="bg-deep-indigo text-white px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-transformative-teal transition-all cursor-pointer shrink-0"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                  <a
+                    href={`https://wa.me/${(editFields.WhatsappNumber || '').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                      `Hi ${selectedBooking.GuestName}! Here is the payment link to add the private return transfer to your booking: ${generatedUpgradeUrl}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-green-600 hover:text-green-700"
+                  >
+                    💬 Share on WhatsApp
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Actions */}
+            <div className="flex flex-col sm:flex-row items-center justify-between border-t border-deep-indigo/5 pt-6 gap-4">
+              <div className="flex gap-3 w-full sm:w-auto">
+                <button
+                  onClick={handleUpdateBooking}
+                  disabled={isSavingEdit}
+                  className="flex-1 sm:flex-none bg-deep-indigo hover:bg-transformative-teal text-white px-6 py-2.5 rounded-full text-xs font-bold transition-all cursor-pointer disabled:opacity-50"
+                >
+                  {isSavingEdit ? 'Saving...' : 'Save Changes'}
+                </button>
+                
+                <a
+                  href={`https://wa.me/${(editFields.WhatsappNumber || '').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                    `Hi ${selectedBooking.GuestName}! We have adjusted your Lovina Dolphin Tour details. Date: ${editFields.Date}, Guests: ${editFields.Guests}. Assigned Captain: ${editFields.AssignedCaptain || 'Pending'}. Please let us know if this is ok. Thank you!`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 sm:flex-none border border-green-600 hover:bg-green-50 text-green-600 px-5 py-2.5 rounded-full text-xs font-bold text-center flex items-center justify-center gap-1.5"
+                >
+                  💬 Send WhatsApp Alert
+                </a>
+              </div>
+
+              <button
+                onClick={handleCancelBooking}
+                disabled={isCancelling}
+                className="w-full sm:w-auto border border-red-500 hover:bg-red-50 text-red-500 px-6 py-2.5 rounded-full text-xs font-bold transition-all cursor-pointer disabled:opacity-50"
+              >
+                {isCancelling ? 'Processing...' : '⚠️ Cancel & Refund Booking'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

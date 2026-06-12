@@ -27,14 +27,16 @@ export async function POST(req: Request) {
     const tourPrices: Record<string, number> = {
       'seven-am-ethical': 45,
       'swim-snorkel': 65,
+      'transport-only': 0,
     };
 
     const tourNames: Record<string, string> = {
       'seven-am-ethical': '7:00 AM Private Dolphin Watching Tour',
       'swim-snorkel': '7:00 AM Private Dolphin Watching Tour + Swim & Snorkel',
+      'transport-only': 'Private Return Transfer Upgrade',
     };
 
-    const price = tourPrices[tourId] || 45;
+    const price = tourPrices[tourId] !== undefined ? tourPrices[tourId] : 45;
     const tourName = tourNames[tourId] || '7:00 AM Private Dolphin Watching Tour';
 
     // Calculate pickup price and name
@@ -44,23 +46,25 @@ export async function POST(req: Request) {
 
     if (pickupLocation === 'ubud') {
       pickupFee = 35;
-      pickupName = 'Private Return Transfer — Ubud';
-      pickupDesc = `Private roundtrip transport from your hotel in Ubud to Lovina for your dolphin tour on ${date}.`;
+      pickupName = 'Private Return Transfer Upgrade — Ubud';
+      pickupDesc = `Private return transport from your hotel in Ubud to Lovina for your dolphin tour on ${date}.`;
     } else if (pickupLocation === 'canggu-kuta') {
       pickupFee = 50;
-      pickupName = 'Private Return Transfer — Canggu, Seminyak, Kuta';
-      pickupDesc = `Private roundtrip transport from your hotel in Canggu, Seminyak, or Kuta to Lovina for your dolphin tour on ${date}.`;
+      pickupName = 'Private Return Transfer Upgrade — Canggu, Seminyak, Kuta';
+      pickupDesc = `Private return transport from your hotel in Canggu, Seminyak, or Kuta to Lovina for your dolphin tour on ${date}.`;
     } else if (pickupLocation === 'uluwatu') {
       pickupFee = 65;
-      pickupName = 'Private Return Transfer — Uluwatu, Nusa Dua, Jimbaran';
-      pickupDesc = `Private roundtrip transport from your hotel in Uluwatu, Nusa Dua, or Jimbaran to Lovina for your dolphin tour on ${date}.`;
+      pickupName = 'Private Return Transfer Upgrade — Uluwatu, Nusa Dua, Jimbaran';
+      pickupDesc = `Private return transport from your hotel in Uluwatu, Nusa Dua, or Jimbaran to Lovina for your dolphin tour on ${date}.`;
     } else if (pickupLocation === 'lovina') {
       pickupName = 'Free Local Pickup — Lovina Beach Area';
       pickupDesc = `Complimentary local pickup within 2km of Lovina Beach on ${date}.`;
     }
 
-    const lineItems: any[] = [
-      {
+    const lineItems: any[] = [];
+
+    if (price > 0) {
+      lineItems.push({
         price_data: {
           currency: 'usd',
           product_data: {
@@ -70,8 +74,8 @@ export async function POST(req: Request) {
           unit_amount: price * 100,
         },
         quantity: Math.max(1, Number(guests) || 1), // Allow manual overrides
-      },
-    ];
+      });
+    }
 
     if (pickupFee > 0) {
       lineItems.push({

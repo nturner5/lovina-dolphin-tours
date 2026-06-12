@@ -1,15 +1,22 @@
 import fs from 'fs';
 import path from 'path';
 
-// Load .env.local file to extract META_ACCESS_TOKEN
+// Load .env.local file to extract META_ACCESS_TOKEN and WABA_ID
 const envPath = path.resolve(process.cwd(), '.env.local');
 let token = process.env.META_ACCESS_TOKEN;
+let wabaId = process.env.META_WABA_ID || '4305390753007174';
 
 if (fs.existsSync(envPath)) {
   const envContent = fs.readFileSync(envPath, 'utf8');
-  const match = envContent.match(/META_ACCESS_TOKEN=["']?([^"'\r\n]+)["']?/);
-  if (match && match[1]) {
-    token = match[1];
+  
+  const tokenMatch = envContent.match(/META_ACCESS_TOKEN=["']?([^"'\r\n]+)["']?/);
+  if (tokenMatch && tokenMatch[1]) {
+    token = tokenMatch[1];
+  }
+
+  const wabaMatch = envContent.match(/META_WABA_ID=["']?([^"'\r\n]+)["']?/);
+  if (wabaMatch && wabaMatch[1]) {
+    wabaId = wabaMatch[1];
   }
 }
 
@@ -20,7 +27,7 @@ if (!token) {
   process.exit(1);
 }
 
-const WABA_ID = '4305390753007174';
+const WABA_ID = wabaId;
 const GRAPH_API_URL = `https://graph.facebook.com/v20.0/${WABA_ID}/message_templates`;
 
 const templates = [

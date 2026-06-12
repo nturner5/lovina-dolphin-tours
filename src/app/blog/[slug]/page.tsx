@@ -172,18 +172,18 @@ export default async function BlogPost({ params, searchParams }: PageProps) {
         if (!value?.asset?._ref) return null;
         
         return (
-          <figure className="not-prose my-10 space-y-2.5 mx-auto max-w-2xl">
+          <figure className="not-prose my-10 space-y-2.5 mx-auto max-w-2xl group">
             <div className="relative w-full aspect-[3/2] rounded-3xl overflow-hidden border border-deep-indigo/5 shadow-lg bg-deep-indigo/5">
               <Image 
                 src={urlFor(value).url()} 
                 alt={value.alt || 'Lovina travel scene'}
                 fill
                 sizes="(max-w-768px) 100vw, 60vw"
-                className="object-cover"
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
               />
             </div>
             {(value.caption || value.alt) && (
-              <figcaption className="text-center text-[10px] sm:text-xs font-serif italic text-deep-indigo/40 mt-2 block">
+              <figcaption className="text-center text-[10px] sm:text-xs font-serif italic text-deep-indigo/40 mt-2 block group-hover:text-deep-indigo/60 transition-colors duration-300">
                 {value.caption || value.alt}
               </figcaption>
             )}
@@ -192,7 +192,7 @@ export default async function BlogPost({ params, searchParams }: PageProps) {
       },
       croBox: ({ value }: any) => {
         return (
-          <div className="bg-transformative-teal/5 p-8 rounded-3xl border border-transformative-teal/15 my-8">
+          <div className="not-prose bg-transformative-teal/5 p-8 rounded-3xl border border-transformative-teal/15 my-8 hover:shadow-md hover:scale-[1.01] transition-all duration-300">
             <h4 className="text-xl font-serif text-transformative-teal font-bold mb-3">🐢 {value.heading}</h4>
             <p className="text-sm text-deep-indigo/80 font-light mb-5 leading-relaxed">{value.description}</p>
             <Link 
@@ -296,20 +296,43 @@ export default async function BlogPost({ params, searchParams }: PageProps) {
             </h1>
             
             {/* Author and Date Premium Badge */}
-            <div className="flex items-center justify-center gap-3 text-xs border-y border-deep-indigo/10 py-4 max-w-lg mx-auto">
-              <div className="w-8 h-8 rounded-full bg-transformative-teal/15 flex items-center justify-center font-bold text-transformative-teal select-none">
-                🌴
+            <div className="flex flex-col items-center justify-center gap-4 border-y border-deep-indigo/10 py-4 max-w-lg mx-auto">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-transformative-teal/15 flex items-center justify-center font-bold text-transformative-teal select-none">
+                  🌴
+                </div>
+                <div className="text-left leading-tight">
+                  <span className="block font-bold text-deep-indigo">{post.author || 'Bali Dolphin Tours Team'}</span>
+                  <span className="text-[10px] text-deep-indigo/50 font-light">
+                    {new Date(post.publishedAt).toLocaleDateString(
+                      locale === 'zh' ? 'zh-CN' : locale === 'ru' ? 'ru-RU' : 'en-US', 
+                      { month: 'long', day: 'numeric', year: 'numeric' }
+                    )}
+                    <span className="mx-2">•</span>
+                    ⏱️ {readingTime} {t('minRead', locale)}
+                  </span>
+                </div>
               </div>
-              <div className="text-left leading-tight">
-                <span className="block font-bold text-deep-indigo">{post.author || 'Bali Dolphin Tours Team'}</span>
-                <span className="text-[10px] text-deep-indigo/50 font-light">
-                  {new Date(post.publishedAt).toLocaleDateString(
-                    locale === 'zh' ? 'zh-CN' : locale === 'ru' ? 'ru-RU' : 'en-US', 
-                    { month: 'long', day: 'numeric', year: 'numeric' }
-                  )}
-                  <span className="mx-2">•</span>
-                  ⏱️ {readingTime} {t('minRead', locale)}
-                </span>
+              
+              {/* Share Bar */}
+              <div className="flex items-center gap-3 border-t border-deep-indigo/5 pt-3 w-full justify-center">
+                <span className="text-[9px] uppercase tracking-wider text-deep-indigo/40 font-bold">Share:</span>
+                <a 
+                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`${post.title} — https://balidolphintours.com/blog/${slug}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-[9px] text-[#25D366] hover:bg-[#25D366]/5 bg-white px-3.5 py-1 rounded-full border border-[#25D366]/20 transition-all font-bold tracking-wider uppercase shadow-sm active:scale-95"
+                >
+                  💬 WhatsApp
+                </a>
+                <a 
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://balidolphintours.com/blog/${slug}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-[9px] text-[#1877F2] hover:bg-[#1877F2]/5 bg-white px-3.5 py-1 rounded-full border border-[#1877F2]/20 transition-all font-bold tracking-wider uppercase shadow-sm active:scale-95"
+                >
+                  👥 Facebook
+                </a>
               </div>
             </div>
           </header>
@@ -382,8 +405,26 @@ export default async function BlogPost({ params, searchParams }: PageProps) {
               </div>
 
               {/* Main PortableText Content */}
-              <div className="prose prose-xl prose-headings:font-serif prose-headings:text-deep-indigo text-deep-indigo/80 max-w-none prose-p:leading-relaxed prose-p:font-light prose-li:text-xs">
+              <div className="prose prose-xl prose-headings:font-serif prose-headings:text-deep-indigo text-deep-indigo/80 max-w-3xl prose-p:leading-relaxed prose-p:font-light prose-li:text-base md:prose-li:text-lg">
                 <PortableText value={bodyBlocks} components={portableTextComponents} />
+              </div>
+
+              {/* E-E-A-T Author Card */}
+              <div className="mt-16 p-8 rounded-3xl bg-white border border-deep-indigo/5 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-6 max-w-3xl">
+                <div className="w-16 h-16 rounded-full bg-transformative-teal/10 flex items-center justify-center text-3xl shrink-0 select-none">
+                  ⛵
+                </div>
+                <div className="text-center sm:text-left space-y-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <h4 className="text-lg font-serif font-bold text-deep-indigo">{post.author || 'Bali Dolphin Tours Team'}</h4>
+                    <span className="text-[9px] font-bold text-transformative-teal uppercase tracking-widest bg-transformative-teal/5 px-2.5 py-0.5 rounded-full border border-transformative-teal/10 w-fit mx-auto sm:mx-0">
+                      Local Skipper & Guide
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-deep-indigo/70 font-light leading-relaxed">
+                    Sharing first-hand maritime insights and travel guides from over 15 years of navigating the tranquil waters of North Bali. Passionate about ethical marine encounters, local culinary heritage, and sustainable ocean conservation.
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -489,7 +530,7 @@ export default async function BlogPost({ params, searchParams }: PageProps) {
                       <span className="text-transformative-teal">❓</span>
                       <span>{faq.question}</span>
                     </h4>
-                    <p className="text-xs text-deep-indigo/70 font-light leading-relaxed pl-6">
+                    <p className="text-sm sm:text-base text-deep-indigo/80 font-light leading-relaxed pl-6">
                       {faq.answer}
                     </p>
                   </div>

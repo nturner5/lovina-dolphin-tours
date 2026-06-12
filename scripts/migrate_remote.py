@@ -4,7 +4,10 @@ import sys
 import os
 
 DB_PATH = '/var/lib/docker/volumes/n8n-docker_n8n_data/_data/database.sqlite'
-CREDENTIAL_ID = 'Jl0QXzDHF911VKnm'
+# Placeholders injected dynamically by orchestrator
+CREDENTIAL_ID = 'YOUR_SUPABASE_CREDENTIAL_ID'
+SUPABASE_URL = 'YOUR_SUPABASE_URL'
+SERVICE_ROLE_KEY = 'YOUR_SUPABASE_SERVICE_ROLE_KEY'
 
 def main():
     print(f"Python Migration Script Started. Target Credential ID: {CREDENTIAL_ID}")
@@ -34,8 +37,8 @@ def main():
             new_nodes = []
 
             for node in nodes:
-                # We target both airtable and supabase nodes to re-apply the correct parameters and link the credentials
-                if node.get('type') not in ['n8n-nodes-base.airtable', 'n8n-nodes-base.supabase']:
+                # We target both airtable, supabase, and httpRequest nodes to re-apply configurations
+                if node.get('type') not in ['n8n-nodes-base.airtable', 'n8n-nodes-base.supabase', 'n8n-nodes-base.httpRequest']:
                     new_nodes.append(node)
                     continue
 
@@ -59,6 +62,52 @@ def main():
                 print(f"  Configuring node '{node_name}' in workflow '{w_name}'...")
                 modified = True
 
+                # Custom mapping for Create Booking Row to use HTTP Request node (REST API Upsert)
+                if node_name == 'Create Booking Row':
+                    base_http = {
+                        "id": node.get("id"),
+                        "name": node.get("name"),
+                        "type": "n8n-nodes-base.httpRequest",
+                        "typeVersion": 4,
+                        "position": node.get("position"),
+                        "maxTries": node.get("maxTries"),
+                        "retryOnFail": node.get("retryOnFail"),
+                        "waitBetweenTries": node.get("waitBetweenTries")
+                    }
+                    params = {
+                        "method": "POST",
+                        "url": f"{SUPABASE_URL}/rest/v1/bookings",
+                        "sendHeaders": True,
+                        "headerParameters": {
+                            "parameters": [
+                                {
+                                    "name": "apikey",
+                                    "value": SERVICE_ROLE_KEY
+                                },
+                                {
+                                    "name": "Authorization",
+                                    "value": f"Bearer {SERVICE_ROLE_KEY}"
+                                },
+                                {
+                                    "name": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "name": "Prefer",
+                                    "value": "resolution=merge-duplicates,on-conflict=booking_code,return=representation"
+                                }
+                            ]
+                        },
+                        "sendBody": True,
+                        "specifyBody": "json",
+                        "jsonBody": "={\n  \"booking_code\": \"{{ $json.body.data.object.metadata.bookingCode }}\",\n  \"date\": \"{{ $json.body.data.object.metadata.date }}\",\n  \"guests\": {{ Number($json.body.data.object.metadata.guests) }},\n  \"pickup_location\": \"{{ $json.body.data.object.metadata.pickupLocation }}\",\n  \"pickup_description\": \"{{ $json.body.data.object.metadata.pickupDescription }}\",\n  \"whatsapp_number\": \"{{ $json.body.data.object.metadata.whatsappNumber }}\",\n  \"guest_phone\": \"{{ $json.body.data.object.customer_details.phone }}\",\n  \"hotel_details\": \"{{ $json.body.data.object.metadata.hotelDetails }}\",\n  \"guest_name\": \"{{ $json.body.data.object.customer_details.name }}\",\n  \"guest_email\": \"{{ $json.body.data.object.customer_details.email }}\",\n  \"tour_id\": \"{{ $json.body.data.object.metadata.tourId || 'seven-am-ethical' }}\"\n}",
+                        "options": {}
+                    }
+                    base_http["parameters"] = params
+                    new_nodes.append(base_http)
+                    continue
+
+                # For all other nodes, we continue to use the native Supabase node
                 base_supabase = {
                     "id": node.get("id"),
                     "name": node.get("name"),
@@ -93,25 +142,6 @@ def main():
                                 ]
                             }
                         }
-                    }
-                elif node_name == 'Create Booking Row':
-                    params = {
-                        "operation": "upsert",
-                        "table": "bookings",
-                        "fields": {
-                            "booking_code": "={{ $json.body.data.object.metadata.bookingCode }}",
-                            "date": "={{ $json.body.data.object.metadata.date }}",
-                            "guests": "={{ Number($json.body.data.object.metadata.guests) }}",
-                            "pickup_location": "={{ $json.body.data.object.metadata.pickupLocation }}",
-                            "pickup_description": "={{ $json.body.data.object.metadata.pickupDescription }}",
-                            "whatsapp_number": "={{ $json.body.data.object.metadata.whatsappNumber }}",
-                            "guest_phone": "={{ $json.body.data.object.customer_details.phone }}",
-                            "hotel_details": "={{ $json.body.data.object.metadata.hotelDetails }}",
-                            "guest_name": "={{ $json.body.data.object.customer_details.name }}",
-                            "guest_email": "={{ $json.body.data.object.customer_details.email }}",
-                            "tour_id": "={{ $json.body.data.object.metadata.tourId || 'seven-am-ethical' }}"
-                        },
-                        "onConflict": "booking_code"
                     }
                 elif node_name == 'Check Current Assignment Raw':
                     params = {

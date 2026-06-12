@@ -132,6 +132,41 @@ const templates = [
         }
       }
     ]
+  },
+  {
+    name: 'prioritized_captain_broadcast_v5',
+    category: 'MARKETING',
+    language: 'id',
+    allow_category_change: true,
+    components: [
+      {
+        type: 'HEADER',
+        format: 'TEXT',
+        text: 'PESANAN PRIVATE BOAT BARU TERSEDIA'
+      },
+      {
+        type: 'BODY',
+        text: 'Halo {{1}}, ada penawaran prioritas untuk slot dolphin tour baru:\n\nTanggal: {{2}} (08:00 AM)\nJumlah Tamu: {{3}} Orang\nStatus Pickup: {{4}}\nKode Booking: {{5}}\n\nSilakan klik tombol "Terima Tugas" di bawah jika Anda kosong dan siap bertugas. (Batas waktu: 5 menit)',
+        example: {
+          body_text: [
+            ['Wayan', '2026-06-25', '2', 'Tanpa Pickup', 'LEM-K3RF']
+          ]
+        }
+      },
+      {
+        type: 'BUTTONS',
+        buttons: [
+          {
+            type: 'QUICK_REPLY',
+            text: 'Terima Tugas'
+          },
+          {
+            type: 'QUICK_REPLY',
+            text: 'Tidak Bisa'
+          }
+        ]
+      }
+    ]
   }
 ];
 

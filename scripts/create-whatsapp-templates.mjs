@@ -115,6 +115,23 @@ const templates = [
         }
       }
     ]
+  },
+  {
+    name: 'booking_alert_nathan_v1',
+    category: 'UTILITY',
+    language: 'en_US',
+    allow_category_change: true,
+    components: [
+      {
+        type: 'BODY',
+        text: '🚨 NEW BOOKING SUCCESSFUL! 🐬⛵\n\n• Code: {{1}}\n• Name: {{2}}\n• Date: {{3}}\n• Guests: {{4}} pax\n• Phone: {{5}}\n• Hotel: {{6}}\n• Transfer: {{7}}\n\n👉 Assign captain manually now!',
+        example: {
+          body_text: [
+            ['LEM-K3RF', 'John Doe', '2026-06-25', '4', '+12083164406', 'Hilton Lovina', 'Canggu Add-on ($50)']
+          ]
+        }
+      }
+    ]
   }
 ];
 

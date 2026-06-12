@@ -49,6 +49,18 @@ function CheckoutForm() {
   const [minDate, setMinDate] = useState<string>('');
   const [isLastMinute, setIsLastMinute] = useState(false);
 
+  // Calculate dynamic WhatsApp URL for last-minute booking
+  const getWhatsAppUrl = () => {
+    if (!formData.date) return '';
+    const prefilledTemplate = t('lastMinuteMsgPrefilled', locale);
+    const messageText = prefilledTemplate
+      .replace('{date}', formData.date)
+      .replace('{guests}', String(formData.guests));
+    return `https://wa.me/18018556266?text=${encodeURIComponent(messageText)}`;
+  };
+
+  const whatsappUrl = getWhatsAppUrl();
+
   useEffect(() => {
     setMinDate(getBaliDateString(0));
   }, []);
@@ -145,13 +157,9 @@ function CheckoutForm() {
     }
 
     if (isLastMinute) {
-      const prefilledTemplate = t('lastMinuteMsgPrefilled', locale);
-      const messageText = prefilledTemplate
-        .replace('{date}', formData.date)
-        .replace('{guests}', String(formData.guests));
-
-      const whatsappUrl = `https://wa.me/18018556266?text=${encodeURIComponent(messageText)}`;
-      window.open(whatsappUrl, '_blank');
+      if (whatsappUrl) {
+        window.open(whatsappUrl, '_blank');
+      }
       setLoading(false);
       return;
     }
@@ -267,7 +275,19 @@ function CheckoutForm() {
                     <strong className="block font-bold mb-1">
                       {locale === 'en' ? 'Last-Minute Booking Notice' : locale === 'ru' ? 'Срочное бронирование' : '最后一刻预订须知'}
                     </strong>
-                    <p className="opacity-90">{t('lastMinuteWarning', locale)}</p>
+                    <p className="opacity-90 leading-relaxed font-light">
+                      {t('lastMinuteWarning', locale)}
+                      {whatsappUrl && (
+                        <a 
+                          href={whatsappUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="underline font-bold hover:text-deep-indigo transition-colors block mt-2 text-coral-pop shrink-0"
+                        >
+                          {t('lastMinuteWarningLink', locale)} ➔
+                        </a>
+                      )}
+                    </p>
                   </div>
                 </div>
               )}

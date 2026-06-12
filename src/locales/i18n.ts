@@ -10,7 +10,7 @@ export function isValidLocale(lang: any): lang is Locale {
 
 // Shared helper to translate keys
 export function translate(key: TranslationKey, locale: Locale): string {
-  return translations[locale][key] || translations['en'][key] || String(key);
+  return (translations[locale] as any)[key] || translations['en'][key] || String(key);
 }
 
 // Short alias

@@ -10,7 +10,7 @@ const colors = {
 };
 
 const backupPath = path.resolve(process.cwd(), 'scripts/n8n_workflows_backup.json');
-const mdPath = '/Users/nathanturner/.gemini/antigravity-cli/brain/91fe3190-6513-44a6-abca-d348ee88a4f5/n8n_workflows_export.md';
+const mdPath = path.resolve(process.cwd(), 'scripts/n8n_workflows_export.md');
 
 async function main() {
   console.log(`\n${colors.cyan}${colors.bold}📝 REBUILDING N8N WORKFLOWS MARKDOWN EXPORT ARTIFACT...${colors.reset}\n`);

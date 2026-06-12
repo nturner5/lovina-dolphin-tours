@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { execSync } from 'child_process';
 
 const colors = {
@@ -35,7 +36,7 @@ async function main() {
     
     // Target paths
     const localBackupPath = path.resolve(process.cwd(), 'scripts/n8n_workflows_backup.json');
-    const downloadsBackupPath = '/Users/nathanturner/Downloads/n8n_workflows_backup.json';
+    const downloadsBackupPath = path.join(os.homedir(), 'Downloads', 'n8n_workflows_backup.json');
     
     // Save inside project repo
     fs.writeFileSync(localBackupPath, formattedJson, 'utf8');

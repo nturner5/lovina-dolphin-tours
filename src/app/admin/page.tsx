@@ -14,6 +14,7 @@ export default function AdminDashboard() {
     guestEmail: 'john.doe@example.com',
     date: '2026-06-08',
     guests: '2',
+    tourId: 'seven-am-ethical',
     pickupLocation: 'none',
     whatsappNumber: '+6281234567890',
     hotelDetails: 'Ubud Hanging Gardens Villa 4',
@@ -26,6 +27,7 @@ export default function AdminDashboard() {
   const [webhookBaseUrl, setWebhookBaseUrl] = useState('https://n8n.balidolphintours.com');
   const [logs, setLogs] = useState<{ time: string; type: string; url: string; status: string; details: any }[]>([]);
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
+  const [generatedStripeUrl, setGeneratedStripeUrl] = useState<string>('');
 
   const handleBaseUrlChange = (newBaseUrl: string) => {
     setWebhookBaseUrl(newBaseUrl);
@@ -105,6 +107,45 @@ export default function AdminDashboard() {
   };
 
   // 1. Dispatch Stripe Webhook
+  const generatePaymentLink = async () => {
+    setLoadingAction('paymentLink');
+    setGeneratedStripeUrl('');
+    try {
+      const response = await fetch('/api/admin/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-password': localStorage.getItem('lovina_admin_pass') || ''
+        },
+        body: JSON.stringify({
+          tourId: formData.tourId,
+          date: formData.date,
+          guests: formData.guests,
+          name: formData.guestName,
+          email: formData.guestEmail,
+          whatsappNumber: formData.whatsappNumber,
+          pickupLocation: formData.pickupLocation,
+          hotelDetails: formData.hotelDetails,
+          bookingCode: formData.bookingCode,
+        })
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        alert(data.error);
+        logResponse('Generate Stripe Link', '/api/admin/checkout', 'Error', data.error);
+      } else if (data.url) {
+        setGeneratedStripeUrl(data.url);
+        logResponse('Generate Stripe Link', '/api/admin/checkout', 'Success', data.url);
+      }
+    } catch (err: any) {
+      alert(err.message);
+      logResponse('Generate Stripe Link', '/api/admin/checkout', 'Error', err.message);
+    } finally {
+      setLoadingAction(null);
+    }
+  };
+
   const sendStripeWebhook = async () => {
     setLoadingAction('stripe');
     const pickupFees: Record<string, number> = { none: 0, lovina: 0, ubud: 35, 'canggu-kuta': 50, uluwatu: 65 };
@@ -116,9 +157,14 @@ export default function AdminDashboard() {
       uluwatu: 'Private Return Transfer — Uluwatu, Nusa Dua, Jimbaran'
     };
 
+    const tourPrices: Record<string, number> = {
+      'seven-am-ethical': 45,
+      'swim-snorkel': 65
+    };
+
     const fee = pickupFees[formData.pickupLocation] || 0;
     const desc = pickupDescs[formData.pickupLocation] || 'None';
-    const tourPrice = 45; // Default Watching Tour price
+    const tourPrice = tourPrices[formData.tourId] || 45;
     const mockSessionId = 'cs_test_' + Math.random().toString(36).substring(2, 15);
 
     const stripePayload = {
@@ -139,7 +185,7 @@ export default function AdminDashboard() {
           },
           metadata: {
             bookingCode: formData.bookingCode,
-            tourId: 'seven-am-ethical',
+            tourId: formData.tourId,
             date: formData.date,
             guests: formData.guests.toString(),
             pickupLocation: formData.pickupLocation,
@@ -438,6 +484,17 @@ export default function AdminDashboard() {
                 />
               </div>
               <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Tour Type</label>
+                <select
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-medium cursor-pointer"
+                  value={formData.tourId}
+                  onChange={(e) => setFormData({ ...formData, tourId: e.target.value })}
+                >
+                  <option value="seven-am-ethical">7:00 AM Private Dolphin Watching Tour ($45)</option>
+                  <option value="swim-snorkel">7:00 AM Private Dolphin Watching Tour + Swim & Snorkel ($65)</option>
+                </select>
+              </div>
+              <div>
                 <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Pickup Location Option</label>
                 <select
                   className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-medium cursor-pointer"
@@ -495,6 +552,53 @@ export default function AdminDashboard() {
               </div>
             </div>
 
+            {/* Generate Stripe Link Action */}
+            <div className="border-t border-deep-indigo/5 pt-6 space-y-4">
+              <button
+                type="button"
+                onClick={generatePaymentLink}
+                disabled={loadingAction !== null}
+                className="w-full bg-coral-pop text-white rounded-full py-4 text-xs uppercase font-bold tracking-widest hover:bg-deep-indigo transition-all cursor-pointer disabled:opacity-50"
+              >
+                {loadingAction === 'paymentLink' ? 'Generating Secure Link...' : '🔗 Generate Stripe Payment Link'}
+              </button>
+
+              {generatedStripeUrl && (
+                <div className="bg-transformative-teal/5 border border-transformative-teal/20 rounded-2xl p-5 space-y-3 animate-in fade-in duration-300">
+                  <span className="text-[10px] font-bold text-transformative-teal uppercase tracking-widest block">Stripe Payment Link Generated!</span>
+                  <div className="flex gap-2">
+                    <input 
+                      type="text" 
+                      readOnly
+                      className="flex-1 bg-white border border-deep-indigo/10 rounded-xl px-4 py-2 text-xs font-mono select-all"
+                      value={generatedStripeUrl}
+                    />
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(generatedStripeUrl);
+                        alert('Copied to clipboard!');
+                      }}
+                      className="bg-deep-indigo text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-transformative-teal transition-all cursor-pointer shrink-0"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                  <div className="flex gap-3 pt-2">
+                    <a
+                      href={`https://wa.me/${formData.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                        `Hi ${formData.guestName}! Here is the secure link to complete your private dolphin tour booking: ${generatedStripeUrl}`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 text-center bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-full font-bold text-xs transition-all flex items-center justify-center gap-1.5"
+                    >
+                      💬 Share on WhatsApp
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Target webhook configurations */}
             <div className="space-y-4 border-t border-deep-indigo/5 pt-6">
               <h3 className="text-sm font-bold uppercase tracking-wider text-deep-indigo/60">Target Webhook Endpoints</h3>
@@ -548,9 +652,9 @@ export default function AdminDashboard() {
                   disabled={loadingAction !== null}
                   className="flex flex-col justify-between items-center text-center p-5 rounded-2xl border border-deep-indigo/10 hover:border-transformative-teal bg-white hover:bg-transformative-teal/5 transition-all text-xs font-bold leading-normal disabled:opacity-50 cursor-pointer"
                 >
-                  <span className="text-xl mb-2">💳</span>
-                  <span>1. Stripe Checkout Completed</span>
-                  <span className="text-[9px] text-deep-indigo/40 font-normal mt-1">Triggers Lovina 1 sequential bidding</span>
+                  <span className="text-xl mb-2">💵</span>
+                  <span>Confirm Cash Booking (Mock Webhook)</span>
+                  <span className="text-[9px] text-deep-indigo/40 font-normal mt-1">Directly registers booking & dispatches captains</span>
                 </button>
 
                 <button

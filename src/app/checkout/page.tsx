@@ -649,7 +649,7 @@ function CheckoutForm() {
                 <div>
                   <strong className="text-deep-indigo block font-bold mb-0.5">{t('trustSupportTitle', locale)}</strong>
                   <p className="text-deep-indigo/60 font-light leading-normal">
-                    {t('trustSupportDesc', locale)} <a href="https://wa.me/6285190422839" target="_blank" rel="noopener noreferrer" className="text-transformative-teal font-bold underline decoration-2 underline-offset-2 hover:text-deep-indigo transition-colors">+62 851-9042-2839</a>
+                    {t('trustSupportDesc', locale)} <a href="https://wa.me/18018556266" target="_blank" rel="noopener noreferrer" className="text-transformative-teal font-bold underline decoration-2 underline-offset-2 hover:text-deep-indigo transition-colors">+1 801-855-6266</a>
                   </p>
                 </div>
               </div>

@@ -6,7 +6,7 @@ export default function WhatsAppButton() {
   const [hovered, setHovered] = useState(false);
   
   // Official Balinese phone number
-  const phoneNumber = '6285190422839';
+  const phoneNumber = '18018556266';
   const prefilledMessage = encodeURIComponent("Hi Bali Dolphin Tours! I'd like to inquire about booking a private dolphin tour.");
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${prefilledMessage}`;
 

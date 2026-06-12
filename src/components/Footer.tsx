@@ -41,7 +41,7 @@ export default function Footer() {
           <div className="flex flex-col gap-4">
             <span className="text-deep-indigo opacity-100 font-bold uppercase tracking-widest text-[10px]">Connect</span>
             <Link href="https://instagram.com" className="hover:text-transformative-teal">Instagram</Link>
-            <Link href="https://wa.me/6285190422839" className="hover:text-transformative-teal">WhatsApp</Link>
+            <Link href="https://wa.me/18018556266" className="hover:text-transformative-teal">WhatsApp</Link>
           </div>
         </div>
       </div>

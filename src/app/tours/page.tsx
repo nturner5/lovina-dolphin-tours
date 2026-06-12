@@ -289,7 +289,7 @@ export default async function ToursPage({ searchParams }: PageProps) {
         <h3 className="text-2xl font-serif text-deep-indigo mb-2">Need a Custom Event or Large Group Charter?</h3>
         <p className="text-sm text-deep-indigo/60 mb-6 font-light">We arrange tailored team builds, sunset cruises, and family packages.</p>
         <a 
-          href="https://wa.me/6285190422839" 
+          href="https://wa.me/18018556266" 
           target="_blank" 
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2.5 bg-transformative-teal text-cloud-dancer px-8 py-3.5 rounded-full text-sm font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95"

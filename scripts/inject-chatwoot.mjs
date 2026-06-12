@@ -10,7 +10,7 @@ const colors = {
   bold: '\x1b[1m'
 };
 
-const WORKFLOW_ID = 'yKfMVXPuEPaBUwrh'; // Lovina 2
+const WORKFLOW_ID = process.env.PRODUCTION === 'true' ? 'BksrAXQCChEmzwIV' : 'yKfMVXPuEPaBUwrh'; // Production or Sandbox Lovina 2
 
 const nodesPath = path.resolve(process.cwd(), 'scripts/lovina_2_nodes.json');
 const connectionsPath = path.resolve(process.cwd(), 'scripts/lovina_2_connections.json');
@@ -55,7 +55,7 @@ async function main() {
   const chatwootNode = {
     parameters: {
       method: "POST",
-      url: "https://app.chatwoot.com/webhooks/whatsapp/+6285190422839",
+      url: "https://app.chatwoot.com/webhooks/whatsapp/+18018556266",
       sendHeaders: true,
       headerParameters: {
         parameters: [
@@ -128,33 +128,74 @@ async function main() {
 
   // 6. Write a temporary SQL file to avoid command length limitations
   const sqlFile = path.resolve(process.cwd(), 'scripts/update_workflow.sql');
-  const sqlQuery = `UPDATE workflow_entity SET nodes = '${nodesJsonStr}'::jsonb, connections = '${connectionsJsonStr}'::jsonb WHERE id = '${WORKFLOW_ID}';`;
+  const isProduction = process.env.PRODUCTION === 'true';
+
+  let sqlQuery = '';
+  if (isProduction) {
+    sqlQuery = `
+      -- Update workflow_entity in SQLite
+      UPDATE workflow_entity 
+      SET 
+        nodes = '${nodesJsonStr}', 
+        connections = '${connectionsJsonStr}', 
+        "updatedAt" = datetime('now') 
+      WHERE id = '${WORKFLOW_ID}';
+
+      -- Update workflow_history in SQLite for latest version
+      UPDATE workflow_history
+      SET
+        nodes = '${nodesJsonStr}',
+        connections = '${connectionsJsonStr}',
+        "updatedAt" = datetime('now')
+      WHERE "workflowId" = '${WORKFLOW_ID}' AND "versionId" = (SELECT "versionId" FROM workflow_entity WHERE id = '${WORKFLOW_ID}');
+    `;
+  } else {
+    sqlQuery = `UPDATE workflow_entity SET nodes = '${nodesJsonStr}'::jsonb, connections = '${connectionsJsonStr}'::jsonb WHERE id = '${WORKFLOW_ID}';`;
+  }
+  
   fs.writeFileSync(sqlFile, sqlQuery, 'utf8');
+  console.log(`- Generated database injection payload (${isProduction ? 'SQLite' : 'PostgreSQL'}).`);
 
-  console.log(`- Generated database injection payload.`);
-
-  // 7. Inject the SQL query directly into the Postgres Docker container!
+  // 7. Inject the SQL query directly
   try {
-    console.log(`- Executing update inside PostgreSQL container (n8n-autoscaling-postgres-1)...`);
-    
-    // Copy the SQL file into the container
-    execSync(`docker cp ${sqlFile} n8n-autoscaling-postgres-1:/tmp/update_workflow.sql`);
-    
-    // Run the SQL script inside the Postgres container
-    const output = execSync(`docker exec -i n8n-autoscaling-postgres-1 psql -U postgres -d n8n -f /tmp/update_workflow.sql`).toString();
-    
-    console.log(`\n${colors.green}${colors.bold}✔ UPDATE COMPLETED SUCCESSFULLY!${colors.reset}`);
-    console.log(`${colors.gray}Database Output: ${output.trim()}${colors.reset}`);
+    if (isProduction) {
+      console.log(`- Copying SQL script to hosted VM (n8n-server)...`);
+      execSync(`gcloud compute scp ${sqlFile} n8n-server:/tmp/update_workflow.sql --zone=us-central1-a`);
+
+      console.log(`- Executing update inside SQLite database on VM...`);
+      const sqlCommand = `sudo sqlite3 /var/lib/docker/volumes/n8n-docker_n8n_data/_data/database.sqlite < /tmp/update_workflow.sql`;
+      execSync(`gcloud compute ssh n8n-server --zone=us-central1-a --command="${sqlCommand}"`);
+      
+      console.log(`- Restarting hosted n8n service to reload workflows...`);
+      execSync(`gcloud compute ssh n8n-server --zone=us-central1-a --command="sudo docker restart n8n-docker-n8n-1"`);
+
+      console.log(`\n${colors.green}${colors.bold}✔ PRODUCTION UPDATE COMPLETED SUCCESSFULLY!${colors.reset}`);
+    } else {
+      console.log(`- Executing update inside PostgreSQL container (n8n-autoscaling-postgres-1)...`);
+      execSync(`docker cp ${sqlFile} n8n-autoscaling-postgres-1:/tmp/update_workflow.sql`);
+      const output = execSync(`docker exec -i n8n-autoscaling-postgres-1 psql -U postgres -d n8n -f /tmp/update_workflow.sql`).toString();
+      console.log(`\n${colors.green}${colors.bold}✔ LOCAL UPDATE COMPLETED SUCCESSFULLY!${colors.reset}`);
+      console.log(`${colors.gray}Database Output: ${output.trim()}${colors.reset}`);
+    }
+
     console.log(`\n${colors.bold}💡 WHAT TO DO NEXT:${colors.reset}`);
     console.log(`1. Go to your n8n browser tab and simply refresh the page.`);
     console.log(`2. Open the ${colors.cyan}Lovina 2: Bidding Claim & Contract Request${colors.reset} workflow.`);
     console.log(`3. You will see the new nodes perfectly wired and positioned!`);
-    console.log(`4. Double click ${colors.bold}Forward to Chatwoot${colors.reset} and paste your specific Chatwoot Webhook URL.`);
   } catch (error) {
-    console.error(`\n${colors.red}✖ Failed to update database container:${colors.reset}`, error.message);
+    console.error(`\n${colors.red}✖ Failed to update database:${colors.reset}`, error.message);
   } finally {
     // Clean up temporary sql file
-    if (fs.existsSync(sqlFile)) fs.unlinkSync(sqlFile);
+    if (fs.existsSync(sqlFile)) {
+      fs.unlinkSync(sqlFile);
+    }
+    if (isProduction) {
+      try {
+        execSync(`gcloud compute ssh n8n-server --zone=us-central1-a --command="sudo rm -f /tmp/update_workflow.sql"`);
+      } catch (e) {
+        // Ignore
+      }
+    }
   }
 }
 

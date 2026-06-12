@@ -37,7 +37,7 @@ let metaToken = process.env.META_ACCESS_TOKEN || envVars.META_ACCESS_TOKEN || ''
 let n8nCaptainWebhook = process.env.N8N_CAPTAIN_AGREEMENT_WEBHOOK_URL || envVars.N8N_CAPTAIN_AGREEMENT_WEBHOOK_URL || 'http://localhost:5678/webhook/captain-signed-webhook';
 let n8nStripeWebhook = envVars.N8N_STRIPE_WEBHOOK_URL || 'http://localhost:5678/webhook/stripe';
 let phoneId = envVars.META_PHONE_NUMBER_ID || '';
-let wabaId = '4305390753007174'; // From create-whatsapp-templates.mjs
+let wabaId = envVars.META_WABA_ID || '976177715181035'; // New Google Voice WABA ID fallback
 
 // Helper function to write to .env.local
 function saveEnvVar(key, value) {

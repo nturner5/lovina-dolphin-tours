@@ -186,7 +186,7 @@ async function simulateStripeWebhook() {
       console.log(`\n${colors.bold}💡 NEXT STEP FOR MANUAL END-TO-END FLOW:${colors.reset}`);
       console.log(`Your n8n workflow should now parse this and send a WhatsApp message to the captain.`);
       console.log(`The captain's message should contain this link for signing the agreement:`);
-      console.log(`${colors.cyan}http://localhost:3000/captain-agreement?bookingId=${mockSessionId}&name=Wayan&phone=%2B12083164406${colors.reset}`);
+      console.log(`${colors.cyan}http://localhost:3000/captain-agreement?bookingId=${mockSessionId}&name=Wayan&phone=%2B6281234567890${colors.reset}`);
       console.log(`${colors.gray}(Replace localhost:3000 with your production domain as needed.)${colors.reset}`);
     } else {
       console.error(`\n${colors.red}✖ Failed to dispatch webhook (HTTP ${response.status}):${colors.reset}`, responseText);
@@ -206,7 +206,7 @@ async function simulateCaptainSignature() {
   // Gather parameters
   const bookingId = (await askQuestion(`${colors.yellow}Booking ID (e.g. cs_test_...) [cs_test_placeholder]: ${colors.reset}`)).trim() || 'cs_test_placeholder';
   const captainName = (await askQuestion(`${colors.yellow}Captain Name [Wayan]: ${colors.reset}`)).trim() || 'Wayan';
-  const captainPhone = (await askQuestion(`${colors.yellow}Captain WhatsApp Phone Number [+12083164406]: ${colors.reset}`)).trim() || '+12083164406';
+  const captainPhone = (await askQuestion(`${colors.yellow}Captain WhatsApp Phone Number [+6281234567890]: ${colors.reset}`)).trim() || '+6281234567890';
   
   // Format local API URL
   const localApiUrl = 'http://localhost:3000/api/captain-agreement';

@@ -10,11 +10,11 @@ export default function AdminDashboard() {
 
   // Test form values
   const [formData, setFormData] = useState({
-    guestName: 'Nathan',
+    guestName: 'John Doe',
     date: '2026-06-08',
     guests: '2',
     pickupLocation: 'none',
-    whatsappNumber: '+12083164406',
+    whatsappNumber: '+6281234567890',
     hotelDetails: 'Ubud Hanging Gardens Villa 4',
     bookingCode: 'LEM-MOCK',
     n8nStripeUrl: 'https://majestic-noisomely-alexandria.ngrok-free.dev/webhook/stripe-webhook',
@@ -36,22 +36,50 @@ export default function AdminDashboard() {
     }));
   };
 
+  const [isVerifying, setIsVerifying] = useState(false);
+
   // Authenticate using localStorage to remember the session during development
   useEffect(() => {
     const savedPassword = localStorage.getItem('lovina_admin_pass');
-    if (savedPassword === 'lovina-sea-2026') {
-      setIsAuthenticated(true);
+    if (savedPassword) {
+      setIsVerifying(true);
+      fetch('/api/admin/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: savedPassword })
+      })
+      .then(res => {
+        if (res.ok) {
+          setIsAuthenticated(true);
+        } else {
+          localStorage.removeItem('lovina_admin_pass');
+        }
+      })
+      .catch(() => {})
+      .finally(() => setIsVerifying(false));
     }
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput === 'lovina-sea-2026') {
-      localStorage.setItem('lovina_admin_pass', 'lovina-sea-2026');
-      setIsAuthenticated(true);
-      setPasswordError(false);
-    } else {
+    setIsVerifying(true);
+    try {
+      const response = await fetch('/api/admin/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: passwordInput })
+      });
+      if (response.ok) {
+        localStorage.setItem('lovina_admin_pass', passwordInput);
+        setIsAuthenticated(true);
+        setPasswordError(false);
+      } else {
+        setPasswordError(true);
+      }
+    } catch (err) {
       setPasswordError(true);
+    } finally {
+      setIsVerifying(false);
     }
   };
 
@@ -130,7 +158,7 @@ export default function AdminDashboard() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-admin-password': 'lovina-sea-2026'
+          'x-admin-password': localStorage.getItem('lovina_admin_pass') || ''
         },
         body: JSON.stringify({
           url: formData.n8nStripeUrl,
@@ -171,17 +199,17 @@ export default function AdminDashboard() {
                     profile: {
                       name: 'Wayan'
                     },
-                    wa_id: '12083164406'
+                    wa_id: '6281234567890'
                   }
                 ],
                 messages: [
                   {
-                    from: '12083164406',
+                    from: '6281234567890',
                     id: 'wamid.HBgNNjI4MTIzNDU2Nzg5MBQVAw0ALTI1NTI1NTIyNzM2MzU1NTA1MzQyMjk4OTg3Njc3Mzk3MTUzNTk4NTA5AA==',
                     timestamp: Math.floor(Date.now() / 1000).toString(),
                     type: 'button',
                     button: {
-                      payload: `claim_${formData.bookingCode}_Wayan_+12083164406`,
+                      payload: `claim_${formData.bookingCode}_Wayan_+6281234567890`,
                       text: 'Terima Tugas'
                     }
                   }
@@ -199,7 +227,7 @@ export default function AdminDashboard() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-admin-password': 'lovina-sea-2026'
+          'x-admin-password': localStorage.getItem('lovina_admin_pass') || ''
         },
         body: JSON.stringify({
           url: formData.n8nMetaUrl,
@@ -225,7 +253,7 @@ export default function AdminDashboard() {
     const signaturePayload = {
       bookingId: formData.bookingCode,
       captainName: 'Wayan',
-      captainPhone: '+12083164406',
+      captainPhone: '+6281234567890',
       signedAt: new Date().toISOString(),
       status: 'signed'
     };
@@ -235,7 +263,7 @@ export default function AdminDashboard() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-admin-password': 'lovina-sea-2026'
+          'x-admin-password': localStorage.getItem('lovina_admin_pass') || ''
         },
         body: JSON.stringify({
           url: formData.n8nCaptainUrl,
@@ -275,9 +303,10 @@ export default function AdminDashboard() {
             </div>
             <button
               type="submit"
-              className="w-full bg-deep-indigo text-cloud-dancer py-3.5 rounded-full font-bold hover:bg-transformative-teal transition-all cursor-pointer"
+              disabled={isVerifying}
+              className="w-full bg-deep-indigo text-cloud-dancer py-3.5 rounded-full font-bold hover:bg-transformative-teal transition-all cursor-pointer disabled:opacity-50"
             >
-              Access Dashboard
+              {isVerifying ? 'Verifying...' : 'Access Dashboard'}
             </button>
           </form>
         </div>
@@ -416,7 +445,7 @@ export default function AdminDashboard() {
                 <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">WhatsApp Number (For Alerts)</label>
                 <input
                   type="text"
-                  placeholder="e.g. +12083164406"
+                  placeholder="e.g. +6281234567890"
                   className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
                   value={formData.whatsappNumber}
                   onChange={(e) => setFormData({ ...formData, whatsappNumber: e.target.value })}

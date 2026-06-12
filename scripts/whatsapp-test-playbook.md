@@ -19,7 +19,7 @@ export META_ACCESS_TOKEN=$(grep META_ACCESS_TOKEN .env.local | cut -d'"' -f2)
 ## 1️⃣ Test Request 1: Send Sandbox 'Hello World' Template
 * **Purpose:** Verifies that your personal phone number is whitelisted in Meta's Sandbox and that the Sandbox channel is actively delivering messages.
 * **Sender ID:** `1146773325183741` (Sandbox Test ID)
-* **Recipient:** `+1 (208) 316-4406` (Your personal WhatsApp)
+* **Recipient:** `+6281234567890` (Your WhatsApp number)
 * **Webhook Inbound:** **Fully Enabled.** If you reply to this message on your phone, Meta will successfully forward the webhook to your local n8n tunnel!
 
 ### Run Command:
@@ -29,7 +29,7 @@ curl -X POST "https://graph.facebook.com/v20.0/1146773325183741/messages" \
   -H "Content-Type: application/json" \
   -d '{
     "messaging_product": "whatsapp",
-    "to": "12083164406",
+    "to": "6281234567890",
     "type": "template",
     "template": {
       "name": "hello_world",
@@ -45,7 +45,7 @@ curl -X POST "https://graph.facebook.com/v20.0/1146773325183741/messages" \
 ## 2️⃣ Test Request 2: Send Production 'Prioritized Captain Broadcast'
 * **Purpose:** Verifies the visual formatting, layout, quick-reply buttons, and Indonesian translations of your approved captain broadcast template.
 * **Sender ID:** `1248861244970433` (Production WABA ID)
-* **Recipient:** `+1 (208) 316-4406` (Your personal WhatsApp)
+* **Recipient:** `+6281234567890` (Your WhatsApp number)
 * **Webhook Inbound:** **Disabled** until your Meta Business Verification is complete. Outbound delivery will succeed, but clicking the "claim" button on your phone won't hit ngrok due to Meta WABA unverified restrictions.
 
 ### Run Command:
@@ -55,7 +55,7 @@ curl -X POST "https://graph.facebook.com/v20.0/1248861244970433/messages" \
   -H "Content-Type: application/json" \
   -d '{
     "messaging_product": "whatsapp",
-    "to": "12083164406",
+    "to": "6281234567890",
     "type": "template",
     "template": {
       "name": "prioritized_captain_broadcast",
@@ -80,7 +80,7 @@ curl -X POST "https://graph.facebook.com/v20.0/1248861244970433/messages" \
           "parameters": [
             {
               "type": "payload",
-              "payload": "claim_LEM-cs_test_12345_Wayan_+12083164406"
+              "payload": "claim_LEM-cs_test_12345_Wayan_+6281234567890"
             }
         }
       ]
@@ -93,7 +93,7 @@ curl -X POST "https://graph.facebook.com/v20.0/1248861244970433/messages" \
 ## 3️⃣ Test Request 3: Send Sandbox 'Prioritized Captain Broadcast'
 * **Purpose:** Verifies visual formatting, quick-reply claiming buttons, and Indonesian translations on the sandbox channel where inbound webhooks (like claiming) are fully functional.
 * **Sender ID:** `1146773325183741` (Sandbox Test ID)
-* **Recipient:** `+1 (208) 316-4406` (Your personal WhatsApp)
+* **Recipient:** `+6281234567890` (Your WhatsApp number)
 * **Webhook Inbound:** **Fully Enabled.** Replying or clicking the "Claim Trip" button will successfully trigger your local n8n claiming flow.
 
 ### Run Command:
@@ -103,7 +103,7 @@ curl -X POST "https://graph.facebook.com/v20.0/1146773325183741/messages" \
   -H "Content-Type: application/json" \
   -d '{
     "messaging_product": "whatsapp",
-    "to": "12083164406",
+    "to": "6281234567890",
     "type": "template",
     "template": {
       "name": "prioritized_captain_broadcast",
@@ -128,7 +128,7 @@ curl -X POST "https://graph.facebook.com/v20.0/1146773325183741/messages" \
           "parameters": [
             {
               "type": "payload",
-              "payload": "claim_LEM-cs_test_12345_Wayan_+12083164406"
+              "payload": "claim_LEM-cs_test_12345_Wayan_+6281234567890"
             }
           ]
         }
@@ -159,8 +159,8 @@ curl -X POST "http://localhost:5678/webhook/stripe-webhook" \
         "currency": "usd",
         "customer_details": {
           "email": "traveler@example.com",
-          "name": "Nathan Turner",
-          "phone": "+12083164406"
+          "name": "John Doe",
+          "phone": "+6281234567890"
         },
         "metadata": {
           "tourId": "swim-snorkel",
@@ -169,7 +169,7 @@ curl -X POST "http://localhost:5678/webhook/stripe-webhook" \
           "pickupLocation": "ubud",
           "pickupFee": "35",
           "pickupDescription": "Private Return Transfer — Ubud",
-          "whatsappNumber": "+12083164406",
+          "whatsappNumber": "+6281234567890",
           "hotelDetails": "Ubud Hanging Gardens, Villa 12"
         },
         "payment_status": "paid",
@@ -192,7 +192,7 @@ curl -X POST "http://localhost:3000/api/captain-agreement" \
   -d '{
     "bookingId": "cs_test_mock_booking_999",
     "captainName": "Kapten Wayan",
-    "captainPhone": "+12083164406",
+    "captainPhone": "+6281234567890",
     "signedAt": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'"
   }'
 ```

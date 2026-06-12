@@ -56,26 +56,57 @@ export default function SeoWriterPage() {
   const [publishError, setPublishError] = useState('');
   const [publishedDocId, setPublishedDocId] = useState('');
 
+  const [isVerifying, setIsVerifying] = useState(false);
+
   // Auto-load keys on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedKey = localStorage.getItem('lovina_writer_key');
-      const savedAuth = localStorage.getItem('lovina_admin_auth');
       if (savedKey) setApiKey(savedKey);
-      if (savedAuth === 'true') setIsAuthenticated(true);
+      
+      const savedPassword = localStorage.getItem('lovina_admin_pass');
+      if (savedPassword) {
+        setIsVerifying(true);
+        fetch('/api/admin/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: savedPassword })
+        })
+        .then(res => {
+          if (res.ok) {
+            setIsAuthenticated(true);
+          } else {
+            localStorage.removeItem('lovina_admin_pass');
+          }
+        })
+        .catch(() => {})
+        .finally(() => setIsVerifying(false));
+      }
     }
   }, []);
 
-  const handleAuth = (e: React.FormEvent) => {
+  const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput === 'lovina-sea-2026') {
-      setIsAuthenticated(true);
-      setPasswordError(false);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('lovina_admin_auth', 'true');
+    setIsVerifying(true);
+    try {
+      const response = await fetch('/api/admin/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: passwordInput })
+      });
+      if (response.ok) {
+        setIsAuthenticated(true);
+        setPasswordError(false);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('lovina_admin_pass', passwordInput);
+        }
+      } else {
+        setPasswordError(true);
       }
-    } else {
+    } catch (err) {
       setPasswordError(true);
+    } finally {
+      setIsVerifying(false);
     }
   };
 
@@ -247,7 +278,7 @@ export default function SeoWriterPage() {
   const handleLogout = () => {
     setIsAuthenticated(false);
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('lovina_admin_auth');
+      localStorage.removeItem('lovina_admin_pass');
     }
   };
 
@@ -475,9 +506,10 @@ export default function SeoWriterPage() {
             )}
             <button 
               type="submit"
-              className="w-full bg-coral-pop text-cloud-dancer py-4 rounded-full text-sm font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 cursor-pointer"
+              disabled={isVerifying}
+              className="w-full bg-coral-pop text-cloud-dancer py-4 rounded-full text-sm font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-50"
             >
-              Unlock Terminal
+              {isVerifying ? 'Verifying...' : 'Unlock Terminal'}
             </button>
           </form>
           

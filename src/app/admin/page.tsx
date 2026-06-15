@@ -29,6 +29,50 @@ export default function AdminDashboard() {
 
   // Live Dashboard States
   const [bookings, setBookings] = useState<any[]>([]);
+  
+  // WhatsApp Lead Generator States
+  const [leadForm, setLeadForm] = useState({
+    guestName: '',
+    guestPhone: '',
+    referrer: '',
+    hotelDetails: ''
+  });
+  const [isCreatingLead, setIsCreatingLead] = useState(false);
+  const [leadStatus, setLeadStatus] = useState({ type: '', message: '' });
+
+  const handleCreateWhatsAppLead = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsCreatingLead(true);
+    setLeadStatus({ type: '', message: '' });
+
+    try {
+      const response = await fetch('https://n8n.balidolphintours.com/webhook/whatsapp-lead-trigger', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(leadForm)
+      });
+
+      if (response.ok) {
+        setLeadStatus({
+          type: 'success',
+          message: `Successfully sent WhatsApp invitation link to ${leadForm.guestName} (${leadForm.guestPhone})!`
+        });
+        setLeadForm({ guestName: '', guestPhone: '', referrer: '', hotelDetails: '' });
+      } else {
+        const errText = await response.text();
+        throw new Error(errText || 'Failed to trigger lead invite');
+      }
+    } catch (err: any) {
+      setLeadStatus({
+        type: 'error',
+        message: err.message || 'Error occurred while triggering lead invite.'
+      });
+    } finally {
+      setIsCreatingLead(false);
+    }
+  };
   const [isLoadingBookings, setIsLoadingBookings] = useState(false);
   const [bookingsError, setBookingsError] = useState<string | null>(null);
 
@@ -805,7 +849,9 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-[2rem] shadow-sm border border-deep-indigo/5 p-6 sm:p-10 space-y-6">
           <div>
             <h2 className="text-2xl font-serif text-deep-indigo">Manual Booking Coordinator</h2>
-            <p className="text-xs text-deep-indigo/50 mt-1">Manually register bookings bypassing date validation rules, or generate direct payment links to share.</p>
+            <p className="text-xs text-deep-indigo/50 mt-1">
+              <strong>Use Case:</strong> Use this when the booking details are already finalized (the guest chose dates, hotel, etc. and paid via Cash or bank transfer) and you want to log it manually.
+            </p>
           </div>
 
           <form onSubmit={handleCreateManualBooking} className="space-y-6">
@@ -998,12 +1044,91 @@ export default function AdminDashboard() {
           </form>
         </div>
 
+        {/* 1.5. WHATSAPP LEAD GENERATOR */}
+        <div className="bg-white rounded-[2rem] shadow-sm border border-deep-indigo/5 p-6 sm:p-10 space-y-6">
+          <div className="border-b border-deep-indigo/5 pb-4">
+            <h2 className="text-2xl font-serif text-deep-indigo">WhatsApp Booking Lead Generator</h2>
+            <p className="text-xs text-deep-indigo/50 mt-1">
+              <strong>Use Case:</strong> Use this when a villa manager sends you a guest's contact info but they haven't paid or chosen dates yet. This sends the guest an automated welcome message with a pre-filled booking link to complete checkout securely.
+            </p>
+          </div>
+
+          <form onSubmit={handleCreateWhatsAppLead} className="space-y-6">
+            {leadStatus.message && (
+              <div className={`text-xs p-4 rounded-xl border ${
+                leadStatus.type === 'success' 
+                  ? 'bg-green-50 border-green-200 text-green-700' 
+                  : 'bg-red-50 border-red-200 text-red-700'
+              }`}>
+                {leadStatus.message}
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Guest Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="John Doe"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-bold"
+                  value={leadForm.guestName}
+                  onChange={(e) => setLeadForm({ ...leadForm, guestName: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">WhatsApp Number</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="+12083164406"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-bold"
+                  value={leadForm.guestPhone}
+                  onChange={(e) => setLeadForm({ ...leadForm, guestPhone: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Referrer (Villa Manager)</label>
+                <input
+                  type="text"
+                  placeholder="Villa Host Putu"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
+                  value={leadForm.referrer}
+                  onChange={(e) => setLeadForm({ ...leadForm, referrer: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Hotel/Villa Details</label>
+                <input
+                  type="text"
+                  placeholder="Villa Lovina Room 3"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
+                  value={leadForm.hotelDetails}
+                  onChange={(e) => setLeadForm({ ...leadForm, hotelDetails: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-4 border-t border-deep-indigo/5">
+              <button
+                type="submit"
+                disabled={isCreatingLead}
+                className="bg-transformative-teal hover:bg-deep-indigo text-cloud-dancer px-8 py-3.5 rounded-full text-xs font-bold transition-all shadow-md active:scale-95 disabled:opacity-50 cursor-pointer"
+              >
+                {isCreatingLead ? 'Sending Invite...' : '🚀 Send WhatsApp Invite'}
+              </button>
+            </div>
+          </form>
+        </div>
+
         {/* 2. AIRTABLE BOOKINGS MANAGER */}
         <div className="bg-white rounded-[2rem] shadow-sm border border-deep-indigo/5 p-6 sm:p-10 space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-serif text-deep-indigo">Airtable Bookings Manager</h2>
-              <p className="text-xs text-deep-indigo/50 mt-1">Real-time booking records from Airtable base `applZ1nCH21kq42Tz`.</p>
+              <h2 className="text-2xl font-serif text-deep-indigo">Database Bookings Manager</h2>
+              <p className="text-xs text-deep-indigo/50 mt-1">
+                <strong>Use Case:</strong> Review and manage live bookings stored in Supabase, assign captains, and check sign status.
+              </p>
             </div>
             <button
               onClick={fetchBookings}

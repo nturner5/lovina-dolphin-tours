@@ -10,6 +10,9 @@ To become the definitive standard for ethical marine encounters in North Bali. O
 - **Domain:** balidolphintours.com
 - **Repo:** https://github.com/nturner5/lovina-dolphin-tours
 
+## Development Guidelines
+- **n8n Modifications:** Always use the n8n Public API (`https://n8n.balidolphintours.com/api/v1/workflows/...` using the `N8N_API_KEY` header `X-N8N-API-KEY`) to update, backup, or publish workflows. Avoid direct database SQL updates to prevent caching/webhook registration mismatch issues.
+
 ## Key Differentiators
 1. **Timing:** 8:00 AM starts for quiet, private encounters (The "Anti-Sunrise" strategy).
 2. **Behavioral Contract:** Engines to neutral within 30m; parallel approach only.

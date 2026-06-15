@@ -46,23 +46,29 @@ export default function AdminDashboard() {
     setLeadStatus({ type: '', message: '' });
 
     try {
-      const response = await fetch('https://n8n.balidolphintours.com/webhook/whatsapp-lead-trigger', {
+      const response = await fetch('/api/admin/proxy', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-admin-password': localStorage.getItem('lovina_admin_pass') || ''
         },
-        body: JSON.stringify(leadForm)
+        body: JSON.stringify({
+          url: 'https://n8n.balidolphintours.com/webhook/whatsapp-lead-trigger',
+          body: leadForm
+        })
       });
 
-      if (response.ok) {
+      const resData = await response.json();
+
+      if (response.ok && resData.status >= 200 && resData.status < 300) {
         setLeadStatus({
           type: 'success',
           message: `Successfully sent WhatsApp invitation link to ${leadForm.guestName} (${leadForm.guestPhone})!`
         });
         setLeadForm({ guestName: '', guestPhone: '', referrer: '', hotelDetails: '' });
       } else {
-        const errText = await response.text();
-        throw new Error(errText || 'Failed to trigger lead invite');
+        const errMsg = typeof resData.data === 'string' ? resData.data : JSON.stringify(resData.data || 'Failed to trigger lead invite');
+        throw new Error(errMsg);
       }
     } catch (err: any) {
       setLeadStatus({

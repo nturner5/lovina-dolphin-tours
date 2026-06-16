@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { trackWhatsAppClick } from '@/lib/analytics';
 
 export default function WhatsAppButton() {
   const [hovered, setHovered] = useState(false);
@@ -31,6 +32,7 @@ export default function WhatsAppButton() {
         rel="noopener noreferrer"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        onClick={() => trackWhatsAppClick('Floating Button')}
         className="relative flex items-center justify-center w-14 h-14 rounded-full bg-transformative-teal text-cloud-dancer shadow-[0_8px_30px_rgb(0,0,0,0.15)] border border-cloud-dancer/10 transition-all duration-300 hover:scale-110 active:scale-95 group"
         aria-label="Chat on WhatsApp"
       >

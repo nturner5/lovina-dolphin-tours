@@ -189,13 +189,13 @@ export default function SeoWriterPage() {
   // Draft Generation Loading Steps
   const draftStepsList = [
     'Connecting to Google Gemini / OpenAI cluster...',
-    'Drafting Section 1: Introduction and Hook...',
-    'Writing Section 2: Incorporating location database...',
-    'Writing Section 3: Weaving first-hand E-E-A-T booster...',
-    'Writing Section 4: Applying AI-SEO Answer Blocks...',
-    'Writing Section 5: Integrating internal linking maps...',
-    'Compiling draft, injecting CRO boxes and Midjourney prompts...',
-    'Final check: formatting metadata blocks...',
+    'Analyzing target outline and search intent...',
+    'Consulting local stays, dining, and route databases...',
+    'Generating unified long-form article draft...',
+    'Weaving focus keywords and internal link map...',
+    'Injecting high-converting CRO CTA blocks...',
+    'Crafting photorealistic Midjourney image prompts...',
+    'Compiling metadata, takeaways, and FAQs...',
   ];
 
   useEffect(() => {
@@ -204,13 +204,13 @@ export default function SeoWriterPage() {
       const nextStep = () => {
         setLoadingStep((prev) => {
           if (prev < draftStepsList.length - 1) {
-            timer = setTimeout(nextStep, 3500);
+            timer = setTimeout(nextStep, 2000);
             return prev + 1;
           }
           return prev;
         });
       };
-      timer = setTimeout(nextStep, 3000);
+      timer = setTimeout(nextStep, 1500);
     } else {
       setLoadingStep(0);
     }

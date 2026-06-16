@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { t } from '@/locales/i18n';
 import { useLocale } from '@/locales/i18n-client';
+import { trackWhatsAppClick } from '@/lib/analytics';
 import 'react-phone-number-input/style.css';
 import PhoneInput, { isValidPhoneNumber, getCountryCallingCode } from 'react-phone-number-input';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
@@ -182,6 +183,7 @@ function CheckoutForm() {
 
     if (isLastMinute) {
       if (whatsappUrl) {
+        trackWhatsAppClick('Last-Minute Redirect');
         window.open(whatsappUrl, '_blank');
       }
       setLoading(false);
@@ -749,7 +751,7 @@ function CheckoutForm() {
                 <div>
                   <strong className="text-deep-indigo block font-bold mb-0.5">{t('trustSupportTitle', locale)}</strong>
                   <p className="text-deep-indigo/60 font-light leading-normal">
-                    {t('trustSupportDesc', locale)} <a href="https://wa.me/18018556266" target="_blank" rel="noopener noreferrer" className="text-transformative-teal font-bold underline decoration-2 underline-offset-2 hover:text-deep-indigo transition-colors">+1 801-855-6266</a>
+                    {t('trustSupportDesc', locale)} <a href="https://wa.me/18018556266" onClick={() => trackWhatsAppClick('Checkout Support Sidebar')} target="_blank" rel="noopener noreferrer" className="text-transformative-teal font-bold underline decoration-2 underline-offset-2 hover:text-deep-indigo transition-colors">+1 801-855-6266</a>
                   </p>
                 </div>
               </div>

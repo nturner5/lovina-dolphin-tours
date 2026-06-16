@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 import { t } from '@/locales/i18n';
 import { getLocaleServer } from '@/locales/i18n-server';
+import WhatsAppTrackedLink from '@/components/WhatsAppTrackedLink';
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -288,15 +289,14 @@ export default async function ToursPage({ searchParams }: PageProps) {
       <section className="bg-cloud-dancer py-16 px-4 text-center border-t border-deep-indigo/10">
         <h3 className="text-2xl font-serif text-deep-indigo mb-2">Need a Custom Event or Large Group Charter?</h3>
         <p className="text-sm text-deep-indigo/60 mb-6 font-light">We arrange tailored team builds, sunset cruises, and family packages.</p>
-        <a 
+        <WhatsAppTrackedLink 
           href="https://wa.me/18018556266" 
-          target="_blank" 
-          rel="noopener noreferrer"
+          label="Tours Page Group Charter CTA"
           className="inline-flex items-center gap-2.5 bg-transformative-teal text-cloud-dancer px-8 py-3.5 rounded-full text-sm font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95"
         >
           <span>Chat on WhatsApp</span>
           <span className="w-1.5 h-1.5 bg-coral-pop rounded-full animate-ping" />
-        </a>
+        </WhatsAppTrackedLink>
       </section>
     </main>
   );

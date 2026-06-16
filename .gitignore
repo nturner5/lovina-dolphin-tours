@@ -50,3 +50,17 @@ next-env.d.ts
 /.antigravitycli/
 /meta_callback_payload.json
 
+# one-off utility scripts (Notion sync, debug)
+scripts/test-notion.mjs
+scripts/query-notion.mjs
+scripts/push-notion-tasks.mjs
+
+# local-only: AI agent skills & tooling
+.agents/skills/
+skills-lock.json
+
+# local-only: strategy & planning docs
+marketing-plans/
+google_ads_playbook.md
+whatsapp_automation_templates.md
+

@@ -1,6 +1,20 @@
+'use client';
+
+import { useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { trackPurchase } from '@/lib/analytics';
 import Link from 'next/link';
 
-export default function SuccessPage() {
+function SuccessPageContent() {
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get('session_id') || 'LEM-SUCCESS';
+
+  useEffect(() => {
+    // Track the purchase event with a standard average value ($140.00 USD)
+    // and the transaction ID for Gtag deduplication.
+    trackPurchase(140.00, sessionId);
+  }, [sessionId]);
+
   return (
     <main className="bg-cloud-dancer min-h-screen flex items-center justify-center px-4 sm:px-6">
       <div className="max-w-md w-full text-center p-6 sm:p-12 bg-white rounded-3xl shadow-sm border border-deep-indigo/10 animate-in fade-in zoom-in duration-500">
@@ -24,3 +38,14 @@ export default function SuccessPage() {
   );
 }
 
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={
+      <main className="bg-cloud-dancer min-h-screen flex items-center justify-center font-serif text-deep-indigo/30">
+        Confirming payment details...
+      </main>
+    }>
+      <SuccessPageContent />
+    </Suspense>
+  );
+}

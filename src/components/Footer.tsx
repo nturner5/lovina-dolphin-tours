@@ -1,5 +1,8 @@
+'use client';
+
 import Link from "next/link";
 import Image from "next/image";
+import { trackWhatsAppClick } from "@/lib/analytics";
 
 export default function Footer() {
   return (
@@ -41,7 +44,13 @@ export default function Footer() {
           <div className="flex flex-col gap-4">
             <span className="text-deep-indigo opacity-100 font-bold uppercase tracking-widest text-[10px]">Connect</span>
             <Link href="https://instagram.com" className="hover:text-transformative-teal">Instagram</Link>
-            <Link href="https://wa.me/18018556266" className="hover:text-transformative-teal">WhatsApp</Link>
+            <Link 
+              href="https://wa.me/18018556266" 
+              onClick={() => trackWhatsAppClick('Footer Link')}
+              className="hover:text-transformative-teal"
+            >
+              WhatsApp
+            </Link>
           </div>
         </div>
       </div>

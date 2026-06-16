@@ -72,11 +72,11 @@ const LOCATION_DATABASES: Record<string, { stays: string[]; dining: string[]; de
 };
 
 // Robust helper to perform fetch with automatic exponential retries on 503 (High Demand) status
-async function fetchWithRetry(url: string, options: any, retries = 3, delay = 1500): Promise<Response> {
+async function fetchWithRetry(url: string, options: any, retries = 3, delay = 1500, timeout = 15000): Promise<Response> {
   let currentDelay = delay;
   for (let i = 0; i < retries; i++) {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15-second timeout per attempt
+    const timeoutId = setTimeout(() => controller.abort(), timeout); // Use configurable timeout
 
     try {
       const response = await fetch(url, {
@@ -95,7 +95,7 @@ async function fetchWithRetry(url: string, options: any, retries = 3, delay = 15
     } catch (e: any) {
       clearTimeout(timeoutId);
       if (i === retries - 1) throw e;
-      const errorMsg = e.name === 'AbortError' ? 'Request timed out after 15s' : e.message;
+      const errorMsg = e.name === 'AbortError' ? `Request timed out after ${timeout / 1000}s` : e.message;
       console.warn(`⚠️ Network failure in fetch attempt ${i + 1}/${retries} (${errorMsg}). Retrying in ${currentDelay}ms...`);
       await new Promise(resolve => setTimeout(resolve, currentDelay));
       currentDelay *= 1.5;
@@ -145,10 +145,10 @@ async function searchWebTavily(query: string, apiKey: string): Promise<string> {
 }
 
 // Universal Model Caller
-async function generateWithLLM(apiKey: string, prompt: string): Promise<string> {
+async function generateWithLLM(apiKey: string, prompt: string, timeout = 15000): Promise<string> {
   if (apiKey.startsWith('sk-')) {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout for OpenAI
+    const timeoutId = setTimeout(() => controller.abort(), timeout); // use the passed timeout
     try {
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
@@ -194,13 +194,10 @@ async function generateWithLLM(apiKey: string, prompt: string): Promise<string> 
       const listData = await listRes.json();
       const availableModels = listData.models || [];
       const priorityList = [
-        'gemini-3.5-flash',
-        'gemini-3-flash',
+        'gemini-flash-latest',
         'gemini-2.5-flash',
-        'gemini-2.0-flash',
-        'gemini-1.5-flash',
-        'gemini-3.1-pro',
-        'gemini-1.5-pro'
+        'gemini-pro-latest',
+        'gemini-2.5-pro'
       ];
       
       for (const priority of priorityList) {
@@ -231,7 +228,7 @@ async function generateWithLLM(apiKey: string, prompt: string): Promise<string> 
 
   if (allowedModels.length === 0) {
     // Hardcoded fallback list if API resolver fails
-    allowedModels.push('models/gemini-2.5-flash', 'models/gemini-1.5-flash');
+    allowedModels.push('models/gemini-flash-latest', 'models/gemini-2.5-flash');
   }
 
   let generatedText = '';
@@ -249,7 +246,7 @@ async function generateWithLLM(apiKey: string, prompt: string): Promise<string> 
             temperature: 0.2,
           },
         }),
-      });
+      }, 3, 1500, timeout);
 
       if (response.ok) {
         const data = await response.json();
@@ -370,13 +367,8 @@ Respond ONLY with a valid JSON array matching this format (no other text, no mar
         return NextResponse.json({ error: 'Outline parameter is required for draft mode.' }, { status: 400 });
       }
 
-      let accumulatedContent = '';
-
-      // Loop through each section in the outline sequentially to build a massive, detailed post
-      for (let i = 0; i < outline.length; i++) {
-        const section = outline[i];
-        const sectionPrompt = `
-You are writing a section of a comprehensive, high-quality travel guide.
+      const draftPrompt = `
+You are an expert travel copywriter writing a comprehensive, high-quality, long-form travel guide.
 Topic: "${topic}"
 Current Location/Region: "${location || 'Lovina'}"
 Traveler Persona: "${persona}"
@@ -389,72 +381,48 @@ ${brandingContext}
 
 ${searchContext ? `--- REAL-TIME SEARCH RESULTS --- \n${searchContext}\n---------------------------------\n` : ''}
 
---- FULL ARTICLE OUTLINE ---
-${outline.map((s: any, idx: number) => `${idx + 1}. ${s.heading} (${s.description})`).join('\n')}
+--- TARGET ARTICLE OUTLINE ---
+Please write the complete article covering all of these sections exactly in order:
+${outline.map((s: any, idx: number) => `${idx + 1}. ${s.heading}\nDescription: ${s.description}`).join('\n\n')}
 
---- WRITTEN SO FAR ---
-${accumulatedContent || '(This is the first section of the article. Write a compelling introduction followed by this section.)'}
-
---- YOUR TASK ---
-Write the full content for section ${i + 1}: "${section.heading}".
-Description of what to cover: "${section.description}"
-
-Guidelines for this section:
-1. Write 300 to 450 words of rich, detailed content. Do not write fluff.
-2. Incorporate these focus keywords naturally: "${keywords}".
+--- CONTENT REQUIREMENTS ---
+1. Write a massive, engaging, highly detailed post of 1,500+ words. Do not write fluff; write concrete, rich paragraphs.
+2. Incorporate these focus keywords naturally throughout the article: "${keywords}".
 3. Weave in these personal travel experiences naturally if relevant: "${personalExperience || 'None provided.'}"
 4. Align details with this location data:
    * Stays: ${locationData.stays.join(', ')}
    * Dining: ${locationData.dining.join(', ')}
    * Local info: ${locationData.details}
-5. Optimize for AI search/citations (Perplexity, Google AIO): If relevant, include a bold 40-60 word "Answer Block" at the start of the section.
-6. If appropriate, write a clean Markdown table comparing options or presenting data.
+5. Optimize for AI search/citations (Perplexity, Google AIO): Under key sections, include bold 40-60 word "Answer Blocks" answering direct traveler questions.
+6. Insert at least one detailed Markdown table comparing options or presenting data (e.g. routes, pricing, travel times).
 7. Integrate internal links naturally to our published articles:
 ${publishedPosts.map((p: any) => `- Topic/Title: "${p.title}" -> Link: "/blog/${p.slug}"`).join('\n')}
 
-Write ONLY the content for this section, starting with its exact heading line "${section.heading}". Do not add headers, footers, or transitions to other sections.
-`;
-
-        const sectionText = await generateWithLLM(activeApiKey, sectionPrompt);
-        accumulatedContent += '\n\n' + sectionText.trim();
-      }
-
-      // Final compilation and formatting pass
-      const compilationPrompt = `
-You are an editor polishing a travel blog post. We have generated the raw body sections, and now we need to finalize the article structure.
-
-Here is the raw body content:
---- START OF RAW BODY ---
-${accumulatedContent}
---- END OF RAW BODY ---
-
-Here is the location details:
-Stays: ${locationData.stays.join(', ')}
-Dining: ${locationData.dining.join(', ')}
-Local details: ${locationData.details}
-
-Your task:
-1. Review the body content and make minor refinements for smooth flow.
-2. Inject exactly 2 to 3 CRO Callout boxes placed naturally at logical transition points (e.g. at the end of a section discussing tours or waters).
+--- FORMATTING & CRO REQUIREMENTS ---
+8. Inject exactly 2 to 3 CRO Callout boxes placed naturally at logical transition points (e.g. at the end of a section discussing tours or waters).
    Format them exactly like this:
    :::cro-box
    ### Ready to Experience Lovina Beach?
    Skip the crowded sunrise chase. Book our private 7:00 AM Dolphin Watching Tour or Dolphin Watching + Snorkel Tour with vetted local captains. 
    [Book Your Private Boat Tour Now](/tours)
    :::
-3. Insert 3 to 4 detailed Midjourney/Flux image prompts naturally between paragraphs.
+9. Insert 3 to 4 detailed Midjourney/Flux image prompts naturally between paragraphs.
+   IMAGE PROMPT RULES (Crucial for location-specific realism):
+   - Style: Use "candid travel documentary photography, 35mm film aesthetic, Kodak Portra 400 or Fujifilm Superia style, natural grain, soft shadows, realistic textures."
+   - Avoid generic CGI buzzwords like "photorealistic", "hyperrealistic", or "cinematic".
+   - Local realism: Describe exact Balinese features. For cars, use "white Toyota Innova or Avanza minivan" (never generic SUVs). For boats, use "traditional wooden outrigger boats with bamboo wings (jukung)". For lake views, use "deep emerald green water and low-hanging mountain mist". For scenery, incorporate "mossy Balinese roadside shrines wrapped in yellow cloth".
    Format them exactly like this:
    :::image-prompt
-   **Midjourney Image Prompt:** A photorealistic, wide-angle cinematic shot of [description], captured on a Canon EOS R5 with a [lens focal length] at [zoom mm], [shutter speed], [lighting details], cinematic travel photography style, --ar 16:9
+   **Midjourney Image Prompt:** [Prompt text describing the scene adhering to the realism rules] --ar 16:9
    :::
-4. At the very end of the article, add a comprehensive FAQ section containing 3 to 4 questions based on the article's topic.
-5. Finally, append the structured metadata block enclosed in [METADATA] and [/METADATA] tags.
+10. At the very end of the article, add a comprehensive FAQ section containing 3 to 4 questions based on the article's topic.
+11. Finally, append the structured metadata block enclosed in [METADATA] and [/METADATA] tags.
 Format:
 [METADATA]
 TAGS: tag1, tag2, tag3
 TAKEAWAYS:
-- Key takeaway 1 (summarizing section 1)
-- Key takeaway 2 (summarizing section 2)
+- Key takeaway 1
+- Key takeaway 2
 ...
 FAQS:
 Q: Question 1?
@@ -463,10 +431,10 @@ Q: Question 2?
 A: Answer 2.
 [/METADATA]
 
-Return the final compiled blog post in markdown.
+Return the complete blog post in markdown. Start directly with the main title H1 heading "# ...". Do not wrap the response in markdown code blocks like \`\`\`markdown.
 `;
 
-      const finalMarkdown = await generateWithLLM(activeApiKey, compilationPrompt);
+      const finalMarkdown = await generateWithLLM(activeApiKey, draftPrompt);
 
       // Parse structured metadata block from the generated text
       let tags: string[] = [];

@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { client } from '@/sanity/lib/client';
 import { groq } from 'next-sanity';
 import Image from 'next/image';
@@ -12,6 +13,51 @@ export const revalidate = 60;
 interface PageProps {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  
+  const post = await client.fetch(
+    groq`*[_type == "post" && slug.current == $slug][0]{
+      title,
+      excerpt,
+      mainImage
+    }`,
+    { slug }
+  );
+
+  if (!post) {
+    return {
+      title: 'Post Not Found | Bali Dolphin Tours',
+      description: 'The requested ethical dolphin tour guide or blog post was not found.',
+    };
+  }
+
+  const imageUrl = post.mainImage ? urlFor(post.mainImage).url() : 'https://balidolphintours.com/hero_dolphins.png';
+
+  return {
+    title: `${post.title} | Bali Dolphin Tours`,
+    description: post.excerpt || 'Read our official, ethical Lovina dolphin tour guidelines and travel insights.',
+    openGraph: {
+      title: `${post.title} | Bali Dolphin Tours`,
+      description: post.excerpt || 'Read our official, ethical Lovina dolphin tour guidelines and travel insights.',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${post.title} | Bali Dolphin Tours`,
+      description: post.excerpt || 'Read our official, ethical Lovina dolphin tour guidelines and travel insights.',
+      images: [imageUrl],
+    },
+  };
 }
 
 // Parse custom CRO Boxes (e.g. :::cro-box) and horizontal dividers (---) for inline conversion blocks

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import LayoutWrapper from "@/components/LayoutWrapper";
+import Script from "next/script";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -16,8 +17,12 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://balidolphintours.com"),
   title: "Bali Dolphin Tours | Private Dolphin Tours",
   description: "Experience the magic of Lovina's wild dolphins in a quiet, respectful setting. Private, peaceful tours led by our professional team of captains.",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({
@@ -25,6 +30,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gtagId = process.env.NEXT_PUBLIC_GTAG_ID;
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -79,6 +85,24 @@ export default function RootLayout({
       className={`${inter.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-cloud-dancer">
+        {gtagId && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gtagId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gtagId}', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
+          </>
+        )}
         <script
           type="application/ld+json"
           suppressHydrationWarning

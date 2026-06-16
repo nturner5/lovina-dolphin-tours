@@ -1,6 +1,9 @@
 # Allow all crawlers including AI search bots to index our ethical marine tours and guides
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /admin/*
+
 
 # Specifically identify and welcome AI search agents
 User-agent: GPTBot

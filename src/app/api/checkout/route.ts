@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { getPricingData } from '@/lib/pricing-server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-01-27.acacia' as any,
@@ -7,39 +8,39 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(req: Request) {
   try {
-    const { tourId, date, guests, tourName, price, pickupLocation, whatsappNumber, hotelDetails } = await req.json();
+    const { tourId, date, guests, pickupLocation, whatsappNumber, hotelDetails } = await req.json();
+
+    // Fetch dynamic pricing data from the cache / Stripe
+    const pricing = await getPricingData();
+
+    // Find the chosen tour
+    const tour = pricing.tours.find((t: any) => t.id === tourId);
+    if (!tour) {
+      return NextResponse.json({ error: `Invalid tour choice: ${tourId}` }, { status: 400 });
+    }
+
+    // Find the chosen pickup option
+    const pickup = pricing.pickups.find((p: any) => p.id === pickupLocation);
+    if (!pickup) {
+      return NextResponse.json({ error: `Invalid pickup choice: ${pickupLocation}` }, { status: 400 });
+    }
 
     // Calculate pickup price and name
-    let pickupFee = 0;
-    let pickupName = '';
-    let pickupDesc = '';
-
-    if (pickupLocation === 'ubud') {
-      pickupFee = 35;
-      pickupName = 'Private Return Transfer — Ubud';
-      pickupDesc = `Private roundtrip transport from your hotel in Ubud to Lovina for your dolphin tour on ${date}.`;
-    } else if (pickupLocation === 'canggu-kuta') {
-      pickupFee = 50;
-      pickupName = 'Private Return Transfer — Canggu, Seminyak, Kuta';
-      pickupDesc = `Private roundtrip transport from your hotel in Canggu, Seminyak, or Kuta to Lovina for your dolphin tour on ${date}.`;
-    } else if (pickupLocation === 'uluwatu') {
-      pickupFee = 65;
-      pickupName = 'Private Return Transfer — Uluwatu, Nusa Dua, Jimbaran';
-      pickupDesc = `Private roundtrip transport from your hotel in Uluwatu, Nusa Dua, or Jimbaran to Lovina for your dolphin tour on ${date}.`;
-    } else if (pickupLocation === 'lovina') {
-      pickupName = 'Free Local Pickup — Lovina Beach Area';
-      pickupDesc = `Complimentary local pickup within 2km of Lovina Beach on ${date}.`;
-    }
+    const pickupFee = pickup.price;
+    const pickupName = pickup.name;
+    const pickupDesc = pickupLocation === 'none'
+      ? 'No transfer selected. Meet at the beach.'
+      : `Private roundtrip transport from your hotel in ${pickupLocation} to Lovina for your dolphin tour on ${date}.`;
 
     const lineItems: any[] = [
       {
         price_data: {
           currency: 'usd',
           product_data: {
-            name: `${tourName} (Private Boat)`,
+            name: `${tour.name} (Private Boat)`,
             description: `Ethical Dolphin Tour for ${guests} guests on ${date}`,
           },
-          unit_amount: price * 100,
+          unit_amount: tour.price * 100, // Secure price from Stripe cache
         },
         // Enforce guest count scaling by using quantity
         quantity: Math.max(2, Number(guests) || 2),
@@ -55,7 +56,7 @@ export async function POST(req: Request) {
             name: pickupName,
             description: pickupDesc,
           },
-          unit_amount: pickupFee * 100,
+          unit_amount: pickupFee * 100, // Secure price from Stripe cache
         },
         quantity: 1,
       });

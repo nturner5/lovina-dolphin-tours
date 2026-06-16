@@ -167,6 +167,35 @@ const templates = [
         ]
       }
     ]
+  },
+  {
+    name: 'lem_captain_simple_generic',
+    category: 'UTILITY',
+    language: 'en_US',
+    allow_category_change: true,
+    components: [
+      {
+        type: 'BODY',
+        text: 'Halo Captain, We have a client that wants to book a private dolphin tour. Are you available?'
+      }
+    ]
+  },
+  {
+    name: 'lem_captain_simple_details',
+    category: 'UTILITY',
+    language: 'en_US',
+    allow_category_change: true,
+    components: [
+      {
+        type: 'BODY',
+        text: 'Halo Captain {{1}}, We have a guest booking a private dolphin tour:\n\n* Date: {{2}}\n* Time: 08:00 AM\n* Guests: {{3}} Pax\n\nAre you available to take this tour? Please reply YES if you are available.',
+        example: {
+          body_text: [
+            ['Wayan', '2026-06-25', '2']
+          ]
+        }
+      }
+    ]
   }
 ];
 

@@ -8,12 +8,12 @@ import PhoneInput, { isValidPhoneNumber, getCountryCallingCode } from 'react-pho
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 
-const TOURS = [
+const DEFAULT_TOURS = [
   { id: 'seven-am-ethical', name: '7:00 AM Private Dolphin Watching Tour', price: 45, time: '7:00 AM' },
   { id: 'swim-snorkel', name: '7:00 AM Private Dolphin Watching Tour + Swim & Snorkel', price: 65, time: '7:00 AM' },
 ];
 
-const PICKUP_OPTIONS = [
+const DEFAULT_PICKUP_OPTIONS = [
   { id: 'none', name: 'No Driver (Meet at Lovina Beach by 6:30 AM)', price: 0 },
   { id: 'lovina', name: 'Free Local Shuttle (Lovina Beach Area - Pickup ~6:30 AM)', price: 0 },
   { id: 'ubud', name: 'Ubud Round-trip Private Driver (Pickup ~4:30 AM)', price: 35 },
@@ -35,8 +35,11 @@ const getBaliDateString = (offsetDays = 0) => {
 function CheckoutForm() {
   const locale = useLocale();
   const [loading, setLoading] = useState(false);
+  const [tours, setTours] = useState(DEFAULT_TOURS);
+  const [pickupOptions, setPickupOptions] = useState(DEFAULT_PICKUP_OPTIONS);
+
   const [formData, setFormData] = useState({
-    tourId: TOURS[0].id,
+    tourId: DEFAULT_TOURS[0].id,
     date: '',
     guests: 2,
     name: '',
@@ -48,6 +51,27 @@ function CheckoutForm() {
 
   const [minDate, setMinDate] = useState<string>('');
   const [isLastMinute, setIsLastMinute] = useState(false);
+
+  // Load dynamic pricing from the server cache on load
+  useEffect(() => {
+    const fetchPricing = async () => {
+      try {
+        const response = await fetch('/api/pricing');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.tours && data.tours.length > 0) {
+            setTours(data.tours);
+          }
+          if (data.pickups && data.pickups.length > 0) {
+            setPickupOptions(data.pickups);
+          }
+        }
+      } catch (e) {
+        console.error('Failed to load dynamic pricing from Stripe:', e);
+      }
+    };
+    fetchPricing();
+  }, []);
 
   // Calculate dynamic WhatsApp URL for last-minute booking
   const getWhatsAppUrl = () => {
@@ -78,7 +102,7 @@ function CheckoutForm() {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const tourParam = params.get('tour');
-      if (tourParam && TOURS.some(t => t.id === tourParam)) {
+      if (tourParam && DEFAULT_TOURS.some(t => t.id === tourParam)) {
         setFormData(prev => ({ ...prev, tourId: tourParam }));
       }
     }
@@ -164,7 +188,7 @@ function CheckoutForm() {
       return;
     }
 
-    const selectedTour = TOURS.find(t => t.id === formData.tourId)!;
+    const selectedTour = tours.find(t => t.id === formData.tourId)!;
 
     try {
       const response = await fetch('/api/checkout', {
@@ -195,7 +219,7 @@ function CheckoutForm() {
     }
   };
 
-  const selectedTour = TOURS.find(t => t.id === formData.tourId) || TOURS[0];
+  const selectedTour = tours.find(t => t.id === formData.tourId) || tours[0];
 
   return (
     <main className="bg-cloud-dancer min-h-screen px-4 sm:px-6 pt-12 pb-24 lg:pt-16 lg:px-12">
@@ -227,7 +251,7 @@ function CheckoutForm() {
                   value={formData.tourId}
                   onChange={(e) => setFormData({ ...formData, tourId: e.target.value })}
                 >
-                  {TOURS.map(tour => {
+                  {tours.map(tour => {
                     const tourName = tour.id === 'seven-am-ethical' ? t('tour1Title', locale) : t('tour2Title', locale);
                     return (
                       <option key={tour.id} value={tour.id}>
@@ -371,7 +395,7 @@ function CheckoutForm() {
                   value={formData.pickupLocation}
                   onChange={(e) => setFormData({ ...formData, pickupLocation: e.target.value })}
                 >
-                  {PICKUP_OPTIONS.map(option => {
+                  {pickupOptions.map(option => {
                     let optionName = '';
                     if (option.id === 'none') optionName = t('noDriver', locale);
                     else if (option.id === 'lovina') optionName = t('freeShuttle', locale);
@@ -575,16 +599,16 @@ function CheckoutForm() {
               {/* Pricing Summary */}
               <div className="bg-cloud-dancer/30 p-6 rounded-2xl border border-deep-indigo/5 space-y-3 text-sm">
                 <div className="flex justify-between text-deep-indigo/60">
-                  <span>{TOURS.find(t => t.id === formData.tourId)?.name} (${TOURS.find(t => t.id === formData.tourId)?.price} × {formData.guests} guests)</span>
-                  <span>${(TOURS.find(t => t.id === formData.tourId)?.price || 0) * formData.guests} USD</span>
+                  <span>{tours.find(t => t.id === formData.tourId)?.name} (${tours.find(t => t.id === formData.tourId)?.price} × {formData.guests} guests)</span>
+                  <span>${(tours.find(t => t.id === formData.tourId)?.price || 0) * formData.guests} USD</span>
                 </div>
                 {formData.pickupLocation !== 'none' && (
                   <div className="flex justify-between text-deep-indigo/60">
-                    <span>{PICKUP_OPTIONS.find(p => p.id === formData.pickupLocation)?.name}</span>
+                    <span>{pickupOptions.find(p => p.id === formData.pickupLocation)?.name}</span>
                     <span>
-                      {PICKUP_OPTIONS.find(p => p.id === formData.pickupLocation)?.price === 0 
+                      {pickupOptions.find(p => p.id === formData.pickupLocation)?.price === 0 
                         ? 'Free' 
-                        : `$${PICKUP_OPTIONS.find(p => p.id === formData.pickupLocation)?.price} USD`
+                        : `$${pickupOptions.find(p => p.id === formData.pickupLocation)?.price} USD`
                       }
                     </span>
                   </div>
@@ -592,8 +616,8 @@ function CheckoutForm() {
                 <div className="border-t border-deep-indigo/10 pt-3 flex justify-between font-bold text-deep-indigo text-base">
                   <span>{t("summaryTotal", locale)}</span>
                   <span>
-                    ${((TOURS.find(t => t.id === formData.tourId)?.price || 0) * formData.guests) + 
-                      (PICKUP_OPTIONS.find(p => p.id === formData.pickupLocation)?.price || 0)
+                    ${((tours.find(t => t.id === formData.tourId)?.price || 0) * formData.guests) + 
+                      (pickupOptions.find(p => p.id === formData.pickupLocation)?.price || 0)
                     } USD
                   </span>
                 </div>

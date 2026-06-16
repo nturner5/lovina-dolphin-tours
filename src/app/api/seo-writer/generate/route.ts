@@ -1,6 +1,75 @@
 import { NextResponse } from 'next/server';
+import { createClient } from 'next-sanity';
 import fs from 'fs';
 import path from 'path';
+
+const sanityClient = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '1f5xaxdl',
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  useCdn: false,
+  token: process.env.SANITY_AUTH_TOKEN,
+  apiVersion: '2024-05-26',
+});
+
+// Location-specific database for stays, dining, and logistics
+const LOCATION_DATABASES: Record<string, { stays: string[]; dining: string[]; details: string }> = {
+  lovina: {
+    stays: [
+      "[Puri Bagus Lovina](https://maps.google.com/?q=Puri+Bagus+Lovina) (traditional beachside resort with villas and tropical gardens)",
+      "[The Damai Lovina](https://maps.google.com/?q=The+Damai+Lovina) (luxury boutique resort in the hills with farm-to-table organic kitchen)"
+    ],
+    dining: [
+      "[Warung Nemo](https://maps.google.com/?q=Warung+Nemo+Lovina) (celebrated for fresh mahi-mahi and snapper grilled over dry coconut husks)",
+      "[Buda Lovina](https://maps.google.com/?q=Buda+Lovina+Cafe) (organic local satay, cold-pressed juices, and vegan treats)",
+      "[Warung Singasinga](https://maps.google.com/?q=Warung+Singasinga+Lovina) (authentic Balinese crispy duck and traditional family recipes)"
+    ],
+    details: "Departures depart at 7:00 AM from the Lovina Dolphin Statue to avoid the standard 6:00 AM crowd rush. Vetted captains only, engines neutral within 30m, and parallel-only approach. Travel time from Canggu is 2.5-3 hours, and from Ubud is 2 hours."
+  },
+  munduk: {
+    stays: [
+      "[Munduk Moding Plantation](https://maps.google.com/?q=Munduk+Moding+Plantation) (luxury eco-cabins overlooking coffee plantations with an infinity pool in the clouds)",
+      "[Sanak Retreat Bali](https://maps.google.com/?q=Sanak+Retreat+Bali) (wooden bungalows surrounded by active rice terraces and misty mountain peaks)"
+    ],
+    dining: [
+      "[Munduk Coffee House](https://maps.google.com/?q=Munduk+Coffee+House) (featuring artisanal, single-origin Arabica coffee grown on-site)",
+      "[Warung Bongkot](https://maps.google.com/?q=Warung+Bongkot+Lovina) (celebrated for utilizing organic wild-ginger bongkot in traditional Balinese dishes)"
+    ],
+    details: "Highland topography with waterfalls (Sekumpul, Munduk, Gitgit), clove orchards, and volcanic twin lakes. Cooler climates, hiking routes require reef booties or solid hiking footwear."
+  },
+  ubud: {
+    stays: [
+      "[Mandapa, a Ritz-Carlton Reserve](https://maps.google.com/?q=Mandapa+Ritz+Carlton+Ubud) (luxury sanctuary along the Ayung River with private pool villas)",
+      "[Ubud Hanging Gardens](https://maps.google.com/?q=Hanging+Gardens+of+Bali) (famous for its multi-tiered suspended infinity pools over the jungle)"
+    ],
+    dining: [
+      "[Locavore](https://maps.google.com/?q=Locavore+Ubud) (modern culinary art with 100% locally sourced Indonesian ingredients)",
+      "[Suka Espresso Ubud](https://maps.google.com/?q=Suka+Espresso+Ubud) (exceptional specialty coffee and healthy bowls)"
+    ],
+    details: "Ubud is the cultural heart of Bali. Private drivers pick up guests at ~4:30 AM for a round-trip Lovina dolphin excursion."
+  },
+  canggu: {
+    stays: [
+      "[Como Uma Canggu](https://maps.google.com/?q=COMO+Uma+Canggu) (premium surf-front resort on Batu Bolong Beach)",
+      "[The Slow](https://maps.google.com/?q=The+Slow+Canggu) (art-focused boutique hotel with brutalist design and organic kitchen)"
+    ],
+    dining: [
+      "[Crate Cafe](https://maps.google.com/?q=Crate+Cafe+Canggu) (vibrant, supercharged breakfast plates and local organic coffee)",
+      "[Suka Espresso Canggu](https://maps.google.com/?q=Suka+Espresso+Canggu) (exceptional brunch and specialty brews near Berawa)"
+    ],
+    details: "Canggu/Seminyak/Kuta are coastal hubs. Return private transfer pickups start at ~4:00 AM due to the 3-hour volcanic mountain pass drive to Lovina."
+  },
+  uluwatu: {
+    stays: [
+      "[Alila Villas Uluwatu](https://maps.google.com/?q=Alila+Villas+Uluwatu) (eco-luxury pool villas suspended on limestone cliffs over the Indian Ocean)",
+      "[Six Senses Uluwatu](https://maps.google.com/?q=Six+Senses+Uluwatu) (unparalleled ocean views and wellness-focused luxury retreats)"
+    ],
+    dining: [
+      "[Single Fin](https://maps.google.com/?q=Single+Fin+Uluwatu) (iconic cliffside dining and sunset viewpoints)",
+      "[Suka Espresso Uluwatu](https://maps.google.com/?q=Suka+Espresso+Uluwatu) (premium coffee and wholesome bowls near Thomas Beach)"
+    ],
+    details: "Uluwatu/Nusa Dua/Jimbaran are on the southern Bukit Peninsula. Pickups start at ~3:30 AM for a 3.5 to 4-hour drive to Lovina."
+  }
+};
 
 // Robust helper to perform fetch with automatic exponential retries on 503 (High Demand) status
 async function fetchWithRetry(url: string, options: any, retries = 3, delay = 1500): Promise<Response> {
@@ -11,7 +80,7 @@ async function fetchWithRetry(url: string, options: any, retries = 3, delay = 15
       if (response.status === 503 && i < retries - 1) {
         console.warn(`⚠️ Google Gemini returned 503 (High Demand). Retrying attempt ${i + 1}/${retries} in ${currentDelay}ms...`);
         await new Promise(resolve => setTimeout(resolve, currentDelay));
-        currentDelay *= 1.5; // Exponential backoff
+        currentDelay *= 1.5;
         continue;
       }
       return response;
@@ -25,9 +94,161 @@ async function fetchWithRetry(url: string, options: any, retries = 3, delay = 15
   throw new Error('Fetch failed after max retries.');
 }
 
+// Clean JSON response block from markdown tags
+function cleanJsonString(str: string): string {
+  return str
+    .replace(/^```json/i, '')
+    .replace(/^```/m, '')
+    .replace(/```$/m, '')
+    .trim();
+}
+
+// Optional real-time Tavily search integration
+async function searchWebTavily(query: string, apiKey: string): Promise<string> {
+  try {
+    const response = await fetch('https://api.tavily.com/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        api_key: apiKey,
+        query: query,
+        search_depth: 'basic',
+        max_results: 3,
+      }),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return (data.results || [])
+        .map((r: any) => `Source: ${r.title} (${r.url})\nContent: ${r.content}`)
+        .join('\n\n');
+    }
+    return '';
+  } catch (err: any) {
+    console.warn('Tavily Search API warning:', err.message);
+    return '';
+  }
+}
+
+// Universal Model Caller
+async function generateWithLLM(apiKey: string, prompt: string): Promise<string> {
+  if (apiKey.startsWith('sk-')) {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.2,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData?.error?.message || `OpenAI API returned status ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.choices[0]?.message?.content || '';
+  }
+
+  // Google Gemini API Model Resolver
+  const allowedModels: string[] = [];
+  let listError = '';
+  
+  try {
+    const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
+    const listRes = await fetch(listUrl);
+    
+    if (listRes.ok) {
+      const listData = await listRes.json();
+      const availableModels = listData.models || [];
+      const priorityList = [
+        'gemini-3.5-flash',
+        'gemini-3-flash',
+        'gemini-2.5-flash',
+        'gemini-2.0-flash',
+        'gemini-1.5-flash',
+        'gemini-3.1-pro',
+        'gemini-1.5-pro'
+      ];
+      
+      for (const priority of priorityList) {
+        const found = availableModels.find((m: any) => 
+          m.name === `models/${priority}` && 
+          m.supportedGenerationMethods?.includes('generateContent')
+        );
+        if (found) {
+          allowedModels.push(found.name);
+        }
+      }
+      
+      if (allowedModels.length === 0 && availableModels.length > 0) {
+        const fallback = availableModels.find((m: any) => 
+          m.supportedGenerationMethods?.includes('generateContent')
+        );
+        if (fallback) {
+          allowedModels.push(fallback.name);
+        }
+      }
+    } else {
+      const errBody = await listRes.json().catch(() => ({}));
+      listError = errBody?.error?.message || `HTTP Status ${listRes.status}`;
+    }
+  } catch (e: any) {
+    listError = e.message || 'Network error';
+  }
+
+  if (allowedModels.length === 0) {
+    // Hardcoded fallback list if API resolver fails
+    allowedModels.push('models/gemini-2.5-flash', 'models/gemini-1.5-flash');
+  }
+
+  let generatedText = '';
+  const errors: string[] = [];
+  
+  for (const model of allowedModels) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/${model}:generateContent?key=${apiKey}`;
+      const response = await fetchWithRetry(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.2,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        if (generatedText) {
+          break;
+        }
+      } else {
+        const errBody = await response.json().catch(() => ({}));
+        const apiMessage = errBody?.error?.message || `HTTP Status ${response.status}`;
+        errors.push(`${model} -> ${apiMessage}`);
+      }
+    } catch (e: any) {
+      errors.push(`${model} -> ${e.message}`);
+    }
+  }
+
+  if (!generatedText) {
+    throw new Error(`Gemini API call failed. Diagnostics:\n${errors.map(err => `• ${err}`).join('\n')}`);
+  }
+
+  return generatedText;
+}
+
 export async function POST(req: Request) {
   try {
-    const { apiKey, topic, keywords, persona, tone, personalExperience } = await req.json();
+    const { apiKey, mode, topic, keywords, persona, tone, personalExperience, location, outline, searchEnabled } = await req.json();
 
     const activeApiKey = apiKey || process.env.GEMINI_API_KEY;
 
@@ -35,7 +256,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'API Key is required to run the AI Writer. Please configure GEMINI_API_KEY on the server or provide one in the browser.' }, { status: 400 });
     }
 
-    // Read local project marketing and branding guidelines
+    // Fetch published articles from Sanity for internal linking
+    let publishedPosts: { title: string; slug: string }[] = [];
+    try {
+      publishedPosts = await sanityClient.fetch(`*[_type == "post" && defined(slug.current)]{
+        title,
+        "slug": slug.current
+      }`);
+    } catch (e) {
+      console.warn('Could not read published posts from Sanity:', e);
+    }
+
+    // Read local marketing and branding guidelines
     let marketingContext = '';
     let brandingContext = '';
     
@@ -44,72 +276,158 @@ export async function POST(req: Request) {
       if (fs.existsSync(pmPath)) {
         marketingContext = fs.readFileSync(pmPath, 'utf8');
       }
-    } catch (e) {
-      console.warn('Could not read product-marketing.md context:', e);
-    }
+    } catch (e) {}
 
     try {
       const bgPath = path.join(process.cwd(), '.agents/branding-guide.md');
       if (fs.existsSync(bgPath)) {
         brandingContext = fs.readFileSync(bgPath, 'utf8');
       }
-    } catch (e) {
-      console.warn('Could not read branding-guide.md context:', e);
+    } catch (e) {}
+
+    // Get location config database
+    const normalizedLoc = (location || 'lovina').toLowerCase().trim();
+    const locationData = LOCATION_DATABASES[normalizedLoc] || LOCATION_DATABASES.lovina;
+
+    // Optional Search query retrieval
+    let searchContext = '';
+    const searchToken = process.env.TAVILY_API_KEY || (activeApiKey.startsWith('sk-') ? '' : process.env.TAVILY_API_KEY);
+    if (searchEnabled && searchToken) {
+      searchContext = await searchWebTavily(topic, searchToken);
     }
 
-    const prompt = `
-You are an elite travel writer and conversion rate optimization (CRO) expert. Your goal is to write a highly detailed, comprehensive, 1,500+ word "authority" travel blog post about the following topic:
+    // MODE: OUTLINE GENERATION
+    if (mode === 'outline') {
+      const outlinePrompt = `
+You are an expert travel editor. Generate a highly detailed, logical outline for a 1,500+ word blog post about: "${topic}".
+Focus keywords to cover: "${keywords}".
+Traveler Persona: "${persona}".
+Chosen region/location: "${location || 'Lovina'}".
+
+Below is the brand guidelines context:
+--- BRAND CONTEXT ---
+${marketingContext}
+${brandingContext}
+----------------------
+
+${searchContext ? `--- REAL-TIME SEARCH RESULTS --- \n${searchContext}\n---------------------------------\n` : ''}
+
+Create exactly 5 to 6 distinct sections. Do NOT use H1 or H2 headings. Break the outline into H3 headings (e.g. ### Title) and a 1-sentence description of what should be covered.
+
+Respond ONLY with a valid JSON array matching this format (no other text, no markdown code block backticks):
+[
+  {
+    "heading": "### The Quiet 7:00 AM Departure: Why Timing is Everything",
+    "description": "Explain why leaving at 7:00 AM avoids the standard sunrise boat rush, and sets a peaceful tone."
+  }
+]
+`;
+      const outlineRaw = await generateWithLLM(activeApiKey, outlinePrompt);
+      const cleanedOutline = cleanJsonString(outlineRaw);
+      try {
+        const outlineJson = JSON.parse(cleanedOutline);
+        return NextResponse.json({ outline: outlineJson });
+      } catch (err: any) {
+        console.error('Failed to parse outline JSON, raw text was:', outlineRaw);
+        return NextResponse.json({ 
+          error: 'Failed to generate a clean structured outline. Please try again.', 
+          raw: outlineRaw 
+        }, { status: 500 });
+      }
+    }
+
+    // MODE: DRAFT GENERATION
+    if (mode === 'draft') {
+      if (!outline || !Array.isArray(outline) || outline.length === 0) {
+        return NextResponse.json({ error: 'Outline parameter is required for draft mode.' }, { status: 400 });
+      }
+
+      let accumulatedContent = '';
+
+      // Loop through each section in the outline sequentially to build a massive, detailed post
+      for (let i = 0; i < outline.length; i++) {
+        const section = outline[i];
+        const sectionPrompt = `
+You are writing a section of a comprehensive, high-quality travel guide.
 Topic: "${topic}"
-Target Focus Keywords (incorporate these naturally throughout the headings and body text): "${keywords}"
-Target Traveler Persona: "${persona}"
-Writing Tone: "${tone || 'Expert, informative, engaging, and premium (similar to the famous Finns Beach Club Bali blog)'}"
+Current Location/Region: "${location || 'Lovina'}"
+Traveler Persona: "${persona}"
+Tone: "${tone}"
 
---- START OF MY PERSONAL TRAVEL EXPERIENCES (E-E-A-T Booster) ---
-${personalExperience ? `Crucial Guideline: You MUST naturally weave in the following real personal travel anecdotes, first-hand quotes, and raw experiences directly into appropriate sections of the article to maximize Google E-E-A-T, authenticity, and traveler trust: "${personalExperience}"` : 'None provided.'}
---- END OF MY PERSONAL TRAVEL EXPERIENCES ---
+--- BRAND CONTEXT ---
+${marketingContext}
+${brandingContext}
+----------------------
 
-Below is the SPECIFIC local marketing and branding context for this website. You MUST align all tour details, prices, guidelines, tone of voice, and value propositions EXACTLY with these guidelines:
+${searchContext ? `--- REAL-TIME SEARCH RESULTS --- \n${searchContext}\n---------------------------------\n` : ''}
 
---- START OF PRODUCT MARKETING CONTEXT ---
-${marketingContext || 'Operating under Bali Dolphin Tours, departing at 7:00 AM to skip sunrise swarms, vetted captains, parallel approach, private dolphin boat.'}
---- END OF PRODUCT MARKETING CONTEXT ---
+--- FULL ARTICLE OUTLINE ---
+${outline.map((s: any, idx: number) => `${idx + 1}. ${s.heading} (${s.description})`).join('\n')}
 
---- START OF BRANDING & VISUAL CONTEXT ---
-${brandingContext || 'V2 Coastal Noir branding, editorial & minimal style, "The Quiet Encounter", "Maritime Excellence", "Private Dolphin Boat".'}
---- END OF BRANDING & VISUAL CONTEXT ---
+--- WRITTEN SO FAR ---
+${accumulatedContent || '(This is the first section of the article. Write a compelling introduction followed by this section.)'}
 
-Structure and formatting rules:
-1. Editorial H1 Title: Create a high-click-through-rate, catchy title optimized for SEO at the very top (e.g. # Title).
-2. Heading Structure: Break the article down into 5 to 6 comprehensive sections using detailed markdown headings (### H3 and #### H4). Do NOT use H1 or H2 in the body content (start headings at ### or #### to maintain correct SEO page hierarchy).
-3. Highly Practical & Non-Fluff with Specific Restaurant & Hotel Recommendations & Links: Provide concrete travel information. Weave in very specific, real recommendations for local dining (e.g., [Warung Nemo on Google Maps](https://maps.google.com/?q=Warung+Nemo+Lovina) for fresh coconut-husk grilled mahi-mahi, [Warung Bongkot](https://maps.google.com/?q=Warung+Bongkot+Lovina) for organic local satay, Buda Lovina, and Munduk coffee houses) and accommodations (e.g., the luxury [Munduk Moding Plantation](https://maps.google.com/?q=Munduk+Moding+Plantation) boutique eco-cabins, [Puri Bagus Lovina](https://maps.google.com/?q=Puri+Bagus+Lovina) volcanic beach resorts, [The Damai](https://maps.google.com/?q=The+Damai+Lovina), or [Sanak Retreat](https://maps.google.com/?q=Sanak+Retreat+Bali)). For every single place you recommend, you MUST provide an actual descriptive markdown link (e.g. Google Maps queries, internal links like /blog/beyond-the-dolphins, or TripAdvisor reviews). Provide specific local transport and timing details. Do not use placeholders.
-4. Call-to-Action (CRO) Callouts: Embed 2 to 3 beautiful CRO callout boxes that pitch Lovina Dolphin Watching Tours naturally at logical transition points (e.g., when discussing ocean activities). 
-   Format them exactly like this in the markdown:
+--- YOUR TASK ---
+Write the full content for section ${i + 1}: "${section.heading}".
+Description of what to cover: "${section.description}"
+
+Guidelines for this section:
+1. Write 300 to 450 words of rich, detailed content. Do not write fluff.
+2. Incorporate these focus keywords naturally: "${keywords}".
+3. Weave in these personal travel experiences naturally if relevant: "${personalExperience || 'None provided.'}"
+4. Align details with this location data:
+   * Stays: ${locationData.stays.join(', ')}
+   * Dining: ${locationData.dining.join(', ')}
+   * Local info: ${locationData.details}
+5. Optimize for AI search/citations (Perplexity, Google AIO): If relevant, include a bold 40-60 word "Answer Block" at the start of the section.
+6. If appropriate, write a clean Markdown table comparing options or presenting data.
+7. Integrate internal links naturally to our published articles:
+${publishedPosts.map((p: any) => `- Topic/Title: "${p.title}" -> Link: "/blog/${p.slug}"`).join('\n')}
+
+Write ONLY the content for this section, starting with its exact heading line "${section.heading}". Do not add headers, footers, or transitions to other sections.
+`;
+
+        const sectionText = await generateWithLLM(activeApiKey, sectionPrompt);
+        accumulatedContent += '\n\n' + sectionText.trim();
+      }
+
+      // Final compilation and formatting pass
+      const compilationPrompt = `
+You are an editor polishing a travel blog post. We have generated the raw body sections, and now we need to finalize the article structure.
+
+Here is the raw body content:
+--- START OF RAW BODY ---
+${accumulatedContent}
+--- END OF RAW BODY ---
+
+Here is the location details:
+Stays: ${locationData.stays.join(', ')}
+Dining: ${locationData.dining.join(', ')}
+Local details: ${locationData.details}
+
+Your task:
+1. Review the body content and make minor refinements for smooth flow.
+2. Inject exactly 2 to 3 CRO Callout boxes placed naturally at logical transition points (e.g. at the end of a section discussing tours or waters).
+   Format them exactly like this:
    :::cro-box
    ### Ready to Experience Lovina Beach?
    Skip the crowded sunrise chase. Book our private 7:00 AM Dolphin Watching Tour or Dolphin Watching + Snorkel Tour with vetted local captains. 
    [Book Your Private Boat Tour Now](/tours)
    :::
-5. Advanced Photorealistic Image Prompts: Insert 3 to 4 detailed, photorealistic image prompts placed naturally between paragraphs where an image should go. These will serve as copy-paste prompts for Midjourney/Flux.
-   Each prompt must be highly detailed and specify professional camera settings, focal lengths, shutter speed, lighting, and aspect ratios.
-   Include specific camera model cues (e.g. "Canon EOS R5" or "Sony a7R V"), specific lens details (e.g. "24mm f/2.8 ultra-wide-angle lens for landscapes", "50mm f/1.2 prime lens for dramatic depth-of-field", "85mm f/1.4 prime lens for intimate travel portraits"), shutter speed (e.g. "shutter speed 1/1000s to freeze moving ocean water droplets and dolphin splashes in sharp focus"), professional lighting (e.g. "volumetric golden hour sunbeams filtering through light morning mist", "moody overcast soft light"), and color styling (e.g. "Coastal Noir style with rich deep indigo and seafoam teal color grading, realistic skin textures, 8k resolution, --ar 16:9").
-   Format: ":::image-prompt
-   **Midjourney Image Prompt:** A photorealistic, wide-angle cinematic shot of [description], captured on a Canon EOS R5 with a [lens focal length and aperture] at [zoom mm], [shutter speed to freeze splashes], [lighting details], cinematic travel photography style, --ar 16:9"
+3. Insert 3 to 4 detailed Midjourney/Flux image prompts naturally between paragraphs.
+   Format them exactly like this:
+   :::image-prompt
+   **Midjourney Image Prompt:** A photorealistic, wide-angle cinematic shot of [description], captured on a Canon EOS R5 with a [lens focal length] at [zoom mm], [shutter speed], [lighting details], cinematic travel photography style, --ar 16:9
    :::
-6. Comprehensive FAQ Section: Include a list of answers to common traveler concerns about this topic at the end of the post.
-
-7. Strict Factuality & Zero Hallucination Constraint: Factual correctness is absolutely paramount. Under no circumstances should you invent, guess, or hallucinate specific menu items, prices, opening hours, or operational details for real-world establishments.
-   - If you are not 100% sure about a specific detail (e.g. exactly what dishes are currently served, exact pricing, specific shop layouts), you MUST default to describing the general culinary style, vibe, and concept of the establishment (e.g., "renowned for their signature wood-fired sourdough breakfasts", "known for their artisanal eggs benedict variations", "sourcing local organic Kintamani coffee beans", "offering premium, minimalist resort-wear") rather than mentioning high-fidelity, made-up dish names, prices, or details.
-   - The ONLY highly specific dish names, menu items, or quotes you may include are those directly supplied by the user under the "PERSONAL TRAVEL EXPERIENCES (E-E-A-T Booster)" section, as these are verified first-hand details.
-
-8. Enriched Metadata Block: At the very end of your output, you MUST append a structured metadata block enclosed in [METADATA] and [/METADATA] tags. This metadata will be parsed by our backend to populate rich fields in our database. Do NOT output this block anywhere else or in any other format.
+4. At the very end of the article, add a comprehensive FAQ section containing 3 to 4 questions based on the article's topic.
+5. Finally, append the structured metadata block enclosed in [METADATA] and [/METADATA] tags.
 Format:
 [METADATA]
-TAGS: Sekumpul, North Bali, Waterfalls, Hiking, Travel Guide
+TAGS: tag1, tag2, tag3
 TAKEAWAYS:
-- Key takeaway bullet point 1 (summarizing section 1)
-- Key takeaway bullet point 2 (summarizing section 2)
-- Key takeaway bullet point 3 (summarizing section 3)
-- Key takeaway bullet point 4 (summarizing section 4)
+- Key takeaway 1 (summarizing section 1)
+- Key takeaway 2 (summarizing section 2)
+...
 FAQS:
 Q: Question 1?
 A: Answer 1.
@@ -117,192 +435,70 @@ Q: Question 2?
 A: Answer 2.
 [/METADATA]
 
-Write the entire, complete blog post in high-quality markdown, maintaining deep local context, slow-travel values, and the Coastal Noir luxury aesthetic. Do not summarize or abbreviate sections—write it in full.
-
+Return the final compiled blog post in markdown.
 `;
 
-    let generatedText = '';
+      const finalMarkdown = await generateWithLLM(activeApiKey, compilationPrompt);
 
-    if (activeApiKey.startsWith('sk-')) {
-      // Call OpenAI API
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${activeApiKey}`,
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: [{ role: 'user', content: prompt }],
-          temperature: 0.2,
-        }),
+      // Parse structured metadata block from the generated text
+      let tags: string[] = [];
+      let keyTakeaways: string[] = [];
+      let faqs: { question: string; answer: string }[] = [];
+      let cleanMarkdown = finalMarkdown;
+
+      const metadataMatch = finalMarkdown.match(/\[METADATA\]([\s\S]*?)\[\/METADATA\]/);
+      if (metadataMatch) {
+        const metaContent = metadataMatch[1];
+        cleanMarkdown = finalMarkdown.replace(/\[METADATA\][\s\S]*?\[\/METADATA\]/, '').trim();
+        
+        // Parse TAGS
+        const tagsMatch = metaContent.match(/TAGS:\s*(.*)/i);
+        if (tagsMatch) {
+          tags = tagsMatch[1].split(',').map(t => t.trim()).filter(Boolean);
+        }
+        
+        // Parse TAKEAWAYS
+        const takeawaysBlock = metaContent.match(/TAKEAWAYS:([\s\S]*?)(?:FAQS:|$)/i);
+        if (takeawaysBlock) {
+          keyTakeaways = takeawaysBlock[1]
+            .split('\n')
+            .map(line => line.trim())
+            .filter(line => line.startsWith('-') || line.startsWith('*'))
+            .map(line => line.replace(/^[-*]\s*/, '').trim());
+        }
+        
+        // Parse FAQS
+        const faqsBlock = metaContent.match(/FAQS:([\s\S]*?)$/i);
+        if (faqsBlock) {
+          const lines = faqsBlock[1].split('\n').map(l => l.trim()).filter(Boolean);
+          let currentFaq: { question: string; answer: string } | null = null;
+          
+          for (const line of lines) {
+            const upper = line.toUpperCase();
+            if (upper.startsWith('Q:') || upper.startsWith('QUESTION:')) {
+              if (currentFaq) faqs.push(currentFaq);
+              const qText = line.replace(/^(Q|Question):/i, '').trim();
+              currentFaq = { question: qText, answer: '' };
+            } else if ((upper.startsWith('A:') || upper.startsWith('ANSWER:')) && currentFaq) {
+              const aText = line.replace(/^(A|Answer):/i, '').trim();
+              currentFaq.answer = aText;
+            } else if (currentFaq) {
+              currentFaq.answer = (currentFaq.answer + ' ' + line).trim();
+            }
+          }
+          if (currentFaq) faqs.push(currentFaq);
+        }
+      }
+
+      return NextResponse.json({ 
+        markdown: cleanMarkdown,
+        tags,
+        keyTakeaways,
+        faqs
       });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData?.error?.message || `OpenAI API returned status ${response.status}`);
-      }
-
-      const data = await response.json();
-      generatedText = data.choices[0]?.message?.content || '';
-    } else {
-      // Dynamic Model Resolver: Query Google to see what models are specifically active & enabled for this API Key!
-      const allowedModels: string[] = [];
-      let listError = '';
-      
-      try {
-        const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${activeApiKey}`;
-        const listRes = await fetch(listUrl);
-        
-        if (listRes.ok) {
-          const listData = await listRes.json();
-          const availableModels = listData.models || [];
-          
-          // Prioritize standard models from best to most stable
-          const priorityList = [
-            'gemini-3.5-flash',
-            'gemini-3-flash',
-            'gemini-2.5-flash',
-            'gemini-2.0-flash',
-            'gemini-1.5-flash',
-            'gemini-3.1-pro',
-            'gemini-1.5-pro'
-          ];
-          
-          for (const priority of priorityList) {
-            const found = availableModels.find((m: any) => 
-              m.name === `models/${priority}` && 
-              m.supportedGenerationMethods?.includes('generateContent')
-            );
-            if (found) {
-              allowedModels.push(found.name);
-            }
-          }
-          
-          // Fallback to any model that supports generateContent if none of our priorities match
-          if (allowedModels.length === 0 && availableModels.length > 0) {
-            const fallback = availableModels.find((m: any) => 
-              m.supportedGenerationMethods?.includes('generateContent')
-            );
-            if (fallback) {
-              allowedModels.push(fallback.name);
-            }
-          }
-        } else {
-          const errBody = await listRes.json().catch(() => ({}));
-          listError = errBody?.error?.message || `HTTP Status ${listRes.status}`;
-        }
-      } catch (e: any) {
-        listError = e.message || 'Network error';
-      }
-
-      if (allowedModels.length === 0) {
-        throw new Error(`Failed to resolve any active Gemini models. Google API returned: ${listError || 'No supported models found for this key.'}`);
-      }
-
-      console.log(`🎯 Discovered active models: ${allowedModels.join(', ')}`);
-
-      // Call the resolved models with a cascading fallback loop and automatic 503 retry protection
-      const errors: string[] = [];
-      for (const model of allowedModels) {
-        try {
-          console.log(`📡 Attempting generation using model: ${model}...`);
-          const url = `https://generativelanguage.googleapis.com/v1beta/${model}:generateContent?key=${activeApiKey}`;
-          const response = await fetchWithRetry(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: prompt }] }],
-              generationConfig: {
-                temperature: 0.2,
-              },
-            }),
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-            if (generatedText) {
-              console.log(`✅ Success! Generated content using model ${model}`);
-              break;
-            }
-          } else {
-            const errBody = await response.json().catch(() => ({}));
-            const apiMessage = errBody?.error?.message || `HTTP Status ${response.status}`;
-            errors.push(`${model} -> ${apiMessage}`);
-            console.warn(`   ⚠️ Model ${model} failed with message: ${apiMessage}. Cascading to next model...`);
-          }
-        } catch (e: any) {
-          errors.push(`${model} -> ${e.message}`);
-          console.warn(`   ⚠️ Model ${model} caught exception: ${e.message}. Cascading to next model...`);
-        }
-      }
-
-      if (!generatedText) {
-        throw new Error(`Gemini API call failed on all available models. Diagnostics:\n${errors.map(err => `• ${err}`).join('\n')}`);
-      }
     }
 
-    if (!generatedText) {
-      throw new Error('AI Engine failed to return any text content.');
-    }
-
-    // Parse structured metadata block from the generated text
-    let tags: string[] = [];
-    let keyTakeaways: string[] = [];
-    let faqs: { question: string; answer: string }[] = [];
-    let cleanMarkdown = generatedText;
-
-    const metadataMatch = generatedText.match(/\[METADATA\]([\s\S]*?)\[\/METADATA\]/);
-    if (metadataMatch) {
-      const metaContent = metadataMatch[1];
-      cleanMarkdown = generatedText.replace(/\[METADATA\][\s\S]*?\[\/METADATA\]/, '').trim();
-      
-      // Parse TAGS
-      const tagsMatch = metaContent.match(/TAGS:\s*(.*)/i);
-      if (tagsMatch) {
-        tags = tagsMatch[1].split(',').map(t => t.trim()).filter(Boolean);
-      }
-      
-      // Parse TAKEAWAYS
-      const takeawaysBlock = metaContent.match(/TAKEAWAYS:([\s\S]*?)(?:FAQS:|$)/i);
-      if (takeawaysBlock) {
-        keyTakeaways = takeawaysBlock[1]
-          .split('\n')
-          .map(line => line.trim())
-          .filter(line => line.startsWith('-') || line.startsWith('*'))
-          .map(line => line.replace(/^[-*]\s*/, '').trim());
-      }
-      
-      // Parse FAQS
-      const faqsBlock = metaContent.match(/FAQS:([\s\S]*?)$/i);
-      if (faqsBlock) {
-        const lines = faqsBlock[1].split('\n').map(l => l.trim()).filter(Boolean);
-        let currentFaq: { question: string; answer: string } | null = null;
-        
-        for (const line of lines) {
-          const upper = line.toUpperCase();
-          if (upper.startsWith('Q:') || upper.startsWith('QUESTION:')) {
-            if (currentFaq) faqs.push(currentFaq);
-            const qText = line.replace(/^(Q|Question):/i, '').trim();
-            currentFaq = { question: qText, answer: '' };
-          } else if ((upper.startsWith('A:') || upper.startsWith('ANSWER:')) && currentFaq) {
-            const aText = line.replace(/^(A|Answer):/i, '').trim();
-            currentFaq.answer = aText;
-          } else if (currentFaq) {
-            currentFaq.answer = (currentFaq.answer + ' ' + line).trim();
-          }
-        }
-        if (currentFaq) faqs.push(currentFaq);
-      }
-    }
-
-    return NextResponse.json({ 
-      markdown: cleanMarkdown,
-      tags,
-      keyTakeaways,
-      faqs
-    });
+    return NextResponse.json({ error: 'Invalid mode parameter.' }, { status: 400 });
   } catch (err: any) {
     console.error('AI Generator Error:', err);
     return NextResponse.json({ error: err.message || 'An error occurred during blog generation.' }, { status: 500 });

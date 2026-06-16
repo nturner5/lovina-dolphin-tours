@@ -66,6 +66,7 @@ export default function SeoWriterPage() {
   const [generationError, setGenerationError] = useState('');
   const [loadingStep, setLoadingStep] = useState(0);
   const [outlineLoadingStep, setOutlineLoadingStep] = useState(0);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
   
   // Publishing states
   const [publishing, setPublishing] = useState(false);
@@ -215,6 +216,18 @@ export default function SeoWriterPage() {
     }
     return () => clearTimeout(timer);
   }, [generating]);
+
+  // Timer effect to track elapsed seconds
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (generatingOutline || generating) {
+      setElapsedSeconds(0);
+      interval = setInterval(() => {
+        setElapsedSeconds((prev) => prev + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [generatingOutline, generating]);
 
   const handleGenerateOutline = async () => {
     setGeneratingOutline(true);
@@ -951,6 +964,10 @@ export default function SeoWriterPage() {
                   {outlineStepsList[outlineLoadingStep]}
                 </div>
 
+                <div className="text-[10px] text-deep-indigo/40 font-mono tracking-wider select-none">
+                  Elapsed: {elapsedSeconds}s (planning usually takes 10-15 seconds)
+                </div>
+
                 <div className="flex gap-2.5">
                   {outlineStepsList.map((_, i) => (
                     <div 
@@ -970,6 +987,10 @@ export default function SeoWriterPage() {
                 
                 <div className="max-w-md w-full bg-cloud-dancer/50 px-6 py-4 rounded-2xl border border-deep-indigo/5 text-xs text-transformative-teal font-medium tracking-wide animate-pulse">
                   {draftStepsList[loadingStep]}
+                </div>
+
+                <div className="text-[10px] text-deep-indigo/40 font-mono tracking-wider select-none">
+                  Elapsed: {elapsedSeconds}s (full draft usually takes 30-60 seconds)
                 </div>
 
                 <div className="flex gap-2.5">

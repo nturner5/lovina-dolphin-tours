@@ -75,8 +75,16 @@ const LOCATION_DATABASES: Record<string, { stays: string[]; dining: string[]; de
 async function fetchWithRetry(url: string, options: any, retries = 3, delay = 1500): Promise<Response> {
   let currentDelay = delay;
   for (let i = 0; i < retries; i++) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15-second timeout per attempt
+
     try {
-      const response = await fetch(url, options);
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
       if (response.status === 503 && i < retries - 1) {
         console.warn(`⚠️ Google Gemini returned 503 (High Demand). Retrying attempt ${i + 1}/${retries} in ${currentDelay}ms...`);
         await new Promise(resolve => setTimeout(resolve, currentDelay));
@@ -85,8 +93,10 @@ async function fetchWithRetry(url: string, options: any, retries = 3, delay = 15
       }
       return response;
     } catch (e: any) {
+      clearTimeout(timeoutId);
       if (i === retries - 1) throw e;
-      console.warn(`⚠️ Network failure in fetch attempt ${i + 1}/${retries}. Retrying in ${currentDelay}ms...`);
+      const errorMsg = e.name === 'AbortError' ? 'Request timed out after 15s' : e.message;
+      console.warn(`⚠️ Network failure in fetch attempt ${i + 1}/${retries} (${errorMsg}). Retrying in ${currentDelay}ms...`);
       await new Promise(resolve => setTimeout(resolve, currentDelay));
       currentDelay *= 1.5;
     }
@@ -106,6 +116,9 @@ function cleanJsonString(str: string): string {
 // Optional real-time Tavily search integration
 async function searchWebTavily(query: string, apiKey: string): Promise<string> {
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8-second timeout for search query
+    
     const response = await fetch('https://api.tavily.com/search', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -115,7 +128,9 @@ async function searchWebTavily(query: string, apiKey: string): Promise<string> {
         search_depth: 'basic',
         max_results: 3,
       }),
+      signal: controller.signal
     });
+    clearTimeout(timeoutId);
     if (response.ok) {
       const data = await response.json();
       return (data.results || [])
@@ -132,26 +147,35 @@ async function searchWebTavily(query: string, apiKey: string): Promise<string> {
 // Universal Model Caller
 async function generateWithLLM(apiKey: string, prompt: string): Promise<string> {
   if (apiKey.startsWith('sk-')) {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.2,
-      }),
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout for OpenAI
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.2,
+        }),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData?.error?.message || `OpenAI API returned status ${response.status}`);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData?.error?.message || `OpenAI API returned status ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.choices[0]?.message?.content || '';
+    } catch (e: any) {
+      clearTimeout(timeoutId);
+      throw e;
     }
-
-    const data = await response.json();
-    return data.choices[0]?.message?.content || '';
   }
 
   // Google Gemini API Model Resolver
@@ -160,7 +184,11 @@ async function generateWithLLM(apiKey: string, prompt: string): Promise<string> 
   
   try {
     const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
-    const listRes = await fetch(listUrl);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s timeout for listing models
+    
+    const listRes = await fetch(listUrl, { signal: controller.signal });
+    clearTimeout(timeoutId);
     
     if (listRes.ok) {
       const listData = await listRes.json();

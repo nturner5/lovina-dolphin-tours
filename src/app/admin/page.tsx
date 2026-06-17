@@ -491,7 +491,7 @@ export default function AdminDashboard() {
   // Reverted Test Suite Stripe webhook dispatcher (price = 45, tourId = 'seven-am-ethical')
   const sendStripeWebhook = async () => {
     setLoadingAction('stripe');
-    const pickupFees: Record<string, number> = { none: 0, lovina: 0, ubud: 35, 'canggu-kuta': 50, uluwatu: 65 };
+    const pickupFees: Record<string, number> = { none: 0, lovina: 0, ubud: 42, 'canggu-kuta': 60, uluwatu: 78 };
     const pickupDescs: Record<string, string> = {
       none: 'None',
       lovina: 'Free Local Pickup — Lovina Beach Area',
@@ -942,9 +942,9 @@ export default function AdminDashboard() {
                 >
                   <option value="none">No Driver (Self-Drive Meetup)</option>
                   <option value="lovina">Free Local Shuttle (~7:30 AM)</option>
-                  <option value="ubud">Ubud Return Transfer (+$35)</option>
-                  <option value="canggu-kuta">Canggu/Kuta Return Transfer (+$50)</option>
-                  <option value="uluwatu">Uluwatu Return Transfer (+$65)</option>
+                  <option value="ubud">Ubud Return Transfer (+$42)</option>
+                  <option value="canggu-kuta">Canggu/Kuta Return Transfer (+$60)</option>
+                  <option value="uluwatu">Uluwatu Return Transfer (+$78)</option>
                 </select>
               </div>
               <div className="sm:col-span-2">
@@ -993,7 +993,7 @@ export default function AdminDashboard() {
                 <div className="border-l border-deep-indigo/10 pl-6">
                   <span className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-1">Calculated Price</span>
                   <span className="text-xl font-serif font-bold text-transformative-teal">
-                    ${(manualForm.tourId === 'seven-am-ethical' ? 45 : 65) * Number(manualForm.guests) + (manualForm.pickupLocation === 'ubud' ? 35 : manualForm.pickupLocation === 'canggu-kuta' ? 50 : manualForm.pickupLocation === 'uluwatu' ? 65 : 0)} USD
+                    ${(manualForm.tourId === 'seven-am-ethical' ? 45 : 65) * Number(manualForm.guests) + (manualForm.pickupLocation === 'ubud' ? 42 : manualForm.pickupLocation === 'canggu-kuta' ? 60 : manualForm.pickupLocation === 'uluwatu' ? 78 : 0)} USD
                   </span>
                 </div>
               </div>
@@ -1326,9 +1326,9 @@ export default function AdminDashboard() {
                 >
                   <option value="none">No Driver (Self-Drive Meetup)</option>
                   <option value="lovina">Free Local Shuttle (~7:30 AM)</option>
-                  <option value="ubud">Ubud Return Transfer ($35)</option>
-                  <option value="canggu-kuta">Canggu/Kuta Return Transfer ($50)</option>
-                  <option value="uluwatu">Uluwatu Return Transfer ($65)</option>
+                  <option value="ubud">Ubud Return Transfer ($42)</option>
+                  <option value="canggu-kuta">Canggu/Kuta Return Transfer ($60)</option>
+                  <option value="uluwatu">Uluwatu Return Transfer ($78)</option>
                 </select>
               </div>
               <div>
@@ -1617,9 +1617,9 @@ export default function AdminDashboard() {
                   value={upgradeLocation}
                   onChange={(e) => setUpgradeLocation(e.target.value)}
                 >
-                  <option value="ubud">Ubud Return Transfer ($35)</option>
-                  <option value="canggu-kuta">Canggu/Kuta Return Transfer ($50)</option>
-                  <option value="uluwatu">Uluwatu Return Transfer ($65)</option>
+                  <option value="ubud">Ubud Return Transfer ($42)</option>
+                  <option value="canggu-kuta">Canggu/Kuta Return Transfer ($60)</option>
+                  <option value="uluwatu">Uluwatu Return Transfer ($78)</option>
                 </select>
                 <button
                   onClick={handleGenerateTransportUpgradeLink}

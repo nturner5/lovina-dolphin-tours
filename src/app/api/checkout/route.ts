@@ -62,6 +62,8 @@ export async function POST(req: Request) {
       });
     }
 
+
+
     // Generate a 4-character pronounceable uppercase booking code (e.g. LEM-K3RF)
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     let shortCode = '';

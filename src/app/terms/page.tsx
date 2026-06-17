@@ -107,7 +107,7 @@ export default function TermsOfServicePage() {
             </p>
             <ul className="list-disc list-inside space-y-2 pl-4">
               <li><strong>Payment Currency:</strong> All bookings are billed in United States Dollars (USD) via secure Stripe Checkout.</li>
-              <li><strong>Add-on Pickups:</strong> Return transportation add-ons from Ubud ($35 USD) or Canggu/Seminyak/Kuta ($50 USD) must be arranged at checkout. Pickups are subject to specific hotel address verification.</li>
+              <li><strong>Add-on Pickups:</strong> Return transportation add-ons from Ubud ($42 USD), Canggu/Seminyak/Kuta ($60 USD), or Uluwatu ($78 USD) must be arranged at checkout. Pickups are subject to specific hotel address verification.</li>
               <li><strong>WhatsApp Coordination:</strong> Guests must provide an active, monitored WhatsApp number. Our dispatch automation dispatches local coordination texts, and captains use this to finalize morning pickup timing.</li>
             </ul>
           </section>

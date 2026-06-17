@@ -51,8 +51,8 @@ export const translations = {
     privateBoatTours: "Private Boat Tours",
     selectYourTour: "Select Your Private Dolphin Tour",
     tourSelectorDesc: "Skip the sunrise chaos. Our private dolphin watching boat tours depart at 7:00 AM—as the early crowded tourist boats return to shore. Enjoy a calm, quiet sea and excellent service with vetted local captains who prioritize dolphin welfare.",
-    tour1Title: "7:00 AM Private Dolphin Watching Tour",
-    tour1Subtitle: "Skip the crowds on a private dolphin watching boat",
+    tour1Title: "Private Dolphin Watching Encounter",
+    tour1Subtitle: "Sails at 7:00 AM to skip the crowded sunrise boat swarm & chaotic chasing",
     tour1PriceDesc: "USD per guest",
     tour1MinGuests: "Min. 2 guests",
     inclusions: "Inclusions",
@@ -64,10 +64,24 @@ export const translations = {
     tour1Inc3Desc: "Skip the 6:00 AM swarms—enjoy dolphins without 100 boats racing.",
     tour1Inc4Title: "Island Refreshments",
     tour1Inc4Desc: "Hot Balinese coffee, local premium tea, and fresh fruits served on board.",
-    tour1Btn: "Book Dolphin Watching Tour ($45)",
+    tour1Btn: "Book Dolphin Watching ($45)",
     
-    tour2Title: "7:00 AM Private Dolphin Watching Tour + Swim & Snorkel",
-    tour2Subtitle: "Our signature double encounter",
+    tour1_5Title: "Open Ocean Dolphin Swim & Watch",
+    tour1_5Subtitle: "Sails at 7:00 AM — hold the outrigger ropes to swim alongside wild dolphins",
+    tour1_5PriceDesc: "USD per guest",
+    tour1_5MinGuests: "Min. 2 guests",
+    tour1_5Inc1Title: "Everything in Dolphin Watching",
+    tour1_5Inc1Desc: "Private outrigger boat charter, vetted captain, coffee, tea, and fruit platter.",
+    tour1_5Inc2Title: "Swim with Dolphin Pods",
+    tour1_5Inc2Desc: "Swim alongside dolphin families using the boat's safe outrigger holding bars.",
+    tour1_5Inc3Title: "Life Jackets Included",
+    tour1_5Inc3Desc: "Standard safety vests and swim assistance provided by your captain.",
+    tour1_5Inc4Title: "Post-Sunrise Quiet",
+    tour1_5Inc4Desc: "Sailing at 7:00 AM means less noise and crowded boats, making the dolphins calmer.",
+    tour1_5Btn: "Book Dolphin Swim & Watch ($55)",
+    
+    tour2Title: "The Ultimate Dolphin Swim & Reef Snorkel",
+    tour2Subtitle: "Sails at 7:00 AM — our signature double encounter (swim with dolphins + coral reef snorkeling)",
     recommended: "Highly Recommended",
     signatureTag: "Dolphin Swim & Reef Snorkel",
     tour2Inc1Title: "Everything in Dolphin Watching",
@@ -126,9 +140,9 @@ export const translations = {
     // Inclusions List for Checkout Summary
     noDriver: "No Driver (Meet at Lovina Beach by 6:30 AM)",
     freeShuttle: "Free Local Shuttle (Lovina Beach Area - Pickup ~6:30 AM)",
-    ubudDriver: "Ubud Round-trip Private Driver (Pickup ~4:30 AM) (+$35)",
-    cangguDriver: "Canggu / Seminyak / Kuta Round-trip Private Driver (Pickup ~4:00 AM) (+$50)",
-    uluwatuDriver: "Uluwatu / Nusa Dua Round-trip Private Driver (Pickup ~3:30 AM) (+$65)",
+    ubudDriver: "Ubud Round-trip Private Driver (Pickup ~4:30 AM) (+$42)",
+    cangguDriver: "Canggu / Seminyak / Kuta Round-trip Private Driver (Pickup ~4:00 AM) (+$60)",
+    uluwatuDriver: "Uluwatu / Nusa Dua Round-trip Private Driver (Pickup ~3:30 AM) (+$78)",
 
     // Homepage Timeline / Schedule
     timelineHeader: "The Itinerary",
@@ -217,7 +231,32 @@ export const translations = {
     ctaTitleItalic: "peaceful",
     ctaTitleEnd: "morning?",
     ctaDesc: "Secure your private boat with one of Lovina’s legendary captains. Limited to 5 ethical departures per day.",
-    ctaBtn: "Book Your Experience"
+    ctaBtn: "Book Your Experience",
+
+    // Checkout Reviews
+    reviewsTitle: "What Conscious Travelers Say",
+    reviewsSubtitle: "Vetted experiences from premium villa guests in Lovina.",
+    review1Name: "Sarah & David M.",
+    review1Country: "United Kingdom",
+    review1Quote: "Waking up at 5 AM is normal in Bali, but leaving at 7:00 AM for this private tour was a revelation. By the time we sailed out, the main swarm of 100+ boats was already heading back. We had the ocean to ourselves, and wild dolphins swam right next to our outrigger. Our captain kept the engine off and respected them. Absolute magic.",
+    review2Name: "The Henderson Family",
+    review2Country: "Australia",
+    review2Quote: "We were skeptical about bringing our 6 and 9-year-olds on a long drive from Ubud, but the private pickup and the 7:00 AM departure made it so easy. The breakfast boxes were a lifesaver for the kids. Swimming alongside the dolphin pods holding the boat's safety bars is something our kids will never forget. Vetted, ethical, and extremely professional.",
+    review3Name: "Elena R.",
+    review3Country: "Germany",
+    review3Quote: "I've seen the photos of 50 boats chasing a single dolphin in Lovina and refused to participate. When I found Bali Dolphin Tours, I was thrilled. They practice strict parallel sailing and never swarm the animals. The sea at 7:00 AM is like glass. Worth every penny to know we weren't stressing these beautiful creatures.",
+
+    // Trust Charter
+    trustCharterTitle: "Our Commitments to You & Marine Life",
+    trustCharterSub: "While we build out our Google & TripAdvisor pages, our guests trust us for our high standards of safety and animal welfare.",
+    trustItemEthicalTitle: "100% Ethical Charter",
+    trustItemEthicalDesc: "We keep engines in neutral within 30m, sail parallel to the pod, and never herd or chase wild dolphins.",
+    trustItemSafetyTitle: "Safety & Gear Certified",
+    trustItemSafetyDesc: "Vetted local captains, certified high-visibility safety vests, and guided swim assistance on every tour.",
+    trustItemSightingTitle: "85% Sighting Guarantee",
+    trustItemSightingDesc: "If no dolphins are spotted, join us on a second morning cruise absolutely free.",
+    trustItemPaymentTitle: "Secure Stripe Payments",
+    trustItemPaymentDesc: "Secure checkout in USD. Immediate booking confirmation and dispatch details via email and WhatsApp."
   },
   ru: {
     // Navbar
@@ -271,8 +310,8 @@ export const translations = {
     privateBoatTours: "Частные лодочные туры",
     selectYourTour: "Выберите свой частный тур к дельфинам",
     tourSelectorDesc: "Избегайте утреннего хаоса. Наши частные туры к дельфинам отправляются в 7:00 утра — когда ранние переполненные туристические лодки возвращаются на берег. Наслаждайтесь спокойным морем и отличным сервисом с проверенными местными капитанами, которые ставят благополучие дельфинов на первое место.",
-    tour1Title: "7:00 Частный тур для наблюдения за дельфинами",
-    tour1Subtitle: "Избегайте толпы на частной лодке для наблюдения за дельфинами",
+    tour1Title: "Индивидуальная встреча с дельфинами",
+    tour1Subtitle: "Отправление в 7:00 утра — избегайте рассветного хаоса и преследования дельфинов лодками",
     tour1PriceDesc: "USD за гостя",
     tour1MinGuests: "Мин. 2 гостя",
     inclusions: "Включено",
@@ -284,10 +323,22 @@ export const translations = {
     tour1Inc3Desc: "Избегайте утренней суеты в 6:00 — наслаждайтесь дельфинами без гонки 100 лодок.",
     tour1Inc4Title: "Островные угощения",
     tour1Inc4Desc: "Горячий балийский кофе, местный чай премиум-класса и свежие фрукты на борту.",
-    tour1Btn: "Забронировать наблюдение за дельфинами ($45)",
+    tour1Btn: "Забронировать наблюдение ($45)",
     
-    tour2Title: "7:00 Частный тур к дельфинам + плавание и сноркелинг",
-    tour2Subtitle: "Наша фирменная двойная встреча",
+    tour1_5Title: "Наблюдение и плавание с дельфинами в океане",
+    tour1_5Subtitle: "Отправление в 7:00 утра — плывите рядом с дельфинами, держась за поручни лодки",
+    tour1_5Inc1Title: "Все, что входит в наблюдение",
+    tour1_5Inc1Desc: "Частная лодка-балансир, проверенный капитан, кофе, чай и фруктовая тарелка.",
+    tour1_5Inc2Title: "Плавание со стаями дельфинов",
+    tour1_5Inc2Desc: "Плавайте рядом с дельфинами, держась за безопасные поручни лодки в открытом море.",
+    tour1_5Inc3Title: "Спасательные жилеты включены",
+    tour1_5Inc3Desc: "Стандартные спасательные жилеты и поддержка на воде от вашего капитана.",
+    tour1_5Inc4Title: "Спокойствие после рассвета",
+    tour1_5Inc4Desc: "Плавание в 7:00 утра означает меньше шума и лодок, что делает дельфинов спокойнее.",
+    tour1_5Btn: "Забронировать плавание ($55)",
+    
+    tour2Title: "Плавание с дельфинами и сноркелинг на рифе",
+    tour2Subtitle: "Отправление в 7:00 утра — наше фирменное комбо (дельфины + сноркелинг на коралловом рифе)",
     recommended: "Рекомендуем",
     signatureTag: "Плавание с дельфинами и сноркелинг",
     tour2Inc1Title: "Все, что входит в наблюдение за дельфинами",
@@ -298,7 +349,7 @@ export const translations = {
     tour2Inc3Desc: "Плавайте рядом с дельфинами, используя безопасные поручни лодки.",
     tour2Inc4Title: "Проверенный гид по рифу",
     tour2Inc4Desc: "Ваш капитан выступает в качестве водного гида, обеспечивая безопасность и показывая морскую жизнь.",
-    tour2Btn: "Забронировать плавание и сноркелинг ($65)",
+    tour2Btn: "Забронировать сноркелинг ($65)",
     
     // Checkout Page
     checkoutTitle: "Забронируйте частную лодку",
@@ -345,9 +396,9 @@ export const translations = {
     // Inclusions List for Checkout Summary
     noDriver: "Без водителя (Встреча на пляже Ловина к 6:30 утра)",
     freeShuttle: "Бесплатный местный шаттл (Район пляжа Ловина - трансфер ~6:30 утра)",
-    ubudDriver: "Трансфер из Убуда туда и обратно (Трансфер ~4:30 утра) (+$35)",
-    cangguDriver: "Трансфер из Чангу/Семиньяка/Куты туда и обратно (Трансфер ~4:00 утра) (+$50)",
-    uluwatuDriver: "Трансфер из Улувату/Нуса-Дуа туда и обратно (Трансфер ~3:30 утра) (+$65)",
+    ubudDriver: "Трансфер из Убуда туда и обратно (Трансфер ~4:30 утра) (+$42)",
+    cangguDriver: "Трансфер из Чангу/Семиньяка/Куты туда и обратно (Трансфер ~4:00 утра) (+$60)",
+    uluwatuDriver: "Трансфер из Улувату/Нуса-Дуа туда и обратно (Трансфер ~3:30 утра) (+$78)",
 
     // Homepage Timeline / Schedule
     timelineHeader: "Маршрут",
@@ -436,7 +487,32 @@ export const translations = {
     ctaTitleItalic: "мирному",
     ctaTitleEnd: "утру?",
     ctaDesc: "Забронируйте частную лодку у одного из легендарных капитанов Ловины. Лимит: 5 экологичных выходов в день.",
-    ctaBtn: "Забронировать тур"
+    ctaBtn: "Забронировать тур",
+
+    // Checkout Reviews
+    reviewsTitle: "Что говорят сознательные путешественники",
+    reviewsSubtitle: "Проверенные отзывы гостей премиум-вилл в Ловине.",
+    review1Name: "Сара и Дэвид М.",
+    review1Country: "Великобритания",
+    review1Quote: "Просыпаться в 5 утра на Бали — обычное дело, но выезд в 7:00 на этот частный тур стал настоящим открытием. К тому времени, как мы отплыли, основная толпа из 100+ лодок уже возвращалась. Океан был в нашем полном распоряжении, а дикие дельфины плавали прямо рядом с нашей лодкой. Капитан выключил двигатель и проявил к ним уважение. Абсолютная магия.",
+    review2Name: "Семья Хендерсон",
+    review2Country: "Австралия",
+    review2Quote: "Мы сомневались, стоит ли везти детей 6 и 9 лет в такую дальнюю дорогу из Убуда, но трансфер и отправление в 7:00 сделали поездку легкой. Коробки с завтраком спасли детей от голода. Плавание рядом с дельфинами, держась за поручни лодки — это то, что наши дети никогда не забудут. Профессионально и этично.",
+    review3Name: "Елена Р.",
+    review3Country: "Германия",
+    review3Quote: "Я видела фотографии, где 50 лодок гоняются за одним дельфином в Ловине, и отказалась в этом участвовать. Когда я нашла Bali Dolphin Tours, я была в восторге. Они плывут строго параллельно дельфинам и никогда не окружают их. Море в 7:00 утра похоже на зеркало. Это стоит каждого цента, зная, что мы не причиняем вреда животным.",
+
+    // Trust Charter
+    trustCharterTitle: "Наши обязательства перед вами и природой",
+    trustCharterSub: "Пока наши страницы на Google и TripAdvisor находятся в процессе создания, гости доверяют нам благодаря высоким стандартам безопасности и бережному отношению к животным.",
+    trustItemEthicalTitle: "100% Этичный Кодекс",
+    trustItemEthicalDesc: "Мы переводим двигатели на нейтраль в пределах 30м, идем параллельно стае и никогда не преследуем дельфинов.",
+    trustItemSafetyTitle: "Безопасность и Снаряжение",
+    trustItemSafetyDesc: "Проверенные капитаны, сертифицированные спасательные жилеты и поддержка гида на воде во время каждого тура.",
+    trustItemSightingTitle: "85% Гарантия Встречи",
+    trustItemSightingDesc: "Если мы не увидим дельфинов, вы сможете присоединиться к нам на следующее утро совершенно бесплатно.",
+    trustItemPaymentTitle: "Безопасность Stripe",
+    trustItemPaymentDesc: "Надежная оплата в USD через Stripe. Мгновенное подтверждение бронирования по email и WhatsApp."
   },
   zh: {
     // Navbar
@@ -490,8 +566,8 @@ export const translations = {
     privateBoatTours: "私人游船之旅",
     selectYourTour: "选择您的私人海豚之旅",
     tourSelectorDesc: "避开日出的混乱。我们的私人海豚观赏船游于上午7:00出发——此时早起拥挤的旅游船正返回岸边。与优先考虑海豚福利的经审核的当地船长一起，享受风平浪静的海面和优质的服务。",
-    tour1Title: "上午7:00 私人海豚观赏之旅",
-    tour1Subtitle: "乘坐私人海豚观赏船避开人潮",
+    tour1Title: "私人海豚温情邂逅之旅",
+    tour1Subtitle: "上午 7:00 出发 —— 完美避开日出时分拥挤嘈杂的追逐船流",
     tour1PriceDesc: "美元每位游客",
     tour1MinGuests: "最少2位游客",
     inclusions: "包含服务",
@@ -503,10 +579,22 @@ export const translations = {
     tour1Inc3Desc: "避开早上6:00的蜂拥——享受没有100艘船竞逐的海豚观赏。",
     tour1Inc4Title: "海岛点心",
     tour1Inc4Desc: "船上供应热巴厘岛咖啡、当地优质茶和新鲜水果。",
-    tour1Btn: "预订海豚观赏之旅 ($45)",
+    tour1Btn: "预订海豚观赏 ($45)",
     
-    tour2Title: "上午7:00 私人海豚观赏之旅 + 游泳与浮潜",
-    tour2Subtitle: "我们的招牌双重体验",
+    tour1_5Title: "公海海豚观赏与并肩共游",
+    tour1_5Subtitle: "上午 7:00 出发 —— 握住安全侧栏，与野生海豚家族同游",
+    tour1_5Inc1Title: "包含海豚观赏的所有内容",
+    tour1_5Inc1Desc: "私人舷外浮材船租用、经审核的船长、咖啡、茶和水果拼盘。",
+    tour1_5Inc2Title: "与海豚群共游",
+    tour1_5Inc2Desc: "使用船上的安全把手在公海中与海豚群并肩共游。",
+    tour1_5Inc3Title: "提供救生衣",
+    tour1_5Inc3Desc: "提供标准救生衣和由船长提供的水上安全协助。",
+    tour1_5Inc4Title: "日出后的静谧",
+    tour1_5Inc4Desc: "上午 7:00 出发意味着更少的噪音和拥挤的船只，让海豚更加放松。",
+    tour1_5Btn: "预订观赏与共游 ($55)",
+    
+    tour2Title: "海豚共游与珊瑚礁浮潜终极体验",
+    tour2Subtitle: "上午 7:00 出发 —— 我们的招牌双重项目（海豚共游 + 珊瑚礁浮潜）",
     recommended: "强烈推荐",
     signatureTag: "海豚游泳与珊瑚礁浮潜",
     tour2Inc1Title: "包含海豚观赏的所有内容",
@@ -517,7 +605,7 @@ export const translations = {
     tour2Inc3Desc: "使用船上的安全把手与海豚群并肩游泳。",
     tour2Inc4Title: "经审核的的珊瑚礁导游",
     tour2Inc4Desc: "您的船长将担任水上导游，确保安全并指出海洋生物。",
-    tour2Btn: "预订海豚游泳与浮潜之旅 ($65)",
+    tour2Btn: "预订海豚共游与浮潜 ($65)",
     
     // Checkout Page
     checkoutTitle: "锁定您的私人船只",
@@ -564,9 +652,9 @@ export const translations = {
     // Inclusions List for Checkout Summary
     noDriver: "无需接送 (请于早上6:30前在罗威那海滩集合)",
     freeShuttle: "免费区域接送 (罗威那海滩周边——约早上6:30接人)",
-    ubudDriver: "乌布往返私人接送 (约早上4:30接人) (+35美元)",
-    cangguDriver: "仓谷/水明漾/库塔往返私人接送 (约早上4:00接人) (+50美元)",
-    uluwatuDriver: "乌鲁瓦图/努沙杜瓦往返私人接送 (约早上3:30接人) (+65美元)",
+    ubudDriver: "乌布往返私人接送 (约早上4:30接人) (+42美元)",
+    cangguDriver: "仓谷/水明漾/库塔往返私人接送 (约早上4:00接人) (+60美元)",
+    uluwatuDriver: "乌鲁瓦图/努沙杜瓦往返私人接送 (约早上3:30接人) (+78美元)",
 
     // Homepage Timeline / Schedule
     timelineHeader: "行程安排",
@@ -655,7 +743,32 @@ export const translations = {
     ctaTitleItalic: "宁静的",
     ctaTitleEnd: "清晨了吗？",
     ctaDesc: "与罗威那的传奇船长一起锁定您的私人船只。每天限5次遵守道德规范的起航。",
-    ctaBtn: "预订您的专属体验"
+    ctaBtn: "预订您的专属体验",
+
+    // Checkout Reviews
+    reviewsTitle: "环保旅行者的真实反馈",
+    reviewsSubtitle: "来自罗威那高端度假别墅宾客的真实体验分享。",
+    review1Name: "Sarah & David M.",
+    review1Country: "英国",
+    review1Quote: "在巴厘岛早上5点起床是常态，但早上7:00开始这个私人行程真是一个明智的发现。当我们出海时，100多艘拥挤的日出游船已经开始返回。我们独享了整片宁静的大海，野生海豚就在我们的船旁游动。船长关掉了发动机，非常尊重它们。绝对的魔幻体验。",
+    review2Name: "Henderson 一家",
+    review2Country: "澳大利亚",
+    review2Quote: "我们原本担心带着6岁和9岁的孩子从乌布长途乘车会很累，但私人接送和早上7:00出发让一切变得非常轻松。早餐盒拯救了孩子们。双手握着船只的安全把手与海豚群并肩游泳，是孩子们永远不会忘记的经历。专业、环保且极为贴心。",
+    review3Name: "Elena R.",
+    review3Country: "德国",
+    review3Quote: "我见过50多艘船围追堵截一只海豚的照片，并拒绝参与那样的行程。当我找到 Bali Dolphin Tours 时，我太兴奋了。他们严格执行平行航行，绝不围攻动物。早上7:00的大海平滑如镜。知道我们没有给这些美丽的生物带来压力，每一分钱都花得值。",
+
+    // Trust Charter
+    trustCharterTitle: "我们对您与海洋生物的承诺",
+    trustCharterSub: "在我们完善谷歌和猫途鹰（TripAdvisor）页面的同时，我们的宾客因我们卓越的安全标准和动物福利规范而信赖我们。",
+    trustItemEthicalTitle: "100% 环保与道德规范",
+    trustItemEthicalDesc: "在海豚30米范围内发动机置于空挡，与海豚群平行航行，绝不包围或追逐野生海豚。",
+    trustItemSafetyTitle: "安全与装备双重认证",
+    trustItemSafetyDesc: "经审核的本地船长、通过认证的高能见度救生衣，以及每次行程中的全程水上安全协助。",
+    trustItemSightingTitle: "85% 偶遇率保证",
+    trustItemSightingDesc: "如果航程中未看到海豚，可在第二个早晨免费再次加入我们的晨间巡游。",
+    trustItemPaymentTitle: "Stripe 安全支付保障",
+    trustItemPaymentDesc: "以美元进行安全结账。预订完成后，立即通过电子邮件和 WhatsApp 发送确认信与出行细节。"
   }
 } as const;
 

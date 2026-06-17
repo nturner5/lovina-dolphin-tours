@@ -11,11 +11,13 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const locale = useLocale();
 
-  // Helper to persist language query param during navigation
+  // Helper to persist language query param during navigation, supporting hash anchors
   const hrefFor = (path: string) => {
-    if (locale === 'en') return path;
-    const separator = path.includes('?') ? '&' : '?';
-    return `${path}${separator}lang=${locale}`;
+    const [basePath, hash] = path.split('#');
+    const hashPart = hash ? `#${hash}` : '';
+    if (locale === 'en') return `${basePath}${hashPart}`;
+    const separator = basePath.includes('?') ? '&' : '?';
+    return `${basePath}${separator}lang=${locale}${hashPart}`;
   };
 
   return (
@@ -39,7 +41,7 @@ export default function Navbar() {
       {/* Desktop Menu */}
       <div className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium tracking-wide uppercase">
         <Link href={hrefFor("/#ethics")} className="hover:text-transformative-teal transition-colors">{t('dolphinRules', locale)}</Link>
-        <Link href={hrefFor("/tours")} className="hover:text-transformative-teal transition-colors">{t('tours', locale)}</Link>
+        <Link href={hrefFor("/#packages")} className="hover:text-transformative-teal transition-colors">{t('tours', locale)}</Link>
         <Link href={hrefFor("/#faq")} className="hover:text-transformative-teal transition-colors">{t('faq', locale)}</Link>
         <Link href={hrefFor("/blog")} className="hover:text-transformative-teal transition-colors">{t('blog', locale)}</Link>
         
@@ -47,7 +49,7 @@ export default function Navbar() {
         <LanguageSwitcher />
 
         <Link 
-          href={hrefFor("/tours")} 
+          href={hrefFor("/#packages")} 
           className="bg-deep-indigo text-cloud-dancer px-6 py-3 rounded-full hover:bg-transformative-teal transition-all duration-300 shadow-sm text-center font-bold tracking-wider"
         >
           {t('bookNow', locale)}
@@ -82,7 +84,7 @@ export default function Navbar() {
             {t('dolphinRules', locale)}
           </Link>
           <Link 
-            href={hrefFor("/tours")} 
+            href={hrefFor("/#packages")} 
             onClick={() => setIsOpen(false)}
             className="text-base font-medium text-deep-indigo py-2 border-b border-deep-indigo/5 hover:text-transformative-teal transition-colors"
           >
@@ -109,7 +111,7 @@ export default function Navbar() {
           </div>
 
           <Link 
-            href={hrefFor("/tours")} 
+            href={hrefFor("/#packages")} 
             onClick={() => setIsOpen(false)}
             className="bg-deep-indigo text-cloud-dancer px-6 py-4 rounded-full hover:bg-transformative-teal transition-all duration-300 shadow-sm text-center font-bold mt-2"
           >

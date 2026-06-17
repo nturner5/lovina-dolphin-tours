@@ -22,7 +22,9 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
         <Navbar />
       </Suspense>
       {children}
-      <Footer />
+      <Suspense fallback={<div className="h-[300px] bg-cloud-dancer/30 animate-pulse border-t border-deep-indigo/20" />}>
+        <Footer />
+      </Suspense>
       <WhatsAppButton />
     </>
   );

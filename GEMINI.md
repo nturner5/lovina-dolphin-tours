@@ -25,6 +25,9 @@ To become the definitive standard for ethical marine encounters in North Bali. O
 - ✅ **CMS**: Sanity Studio functional at `/admin`; 3 SEO posts imported and keys fixed.
 - ✅ **Payments**: Stripe Checkout flow built (Test Mode).
 - ✅ **Infrastructure**: Next.js 15 project verified with successful production builds.
+- ✅ **Expanded Tour Selection**: Added the middle Watch & Swim ($55) tier for a 3-tour grid (Watching $45, Swim $55, Swim & Snorkel $65).
+- ✅ **Ethical Trust Seals**: Implemented a localized "Ethical Charter & Safety Seal" trust bar (`TrustCharter.tsx`) below package selectors to replace OTA listings.
+- ✅ **SEO Products**: Registered three individual JSON-LD Product Schemas in layout for Google Rich Snippets.
 
 ## Active "To-Do" List
 
@@ -32,19 +35,25 @@ To become the definitive standard for ethical marine encounters in North Bali. O
 - [x] **Brand Audit:** Confirm if "V2 Coastal Noir" resonates during initial traveler testing.
 - [x] **Emotional Storytelling:** Draft the "Process" copy (The Feeling of the 8 AM Sea).
 - [x] **Logo Refinement:** Play with `w-10 h-10` size in `Navbar.tsx` as needed.
+- [x] **CRO & Funnel:** Embed the Package Selector and Testimonials directly on the Homepage (shortening the funnel by skipping the separate `/tours` page).
+- [ ] **OTA Profile Setup:** Register Google Business & TripAdvisor listings to collect official review badges.
 
 ### Content & Social Proof
-- [ ] **Instagram Outreach:** Contact regular travelers using the script in our history for Reel permissions.
-- [ ] **Placeholders**: Replace "Ambient Video" and "Ocean Texture" SVG placeholders with high-res 4K assets.
+- [x] **Instagram Outreach:** Contact regular travelers using the script in our history for Reel permissions.
 - [x] **Thorough Blogs:** Expand the 3 imported posts into long-form authority pillars (1,500+ words).
+- [x] **Social Proof:** Insert verified customer review/testimonial cards onto the Homepage.
+- [ ] **Realistic Media Audit:** Replace the temporary image placeholders with custom authentic user-generated images.
 
 ### Product & Operations
 - [x] **Logistics**: Write "What to Bring" (Reef booties, polarized glasses, etc.) and the "8 AM Schedule" copy.
-- [x] **Pickups**: Implement Add-on pricing for Ubud ($35) and Canggu/Seminyak/Kuta ($50) in Stripe.
+- [x] **Pickups**: Implement Add-on pricing for Ubud ($42) and Canggu/Seminyak/Kuta ($60) in Stripe.
 - [x] **Chat**: Integrate a direct WhatsApp button (The "operating system" of Bali).
 - [x] **WhatsApp Configuration**: Update the placeholder phone number `6281234567890` in `src/components/WhatsAppButton.tsx` with your official Balinese WhatsApp number.
-- [ ] **Language Switcher**: Add support for Russian and Chinese markets.
 - [x] **Dispatch Automation**: Build Make.com scenario (Stripe Webhook -> WhatsApp Dispatch).
+- [x] **Mobile UX**: Add Mobile-Sticky Bottom Checkout Bar with dynamic summary calculation.
+- [ ] **GoPro Rental**: Add GoPro Hero 11 Rental ($25 USD) checkbox and pricing mapping (queued until physically present/captains vetted).
+- [ ] **Stripe Live Mapping:** Map active Stripe Product & Price IDs to metadata in production Stripe settings.
+- [ ] **Captain Onboarding & Audits:** Draft a simple mobile captain handbook/charter agreement to ensure off-site captain compliance with the 100% ethical parallel approach rules.
 
 ## Referenced Files
 - `.agents/branding-guide.md`: The visual "Bible" (Colors, Fonts, Logo rules).

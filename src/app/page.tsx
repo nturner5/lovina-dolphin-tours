@@ -6,6 +6,8 @@ import { urlFor } from '@/sanity/lib/image';
 import ReelsGrid from '@/components/ReelsGrid';
 import { t } from '@/locales/i18n';
 import { getLocaleServer } from '@/locales/i18n-server';
+import TrustCharter from "@/components/TrustCharter";
+import ReviewsSection from "@/components/ReviewsSection";
 
 export const revalidate = 60;
 
@@ -155,7 +157,7 @@ export default async function Home({ searchParams }: PageProps) {
             {/* Action CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <Link 
-                href={hrefFor("/tours")} 
+                href="#packages" 
                 className="bg-coral-pop text-cloud-dancer px-10 py-4 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group"
               >
                 {/* Pulsing ring outer container */}
@@ -397,7 +399,7 @@ export default async function Home({ searchParams }: PageProps) {
 
             <div className="pt-4">
               <Link 
-                href={hrefFor("/tours")} 
+                href="#packages" 
                 className="inline-block bg-coral-pop text-cloud-dancer px-12 py-4 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group"
               >
                 <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
@@ -407,6 +409,278 @@ export default async function Home({ searchParams }: PageProps) {
           </div>
         </div>
       </section>
+
+      {/* Tour Selection / Packages Section */}
+      <section id="packages" className="py-16 lg:py-24 px-6 bg-cloud-dancer/30 border-b border-deep-indigo/10">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 lg:mb-16">
+            <span className="text-[10px] font-bold text-transformative-teal uppercase tracking-[0.2em] bg-transformative-teal/5 px-4 py-1.5 rounded-full border border-transformative-teal/10 inline-block mb-4">
+              {t("privateBoatTours", locale)}
+            </span>
+            <h3 className="text-4xl lg:text-5xl font-serif text-deep-indigo">
+              {locale === 'en' ? (
+                <>Select Your <span className="italic font-light text-transformative-teal">Private Dolphin Tour</span></>
+              ) : locale === 'ru' ? (
+                <>Выберите свой <span className="italic font-light text-transformative-teal">частный тур к дельфинам</span></>
+              ) : (
+                <>选择您的<span className="italic font-light text-transformative-teal">私人海豚之旅</span></>
+              )}
+            </h3>
+            <p className="text-sm text-deep-indigo/60 max-w-lg mx-auto mt-4 font-light leading-relaxed">
+              {t("tourSelectorDesc", locale)}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8 items-stretch max-w-6xl mx-auto">
+            {/* Card 1: 7:00 AM Private Dolphin Watching Tour */}
+            <div className="group bg-white rounded-[2.5rem] border border-deep-indigo/5 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between">
+              <div>
+                <div className="relative w-full aspect-[16/10] overflow-hidden bg-deep-indigo/5 border-b border-deep-indigo/5">
+                  <Image 
+                    src="/hero_dolphins.png" 
+                    alt="Two wild dolphins swimming gracefully together in the glassy calm waters of Lovina, North Bali" 
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-deep-indigo/40 via-transparent to-transparent opacity-60" />
+                  <span className="absolute bottom-4 left-6 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-xl border border-white/20 text-[10px] font-bold uppercase tracking-wider text-deep-indigo shadow-sm">
+                    🐬 {t("heroBadge", locale)}
+                  </span>
+                </div>
+
+                <div className="p-8 sm:p-10 space-y-6">
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">{t("tour1Title", locale)}</h2>
+                    <p className="text-xs text-deep-indigo/50 font-light uppercase tracking-widest">{t("tour1Subtitle", locale)}</p>
+                  </div>
+
+                  <div className="flex items-baseline gap-2 border-b border-deep-indigo/5 pb-5">
+                    <span className="text-3xl font-bold text-deep-indigo">$45</span>
+                    <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
+                    <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
+                      {t("tour1MinGuests", locale)}
+                    </span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <span className="text-[10px] font-bold text-deep-indigo/40 uppercase tracking-widest block">{t("inclusions", locale)}</span>
+                    <ul className="space-y-3.5 text-xs text-deep-indigo/80 font-light leading-relaxed">
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("tour1Inc1Title", locale)}</strong>
+                          <span>{t("tour1Inc1Desc", locale)}</span>
+                        </div>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("tour1Inc2Title", locale)}</strong>
+                          <span>{t("tour1Inc2Desc", locale)}</span>
+                        </div>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("tour1Inc3Title", locale)}</strong>
+                          <span>{t("tour1Inc3Desc", locale)}</span>
+                        </div>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("tour1Inc4Title", locale)}</strong>
+                          <span>{t("tour1Inc4Desc", locale)}</span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-8 sm:p-10 pt-0">
+                <Link 
+                  href={hrefFor("/checkout?tour=seven-am-ethical")}
+                  id="cta-select-ethical-tour-home"
+                  className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md active:scale-98"
+                >
+                  {t("tour1Btn", locale)}
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 1.5: 7:00 AM Private Dolphin Watching & Swimming Tour */}
+            <div className="group bg-white rounded-[2.5rem] border border-deep-indigo/5 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between">
+              <div>
+                <div className="relative w-full aspect-[16/10] overflow-hidden bg-deep-indigo/5 border-b border-deep-indigo/5">
+                  <Image 
+                    src="/dolphin_plus_swim.png" 
+                    alt="A couple in Balinese waters holding a rope attached to a wooden outrigger boat, swimming with a wild dolphin nearby" 
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-1000 brightness-95"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-deep-indigo/40 via-transparent to-transparent opacity-60" />
+                  <span className="absolute bottom-4 left-6 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-xl border border-white/20 text-[10px] font-bold uppercase tracking-wider text-deep-indigo shadow-sm">
+                    🏊 {locale === 'en' ? 'Open Sea Swim' : locale === 'ru' ? 'Плавание в море' : '公海共游'}
+                  </span>
+                </div>
+
+                <div className="p-8 sm:p-10 space-y-6">
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">{t("tour1_5Title", locale)}</h2>
+                    <p className="text-xs text-deep-indigo/50 font-light uppercase tracking-widest">{t("tour1_5Subtitle", locale)}</p>
+                  </div>
+
+                  <div className="flex items-baseline gap-2 border-b border-deep-indigo/5 pb-5">
+                    <span className="text-3xl font-bold text-deep-indigo">$55</span>
+                    <span className="text-sm font-light text-deep-indigo/60">{t("tour1_5PriceDesc", locale)}</span>
+                    <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
+                      {t("tour1_5MinGuests", locale)}
+                    </span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <span className="text-[10px] font-bold text-deep-indigo/40 uppercase tracking-widest block">{t("inclusions", locale)}</span>
+                    <ul className="space-y-3.5 text-xs text-deep-indigo/80 font-light leading-relaxed">
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("tour1_5Inc1Title", locale)}</strong>
+                          <span>{t("tour1_5Inc1Desc", locale)}</span>
+                        </div>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("tour1_5Inc2Title", locale)}</strong>
+                          <span>{t("tour1_5Inc2Desc", locale)}</span>
+                        </div>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("tour1_5Inc3Title", locale)}</strong>
+                          <span>{t("tour1_5Inc3Desc", locale)}</span>
+                        </div>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("tour1_5Inc4Title", locale)}</strong>
+                          <span>{t("tour1_5Inc4Desc", locale)}</span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-8 sm:p-10 pt-0">
+                <Link 
+                  href={hrefFor("/checkout?tour=dolphin-swim")}
+                  id="cta-select-swim-tour-home"
+                  className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md active:scale-98"
+                >
+                  {t("tour1_5Btn", locale)}
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 2: 7:00 AM Private Dolphin Watching Tour + Swim & Snorkel */}
+            <div className="group bg-white rounded-[2.5rem] border-2 border-transformative-teal shadow-md hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between relative">
+              <span className="absolute top-4 right-6 bg-transformative-teal text-cloud-dancer px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest shadow-md z-20">
+                ✦ {t("recommended", locale)}
+              </span>
+
+              <div>
+                <div className="relative w-full aspect-[16/10] overflow-hidden bg-deep-indigo/5 border-b border-deep-indigo/5">
+                  <Image 
+                    src="/snorkeling_lovina_realistic.jpg" 
+                    alt="A traveler snorkeling with a wild green sea turtle above a vibrant coral reef with tropical fish in crystal clear Lovina water" 
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-deep-indigo/40 via-transparent to-transparent opacity-60" />
+                  <span className="absolute bottom-4 left-6 bg-transformative-teal text-cloud-dancer px-4 py-1.5 rounded-xl border border-transformative-teal/20 text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                    🐢 {t("signatureTag", locale)}
+                  </span>
+                </div>
+
+                <div className="p-8 sm:p-10 space-y-6">
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">{t("tour2Title", locale)}</h2>
+                    <p className="text-xs text-transformative-teal font-bold uppercase tracking-widest">{t("tour2Subtitle", locale)}</p>
+                  </div>
+
+                  <div className="flex items-baseline gap-2 border-b border-deep-indigo/5 pb-5">
+                    <span className="text-3xl font-bold text-deep-indigo">$65</span>
+                    <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
+                    <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
+                      {t("tour1MinGuests", locale)}
+                    </span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <span className="text-[10px] font-bold text-deep-indigo/40 uppercase tracking-widest block">{t("inclusions", locale)}</span>
+                    <ul className="space-y-3.5 text-xs text-deep-indigo/80 font-light leading-relaxed">
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("tour2Inc1Title", locale)}</strong>
+                          <span>{t("tour2Inc1Desc", locale)}</span>
+                        </div>
+                      </li>
+                      <li className="flex gap-3 items-start text-transformative-teal bg-transformative-teal/5 p-4 rounded-2xl border border-transformative-teal/10 -mx-2">
+                        <span className="text-lg leading-none shrink-0">✦</span>
+                        <div>
+                          <strong className="block text-sm font-bold leading-tight">{t("tour2SnorkelAdditionTitle", locale)}</strong>
+                          <span className="text-[11px] text-transformative-teal/80 block mt-1 leading-normal">
+                            {t("tour2SnorkelAdditionDesc", locale)}
+                          </span>
+                        </div>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("tour2Inc2Title", locale)}</strong>
+                          <span>{t("tour2Inc2Desc", locale)}</span>
+                        </div>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("tour2Inc4Title", locale)}</strong>
+                          <span>{t("tour2Inc4Desc", locale)}</span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-8 sm:p-10 pt-0">
+                <Link 
+                  href={hrefFor("/checkout?tour=swim-snorkel")}
+                  id="cta-select-snorkel-tour-home"
+                  className="block w-full bg-coral-pop text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-98 relative group"
+                >
+                  <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
+                  {t("tour2Btn", locale)}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Reusable Ethical Charter & Safety Seal Trust Bar */}
+        <TrustCharter locale={locale} />
+      </section>
+
+      {/* Redesigned Reviews / Testimonials Section */}
+      <ReviewsSection locale={locale} />
 
       {/* Emotional Storytelling Section */}
       <section id="story" className="py-16 sm:py-24 lg:py-32 px-6 bg-cloud-dancer/40 border-t border-deep-indigo/5">
@@ -511,7 +785,7 @@ export default async function Home({ searchParams }: PageProps) {
             {t("ctaDesc", locale)}
           </p>
           <Link 
-            href={hrefFor("/tours")} 
+            href="#packages" 
             className="bg-coral-pop text-cloud-dancer px-12 py-5 rounded-full text-xl font-medium hover:bg-deep-indigo transition-all shadow-xl inline-block active:scale-95"
           >
             {t("ctaBtn", locale)}

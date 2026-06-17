@@ -11,15 +11,16 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 const DEFAULT_TOURS = [
   { id: 'seven-am-ethical', name: '7:00 AM Private Dolphin Watching Tour', price: 45, time: '7:00 AM' },
+  { id: 'dolphin-swim', name: '7:00 AM Private Dolphin Watching & Swimming Tour', price: 55, time: '7:00 AM' },
   { id: 'swim-snorkel', name: '7:00 AM Private Dolphin Watching Tour + Swim & Snorkel', price: 65, time: '7:00 AM' },
 ];
 
 const DEFAULT_PICKUP_OPTIONS = [
   { id: 'none', name: 'No Driver (Meet at Lovina Beach by 6:30 AM)', price: 0 },
   { id: 'lovina', name: 'Free Local Shuttle (Lovina Beach Area - Pickup ~6:30 AM)', price: 0 },
-  { id: 'ubud', name: 'Ubud Round-trip Private Driver (Pickup ~4:30 AM)', price: 35 },
-  { id: 'canggu-kuta', name: 'Canggu / Seminyak / Kuta Round-trip Private Driver (Pickup ~4:00 AM)', price: 50 },
-  { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Private Driver (Pickup ~3:30 AM)', price: 65 },
+  { id: 'ubud', name: 'Ubud Round-trip Private Driver (Pickup ~4:30 AM)', price: 42 },
+  { id: 'canggu-kuta', name: 'Canggu / Seminyak / Kuta Round-trip Private Driver (Pickup ~4:00 AM)', price: 60 },
+  { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Private Driver (Pickup ~3:30 AM)', price: 78 },
 ];
 
 const getBaliDateString = (offsetDays = 0) => {
@@ -224,7 +225,7 @@ function CheckoutForm() {
   const selectedTour = tours.find(t => t.id === formData.tourId) || tours[0];
 
   return (
-    <main className="bg-cloud-dancer min-h-screen px-4 sm:px-6 pt-12 pb-24 lg:pt-16 lg:px-12">
+    <main className="bg-cloud-dancer min-h-screen px-4 sm:px-6 pt-12 pb-32 md:pb-24 lg:pt-16 lg:px-12">
       <div className="max-w-6xl mx-auto">
         {/* Secure SSL Trust Indicator */}
         <div className="flex items-center justify-center gap-2 mb-3 text-transformative-teal/70 font-semibold tracking-widest text-[10px] uppercase select-none animate-in fade-in duration-700">
@@ -239,7 +240,7 @@ function CheckoutForm() {
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           {/* Left Column: Form Capsule */}
           <div className="lg:col-span-7">
-            <form onSubmit={handleCheckout} className="space-y-6 bg-white p-5 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] shadow-sm border border-deep-indigo/5">
+            <form id="checkout-form" onSubmit={handleCheckout} className="space-y-6 bg-white p-5 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] shadow-sm border border-deep-indigo/5">
               {/* Trust Badge Banner */}
               <div className="flex flex-wrap items-center justify-between gap-2 bg-transformative-teal/5 px-6 py-3.5 rounded-2xl border border-transformative-teal/10 text-[11px] leading-none mb-2">
                 <span className="font-bold text-deep-indigo">★ 4.9 Guest Rating</span>
@@ -254,7 +255,11 @@ function CheckoutForm() {
                   onChange={(e) => setFormData({ ...formData, tourId: e.target.value })}
                 >
                   {tours.map(tour => {
-                    const tourName = tour.id === 'seven-am-ethical' ? t('tour1Title', locale) : t('tour2Title', locale);
+                    const tourName = tour.id === 'seven-am-ethical' 
+                      ? t('tour1Title', locale) 
+                      : tour.id === 'dolphin-swim' 
+                        ? t('tour1_5Title', locale) 
+                        : t('tour2Title', locale);
                     return (
                       <option key={tour.id} value={tour.id}>
                         {tourName} — ${tour.price} USD {t('tour1PriceDesc', locale)}
@@ -413,6 +418,8 @@ function CheckoutForm() {
                 </select>
               </div>
 
+
+
               {/* Dynamic Transfer Details Box */}
               {formData.pickupLocation === 'none' ? (
                 <div className="bg-transformative-teal/5 p-6 rounded-3xl border border-transformative-teal/10 space-y-3 text-xs leading-normal animate-in fade-in duration-300">
@@ -427,7 +434,7 @@ function CheckoutForm() {
                   </div>
                   <div className="text-deep-indigo/80 space-y-2 font-light">
                     <p>
-                      • <strong>Meeting Location:</strong> Meet at the <a href="https://www.google.com/maps/search/?api=1&query=Lovina+Dolphin+Statue" target="_blank" rel="noopener noreferrer" className="font-bold underline text-deep-indigo hover:text-transformative-teal transition-colors">Lovina Beach Dolphin Statue (Kalibukbuk)</a>.
+                      • <strong>Meeting Location:</strong> Meet at the <a href="https://maps.google.com/?q=Dolphin+Statue+Lovina+Beach" target="_blank" rel="noopener noreferrer" className="font-bold underline text-deep-indigo hover:text-transformative-teal transition-colors">Lovina Beach Dolphin Statue (Kalibukbuk)</a>.
                     </p>
                     <p>
                       • <strong>Arrival Time:</strong> Please arrive by <strong>6:30 AM</strong>. Our quiet-departure private boat leaves promptly at <strong>7:00 AM</strong> to ensure a private encounter away from the sunrise rush.
@@ -451,7 +458,7 @@ function CheckoutForm() {
                   </div>
                   <div className="text-deep-indigo/80 space-y-2 font-light">
                     <p>
-                      • <strong>Место встречи:</strong> Пляж Ловина, у <a href="https://www.google.com/maps/search/?api=1&query=Lovina+Dolphin+Statue" target="_blank" rel="noopener noreferrer" className="font-bold underline text-deep-indigo hover:text-transformative-teal transition-colors">статуи дельфина (Калибукбук)</a>.
+                      • <strong>Место встречи:</strong> Пляж Ловина, у <a href="https://maps.google.com/?q=Dolphin+Statue+Lovina+Beach" target="_blank" rel="noopener noreferrer" className="font-bold underline text-deep-indigo hover:text-transformative-teal transition-colors">статуи дельфина (Калибукбук)</a>.
                     </p>
                     <p>
                       • <strong>Время прибытия:</strong> Пожалуйста, прибудьте к <strong>6:30 утра</strong>. Наша частная лодка отправляется ровно в <strong>7:00 утра</strong>, чтобы обеспечить тихое наблюдение вдали от суеты.
@@ -475,7 +482,7 @@ function CheckoutForm() {
                   </div>
                   <div className="text-deep-indigo/80 space-y-2 font-light">
                     <p>
-                      • <strong>集合地点:</strong> 在 <a href="https://www.google.com/maps/search/?api=1&query=Lovina+Dolphin+Statue" target="_blank" rel="noopener noreferrer" className="font-bold underline text-deep-indigo hover:text-transformative-teal transition-colors">罗威那海滩海豚雕像 (Kalibukbuk)</a> 集合。
+                      • <strong>集合地点:</strong> 在 <a href="https://maps.google.com/?q=Dolphin+Statue+Lovina+Beach" target="_blank" rel="noopener noreferrer" className="font-bold underline text-deep-indigo hover:text-transformative-teal transition-colors">罗威那海滩海豚雕像 (Kalibukbuk)</a> 集合。
                     </p>
                     <p>
                       • <strong>抵达时间:</strong> 请于 <strong>早上6:30</strong> 前抵达。我们的私人船只准时于 <strong>早上7:00</strong> 起航，以避开日出的游船高峰。
@@ -601,12 +608,30 @@ function CheckoutForm() {
               {/* Pricing Summary */}
               <div className="bg-cloud-dancer/30 p-6 rounded-2xl border border-deep-indigo/5 space-y-3 text-sm">
                 <div className="flex justify-between text-deep-indigo/60">
-                  <span>{tours.find(t => t.id === formData.tourId)?.name} (${tours.find(t => t.id === formData.tourId)?.price} × {formData.guests} guests)</span>
+                  <span>
+                    {formData.tourId === 'seven-am-ethical' 
+                      ? t('tour1Title', locale) 
+                      : formData.tourId === 'dolphin-swim' 
+                        ? t('tour1_5Title', locale) 
+                        : t('tour2Title', locale)
+                    } (${tours.find(t => t.id === formData.tourId)?.price} × {formData.guests} guests)
+                  </span>
                   <span>${(tours.find(t => t.id === formData.tourId)?.price || 0) * formData.guests} USD</span>
                 </div>
                 {formData.pickupLocation !== 'none' && (
                   <div className="flex justify-between text-deep-indigo/60">
-                    <span>{pickupOptions.find(p => p.id === formData.pickupLocation)?.name}</span>
+                    <span>
+                      {formData.pickupLocation === 'none' 
+                        ? t('noDriver', locale) 
+                        : formData.pickupLocation === 'lovina' 
+                          ? t('freeShuttle', locale) 
+                          : formData.pickupLocation === 'ubud' 
+                            ? t('ubudDriver', locale) 
+                            : formData.pickupLocation === 'canggu-kuta' 
+                              ? t('cangguDriver', locale) 
+                              : t('uluwatuDriver', locale)
+                      }
+                    </span>
                     <span>
                       {pickupOptions.find(p => p.id === formData.pickupLocation)?.price === 0 
                         ? 'Free' 
@@ -625,10 +650,19 @@ function CheckoutForm() {
                 </div>
               </div>
 
+              {/* Sighting Guarantee Placement */}
+              <div className="flex items-start gap-3 bg-sage-leaf/10 p-5 rounded-[2rem] border border-sage-leaf/25 text-xs text-deep-indigo/80 leading-normal">
+                <span className="text-lg leading-none shrink-0 select-none">🐬</span>
+                <div>
+                  <strong className="font-bold text-deep-indigo block mb-0.5">{t('trustSightingTitle', locale)}</strong>
+                  <p className="opacity-90 font-light leading-relaxed text-[11px]">{t('trustSightingDesc', locale)}</p>
+                </div>
+              </div>
+
               <button 
                 type="submit" 
                 disabled={loading}
-                className="w-full bg-coral-pop text-cloud-dancer py-5 rounded-full text-lg font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-95 disabled:opacity-50 mt-4 cursor-pointer"
+                className="w-full bg-coral-pop text-cloud-dancer py-5 rounded-full text-lg font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-95 disabled:opacity-50 mt-2 cursor-pointer"
               >
                 {loading 
                   ? t('btnSubmitLoading', locale) 
@@ -650,14 +684,21 @@ function CheckoutForm() {
             <div className="bg-white p-5 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] shadow-sm border border-deep-indigo/5 space-y-6">
               <div className="border-b border-deep-indigo/10 pb-5">
                 <span className="text-[9px] font-bold text-coral-pop uppercase tracking-widest block mb-1">{t('summaryTour', locale)}</span>
-                <h3 className="text-2xl font-serif text-deep-indigo leading-tight">{selectedTour.name}</h3>
+                <h3 className="text-2xl font-serif text-deep-indigo leading-tight">
+                  {selectedTour.id === 'seven-am-ethical' 
+                    ? t('tour1Title', locale) 
+                    : selectedTour.id === 'dolphin-swim' 
+                      ? t('tour1_5Title', locale) 
+                      : t('tour2Title', locale)
+                  }
+                </h3>
                 <span className="text-sm font-semibold text-transformative-teal block mt-1.5">${selectedTour.price} USD per guest</span>
               </div>
 
               <div className="space-y-4">
                 <h4 className="text-[10px] font-bold text-deep-indigo/40 uppercase tracking-widest">{t('inclusions', locale)}</h4>
                 <ul className="space-y-4 text-xs leading-relaxed">
-                  {selectedTour.id === 'seven-am-ethical' ? (
+                  {selectedTour.id === 'seven-am-ethical' && (
                     <>
                       <li className="flex gap-3 items-start">
                         <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
@@ -676,7 +717,7 @@ function CheckoutForm() {
                       <li className="flex gap-3 items-start">
                         <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
                         <div>
-                          <strong className="text-deep-indigo block font-bold">{t('time2', locale)}</strong>
+                          <strong className="text-deep-indigo block font-bold">{t('tour1Inc3Title', locale)}</strong>
                           <span className="text-deep-indigo/60 font-light">{t('tour1Inc3Desc', locale)}</span>
                         </div>
                       </li>
@@ -688,7 +729,42 @@ function CheckoutForm() {
                         </div>
                       </li>
                     </>
-                  ) : (
+                  )}
+                  {selectedTour.id === 'dolphin-swim' && (
+                    <>
+                      <li className="flex gap-3 items-start text-transformative-teal bg-transformative-teal/5 p-4 rounded-2xl border border-transformative-teal/10 -mx-1 animate-in zoom-in duration-300">
+                        <span className="text-lg leading-none shrink-0">✦</span>
+                        <div>
+                          <strong className="block text-sm font-bold leading-tight">{t('tour1_5Inc2Title', locale)}</strong>
+                          <span className="font-light text-[11px] text-transformative-teal/80 block mt-1 leading-normal">
+                            {t('tour1_5Inc2Desc', locale)}
+                          </span>
+                        </div>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t('tour1Inc1Title', locale)}</strong>
+                          <span className="text-deep-indigo/60 font-light">{t('tour1Inc1Desc', locale)}</span>
+                        </div>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t('tour1_5Inc3Title', locale)}</strong>
+                          <span className="text-deep-indigo/60 font-light">{t('tour1_5Inc3Desc', locale)}</span>
+                        </div>
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t('tour1Inc4Title', locale)}</strong>
+                          <span className="text-deep-indigo/60 font-light">{t('tour1Inc4Desc', locale)}</span>
+                        </div>
+                      </li>
+                    </>
+                  )}
+                  {selectedTour.id === 'swim-snorkel' && (
                     <>
                       <li className="flex gap-3 items-start text-transformative-teal bg-transformative-teal/5 p-4 rounded-2xl border border-transformative-teal/10 -mx-1 animate-in zoom-in duration-300">
                         <span className="text-lg leading-none shrink-0">✦</span>
@@ -758,6 +834,29 @@ function CheckoutForm() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mobile-Sticky Bottom CTA Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-deep-indigo/10 px-6 py-4 flex items-center justify-between z-50 shadow-[0_-8px_30px_rgb(0,0,0,0.1)] md:hidden animate-in slide-in-from-bottom duration-500">
+        <div className="flex flex-col">
+          <span className="text-[9px] uppercase tracking-wider text-deep-indigo/40 font-bold">Total Amount</span>
+          <span className="text-lg font-bold text-deep-indigo">
+            ${((tours.find(t => t.id === formData.tourId)?.price || 0) * formData.guests) + 
+              (pickupOptions.find(p => p.id === formData.pickupLocation)?.price || 0)
+            } USD
+          </span>
+        </div>
+        <button 
+          type="submit" 
+          form="checkout-form"
+          disabled={loading}
+          className="bg-coral-pop text-cloud-dancer px-8 py-3.5 rounded-full text-xs font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 disabled:opacity-50 cursor-pointer"
+        >
+          {loading 
+            ? t('btnSubmitLoading', locale) 
+            : (isLastMinute ? 'WhatsApp' : 'Book Tour')
+          }
+        </button>
       </div>
     </main>
   );

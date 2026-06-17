@@ -59,9 +59,9 @@ export default function RootLayout({
       },
       {
         "@type": "Product",
-        "@id": "https://balidolphintours.com/#tour",
-        "name": "Private Anti-Sunrise Ethical Dolphin Tour",
-        "description": "Premium 7:00 AM private outrigger tour to view wild Spinner and Bottlenose dolphins in Lovina, Bali with zero chasing. Includes reef snorkeling, coffee, and refreshments.",
+        "@id": "https://balidolphintours.com/#tour-watching",
+        "name": "7:00 AM Private Dolphin Watching Tour",
+        "description": "Premium 7:00 AM private outrigger tour to view wild Spinner and Bottlenose dolphins in Lovina, Bali with zero chasing. Includes local coffee, tea, and fresh fruits.",
         "image": "https://balidolphintours.com/hero_dolphins.png",
         "brand": {
           "@type": "Brand",
@@ -69,9 +69,47 @@ export default function RootLayout({
         },
         "offers": {
           "@type": "Offer",
-          "url": "https://balidolphintours.com/checkout",
+          "url": "https://balidolphintours.com/checkout?tour=seven-am-ethical",
           "priceCurrency": "USD",
           "price": "45.00",
+          "valueAddedTaxIncluded": "true",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "Product",
+        "@id": "https://balidolphintours.com/#tour-swim",
+        "name": "7:00 AM Private Dolphin Watching & Swimming Tour",
+        "description": "Swim alongside wild dolphin families in Lovina, Bali using safe boat outrigger holding bars on a 7:00 AM private tour. Vetted captain, life jackets, and refreshments included.",
+        "image": "https://balidolphintours.com/hero_dolphins.png",
+        "brand": {
+          "@type": "Brand",
+          "name": "Bali Dolphin Tours"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": "https://balidolphintours.com/checkout?tour=dolphin-swim",
+          "priceCurrency": "USD",
+          "price": "55.00",
+          "valueAddedTaxIncluded": "true",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "Product",
+        "@id": "https://balidolphintours.com/#tour-swim-snorkel",
+        "name": "7:00 AM Private Dolphin Watching Tour + Swim & Snorkel",
+        "description": "Our signature double encounter in Lovina, Bali. View and swim with wild dolphins, then snorkel Lovina's vibrant coral reefs. Includes premium gear, local guide, and refreshments.",
+        "image": "https://balidolphintours.com/snorkeling_lovina.png",
+        "brand": {
+          "@type": "Brand",
+          "name": "Bali Dolphin Tours"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": "https://balidolphintours.com/checkout?tour=swim-snorkel",
+          "priceCurrency": "USD",
+          "price": "65.00",
           "valueAddedTaxIncluded": "true",
           "availability": "https://schema.org/InStock"
         }
@@ -83,8 +121,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${playfair.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-cloud-dancer">
+      <body className="min-h-full flex flex-col bg-cloud-dancer" suppressHydrationWarning>
         {gtagId && (
           <>
             <Script

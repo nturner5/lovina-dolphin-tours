@@ -9,14 +9,15 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export const DEFAULT_PRICING = {
   tours: [
     { id: 'seven-am-ethical', name: '7:00 AM Private Dolphin Watching Tour', price: 45, time: '7:00 AM' },
+    { id: 'dolphin-swim', name: '7:00 AM Private Dolphin Watching & Swimming Tour', price: 55, time: '7:00 AM' },
     { id: 'swim-snorkel', name: '7:00 AM Private Dolphin Watching Tour + Swim & Snorkel', price: 65, time: '7:00 AM' },
   ],
   pickups: [
     { id: 'none', name: 'No Driver (Meet at Lovina Beach by 6:30 AM)', price: 0 },
     { id: 'lovina', name: 'Free Local Shuttle (Lovina Beach Area - Pickup ~6:30 AM)', price: 0 },
-    { id: 'ubud', name: 'Ubud Round-trip Private Driver (Pickup ~4:30 AM)', price: 35 },
-    { id: 'canggu-kuta', name: 'Canggu / Seminyak / Kuta Round-trip Private Driver (Pickup ~4:00 AM)', price: 50 },
-    { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Private Driver (Pickup ~3:30 AM)', price: 65 },
+    { id: 'ubud', name: 'Ubud Round-trip Private Driver (Pickup ~4:30 AM)', price: 42 },
+    { id: 'canggu-kuta', name: 'Canggu / Seminyak / Kuta Round-trip Private Driver (Pickup ~4:00 AM)', price: 60 },
+    { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Private Driver (Pickup ~3:30 AM)', price: 78 },
   ]
 };
 

@@ -97,10 +97,10 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       tourKey: 'tour1_5Title',
       bookingCode: 'LEM-M4L8',
       text: locale === 'en'
-        ? 'We were amazed by how calm the ocean was at 7:00 AM. Our guide was extremely knowledgeable, helping us spot the dolphin pods without causing any stress to the animals. A truly eco-conscious trip!'
+        ? 'so amazing! saw 10+ dolphins and capitain was very kind. highly recommend.'
         : locale === 'ru'
-          ? 'Мы были поражены тем, насколько спокоен океан в 7:00 утра. Гид был очень знающим и помог нам увидеть стаи дельфинов, не причиняя им стресса. По-настоящему экологичная поездка!'
-          : '我们对早上7:00如此平静的海面感到惊叹。导游知识非常渊博，在不给动物带来任何压力的情况下帮我们找到了海豚群。这才是真正的环保旅行！',
+          ? 'очень круто! видели больше 10 дельфинов и капитан был очень добрый'
+          : '太棒了！看到了10多只海豚，船长非常友善。强烈推荐。',
       tripType: 'couples',
       tourType: 'swim',
       highlights: ['🐬 Saw Dolphins', '🌿 100% Ethical Approach'],
@@ -116,9 +116,9 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       tourKey: 'tour2Title',
       bookingCode: 'LEM-J3D9',
       text: locale === 'en'
-        ? 'Incredible snorkeling experience at the Lovina reef. The corals were lively with blue starfish. The road trip from Ubud was a bit long and bumpy (about 2.5 hours each way), but the private outrigger boat and the peaceful morning sea made it completely worth it.'
+        ? 'Incredible snorkeling experience at the Lovina reef. The corals were lively with blue starfish. The road trip from Ubud was a bit long and bummpy (about 2.5 hours each way), but the private outrigger boat and peaceful morning sea made it worth it.'
         : locale === 'ru'
-          ? 'Невероятный сноркелинг на рифе Ловины. Живые кораллы с синими звездами. Дорога из Убуда была немного долгой и ухабистой (около 2,5 часов в одну сторону), но частная лодка и спокойное утреннее море того стоили.'
+          ? 'Невероятный сноркелинг на рифе Ловины. Живые кораллы с синими звездами. Дорога из Убуда была немного долгой и ухабистой (около 2,5 часов в одну сторону), но лодка и спокойное утреннее море того стоили.'
           : '罗威那珊瑚礁的浮潜体验太棒了。蓝色的海星和活体珊瑚非常美丽。从乌布坐车过来路程有点长且颠簸（单程大约2.5小时），但私人出海小船和宁静的早晨大海让这一切都非常值得。',
       tripType: 'families',
       tourType: 'snorkel',
@@ -134,11 +134,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'June 2026' : locale === 'ru' ? 'Июнь 2026' : '2026年6月',
       tourKey: 'tour1Title',
       bookingCode: 'LEM-Y2S6',
-      text: locale === 'en'
-        ? 'The private boat tour is perfect. So peaceful compared to the crowded sunrise tours. Captain was very respectful of marine life.'
-        : locale === 'ru'
-          ? 'Частный тур на лодке идеален. Очень спокойно по сравнению с многолюдными рассветными турами. Капитан очень уважительно относился к морской жизни.'
-          : '私人乘船游览非常完美。与拥挤的日出团相比非常宁静。船长对海洋生物非常尊重。',
+      text: '',
       tripType: 'solo',
       tourType: 'watching',
       highlights: ['🐬 Saw Dolphins', '🌿 100% Ethical Approach'],
@@ -153,11 +149,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'May 2026' : locale === 'ru' ? 'Май 2026' : '2026年5月',
       tourKey: 'tour1_5Title',
       bookingCode: 'LEM-O9K3',
-      text: locale === 'en'
-        ? "It was magical to swim beside the dolphins. The outrigger's safety handles made it feel very secure. Recommended!"
-        : locale === 'ru'
-          ? 'Это было волшебно — плавать рядом с дельфинами. Ручки безопасности на лодке позволяли чувствовать себя очень уверенно. Рекомендую!'
-          : '与海豚并肩游泳太神奇了。船上的安全把手让人感觉非常安全。极力推荐！',
+      text: locale === 'en' ? 'highly recomended!' : locale === 'ru' ? 'очень рекомендую!' : '极力推荐！',
       tripType: 'couples',
       tourType: 'swim',
       highlights: ['🐬 Saw Dolphins', '🛟 Felt Safe'],
@@ -172,11 +164,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'May 2026' : locale === 'ru' ? 'Май 2026' : '2026年5月',
       tourKey: 'tour2Title',
       bookingCode: 'LEM-C5P2',
-      text: locale === 'en'
-        ? 'Outstanding hosts. The hotel pickup was exactly on time, and our breakfast of fresh Balinese pastries was delicious. Highly recommend the snorkel add-on.'
-        : locale === 'ru'
-          ? 'Выдающиеся гиды. Трансфер из отеля прибыл минута в минуту, а завтрак со свежей балийской выпечкой был очень вкусным. Очень рекомендую сноркелинг.'
-          : '卓越的服务。酒店接送非常准时，我们享用的新鲜巴厘岛点心早餐非常好吃。强烈推荐加购浮潜。',
+      text: '',
       tripType: 'couples',
       tourType: 'snorkel',
       highlights: ['⭐ Amazing Guides', '🥐 Tasty Breakfast'],
@@ -192,10 +180,10 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       tourKey: 'tour1_5Title',
       bookingCode: 'LEM-E4B7',
       text: locale === 'en'
-        ? "This is the ONLY ethical dolphin tour in Lovina. Don't book the cheap ones that chase them. This is high quality, peaceful, and 100% respectful."
+        ? 'The only real ethical tour here. Worth the money.'
         : locale === 'ru'
-          ? 'Это ЕДИНСТВЕННЫЙ этичный тур к дельфинам в Ловине. Не бронируйте дешевые туры, где за ними гоняются. Это высокое качество, покой и уважение.'
-          : '这是罗威那唯一真正环保的海豚之旅。千万别订那些围追堵截的低价团。这是高品质、宁静且百分之百尊重大自然的体验。',
+          ? 'Единственный этичный тур здесь. Стоит своих денег.'
+          : '这里唯一的环保团，非常值。',
       tripType: 'families',
       tourType: 'swim',
       highlights: ['🌿 100% Ethical Approach', '🛟 Felt Safe'],
@@ -210,11 +198,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'April 2026' : locale === 'ru' ? 'Апрель 2026' : '2026年4月',
       tourKey: 'tour1Title',
       bookingCode: 'LEM-R8P1',
-      text: locale === 'en'
-        ? 'Superb organization. Safe, clean, and a very comfortable outrigger boat. Saw several pods of dolphins playing.'
-        : locale === 'ru'
-          ? 'Превосходная организация. Безопасная, чистая и очень удобная лодка. Видели несколько семейств играющих дельфинов.'
-          : '一流的组织。安全、干净且非常舒适的出海木船。看到了好几群海豚在嬉戏。',
+      text: locale === 'en' ? 'Perfect' : locale === 'ru' ? 'Идеально' : '完美',
       tripType: 'solo',
       tourType: 'watching',
       highlights: ['🐬 Saw Dolphins', '📸 Great Photo Ops'],
@@ -229,11 +213,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'June 2026' : locale === 'ru' ? 'Июнь 2026' : '2026年6月',
       tourKey: 'tour2Title',
       bookingCode: 'LEM-C3W9',
-      text: locale === 'en'
-        ? 'We booked the full swim and snorkel package. Best decision of our Bali trip. Lovina is beautiful and quiet compared to the south.'
-        : locale === 'ru'
-          ? 'Мы забронировали полный пакет с плаванием и сноркелингом. Лучшее решение за всю поездку. Ловина красивая и тихая по сравнению с югом Бали.'
-          : '我们预订了完整的与海豚共游加浮潜套餐。巴厘岛之行最明智的选择。与南部相比，罗威那既美丽又安静。',
+      text: '',
       tripType: 'couples',
       tourType: 'snorkel',
       highlights: ['🐠 Lovina Reef', '📸 Great Photo Ops'],
@@ -249,10 +229,10 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       tourKey: 'tour1_5Title',
       bookingCode: 'LEM-H7M2',
       text: locale === 'en'
-        ? 'Very good service. The early morning starts can be a bit chilly, so bring a light jacket. The hot ginger tea served on the boat was a nice touch. Saw plenty of dolphins up close.'
+        ? 'Very good service. early morning start can be a bit chily so bring jacket. Ginger tea served on boat was nice. Saw dolphins close.'
         : locale === 'ru'
-          ? 'Очень хороший сервис. Рано утром может быть прохладно, возьмите легкую куртку. Горячий имбирный чай на лодке был очень кстати. Видели много дельфинов вблизи.'
-          : '非常好的服务。清晨出发可能会有一点凉，记得带一件薄外套。船上提供的热生姜茶非常贴心。近距离看到了很多海豚。',
+          ? 'Очень хороший сервис. Рано утром может быть прохладно, берите куртку. Горячий чай на лодке был кстати. Видели дельфинов.'
+          : '非常好的服务。清晨出发可能会有一点凉，记得带外套。船上的生姜茶很贴心。近距离看到了海豚。',
       tripType: 'solo',
       tourType: 'swim',
       highlights: ['🐬 Saw Dolphins', '☕ Hot Ginger Tea'],
@@ -267,11 +247,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'March 2026' : locale === 'ru' ? 'Март 2026' : '2026年3月',
       tourKey: 'tour1Title',
       bookingCode: 'LEM-A9S4',
-      text: locale === 'en'
-        ? 'Amazing view of Lovina mountains from the sea. Highly recommended for couples wanting a peaceful, romantic morning away from crowds.'
-        : locale === 'ru'
-          ? 'Потрясающий вид на горы Ловины с моря. Очень рекомендую парам, которые хотят провести спокойное романтическое утро вдали от толпы.'
-          : '从海上眺望罗威那山脉的景色非常迷人。强烈推荐给想要远离人群、享受宁静浪漫清晨的情侣夫妻。',
+      text: '',
       tripType: 'couples',
       tourType: 'watching',
       highlights: ['🌄 Scenic Views', '🌿 100% Ethical Approach'],
@@ -286,11 +262,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'May 2026' : locale === 'ru' ? 'Май 2026' : '2026年5月',
       tourKey: 'tour1_5Title',
       bookingCode: 'LEM-W2L6',
-      text: locale === 'en'
-        ? 'Fantastic trip! No crowded boats chasing dolphins. The captain stayed parallel. We felt very close to nature.'
-        : locale === 'ru'
-          ? 'Фантастическая поездка! Никаких переполненных лодок, гоняющихся за дельфинами. Капитан плыл параллельно. Мы почувствовали себя очень близко к природе.'
-          : '奇妙的旅程！没有拥挤的船只围追海豚，船长始终保持平行航行。让我们感觉非常亲近大自然。',
+      text: locale === 'en' ? 'great private trip! very quiet.' : locale === 'ru' ? 'отличная поездка! очень тихо.' : '很棒的私人行程！非常安静。',
       tripType: 'couples',
       tourType: 'swim',
       highlights: ['🌿 100% Ethical Approach', '🐬 Saw Dolphins'],
@@ -305,11 +277,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'May 2026' : locale === 'ru' ? 'Май 2026' : '2026年5月',
       tourKey: 'tour2Title',
       bookingCode: 'LEM-L4N8',
-      text: locale === 'en'
-        ? 'Lovina reef snorkeling was outstanding. Clear water and lots of colorful fish. Safe for children and very professionally run.'
-        : locale === 'ru'
-          ? 'Сноркелинг на рифе Ловины был выдающимся. Чистая вода и много ярких рыб. Безопасно для детей, все организовано очень профессионально.'
-          : '罗威那珊瑚礁浮潜非常棒。水质清澈，有许多色彩斑斓的鱼类。对孩子来说很安全，运营得非常专业。',
+      text: '',
       tripType: 'families',
       tourType: 'snorkel',
       highlights: ['🐠 Lovina Reef', '👨‍👩‍👧 Great for Families'],
@@ -324,11 +292,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'June 2026' : locale === 'ru' ? 'Июнь 2026' : '2026年6月',
       tourKey: 'tour1_5Title',
       bookingCode: 'LEM-I5C1',
-      text: locale === 'en'
-        ? 'Highly professional service. The boat captain knew exactly where the dolphins would surface and respected their path.'
-        : locale === 'ru'
-          ? 'Очень профессиональный сервис. Капитан лодки точно знал, где появятся дельфины, и не мешал их движению.'
-          : '非常专业的服务。船长很清楚海豚会在哪里浮出水面，并且十分尊重它们的行进路线。',
+      text: locale === 'en' ? 'Professional and respectfull captains.' : locale === 'ru' ? 'Профессиональные и вежливые капитаны.' : '非常专业和尊重大自然的船长。',
       tripType: 'couples',
       tourType: 'swim',
       highlights: ['⭐ Amazing Guides', '🛟 Felt Safe'],
@@ -343,11 +307,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'April 2026' : locale === 'ru' ? 'Апрель 2026' : '2026年4月',
       tourKey: 'tour1Title',
       bookingCode: 'LEM-T8K2',
-      text: locale === 'en'
-        ? 'Great way to experience Lovina. Safe, clean, prompt, and ethical. The sunrise mountain silhouette was breathtaking.'
-        : locale === 'ru'
-          ? 'Отличный способ познакомиться с Ловиной. Безопасно, чисто, вовремя и этично. Силуэты гор на рассвете завораживали.'
-          : '体验罗威那的极佳方式。安全、干净、准时且环保。日出时的山脉剪影美得令人窒息。',
+      text: '',
       tripType: 'solo',
       tourType: 'watching',
       highlights: ['🌄 Scenic Views', '🛟 Felt Safe'],
@@ -362,11 +322,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'June 2026' : locale === 'ru' ? 'Июнь 2026' : '2026年6月',
       tourKey: 'tour2Title',
       bookingCode: 'LEM-S6V3',
-      text: locale === 'en'
-        ? 'Loved the anti-chase parallel approach. It felt so respectful and natural. The coral garden snorkeling was beautiful.'
-        : locale === 'ru'
-          ? 'Понравился подход параллельного плавания без преследования. Это выглядело очень уважительно и естественно. Сноркелинг в коралловом саду был прекрасен.'
-          : '非常喜欢这种平行航行、绝不围堵的理念。让人感觉很自然且充满尊重。珊瑚花园的浮潜也很漂亮。',
+      text: locale === 'en' ? 'best snorkeling of our trip!' : locale === 'ru' ? 'лучший сноркелинг за всю поездку!' : '此行最棒的浮潜体验！',
       tripType: 'couples',
       tourType: 'snorkel',
       highlights: ['🌿 100% Ethical Approach', '🐠 Lovina Reef'],
@@ -400,11 +356,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'May 2026' : locale === 'ru' ? 'Май 2026' : '2026年5月',
       tourKey: 'tour1Title',
       bookingCode: 'LEM-M2G7',
-      text: locale === 'en'
-        ? 'Highly recommend booking directly here. Smooth payment, excellent private car pickup, and a gorgeous morning on the sea.'
-        : locale === 'ru'
-          ? 'Очень рекомендую бронировать напрямую здесь. Быстрая оплата, отличный трансфер на машине и чудесное утро в море.'
-          : '强烈推荐在此直接预订。支付顺畅，私人专车接送服务极好，在海上度过了一个无比美妙的清晨。',
+      text: '',
       tripType: 'couples',
       tourType: 'watching',
       highlights: ['⭐ Amazing Guides', '🚗 Easy Pickup'],
@@ -419,11 +371,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'June 2026' : locale === 'ru' ? 'Июнь 2026' : '2026年6月',
       tourKey: 'tour2Title',
       bookingCode: 'LEM-L9B3',
-      text: locale === 'en'
-        ? 'Great value. The local breakfast was fresh, and the snorkeling was peaceful without standard tourists crowds around.'
-        : locale === 'ru'
-          ? 'Отличное соотношение цены и качества. Свежий местный завтрак и спокойный сноркелинг без толпы туристов вокруг.'
-          : '物超所值。当地早餐很新鲜，浮潜也非常安静，周围完全没有普通游客团的喧嚣。',
+      text: locale === 'en' ? 'Great value' : locale === 'ru' ? 'Отличная цена' : '性价比很高',
       tripType: 'solo',
       tourType: 'snorkel',
       highlights: ['🐠 Lovina Reef', '🥐 Tasty Breakfast'],
@@ -438,11 +386,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
       date: locale === 'en' ? 'June 2026' : locale === 'ru' ? 'Июнь 2026' : '2026年6月',
       tourKey: 'tour1_5Title',
       bookingCode: 'LEM-M5K1',
-      text: locale === 'en'
-        ? 'The 7:00 AM start makes all the difference! The dolphin watching was calm and our guide was so polite.'
-        : locale === 'ru'
-          ? 'Начало в 7:00 утра решает все! Наблюдение за дельфинами было спокойным, а гид был очень вежлив.'
-          : '早上7:00出发真的完全不同！看海豚的过程非常安静闲适，导游也很有礼貌。',
+      text: '',
       tripType: 'couples',
       tourType: 'swim',
       highlights: ['🐬 Saw Dolphins', '🌿 100% Ethical Approach'],

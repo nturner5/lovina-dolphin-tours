@@ -73,12 +73,6 @@ export async function POST(req: Request) {
     const bookingCode = `LEM-${shortCode}`;
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card', 'alipay', 'wechat_pay'],
-      payment_method_options: {
-        wechat_pay: {
-          client: 'web',
-        },
-      },
       line_items: lineItems,
       mode: 'payment',
       success_url: `${req.headers.get('origin')}/success?session_id={CHECKOUT_SESSION_ID}`,

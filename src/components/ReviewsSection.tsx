@@ -717,7 +717,12 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
         {filteredReviews.length > 3 && (
           <div className="flex justify-center mt-12">
             <button
-              onClick={() => setIsExpanded(!isExpanded)}
+              onClick={() => {
+                if (isExpanded) {
+                  document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' });
+                }
+                setIsExpanded(!isExpanded);
+              }}
               className="px-6 py-3 border border-deep-indigo/10 rounded-full text-xs font-semibold text-deep-indigo hover:bg-deep-indigo hover:text-white transition-all cursor-pointer shadow-sm flex items-center gap-2"
             >
               {isExpanded ? (

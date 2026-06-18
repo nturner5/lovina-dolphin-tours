@@ -39,7 +39,7 @@ export default function RootLayout({
         "@id": "https://balidolphintours.com/#organization",
         "name": "Bali Dolphin Tours",
         "url": "https://balidolphintours.com",
-        "logo": "https://balidolphintours.com/logo.svg",
+        "logo": "https://balidolphintours.com/balidolphinlogo.svg",
         "image": "https://balidolphintours.com/hero_dolphins.png",
         "telephone": "+6285190422839",
         "priceRange": "$$",

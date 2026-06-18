@@ -219,7 +219,7 @@ export default async function Home({ searchParams }: PageProps) {
             <h3 className="text-4xl lg:text-5xl font-serif">{t('whyChooseUs', locale)}</h3>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
                 title: t('promise1Title', locale),
@@ -249,12 +249,21 @@ export default async function Home({ searchParams }: PageProps) {
                     <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07L19.07 4.93" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 )
+              },
+              {
+                title: t('promise4Title', locale),
+                desc: t('promise4Desc', locale),
+                icon: (
+                  <svg className="w-12 h-12 text-sage-leaf" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.105-2.59-.308-3.837A11.986 11.986 0 0112 2.714z" />
+                  </svg>
+                )
               }
             ].map((item, i) => (
-              <div key={i} className="flex flex-col items-center text-center p-10 rounded-[3rem] bg-cloud-dancer/5 border border-cloud-dancer/10 hover:border-coral-pop/30 transition-all">
+              <div key={i} className="flex flex-col items-center text-center p-8 rounded-[2.5rem] bg-cloud-dancer/5 border border-cloud-dancer/10 hover:border-coral-pop/30 transition-all hover:bg-cloud-dancer/10">
                 <div className="mb-6">{item.icon}</div>
-                <h4 className="text-2xl font-serif text-cloud-dancer mb-4">{item.title}</h4>
-                <p className="text-cloud-dancer/70 leading-relaxed font-light">{item.desc}</p>
+                <h4 className="text-xl lg:text-2xl font-serif text-cloud-dancer mb-4">{item.title}</h4>
+                <p className="text-cloud-dancer/70 leading-relaxed font-light text-sm">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -436,32 +445,6 @@ export default async function Home({ searchParams }: PageProps) {
             <p className="text-sm text-deep-indigo/60 max-w-lg mx-auto mt-4 font-light leading-relaxed">
               {t("tourSelectorDesc", locale)}
             </p>
-          </div>
-
-          {/* Dolphin Sighting Guarantee Banner */}
-          <div className="bg-gradient-to-br from-transformative-teal/[0.07] to-transformative-teal/[0.02] border border-transformative-teal/20 rounded-[2rem] p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6 max-w-4xl mx-auto shadow-sm backdrop-blur-md relative overflow-hidden group hover:border-transformative-teal/40 transition-all duration-500">
-            {/* Subtle glow effect */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-transformative-teal/5 rounded-full blur-2xl pointer-events-none" />
-            
-            <div className="w-14 h-14 rounded-full bg-transformative-teal/10 flex items-center justify-center text-transformative-teal shrink-0 shadow-[0_8px_30px_rgb(45,156,219,0.08)]">
-              <svg className="w-7 h-7 stroke-current" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-2.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946 2.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 002.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-2.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946 2.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-2.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-2.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 002.806-1.946 3.42 3.42 0 013.138-3.138z" />
-              </svg>
-            </div>
-            
-            <div className="text-center md:text-left space-y-1.5 flex-grow">
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
-                <span className="text-[9px] font-bold text-transformative-teal uppercase tracking-widest bg-transformative-teal/10 px-2.5 py-1 rounded-md border border-transformative-teal/10">
-                  {t("guaranteeBannerBadge", locale)}
-                </span>
-                <h4 className="font-serif font-bold text-deep-indigo text-lg md:text-xl">
-                  {t("guaranteeBannerTitle", locale)}
-                </h4>
-              </div>
-              <p className="text-xs md:text-sm text-deep-indigo/70 font-light leading-relaxed max-w-2xl">
-                {t("guaranteeBannerDesc", locale)}
-              </p>
-            </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 lg:gap-8 items-stretch max-w-6xl mx-auto">

@@ -21,18 +21,15 @@ export default function Footer() {
     <footer className="bg-cloud-dancer border-t border-deep-indigo/20 py-16 px-6 lg:px-12 text-sm text-deep-indigo/40">
       <div className="flex flex-col md:flex-row justify-between gap-12">
         <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-3">
-            <div className="relative w-8 h-8 opacity-60 grayscale hover:opacity-100 hover:grayscale-0 hover:scale-105 transition-all duration-500">
+          <div className="flex items-center">
+            <div className="relative w-[210px] h-[70px] opacity-80 hover:opacity-100 hover:scale-[1.02] transition-all duration-500">
               <Image 
-                src="/logo.svg" 
+                src="/balidolphinlogo.svg" 
                 alt="Bali Dolphin Tours Logo" 
                 fill
                 className="object-contain"
               />
             </div>
-            <span className="font-serif text-xl font-bold tracking-tight text-deep-indigo opacity-100 block">
-              Bali Dolphin Tours
-            </span>
           </div>
           <p className="max-w-xs leading-relaxed">
             North Bali’s definitive standard for respectful dolphin tours. 

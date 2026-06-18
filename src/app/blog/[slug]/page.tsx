@@ -291,7 +291,7 @@ export default async function BlogPost({ params, searchParams }: PageProps) {
       "name": "Bali Dolphin Tours",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://balidolphintours.com/logo.svg"
+        "url": "https://balidolphintours.com/balidolphinlogo.svg"
       }
     },
     "mainEntityOfPage": {

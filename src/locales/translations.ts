@@ -201,6 +201,8 @@ export const translations = {
     promise2Desc: "We keep a safe distance, sail parallel, and let the dolphins guide the encounter.",
     promise3Title: "Friendly Local Team",
     promise3Desc: "Book directly with our own team of trusted, professional local captains.",
+    promise4Title: "Sighting Guarantee",
+    promise4Desc: "If wild dolphins are not spotted, you can join another morning cruise 100% free.",
     btnBookNow: "Book Your Private Boat Now",
     
     // Experience Content
@@ -460,6 +462,8 @@ export const translations = {
     promise2Desc: "Мы соблюдаем безопасную дистанцию и идем параллельным курсом, позволяя дельфинам направлять встречу.",
     promise3Title: "Местная команда",
     promise3Desc: "Бронируйте напрямую у нашей команды надежных профессиональных местных капитанов.",
+    promise4Title: "Гарантия встречи",
+    promise4Desc: "Если мы не встретим дельфинов, вы сможете присоединиться к нам в другой день бесплатно.",
     btnBookNow: "Забронировать лодку прямо сейчас",
     
     // Experience Content
@@ -719,6 +723,8 @@ export const translations = {
     promise2Desc: "我们保持安全距离并与海豚群平行航行，让它们引导这次邂逅。",
     promise3Title: "友好的当地团队",
     promise3Desc: "直接向我们值得信赖的专业当地船长团队预订。",
+    promise4Title: "海豚偶遇保证",
+    promise4Desc: "如果航程中未看到海豚，可在第二个早晨免费再次加入我们。",
     btnBookNow: "立即预订您的私人船只",
     
     // Experience Content

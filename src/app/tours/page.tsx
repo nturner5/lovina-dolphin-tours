@@ -138,7 +138,7 @@ export default async function ToursPage({ searchParams }: PageProps) {
                 id="cta-select-ethical-tour"
                 className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md active:scale-98"
               >
-                {t("tour1Btn", locale)}
+                {t("tour1Btn", locale)} (${tour1Price})
               </Link>
             </div>
           </div>
@@ -220,7 +220,7 @@ export default async function ToursPage({ searchParams }: PageProps) {
                 id="cta-select-swim-tour"
                 className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md active:scale-98"
               >
-                {t("tour1_5Btn", locale)}
+                {t("tour1_5Btn", locale)} (${tour2Price})
               </Link>
             </div>
           </div>
@@ -311,7 +311,7 @@ export default async function ToursPage({ searchParams }: PageProps) {
                 className="block w-full bg-coral-pop text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-98 relative group"
               >
                 <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
-                {t("tour2Btn", locale)}
+                {t("tour2Btn", locale)} (${tour3Price})
               </Link>
             </div>
           </div>

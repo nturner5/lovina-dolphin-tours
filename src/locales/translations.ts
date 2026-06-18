@@ -64,7 +64,7 @@ export const translations = {
     tour1Inc3Desc: "Skip the 6:00 AM swarms—enjoy dolphins without 100 boats racing.",
     tour1Inc4Title: "Island Refreshments",
     tour1Inc4Desc: "Hot Balinese coffee, local premium tea, and fresh fruits served on board.",
-    tour1Btn: "Book Dolphin Watching ($45)",
+    tour1Btn: "Book Dolphin Watching",
     
     tour1_5Title: "Open Ocean Dolphin Swim & Watch",
     tour1_5Subtitle: "Sails at 7:00 AM — hold the outrigger ropes to swim alongside wild dolphins",
@@ -78,7 +78,7 @@ export const translations = {
     tour1_5Inc3Desc: "Standard safety vests and swim assistance provided by your captain.",
     tour1_5Inc4Title: "Post-Sunrise Quiet",
     tour1_5Inc4Desc: "Sailing at 7:00 AM means less noise and crowded boats, making the dolphins calmer.",
-    tour1_5Btn: "Book Dolphin Swim & Watch ($55)",
+    tour1_5Btn: "Book Dolphin Swim & Watch",
     
     tour2Title: "The Ultimate Dolphin Swim & Reef Snorkel",
     tour2Subtitle: "Sails at 7:00 AM — our signature double encounter (swim with dolphins + coral reef snorkeling)",
@@ -92,7 +92,7 @@ export const translations = {
     tour2Inc3Desc: "Swim alongside dolphin pods using the boat's safe holding bars.",
     tour2Inc4Title: "Vetted Reef Guide",
     tour2Inc4Desc: "Your captain acts as your water guide, ensuring safety and pointing out sea life.",
-    tour2Btn: "Book Dolphin Swim & Snorkel ($65)",
+    tour2Btn: "Book Dolphin Swim & Snorkel",
     
     // Checkout Page
     checkoutTitle: "Secure Your Private Boat",
@@ -323,7 +323,7 @@ export const translations = {
     tour1Inc3Desc: "Избегайте утренней суеты в 6:00 — наслаждайтесь дельфинами без гонки 100 лодок.",
     tour1Inc4Title: "Островные угощения",
     tour1Inc4Desc: "Горячий балийский кофе, местный чай премиум-класса и свежие фрукты на борту.",
-    tour1Btn: "Забронировать наблюдение ($45)",
+    tour1Btn: "Забронировать наблюдение",
     
     tour1_5Title: "Наблюдение и плавание с дельфинами в океане",
     tour1_5Subtitle: "Отправление в 7:00 утра — плывите рядом с дельфинами, держась за поручни лодки",
@@ -335,7 +335,7 @@ export const translations = {
     tour1_5Inc3Desc: "Стандартные спасательные жилеты и поддержка на воде от вашего капитана.",
     tour1_5Inc4Title: "Спокойствие после рассвета",
     tour1_5Inc4Desc: "Плавание в 7:00 утра означает меньше шума и лодок, что делает дельфинов спокойнее.",
-    tour1_5Btn: "Забронировать плавание ($55)",
+    tour1_5Btn: "Забронировать плавание",
     
     tour2Title: "Плавание с дельфинами и сноркелинг на рифе",
     tour2Subtitle: "Отправление в 7:00 утра — наше фирменное комбо (дельфины + сноркелинг на коралловом рифе)",
@@ -349,7 +349,7 @@ export const translations = {
     tour2Inc3Desc: "Плавайте рядом с дельфинами, используя безопасные поручни лодки.",
     tour2Inc4Title: "Проверенный гид по рифу",
     tour2Inc4Desc: "Ваш капитан выступает в качестве водного гида, обеспечивая безопасность и показывая морскую жизнь.",
-    tour2Btn: "Забронировать сноркелинг ($65)",
+    tour2Btn: "Забронировать сноркелинг",
     
     // Checkout Page
     checkoutTitle: "Забронируйте частную лодку",
@@ -579,7 +579,7 @@ export const translations = {
     tour1Inc3Desc: "避开早上6:00的蜂拥——享受没有100艘船竞逐的海豚观赏。",
     tour1Inc4Title: "海岛点心",
     tour1Inc4Desc: "船上供应热巴厘岛咖啡、当地优质茶和新鲜水果。",
-    tour1Btn: "预订海豚观赏 ($45)",
+    tour1Btn: "预订海豚观赏",
     
     tour1_5Title: "公海海豚观赏与并肩共游",
     tour1_5Subtitle: "上午 7:00 出发 —— 握住安全侧栏，与野生海豚家族同游",
@@ -591,7 +591,7 @@ export const translations = {
     tour1_5Inc3Desc: "提供标准救生衣和由船长提供的水上安全协助。",
     tour1_5Inc4Title: "日出后的静谧",
     tour1_5Inc4Desc: "上午 7:00 出发意味着更少的噪音和拥挤的船只，让海豚更加放松。",
-    tour1_5Btn: "预订观赏与共游 ($55)",
+    tour1_5Btn: "预订观赏与共游",
     
     tour2Title: "海豚共游与珊瑚礁浮潜终极体验",
     tour2Subtitle: "上午 7:00 出发 —— 我们的招牌双重项目（海豚共游 + 珊瑚礁浮潜）",
@@ -605,7 +605,7 @@ export const translations = {
     tour2Inc3Desc: "使用船上的安全把手与海豚群并肩游泳。",
     tour2Inc4Title: "经审核的的珊瑚礁导游",
     tour2Inc4Desc: "您的船长将担任水上导游，确保安全并指出海洋生物。",
-    tour2Btn: "预订海豚共游与浮潜 ($65)",
+    tour2Btn: "预订海豚共游与浮潜",
     
     // Checkout Page
     checkoutTitle: "锁定您的私人船只",

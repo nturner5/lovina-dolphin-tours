@@ -89,6 +89,7 @@ export async function POST(req: Request) {
     const bCode = bookingCode || `LEM-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
     const session = await stripe.checkout.sessions.create({
+      payment_method_configuration: 'pmc_1RbC3sHRvUE6uR41Bexh095q',
       customer_email: email || undefined,
       line_items: lineItems,
       mode: 'payment',

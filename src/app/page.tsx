@@ -8,6 +8,7 @@ import { t } from '@/locales/i18n';
 import { getLocaleServer } from '@/locales/i18n-server';
 import TrustCharter from "@/components/TrustCharter";
 import ReviewsSection from "@/components/ReviewsSection";
+import { getPricingData } from "@/lib/pricing-server";
 
 export const revalidate = 60;
 
@@ -18,6 +19,12 @@ interface PageProps {
 export default async function Home({ searchParams }: PageProps) {
   const resolvedParams = await searchParams;
   const locale = await getLocaleServer(resolvedParams);
+  const pricing = await getPricingData();
+
+  // Find dynamic price values from Stripe
+  const tour1Price = pricing.tours.find((t: any) => t.id === 'seven-am-ethical')?.price || 45;
+  const tour2Price = pricing.tours.find((t: any) => t.id === 'dolphin-swim')?.price || 55;
+  const tour3Price = pricing.tours.find((t: any) => t.id === 'swim-snorkel')?.price || 65;
 
   const hrefFor = (path: string) => {
     if (locale === 'en') return path;
@@ -456,7 +463,7 @@ export default async function Home({ searchParams }: PageProps) {
                   </div>
 
                   <div className="flex items-baseline gap-2 border-b border-deep-indigo/5 pb-5">
-                    <span className="text-3xl font-bold text-deep-indigo">$45</span>
+                    <span className="text-3xl font-bold text-deep-indigo">${tour1Price}</span>
                     <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
                     <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
                       {t("tour1MinGuests", locale)}
@@ -534,7 +541,7 @@ export default async function Home({ searchParams }: PageProps) {
                   </div>
 
                   <div className="flex items-baseline gap-2 border-b border-deep-indigo/5 pb-5">
-                    <span className="text-3xl font-bold text-deep-indigo">$55</span>
+                    <span className="text-3xl font-bold text-deep-indigo">${tour2Price}</span>
                     <span className="text-sm font-light text-deep-indigo/60">{t("tour1_5PriceDesc", locale)}</span>
                     <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
                       {t("tour1_5MinGuests", locale)}
@@ -616,7 +623,7 @@ export default async function Home({ searchParams }: PageProps) {
                   </div>
 
                   <div className="flex items-baseline gap-2 border-b border-deep-indigo/5 pb-5">
-                    <span className="text-3xl font-bold text-deep-indigo">$65</span>
+                    <span className="text-3xl font-bold text-deep-indigo">${tour3Price}</span>
                     <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
                     <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
                       {t("tour1MinGuests", locale)}

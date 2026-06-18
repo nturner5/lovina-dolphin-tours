@@ -89,12 +89,6 @@ export async function POST(req: Request) {
     const bCode = bookingCode || `LEM-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card', 'alipay', 'wechat_pay'],
-      payment_method_options: {
-        wechat_pay: {
-          client: 'web',
-        },
-      },
       customer_email: email || undefined,
       line_items: lineItems,
       mode: 'payment',

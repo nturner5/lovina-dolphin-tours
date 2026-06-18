@@ -59,6 +59,32 @@ export default async function ToursPage({ searchParams }: PageProps) {
       </section>
 
       <section className="px-4 sm:px-6 pb-24 lg:pb-32 max-w-6xl mx-auto">
+        {/* Dolphin Sighting Guarantee Banner */}
+        <div className="bg-gradient-to-br from-transformative-teal/[0.07] to-transformative-teal/[0.02] border border-transformative-teal/20 rounded-[2rem] p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6 max-w-4xl mx-auto shadow-sm backdrop-blur-md relative overflow-hidden group hover:border-transformative-teal/40 transition-all duration-500">
+          {/* Subtle glow effect */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-transformative-teal/5 rounded-full blur-2xl pointer-events-none" />
+          
+          <div className="w-14 h-14 rounded-full bg-transformative-teal/10 flex items-center justify-center text-transformative-teal shrink-0 shadow-[0_8px_30px_rgb(45,156,219,0.08)]">
+            <svg className="w-7 h-7 stroke-current" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-2.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946 2.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 002.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-2.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946 2.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-2.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-2.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 002.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+          </div>
+          
+          <div className="text-center md:text-left space-y-1.5 flex-grow">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
+              <span className="text-[9px] font-bold text-transformative-teal uppercase tracking-widest bg-transformative-teal/10 px-2.5 py-1 rounded-md border border-transformative-teal/10">
+                {t("guaranteeBannerBadge", locale)}
+              </span>
+              <h4 className="font-serif font-bold text-deep-indigo text-lg md:text-xl">
+                {t("guaranteeBannerTitle", locale)}
+              </h4>
+            </div>
+            <p className="text-xs md:text-sm text-deep-indigo/70 font-light leading-relaxed max-w-2xl">
+              {t("guaranteeBannerDesc", locale)}
+            </p>
+          </div>
+        </div>
+
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
           
           {/* Card 1: 7:00 AM Private Dolphin Watching Tour */}

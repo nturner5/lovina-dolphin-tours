@@ -52,7 +52,7 @@ To become the definitive standard for ethical marine encounters in North Bali. O
 - [x] **Dispatch Automation**: Build Make.com scenario (Stripe Webhook -> WhatsApp Dispatch).
 - [x] **Mobile UX**: Add Mobile-Sticky Bottom Checkout Bar with dynamic summary calculation.
 - [ ] **GoPro Rental**: Add GoPro Hero 11 Rental ($25 USD) checkbox and pricing mapping (queued until physically present/captains vetted).
-- [ ] **Stripe Live Mapping:** Map active Stripe Product & Price IDs to metadata in production Stripe settings.
+- [x] **Stripe Live Mapping:** Map active Stripe Product & Price IDs to metadata in production Stripe settings. (Verified active products synced successfully)
 - [ ] **Captain Onboarding & Audits:** Draft a simple mobile captain handbook/charter agreement to ensure off-site captain compliance with the 100% ethical parallel approach rules.
 
 ## Referenced Files

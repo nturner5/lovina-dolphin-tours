@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { trackWhatsAppClick } from '@/lib/analytics';
 
 export default function WhatsAppButton() {
   const [hovered, setHovered] = useState(false);
+  const pathname = usePathname();
+  const isCheckoutPage = pathname === '/checkout';
   
   // Official Balinese phone number
   const phoneNumber = '18018556266';
@@ -12,7 +15,9 @@ export default function WhatsAppButton() {
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${prefilledMessage}`;
 
   return (
-    <div className="fixed bottom-8 right-8 z-50 flex items-center gap-3">
+    <div className={`fixed right-8 z-50 flex items-center gap-3 transition-all duration-300 ${
+      isCheckoutPage ? 'bottom-24 md:bottom-8' : 'bottom-8'
+    }`}>
       {/* Tooltip message */}
       <div 
         className={`bg-deep-indigo text-cloud-dancer px-4 py-2.5 rounded-2xl shadow-xl border border-cloud-dancer/10 text-xs font-medium tracking-wide transition-all duration-300 transform origin-right ${

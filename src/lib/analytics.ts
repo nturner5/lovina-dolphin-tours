@@ -101,12 +101,6 @@ export const trackBeginCheckout = (value: number, tourId: string, tourName: stri
     }]
   });
 
-  // 1b. Custom 'checkout' event to match exact custom conversion names in Google Ads
-  trackEvent('checkout', {
-    value: value,
-    currency: 'USD',
-  });
-
   // 2. Google Ads conversion if label configured
   const adsLabel = process.env.NEXT_PUBLIC_GADS_CHECKOUT_LABEL;
   const adsTarget = getGoogleAdsTarget(adsLabel);

@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { t } from '@/locales/i18n';
 import { useLocale } from '@/locales/i18n-client';
-import { trackWhatsAppClick } from '@/lib/analytics';
+import { trackWhatsAppClick, trackBeginCheckout, trackPageView } from '@/lib/analytics';
 import 'react-phone-number-input/style.css';
 import PhoneInput, { isValidPhoneNumber, getCountryCallingCode } from 'react-phone-number-input';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
@@ -53,6 +53,28 @@ function CheckoutForm() {
 
   const [minDate, setMinDate] = useState<string>('');
   const [isLastMinute, setIsLastMinute] = useState(false);
+  const [hasTrackedBegin, setHasTrackedBegin] = useState(false);
+
+  // Track page view and begin checkout on mount/resolve
+  useEffect(() => {
+    trackPageView(window.location.pathname);
+  }, []);
+
+  useEffect(() => {
+    if (hasTrackedBegin || tours.length === 0) return;
+    const selectedTour = tours.find(t => t.id === formData.tourId) || tours[0];
+    if (selectedTour) {
+      const totalInitialValue = selectedTour.price * formData.guests;
+      trackBeginCheckout(
+        totalInitialValue,
+        selectedTour.id,
+        selectedTour.name,
+        selectedTour.price,
+        formData.guests
+      );
+      setHasTrackedBegin(true);
+    }
+  }, [tours, formData.tourId, formData.guests, hasTrackedBegin]);
 
   // Load dynamic pricing from the server cache on load
   useEffect(() => {

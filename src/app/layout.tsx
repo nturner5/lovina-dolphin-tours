@@ -117,6 +117,8 @@ export default function RootLayout({
     ]
   };
 
+  const gadsId = process.env.NEXT_PUBLIC_GADS_ID;
+
   return (
     <html
       lang="en"
@@ -124,10 +126,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-cloud-dancer" suppressHydrationWarning>
-        {gtagId && (
+        {(gtagId || gadsId) && (
           <>
             <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${gtagId}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${gtagId || gadsId}`}
               strategy="afterInteractive"
             />
             <Script id="google-analytics" strategy="afterInteractive">
@@ -135,9 +137,14 @@ export default function RootLayout({
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
+                ${gtagId ? `
                 gtag('config', '${gtagId}', {
                   page_path: window.location.pathname,
                 });
+                ` : ''}
+                ${gadsId ? `
+                gtag('config', '${gadsId}');
+                ` : ''}
               `}
             </Script>
           </>

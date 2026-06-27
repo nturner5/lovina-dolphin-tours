@@ -98,6 +98,9 @@ export default function AdminDashboard() {
     pickupLocation: 'none',
     hotelDetails: '',
     paymentType: 'cash',
+    customTourPrice: '',
+    customPickupPrice: '',
+    tourTime: '7:00 AM',
   });
   const [manualCreatedLink, setManualCreatedLink] = useState('');
   const [manualBookingError, setManualBookingError] = useState<string | null>(null);
@@ -247,6 +250,9 @@ export default function AdminDashboard() {
         pickupLocation,
         hotelDetails,
         paymentType,
+        customTourPrice,
+        customPickupPrice,
+        tourTime,
       } = manualForm;
 
       if (!guestName || !whatsappNumber || !date || !guests) {
@@ -289,6 +295,9 @@ export default function AdminDashboard() {
             pickupLocation,
             hotelDetails,
             bookingCode,
+            customTourPrice: customTourPrice !== '' ? Number(customTourPrice) : undefined,
+            customPickupPrice: customPickupPrice !== '' ? Number(customPickupPrice) : undefined,
+            tourTime,
           }),
         });
         const data = await response.json();
@@ -300,7 +309,7 @@ export default function AdminDashboard() {
           alert('Stripe Payment Link Generated successfully!');
         }
       } else {
-        // Cash / bank transfer booking - directly post to Airtable
+        // Cash / bank transfer booking - directly post to bookings table
         const fields = {
           BookingCode: bookingCode,
           Date: date,
@@ -344,6 +353,9 @@ export default function AdminDashboard() {
           pickupLocation: 'none',
           hotelDetails: '',
           paymentType: 'cash',
+          customTourPrice: '',
+          customPickupPrice: '',
+          tourTime: '7:00 AM',
         });
         fetchBookings();
       }
@@ -972,6 +984,38 @@ export default function AdminDashboard() {
                   onChange={(e) => setManualForm({ ...manualForm, hotelDetails: e.target.value })}
                 />
               </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Tour Time (Departure)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. 7:00 AM, 10:00 AM"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo font-bold"
+                  value={manualForm.tourTime}
+                  onChange={(e) => setManualForm({ ...manualForm, tourTime: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Tour Price Override (USD / Person)</label>
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="Leave empty for Stripe default"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
+                  value={manualForm.customTourPrice}
+                  onChange={(e) => setManualForm({ ...manualForm, customTourPrice: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-2">Pickup Price Override (USD total)</label>
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="Leave empty for Stripe default"
+                  className="w-full bg-cloud-dancer/50 border-none rounded-xl px-4 py-2.5 text-xs text-deep-indigo"
+                  value={manualForm.customPickupPrice}
+                  onChange={(e) => setManualForm({ ...manualForm, customPickupPrice: e.target.value })}
+                />
+              </div>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-between border-t border-deep-indigo/5 pt-6 gap-4">
@@ -1008,9 +1052,15 @@ export default function AdminDashboard() {
                 <div className="border-l border-deep-indigo/10 pl-6">
                   <span className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-1">Calculated Price</span>
                   <span className="text-xl font-serif font-bold text-transformative-teal">
-                    ${((pricingData.tours.find((t: any) => t.id === manualForm.tourId)?.price || 
-                        (manualForm.tourId === 'seven-am-ethical' ? 45 : manualForm.tourId === 'dolphin-swim' ? 55 : 65)) * Number(manualForm.guests)) + 
-                       (pricingData.pickups.find((p: any) => p.id === manualForm.pickupLocation)?.price || 0)} USD
+                    ${((manualForm.customTourPrice !== ''
+                        ? Number(manualForm.customTourPrice)
+                        : (pricingData.tours.find((t: any) => t.id === manualForm.tourId)?.price ||
+                           (manualForm.tourId === 'seven-am-ethical' ? 45 : manualForm.tourId === 'dolphin-swim' ? 55 : 65))
+                      ) * Number(manualForm.guests)) +
+                      (manualForm.customPickupPrice !== ''
+                        ? Number(manualForm.customPickupPrice)
+                        : (pricingData.pickups.find((p: any) => p.id === manualForm.pickupLocation)?.price || 0)
+                      )} USD
                   </span>
                 </div>
               </div>

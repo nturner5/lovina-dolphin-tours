@@ -89,5 +89,15 @@ export const schemaTypes = [
       { name: 'url', title: 'Instagram URL', type: 'url' },
       { name: 'thumbnail', title: 'Placeholder Thumbnail', type: 'image' },
     ],
+  },
+  {
+    name: 'galleryImage',
+    title: 'Gallery Image',
+    type: 'document',
+    fields: [
+      { name: 'image', title: 'Image', type: 'image', options: { hotspot: true } },
+      { name: 'alt', title: 'Alt Text', type: 'string', description: 'Important for SEO and accessibility.' },
+      { name: 'caption', title: 'Caption', type: 'string' }
+    ]
   }
 ];

@@ -3,6 +3,7 @@ export const translations = {
     // Navbar
     dolphinRules: "Dolphin Rules",
     tours: "Tours",
+    gallery: "Gallery",
     faq: "FAQ",
     blog: "Blog",
     blogTitle: "Our Blog",
@@ -205,6 +206,10 @@ export const translations = {
     promise4Desc: "If wild dolphins are not spotted, you can join another morning cruise 100% free.",
     btnBookNow: "Book Your Private Boat Now",
     
+    // Gallery
+    galleryTitle: "The Gallery",
+    gallerySubtitle: "Moments captured during our quiet 7:00 AM departures.",
+    
     // Experience Content
     experienceHeader: "The Lovina Experience",
     experienceTitle: "A Peaceful Morning:",
@@ -267,6 +272,7 @@ export const translations = {
     // Navbar
     dolphinRules: "Правила дельфинов",
     tours: "Экскурсии",
+    gallery: "Галерея",
     faq: "Вопросы и ответы",
     blog: "Блог",
     blogTitle: "Наш блог",
@@ -466,6 +472,10 @@ export const translations = {
     promise4Desc: "Если мы не встретим дельфинов, вы сможете присоединиться к нам в другой день бесплатно.",
     btnBookNow: "Забронировать лодку прямо сейчас",
     
+    // Gallery
+    galleryTitle: "Галерея",
+    gallerySubtitle: "Моменты, запечатленные во время наших тихих прогулок в 7:00 утра.",
+    
     // Experience Content
     experienceHeader: "Опыт в Ловине",
     experienceTitle: "Мирное утро:",
@@ -528,6 +538,7 @@ export const translations = {
     // Navbar
     dolphinRules: "海豚规则",
     tours: "观赏行程",
+    gallery: "画廊",
     faq: "常见问题",
     blog: "官方部落格",
     blogTitle: "我们的博客",
@@ -726,6 +737,10 @@ export const translations = {
     promise4Title: "海豚偶遇保证",
     promise4Desc: "如果航程中未看到海豚，可在第二个早晨免费再次加入我们。",
     btnBookNow: "立即预订您的私人船只",
+    
+    // Gallery
+    galleryTitle: "画廊",
+    gallerySubtitle: "在宁静的早上 7:00 出发期间捕捉到的瞬间。",
     
     // Experience Content
     experienceHeader: "罗威那的体验",

@@ -23,6 +23,9 @@ export async function POST(req: Request) {
       pickupLocation,
       hotelDetails,
       bookingCode,
+      customTourPrice,
+      customPickupPrice,
+      tourTime,
     } = await req.json();
 
     // Fetch dynamic pricing data from the cache / Stripe
@@ -30,6 +33,7 @@ export async function POST(req: Request) {
 
     let price = 0;
     let tourName = '';
+    let defaultTime = '7:00 AM';
 
     if (tourId === 'transport-only') {
       price = 0;
@@ -41,6 +45,15 @@ export async function POST(req: Request) {
       }
       price = tour.price;
       tourName = tour.name;
+      defaultTime = tour.time || '7:00 AM';
+    }
+
+    // Apply custom price override for the tour if provided
+    if (customTourPrice !== undefined && customTourPrice !== null && customTourPrice !== '') {
+      const parsedCustomPrice = Number(customTourPrice);
+      if (!isNaN(parsedCustomPrice)) {
+        price = parsedCustomPrice;
+      }
     }
 
     // Find the chosen pickup option
@@ -49,15 +62,24 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: `Invalid pickup choice: ${pickupLocation}` }, { status: 400 });
     }
 
-    const pickupFee = pickup.price;
+    let pickupFee = pickup.price;
     const pickupName = pickup.name;
     const pickupDesc = pickupLocation === 'none'
       ? 'No transfer selected. Meet at the beach.'
       : `Private return transport from your hotel in ${pickupLocation} to Lovina for your dolphin tour on ${date}.`;
 
+    // Apply custom price override for the transfer if provided
+    if (customPickupPrice !== undefined && customPickupPrice !== null && customPickupPrice !== '') {
+      const parsedCustomPickupPrice = Number(customPickupPrice);
+      if (!isNaN(parsedCustomPickupPrice)) {
+        pickupFee = parsedCustomPickupPrice;
+      }
+    }
+
     const lineItems: any[] = [];
 
-    if (price > 0) {
+    if (price > 0 || (price === 0 && tourId !== 'transport-only')) {
+      // Allow creating line item even if manual override is set to 0 (free promotional tour)
       lineItems.push({
         price_data: {
           currency: 'usd',
@@ -65,9 +87,9 @@ export async function POST(req: Request) {
             name: `${tourName} (Private Boat)`,
             description: `Ethical Dolphin Tour for ${guests} guests on ${date}`,
           },
-          unit_amount: price * 100, // Secure price from Stripe cache
+          unit_amount: Math.round(price * 100), // Convert to cents safely
         },
-        quantity: Math.max(1, Number(guests) || 1), // Allow manual overrides
+        quantity: Math.max(1, Number(guests) || 1),
       });
     }
 
@@ -79,7 +101,7 @@ export async function POST(req: Request) {
             name: pickupName,
             description: pickupDesc,
           },
-          unit_amount: pickupFee * 100, // Secure price from Stripe cache
+          unit_amount: Math.round(pickupFee * 100), // Convert to cents safely
         },
         quantity: 1,
       });
@@ -87,6 +109,7 @@ export async function POST(req: Request) {
 
     // Use or generate booking code
     const bCode = bookingCode || `LEM-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+    const chosenTime = tourTime || defaultTime;
 
     const session = await stripe.checkout.sessions.create({
       payment_method_configuration: 'pmc_1RbC3sHRvUE6uR41Bexh095q',
@@ -106,6 +129,7 @@ export async function POST(req: Request) {
         whatsappNumber: whatsappNumber || 'none',
         hotelDetails: hotelDetails || 'none',
         manualBooking: 'true',
+        tourTime: chosenTime,
       },
     });
 

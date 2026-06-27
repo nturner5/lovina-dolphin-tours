@@ -59,6 +59,7 @@ export default function Navbar() {
       <div className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium tracking-wide uppercase">
         <Link href={hrefFor("/#ethics")} className="hover:text-transformative-teal transition-colors">{t('dolphinRules', locale)}</Link>
         <Link href={hrefFor("/#packages")} className="hover:text-transformative-teal transition-colors">{t('tours', locale)}</Link>
+        <Link href={hrefFor("/gallery")} className="hover:text-transformative-teal transition-colors">{t('gallery', locale)}</Link>
         <Link href={hrefFor("/#faq")} className="hover:text-transformative-teal transition-colors">{t('faq', locale)}</Link>
         <Link href={hrefFor("/blog")} className="hover:text-transformative-teal transition-colors">{t('blog', locale)}</Link>
         
@@ -106,6 +107,13 @@ export default function Navbar() {
             className="text-base font-medium text-deep-indigo py-2 border-b border-deep-indigo/5 hover:text-transformative-teal transition-colors"
           >
             {t('tours', locale)}
+          </Link>
+          <Link 
+            href={hrefFor("/gallery")} 
+            onClick={() => setIsOpen(false)}
+            className="text-base font-medium text-deep-indigo py-2 border-b border-deep-indigo/5 hover:text-transformative-teal transition-colors"
+          >
+            {t('gallery', locale)}
           </Link>
           <Link 
             href={hrefFor("/#faq")} 

@@ -72,8 +72,9 @@ export async function POST(req: Request) {
     }
     const bookingCode = `LEM-${shortCode}`;
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_configuration: 'pmc_1RbC3sHRvUE6uR41Bexh095q',
+    const isTestMode = process.env.STRIPE_SECRET_KEY?.startsWith('sk_test_');
+
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
       line_items: lineItems,
       mode: 'payment',
       success_url: `${req.headers.get('origin')}/success?session_id={CHECKOUT_SESSION_ID}`,
@@ -89,7 +90,13 @@ export async function POST(req: Request) {
         whatsappNumber: whatsappNumber || 'none',
         hotelDetails: hotelDetails || 'none',
       },
-    });
+    };
+
+    if (!isTestMode) {
+      sessionParams.payment_method_configuration = 'pmc_1RbC3sHRvUE6uR41Bexh095q';
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     return NextResponse.json({ url: session.url });
   } catch (err: any) {

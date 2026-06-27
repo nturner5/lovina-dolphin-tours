@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getPricingData } from '@/lib/pricing-server';
+import { getSupabase } from '@/lib/supabase';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-01-27.acacia' as any,
@@ -133,7 +134,39 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ url: session.url });
+    // Pre-insert pending booking into Supabase for short URL redirection
+    try {
+      const supabase = getSupabase();
+      const insertRow = {
+        booking_code: bCode,
+        date,
+        guests: Number(guests),
+        pickup_location: pickupLocation || 'none',
+        pickup_description: pickupName || 'None',
+        whatsapp_number: whatsappNumber || 'none',
+        guest_phone: whatsappNumber || 'none',
+        hotel_details: hotelDetails || 'none',
+        guest_name: name || 'Manual Link Booking',
+        guest_email: email || '',
+        assigned_captain: 'PENDING',
+        rules_signed: 'PENDING',
+        tour_id: tourId || 'seven-am-ethical',
+        stripe_checkout_url: session.url,
+      };
+
+      const { error: dbErr } = await supabase
+        .from('bookings')
+        .insert([insertRow]);
+
+      if (dbErr) {
+        console.warn('Supabase pre-log warning (ignored if database not migrated yet):', dbErr.message);
+      }
+    } catch (dbErr: any) {
+      console.warn('Supabase pre-log connection error:', dbErr.message);
+    }
+
+    const shortUrl = `${req.headers.get('origin') || 'https://balidolphintours.com'}/pay/${bCode}`;
+    return NextResponse.json({ url: shortUrl });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

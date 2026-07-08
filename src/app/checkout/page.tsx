@@ -624,6 +624,24 @@ function CheckoutForm() {
                   </div>
 </>
                   )}
+                  {/* Free Stopover Notice for Paid Transfers */}
+                  {(formData.pickupLocation === 'ubud' || formData.pickupLocation === 'canggu-kuta' || formData.pickupLocation === 'uluwatu') && (
+                    <div className="mt-4 bg-transformative-teal/10 p-4.5 rounded-2xl border border-transformative-teal/20 text-deep-indigo text-[11px] leading-relaxed font-light">
+                      {locale === 'en' ? (
+                        <p>
+                          🎉 <strong>Free Custom Stops:</strong> Since your driver is private and yours for the day, you can stop at <strong>up to 3 scenic spots</strong> (such as Lake Beratan temple, waterfalls, or coffee plantations) on the way back for <strong>no extra charge</strong>! We'll coordinate your route on WhatsApp.
+                        </p>
+                      ) : locale === 'ru' ? (
+                        <p>
+                          🎉 <strong>Бесплатные остановки:</strong> Так как водитель в вашем распоряжении на день, вы можете бесплатно посетить <strong>до 3 мест</strong> (храм на озере Бератан, водопады или кофейные плантации) на обратном пути! Маршрут согласуем в WhatsApp.
+                        </p>
+                      ) : (
+                        <p>
+                          🎉 <strong>免费经停福利:</strong> 由于是私人往返包车，您可在返程中免费经停 <strong>最多3个景点</strong>（如贝拉坦水神庙、山间瀑布或咖啡园），<strong>无需额外费用</strong>！我们将在 WhatsApp 上帮您安排。
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
 

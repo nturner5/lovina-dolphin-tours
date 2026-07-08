@@ -434,7 +434,7 @@ A: Answer 2.
 Return the complete blog post in markdown. Start directly with the main title H1 heading "# ...". Do not wrap the response in markdown code blocks like \`\`\`markdown.
 `;
 
-      const finalMarkdown = await generateWithLLM(activeApiKey, draftPrompt);
+      const finalMarkdown = await generateWithLLM(activeApiKey, draftPrompt, 90000);
 
       // Parse structured metadata block from the generated text
       let tags: string[] = [];

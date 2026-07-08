@@ -445,6 +445,16 @@ export default async function Home({ searchParams }: PageProps) {
             <p className="text-sm text-deep-indigo/60 max-w-lg mx-auto mt-4 font-light leading-relaxed">
               {t("tourSelectorDesc", locale)}
             </p>
+            <div className="mt-8 bg-transformative-teal/5 p-4.5 rounded-2xl border border-transformative-teal/15 max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm text-deep-indigo font-light text-center sm:text-left shadow-sm">
+              <span className="text-xl shrink-0">🌴</span>
+              <div>
+                <strong>{locale === 'en' ? 'Staying in Ubud or South Bali?' : locale === 'ru' ? 'Остановились в Убуде или на юге Бали?' : '入住乌布或巴厘岛南部？'}</strong>{' '}
+                {t("packagesBannerText", locale)}{' '}
+                <a href="#scenic-stops" className="underline text-transformative-teal hover:text-coral-pop font-bold transition-colors">
+                  {t("packagesBannerLink", locale)} &rarr;
+                </a>
+              </div>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 lg:gap-8 items-stretch max-w-6xl mx-auto">
@@ -465,7 +475,7 @@ export default async function Home({ searchParams }: PageProps) {
                   </span>
                 </div>
 
-                <div className="p-8 sm:p-10 space-y-6">
+                <div className="p-8 sm:p-10 pb-0 space-y-6">
                   <div>
                     <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">{t("tour1Title", locale)}</h2>
                     <p className="text-xs text-deep-indigo/50 font-light uppercase tracking-widest">{t("tour1Subtitle", locale)}</p>
@@ -510,12 +520,19 @@ export default async function Home({ searchParams }: PageProps) {
                           <span>{t("tour1Inc4Desc", locale)}</span>
                         </div>
                       </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("freeStopsInclusionTitle", locale)}</strong>
+                          <span>{t("freeStopsInclusionDesc", locale)}</span>
+                        </div>
+                      </li>
                     </ul>
                   </div>
                 </div>
               </div>
 
-              <div className="p-8 sm:p-10 pt-0">
+              <div className="p-8 sm:p-10 pt-4">
                 <Link 
                   href={hrefFor("/checkout?tour=seven-am-ethical")}
                   id="cta-select-ethical-tour-home"
@@ -543,7 +560,7 @@ export default async function Home({ searchParams }: PageProps) {
                   </span>
                 </div>
 
-                <div className="p-8 sm:p-10 space-y-6">
+                <div className="p-8 sm:p-10 pb-0 space-y-6">
                   <div>
                     <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">{t("tour1_5Title", locale)}</h2>
                     <p className="text-xs text-deep-indigo/50 font-light uppercase tracking-widest">{t("tour1_5Subtitle", locale)}</p>
@@ -588,12 +605,19 @@ export default async function Home({ searchParams }: PageProps) {
                           <span>{t("tour1_5Inc4Desc", locale)}</span>
                         </div>
                       </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("freeStopsInclusionTitle", locale)}</strong>
+                          <span>{t("freeStopsInclusionDesc", locale)}</span>
+                        </div>
+                      </li>
                     </ul>
                   </div>
                 </div>
               </div>
 
-              <div className="p-8 sm:p-10 pt-0">
+              <div className="p-8 sm:p-10 pt-4">
                 <Link 
                   href={hrefFor("/checkout?tour=dolphin-swim")}
                   id="cta-select-swim-tour-home"
@@ -625,7 +649,7 @@ export default async function Home({ searchParams }: PageProps) {
                   </span>
                 </div>
 
-                <div className="p-8 sm:p-10 space-y-6">
+                <div className="p-8 sm:p-10 pb-0 space-y-6">
                   <div>
                     <h2 className="text-2xl sm:text-3xl font-serif text-deep-indigo leading-tight mb-2">{t("tour2Title", locale)}</h2>
                     <p className="text-xs text-transformative-teal font-bold uppercase tracking-widest">{t("tour2Subtitle", locale)}</p>
@@ -672,12 +696,19 @@ export default async function Home({ searchParams }: PageProps) {
                           <span>{t("tour2Inc4Desc", locale)}</span>
                         </div>
                       </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
+                        <div>
+                          <strong className="text-deep-indigo block font-bold">{t("freeStopsInclusionTitle", locale)}</strong>
+                          <span>{t("freeStopsInclusionDesc", locale)}</span>
+                        </div>
+                      </li>
                     </ul>
                   </div>
                 </div>
               </div>
 
-              <div className="p-8 sm:p-10 pt-0">
+              <div className="p-8 sm:p-10 pt-4">
                 <Link 
                   href={hrefFor("/checkout?tour=swim-snorkel")}
                   id="cta-select-snorkel-tour-home"
@@ -693,6 +724,228 @@ export default async function Home({ searchParams }: PageProps) {
 
         {/* Reusable Ethical Charter & Safety Seal Trust Bar */}
         <TrustCharter locale={locale} />
+      </section>
+
+      {/* Turn Return Transport into a Free Sightseeing Road Trip Section */}
+      <section id="scenic-stops" className="py-20 sm:py-28 px-6 bg-white border-t border-deep-indigo/5">
+        <div className="max-w-6xl mx-auto">
+          {/* Section Header */}
+          <div className="max-w-3xl mb-16 sm:mb-20">
+            <span className="text-[10px] font-bold text-transformative-teal uppercase tracking-[0.2em] bg-transformative-teal/5 px-4 py-1.5 rounded-full border border-transformative-teal/10 inline-block mb-6 shadow-sm">
+              🌴 {t("roadTripBadge", locale)}
+            </span>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-deep-indigo leading-[1.1] mb-6">
+              {t("roadTripTitle", locale)}
+            </h2>
+            <p className="text-base sm:text-lg text-deep-indigo/70 font-light leading-relaxed">
+              {t("roadTripSubtitle", locale)}
+            </p>
+          </div>
+
+          {/* Three Steps Grid */}
+          <div className="grid md:grid-cols-3 gap-8 sm:gap-12 mb-20 border-b border-deep-indigo/5 pb-16">
+            <div className="space-y-3">
+              <h4 className="text-lg font-serif font-bold text-deep-indigo flex items-center gap-2">
+                <span className="w-8 h-8 rounded-full bg-transformative-teal/10 flex items-center justify-center text-xs font-bold text-transformative-teal">1</span>
+                {t("roadTripStep1Title", locale)}
+              </h4>
+              <p className="text-sm text-deep-indigo/60 font-light leading-relaxed pl-10">
+                {t("roadTripStep1Desc", locale)}
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h4 className="text-lg font-serif font-bold text-deep-indigo flex items-center gap-2">
+                <span className="w-8 h-8 rounded-full bg-transformative-teal/10 flex items-center justify-center text-xs font-bold text-transformative-teal">2</span>
+                {t("roadTripStep2Title", locale)}
+              </h4>
+              <p className="text-sm text-deep-indigo/60 font-light leading-relaxed pl-10">
+                {t("roadTripStep2Desc", locale)}
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h4 className="text-lg font-serif font-bold text-deep-indigo flex items-center gap-2">
+                <span className="w-8 h-8 rounded-full bg-transformative-teal/10 flex items-center justify-center text-xs font-bold text-transformative-teal">3</span>
+                {t("roadTripStep3Title", locale)}
+              </h4>
+              <p className="text-sm text-deep-indigo/60 font-light leading-relaxed pl-10">
+                {t("roadTripStep3Desc", locale)}
+              </p>
+            </div>
+          </div>
+
+          {/* Sights Showcase Grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {/* Card 1: Ulun Danu */}
+            <div className="group bg-white rounded-[2rem] border border-deep-indigo/5 overflow-hidden shadow-sm hover:shadow-xl hover:scale-[1.01] transition-all duration-500 flex flex-col justify-between">
+              <div>
+                <div className="relative w-full aspect-[4/3] overflow-hidden bg-deep-indigo/5">
+                  <Image 
+                    src="https://cdn.sanity.io/images/1f5xaxdl/production/ccb2a08542c62130e9cea6587e437a078544f13b-1360x1020.webp"
+                    alt="Ulun Danu Beratan Temple"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-4 left-4 bg-cloud-dancer/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-deep-indigo shadow-sm uppercase tracking-wider">
+                    ⛩️ Temple
+                  </div>
+                </div>
+                <div className="p-6 space-y-3">
+                  <h3 className="text-lg font-serif font-bold text-deep-indigo group-hover:text-transformative-teal transition-colors leading-tight">
+                    {t("stop1Title", locale)}
+                  </h3>
+                  <p className="text-xs text-deep-indigo/60 font-light leading-relaxed">
+                    {t("stop1Desc", locale)}
+                  </p>
+                </div>
+              </div>
+              <div className="px-6 pb-6">
+                <span className="text-[9px] font-bold text-transformative-teal/60 uppercase tracking-widest pt-2 block border-t border-deep-indigo/5">
+                  📍 Bedugul Pass
+                </span>
+              </div>
+            </div>
+
+            {/* Card 2: Waterfall */}
+            <div className="group bg-white rounded-[2rem] border border-deep-indigo/5 overflow-hidden shadow-sm hover:shadow-xl hover:scale-[1.01] transition-all duration-500 flex flex-col justify-between">
+              <div>
+                <div className="relative w-full aspect-[4/3] overflow-hidden bg-deep-indigo/5">
+                  <Image 
+                    src="https://cdn.sanity.io/images/1f5xaxdl/production/773ed800bb7a1ab8f09ce63b4e23f768447b4868-800x600.jpg"
+                    alt="Gitgit Waterfall"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-4 left-4 bg-cloud-dancer/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-deep-indigo shadow-sm uppercase tracking-wider">
+                    🏞️ Waterfall
+                  </div>
+                </div>
+                <div className="p-6 space-y-3">
+                  <h3 className="text-lg font-serif font-bold text-deep-indigo group-hover:text-transformative-teal transition-colors leading-tight">
+                    {t("stop2Title", locale)}
+                  </h3>
+                  <p className="text-xs text-deep-indigo/60 font-light leading-relaxed">
+                    {t("stop2Desc", locale)}
+                  </p>
+                </div>
+              </div>
+              <div className="px-6 pb-6">
+                <span className="text-[9px] font-bold text-transformative-teal/60 uppercase tracking-widest pt-2 block border-t border-deep-indigo/5">
+                  📍 Gitgit Canyon
+                </span>
+              </div>
+            </div>
+
+            {/* Card 3: Coffee Plantation */}
+            <div className="group bg-white rounded-[2rem] border border-deep-indigo/5 overflow-hidden shadow-sm hover:shadow-xl hover:scale-[1.01] transition-all duration-500 flex flex-col justify-between">
+              <div>
+                <div className="relative w-full aspect-[4/3] overflow-hidden bg-deep-indigo/5">
+                  <Image 
+                    src="/images/munduk_coffee.jpg"
+                    alt="Munduk Moding Plantation"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-4 left-4 bg-cloud-dancer/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-deep-indigo shadow-sm uppercase tracking-wider">
+                    ☕ Coffee Tour
+                  </div>
+                </div>
+                <div className="p-6 space-y-3">
+                  <h3 className="text-lg font-serif font-bold text-deep-indigo group-hover:text-transformative-teal transition-colors leading-tight">
+                    {t("stop3Title", locale)}
+                  </h3>
+                  <p className="text-xs text-deep-indigo/60 font-light leading-relaxed">
+                    {t("stop3Desc", locale)}
+                  </p>
+                </div>
+              </div>
+              <div className="px-6 pb-6">
+                <span className="text-[9px] font-bold text-transformative-teal/60 uppercase tracking-widest pt-2 block border-t border-deep-indigo/5">
+                  📍 Munduk Hills
+                </span>
+              </div>
+            </div>
+
+            {/* Card 4: Strawberry Picking */}
+            <div className="group bg-white rounded-[2rem] border border-deep-indigo/5 overflow-hidden shadow-sm hover:shadow-xl hover:scale-[1.01] transition-all duration-500 flex flex-col justify-between">
+              <div>
+                <div className="relative w-full aspect-[4/3] overflow-hidden bg-deep-indigo/5">
+                  <Image 
+                    src="/images/strawberry_picking.jpg"
+                    alt="Wiwanda Strawberry Picking"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-4 left-4 bg-cloud-dancer/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-deep-indigo shadow-sm uppercase tracking-wider">
+                    🍓 Strawberry
+                  </div>
+                </div>
+                <div className="p-6 space-y-3">
+                  <h3 className="text-lg font-serif font-bold text-deep-indigo group-hover:text-transformative-teal transition-colors leading-tight">
+                    {t("stop4Title", locale)}
+                  </h3>
+                  <p className="text-xs text-deep-indigo/60 font-light leading-relaxed">
+                    {t("stop4Desc", locale)}
+                  </p>
+                </div>
+              </div>
+              <div className="px-6 pb-6">
+                <span className="text-[9px] font-bold text-transformative-teal/60 uppercase tracking-widest pt-2 block border-t border-deep-indigo/5">
+                  📍 Bedugul Valley
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Info Notice & Disclaimer Box */}
+          <div className="mt-16 bg-cloud-dancer/50 border border-deep-indigo/5 p-6 sm:p-8 rounded-[2rem] max-w-4xl mx-auto space-y-6 text-left shadow-sm">
+            <div className="text-center pb-4 border-b border-deep-indigo/5">
+              <h4 className="text-lg font-serif font-bold text-deep-indigo inline-flex items-center gap-2 justify-center">
+                💡 {locale === 'en' ? 'Important Stopover Information' : locale === 'ru' ? 'Важная информация об остановках' : '沿途经停重要说明'}
+              </h4>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-6 text-xs sm:text-sm text-deep-indigo/70 font-light leading-relaxed">
+              <div>
+                <p>
+                  <strong>{locale === 'en' ? 'What’s Included:' : locale === 'ru' ? 'Что включено:' : '费用包含：'}</strong>{' '}
+                  {locale === 'en' 
+                    ? 'Your private driver stops, wait time, and all vehicle parking fees are 100% free and included in your transport add-on.' 
+                    : locale === 'ru'
+                    ? 'Остановки вашего личного водителя, время ожидания и все платы за парковку автомобиля на 100% бесплатны.'
+                    : '您的专属司机沿途经停、等候时间以及所有车辆停车费均已 100% 免费包含在交通接送服务中。'}
+                </p>
+              </div>
+              <div>
+                <p>
+                  <strong>{locale === 'en' ? 'Entrance Tickets:' : locale === 'ru' ? 'Входные билеты:' : '自理费用：'}</strong>{' '}
+                  {locale === 'en'
+                    ? 'Individual admission tickets or activity fees (such as temple entry, waterfall tickets, or strawberry picking boxes) are paid separately by you at each venue.'
+                    : locale === 'ru'
+                    ? 'Индивидуальные входные билеты или плата за активности (вход в храм, водопады или корзинки для сбора клубники) оплачиваются вами отдельно на месте.'
+                    : '各景点的个人门票或实际活动费用（如水神庙门票、瀑布门票或草莓采摘盒等）需由您在现场自行支付。'}
+                </p>
+              </div>
+            </div>
+            <p className="text-xs text-deep-indigo/50 font-light italic border-t border-deep-indigo/5 pt-4 text-center">
+              {locale === 'en' ? (
+                <>
+                  Want to customize your route or stop at local warungs or hot springs? We’ll arrange everything via WhatsApp after booking!
+                </>
+              ) : locale === 'ru' ? (
+                <>
+                  Хотите настроить маршрут, заехать в варунг или на горячие источники? Мы организуем все в WhatsApp после бронирования!
+                </>
+              ) : (
+                <>
+                  想要定制专属路线、经停当地风味餐馆或温泉？预订完成后，我们将在 WhatsApp 上协助您安排一切！
+                </>
+              )}
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Redesigned Reviews / Testimonials Section */}

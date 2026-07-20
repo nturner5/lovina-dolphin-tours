@@ -40,7 +40,7 @@ export default function Navbar() {
           </Link>
         </span>
       </div>
-      <nav className="relative flex items-center justify-between px-4 sm:px-6 py-4 lg:px-12 bg-cloud-dancer border-b border-deep-indigo/10 z-40 max-w-full overflow-hidden">
+      <nav className="relative flex items-center justify-between px-4 sm:px-6 py-4 lg:px-12 bg-cloud-dancer border-b border-deep-indigo/10 z-40 max-w-full">
       <div className="flex items-center">
         <Link href={hrefFor("/")} className="flex items-center group">
           <div className="relative w-[190px] h-[63px] sm:w-[260px] sm:h-[87px] md:w-[300px] md:h-[100px] transition-transform duration-500 group-hover:scale-[1.02]">

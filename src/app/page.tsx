@@ -27,9 +27,12 @@ export default async function Home({ searchParams }: PageProps) {
   const tour3Price = pricing.tours.find((t: any) => t.id === 'swim-snorkel')?.price || 65;
 
   const hrefFor = (path: string) => {
-    if (locale === 'en') return path;
-    const separator = path.includes('?') ? '&' : '?';
-    return `${path}${separator}lang=${locale}`;
+    const [basePath, hash] = path.split('#');
+    const hashPart = hash ? `#${hash}` : '';
+    const cleanPath = basePath || '/';
+    if (locale === 'en') return `${cleanPath}${hashPart}`;
+    const separator = cleanPath.includes('?') ? '&' : '?';
+    return `${cleanPath}${separator}lang=${locale}${hashPart}`;
   };
 
   const sanityReels = await client.fetch(groq`*[_type == "reel"] | order(_createdAt desc)[0...4]`);
@@ -164,15 +167,15 @@ export default async function Home({ searchParams }: PageProps) {
             {/* Action CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <Link 
-                href="#packages" 
+                href={hrefFor("/#packages")} 
                 className="bg-coral-pop text-cloud-dancer px-10 py-4 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group"
               >
                 {/* Pulsing ring outer container */}
-                <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
+                <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75 pointer-events-none"></span>
                 {t('btnBookTour', locale)}
               </Link>
               <Link 
-                href={hrefFor("#ethics")} 
+                href={hrefFor("/#ethics")} 
                 className="bg-white border border-deep-indigo/10 text-deep-indigo px-10 py-4 rounded-full text-base font-bold hover:bg-cloud-dancer/50 transition-all active:scale-95 text-center shadow-sm"
               >
                 {t('dolphinRules', locale)}
@@ -415,10 +418,10 @@ export default async function Home({ searchParams }: PageProps) {
 
             <div className="pt-4">
               <Link 
-                href="#packages" 
+                href={hrefFor("/#packages")} 
                 className="inline-block bg-coral-pop text-cloud-dancer px-12 py-4 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group"
               >
-                <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
+                <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75 pointer-events-none"></span>
                 {t("btnBookNow", locale)}
               </Link>
             </div>
@@ -1054,7 +1057,7 @@ export default async function Home({ searchParams }: PageProps) {
             {t("ctaDesc", locale)}
           </p>
           <Link 
-            href="#packages" 
+            href={hrefFor("/#packages")} 
             className="bg-coral-pop text-cloud-dancer px-12 py-5 rounded-full text-xl font-medium hover:bg-deep-indigo transition-all shadow-xl inline-block active:scale-95"
           >
             {t("ctaBtn", locale)}

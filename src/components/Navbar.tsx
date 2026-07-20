@@ -23,22 +23,22 @@ export default function Navbar() {
   return (
     <>
       {/* Sighting Guarantee Top-Header Banner */}
-      <div className="bg-deep-indigo text-cloud-dancer text-center px-4 py-2.5 md:py-3 text-xs sm:text-sm tracking-wide font-medium flex items-center justify-center gap-2 relative z-50 border-b border-white/5 shadow-inner">
-        <span className="animate-pulse">🐬</span>
-        <span className="flex items-center flex-wrap justify-center gap-y-1">
-          <span className="font-bold bg-coral-pop text-white uppercase tracking-widest text-[9px] sm:text-[10px] mr-2 px-2 py-0.5 rounded shadow-sm">
-            {t("guaranteeBannerBadge", locale)}
+      <div className="bg-deep-indigo text-cloud-dancer text-center px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs md:text-sm tracking-tight sm:tracking-wide font-medium flex items-center justify-center gap-1.5 relative z-50 border-b border-white/5 shadow-inner">
+        <span className="animate-pulse shrink-0 text-xs sm:text-sm">🐬</span>
+        <Link href={hrefFor("/#ethics")} className="hover:underline transition-all inline-flex items-center justify-center gap-1.5 font-semibold text-white/90 hover:text-white text-center leading-snug">
+          <span className="font-bold bg-coral-pop text-white uppercase tracking-wider text-[8px] sm:text-[9.5px] px-1.5 py-0.5 rounded shadow-sm shrink-0">
+            100% GUARANTEE
           </span>
-          <Link href={hrefFor("/#ethics")} className="hover:underline transition-all inline-flex flex-wrap items-center justify-center gap-1 group font-semibold text-white/90 hover:text-white">
+          <span>
             {locale === 'en' ? (
-              <>See wild dolphins or ride again completely free! <span className="text-coral-pop font-bold group-hover:text-white transition-colors ml-1.5">Learn More →</span></>
+              <>See dolphins or ride free<span className="hidden sm:inline"> completely</span>! <span className="text-coral-pop font-bold underline sm:no-underline ml-0.5">Learn More →</span></>
             ) : locale === 'ru' ? (
-              <>Увидите дельфинов или следующая поездка бесплатно! <span className="text-coral-pop font-bold group-hover:text-white transition-colors ml-1.5">Подробнее →</span></>
+              <>Увидите дельфинов или поездка бесплатно! <span className="text-coral-pop font-bold underline sm:no-underline ml-0.5">Подробнее →</span></>
             ) : (
-              <>看见野生海豚，否则免费再玩一次！ <span className="text-coral-pop font-bold group-hover:text-white transition-colors ml-1.5">了解更多 →</span></>
+              <>看见海豚或免费再玩！ <span className="text-coral-pop font-bold underline sm:no-underline ml-0.5">了解更多 →</span></>
             )}
-          </Link>
-        </span>
+          </span>
+        </Link>
       </div>
       <nav className="relative flex items-center justify-between px-4 sm:px-6 py-4 lg:px-12 bg-cloud-dancer border-b border-deep-indigo/10 z-40 max-w-full">
       <div className="flex items-center">

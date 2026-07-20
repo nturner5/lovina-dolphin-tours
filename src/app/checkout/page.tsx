@@ -458,7 +458,7 @@ function CheckoutForm() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white p-5 rounded-2xl border border-deep-indigo/5 shadow-sm">
             {/* Date Input */}
-            <div>
+            <div className="min-w-0">
               <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/60 mb-2 flex items-center justify-between">
                 <span>{t('dateLabel', locale)}</span>
                 {showDateError && <span className="text-coral-pop font-bold text-[10px] uppercase tracking-normal animate-pulse">Required</span>}
@@ -468,7 +468,7 @@ function CheckoutForm() {
                 type="date" 
                 required
                 min={minDate}
-                className={`w-full rounded-xl px-4 py-3.5 focus:outline-none transition-all text-deep-indigo font-medium cursor-pointer ${
+                className={`w-full max-w-full min-w-0 box-border rounded-xl px-3 sm:px-4 h-[52px] focus:outline-none transition-all text-deep-indigo text-xs sm:text-sm font-medium cursor-pointer ${
                   showDateError 
                     ? 'bg-coral-pop/10 border-2 border-coral-pop ring-2 ring-coral-pop/20' 
                     : 'bg-cloud-dancer/50 border border-deep-indigo/10 focus:ring-2 focus:ring-transformative-teal'

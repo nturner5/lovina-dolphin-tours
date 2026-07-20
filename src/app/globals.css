@@ -146,3 +146,15 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 0 2px #23545B !important; /* transformative-teal */
 }
 
+/* Fix native date picker width & padding overflow on mobile browsers */
+input[type="date"] {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.7;
+}
+

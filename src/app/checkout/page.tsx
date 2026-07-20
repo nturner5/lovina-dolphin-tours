@@ -746,20 +746,90 @@ function CheckoutForm() {
             </div>
           )}
 
-          {/* Final Order Breakdown Box */}
-          <div className="bg-cloud-dancer/50 p-5 rounded-2xl border border-deep-indigo/10 space-y-3 text-xs">
-            <h4 className="font-bold text-deep-indigo uppercase tracking-wider text-[10px]">Order Summary</h4>
-            <div className="flex justify-between items-start text-deep-indigo/70 gap-2">
-              <span>{selectedTour.name} ({formData.guests} guests)</span>
-              <span className="font-bold shrink-0">${tourTotal} USD</span>
+          {/* Concept 1: Digital Boarding Pass / Ticket Motif */}
+          <div className="bg-white rounded-3xl border-2 border-deep-indigo/10 shadow-sm overflow-hidden text-xs">
+            {/* Pass Header */}
+            <div className="bg-deep-indigo text-cloud-dancer px-5 sm:px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🐬</span>
+                <div>
+                  <strong className="block text-xs sm:text-sm font-serif tracking-wide text-white">BALI DOLPHIN TOURS</strong>
+                  <span className="text-[9px] text-white/60 uppercase tracking-widest block">Private Charter Boarding Voucher</span>
+                </div>
+              </div>
+              <span className="text-[10px] font-mono bg-white/10 px-2.5 py-1 rounded-md text-coral-pop border border-white/10 font-bold uppercase">
+                VOUCHER #BDT-2026
+              </span>
             </div>
-            <div className="flex justify-between items-start text-deep-indigo/70 gap-2">
-              <span>Transfer: {selectedPickup.name}</span>
-              <span className="font-bold shrink-0">{pickupTotal === 0 ? 'Free' : `$${pickupTotal} USD`}</span>
+
+            {/* Ticket Body */}
+            <div className="p-5 sm:p-6 space-y-4 bg-gradient-to-b from-white to-cloud-dancer/20">
+              {/* Section 1: Experience */}
+              <div className="border-b border-deep-indigo/10 pb-3.5">
+                <span className="text-[9px] font-bold text-transformative-teal uppercase tracking-widest block mb-1.5">
+                  📍 1. Selected Encounter
+                </span>
+                <div className="flex justify-between items-start gap-4">
+                  <div>
+                    <h4 className="font-serif font-bold text-deep-indigo text-xs sm:text-sm leading-tight">{selectedTour.name}</h4>
+                    <span className="text-[11px] text-deep-indigo/60 font-light block mt-1">
+                      📅 {formData.date || 'Date Pending'} • 👥 {formData.guests} Guests (${selectedTour.price}/person)
+                    </span>
+                  </div>
+                  <span className="font-bold text-deep-indigo text-sm shrink-0">${tourTotal} USD</span>
+                </div>
+              </div>
+
+              {/* Section 2: Transport */}
+              <div className="border-b border-deep-indigo/10 pb-3.5">
+                <span className="text-[9px] font-bold text-transformative-teal uppercase tracking-widest block mb-1.5">
+                  🌴 2. Transport & Logistics
+                </span>
+                <div className="flex justify-between items-start gap-4">
+                  <div>
+                    <h4 className="font-bold text-deep-indigo text-xs">{selectedPickup.name}</h4>
+                    <span className="text-[10px] text-deep-indigo/60 font-light block mt-0.5 leading-snug">
+                      {selectedPickup.note}
+                    </span>
+                  </div>
+                  <span className="font-bold text-deep-indigo text-xs shrink-0">
+                    {pickupTotal === 0 ? 'Included' : `$${pickupTotal} USD`}
+                  </span>
+                </div>
+              </div>
+
+              {/* Section 3: Complimentary Included Perks */}
+              <div className="bg-transformative-teal/5 p-3.5 sm:p-4 rounded-2xl border border-transformative-teal/10 space-y-2">
+                <span className="text-[9px] font-bold text-transformative-teal uppercase tracking-widest block">
+                  ✨ Included Free With Your Ticket
+                </span>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] text-deep-indigo/80 font-light">
+                  <li className="flex items-center gap-1.5">
+                    <span className="text-transformative-teal font-bold">✓</span> 100% Sighting Guarantee
+                  </li>
+                  <li className="flex items-center gap-1.5">
+                    <span className="text-transformative-teal font-bold">✓</span> Captain & Outrigger Boat
+                  </li>
+                  <li className="flex items-center gap-1.5">
+                    <span className="text-transformative-teal font-bold">✓</span> Snorkel & Safety Gear
+                  </li>
+                  <li className="flex items-center gap-1.5">
+                    <span className="text-transformative-teal font-bold">✓</span> Hot Coffee & Fresh Fruits
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div className="border-t border-deep-indigo/10 pt-3 flex justify-between items-center text-sm font-bold text-deep-indigo">
-              <span>{t("summaryTotal", locale)}</span>
-              <span className="text-lg text-transformative-teal">${grandTotal} USD</span>
+
+            {/* Perforated Stub Line */}
+            <div className="relative border-t-2 border-dashed border-deep-indigo/20 bg-cloud-dancer/60 px-5 sm:px-6 py-4 flex items-center justify-between">
+              <div className="absolute -top-3 -left-3 w-6 h-6 bg-cloud-dancer rounded-full border-r border-deep-indigo/20" />
+              <div className="absolute -top-3 -right-3 w-6 h-6 bg-cloud-dancer rounded-full border-l border-deep-indigo/20" />
+
+              <div>
+                <span className="text-[9px] font-bold text-deep-indigo/50 uppercase tracking-widest block">Total Reservation Amount</span>
+                <span className="text-[10px] text-deep-indigo/40 font-light">All taxes, fuel & boat fees included</span>
+              </div>
+              <span className="text-xl sm:text-2xl font-bold text-transformative-teal font-serif">${grandTotal} USD</span>
             </div>
           </div>
 

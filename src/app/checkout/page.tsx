@@ -767,7 +767,7 @@ function CheckoutForm() {
               {/* Section 1: Experience */}
               <div className="border-b border-deep-indigo/10 pb-3.5">
                 <span className="text-[9px] font-bold text-transformative-teal uppercase tracking-widest block mb-1.5">
-                  📍 1. Selected Encounter
+                  📍 1. Selected Experience
                 </span>
                 <div className="flex justify-between items-start gap-4">
                   <div>

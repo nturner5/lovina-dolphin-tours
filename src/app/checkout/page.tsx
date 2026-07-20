@@ -568,17 +568,17 @@ function CheckoutForm() {
                   <div
                     key={option.id}
                     onClick={() => setFormData({ ...formData, pickupLocation: option.id })}
-                    className={`cursor-pointer rounded-xl p-4 border-2 transition-all flex items-center justify-between gap-3 ${
+                    className={`cursor-pointer rounded-xl p-3 sm:p-3.5 border-2 transition-all flex items-center justify-between gap-3 ${
                       isSelected 
                         ? 'border-transformative-teal bg-transformative-teal/5 ring-1 ring-transformative-teal/20' 
                         : 'border-deep-indigo/10 hover:border-deep-indigo/20 bg-white'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl shrink-0">{option.icon}</span>
+                      <span className="text-xl sm:text-2xl shrink-0">{option.icon}</span>
                       <div>
-                        <strong className="block text-xs font-bold text-deep-indigo">{optionName}</strong>
-                        <span className="text-[10px] text-deep-indigo/60 font-light">{option.note}</span>
+                        <strong className="block text-xs font-bold text-deep-indigo leading-tight">{optionName}</strong>
+                        <span className="text-[10px] text-deep-indigo/60 font-light block leading-snug mt-0.5">{option.note}</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">

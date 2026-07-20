@@ -76,6 +76,8 @@ function CheckoutForm() {
   const [minDate, setMinDate] = useState<string>('');
   const [isLastMinute, setIsLastMinute] = useState(false);
   const [hasTrackedBegin, setHasTrackedBegin] = useState(false);
+  const [showDateError, setShowDateError] = useState(false);
+  const [showHotelError, setShowHotelError] = useState(false);
 
   useEffect(() => {
     trackPageView(window.location.pathname);
@@ -272,18 +274,30 @@ function CheckoutForm() {
 
   const handleNextStep1 = () => {
     if (!formData.date) {
-      alert('Please select a date for your tour.');
+      setShowDateError(true);
+      const inputEl = document.getElementById('tour-date-input');
+      if (inputEl) {
+        inputEl.focus();
+        inputEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       return;
     }
+    setShowDateError(false);
     setStep(2);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleNextStep2 = () => {
     if (formData.pickupLocation !== 'none' && !formData.hotelDetails.trim()) {
-      alert('Please provide your hotel or villa address in Bali for pickup coordination.');
+      setShowHotelError(true);
+      const inputEl = document.getElementById('hotel-details-input');
+      if (inputEl) {
+        inputEl.focus();
+        inputEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       return;
     }
+    setShowHotelError(false);
     setStep(3);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -331,7 +345,15 @@ function CheckoutForm() {
 
           {/* Step 2 Node */}
           <button 
-            onClick={() => { if (formData.date) setStep(2); }}
+            type="button"
+            onClick={() => { 
+              if (formData.date) {
+                setShowDateError(false);
+                setStep(2); 
+              } else {
+                setShowDateError(true);
+              }
+            }}
             className={`relative z-10 w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
               step >= 2 ? 'bg-transformative-teal text-white shadow-md' : 'bg-white text-deep-indigo/40 border border-deep-indigo/10'
             }`}
@@ -341,7 +363,20 @@ function CheckoutForm() {
 
           {/* Step 3 Node */}
           <button 
-            onClick={() => { if (formData.date && (formData.pickupLocation === 'none' || formData.hotelDetails)) setStep(3); }}
+            type="button"
+            onClick={() => { 
+              if (!formData.date) {
+                setShowDateError(true);
+                setStep(1);
+                return;
+              }
+              if (formData.pickupLocation !== 'none' && !formData.hotelDetails.trim()) {
+                setShowHotelError(true);
+                setStep(2);
+                return;
+              }
+              setStep(3);
+            }}
             className={`relative z-10 w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
               step === 3 ? 'bg-coral-pop text-white shadow-md' : 'bg-white text-deep-indigo/40 border border-deep-indigo/10'
             }`}
@@ -424,17 +459,32 @@ function CheckoutForm() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white p-5 rounded-2xl border border-deep-indigo/5 shadow-sm">
             {/* Date Input */}
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/60 mb-2">
-                {t('dateLabel', locale)}
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/60 mb-2 flex items-center justify-between">
+                <span>{t('dateLabel', locale)}</span>
+                {showDateError && <span className="text-coral-pop font-bold text-[10px] uppercase tracking-normal animate-pulse">Required</span>}
               </label>
               <input 
+                id="tour-date-input"
                 type="date" 
                 required
                 min={minDate}
-                className="w-full bg-cloud-dancer/50 border border-deep-indigo/10 rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-transformative-teal text-deep-indigo font-medium"
+                className={`w-full rounded-xl px-4 py-3.5 focus:outline-none transition-all text-deep-indigo font-medium ${
+                  showDateError 
+                    ? 'bg-coral-pop/10 border-2 border-coral-pop ring-2 ring-coral-pop/20' 
+                    : 'bg-cloud-dancer/50 border border-deep-indigo/10 focus:ring-2 focus:ring-transformative-teal'
+                }`}
                 value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                onChange={(e) => {
+                  setFormData({ ...formData, date: e.target.value });
+                  if (e.target.value) setShowDateError(false);
+                }}
               />
+              {showDateError && (
+                <div className="flex items-center gap-1.5 text-coral-pop text-xs mt-2 font-bold animate-in fade-in slide-in-from-top-1 duration-200">
+                  <span className="text-sm">⚠️</span>
+                  <span>Please select a tour date to continue.</span>
+                </div>
+              )}
             </div>
 
             {/* Guest Counter Stepper */}
@@ -539,17 +589,32 @@ function CheckoutForm() {
 
             {formData.pickupLocation !== 'none' && (
               <div className="pt-3 border-t border-deep-indigo/5 animate-in fade-in duration-300">
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/60 mb-2">
-                  {t('hotelLabel', locale)}
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/60 mb-2 flex items-center justify-between">
+                  <span>{t('hotelLabel', locale)}</span>
+                  {showHotelError && <span className="text-coral-pop font-bold text-[10px] uppercase tracking-normal animate-pulse">Required</span>}
                 </label>
                 <textarea 
+                  id="hotel-details-input"
                   required
                   rows={2}
                   placeholder={t("hotelPlaceholder", locale)}
-                  className="w-full bg-cloud-dancer/50 border border-deep-indigo/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-transformative-teal text-deep-indigo text-xs resize-none"
+                  className={`w-full rounded-xl px-4 py-3 focus:outline-none transition-all text-deep-indigo text-xs resize-none ${
+                    showHotelError 
+                      ? 'bg-coral-pop/10 border-2 border-coral-pop ring-2 ring-coral-pop/20' 
+                      : 'bg-cloud-dancer/50 border border-deep-indigo/10 focus:ring-2 focus:ring-transformative-teal'
+                  }`}
                   value={formData.hotelDetails}
-                  onChange={(e) => setFormData({ ...formData, hotelDetails: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, hotelDetails: e.target.value });
+                    if (e.target.value.trim()) setShowHotelError(false);
+                  }}
                 />
+                {showHotelError && (
+                  <div className="flex items-center gap-1.5 text-coral-pop text-xs mt-1.5 font-bold animate-in fade-in slide-in-from-top-1 duration-200">
+                    <span className="text-sm">⚠️</span>
+                    <span>Please provide your hotel or villa address for driver pickup.</span>
+                  </div>
+                )}
               </div>
             )}
           </div>

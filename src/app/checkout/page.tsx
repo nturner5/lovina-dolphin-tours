@@ -501,22 +501,21 @@ function CheckoutForm() {
               <label className="block text-[10px] font-bold uppercase tracking-widest text-deep-indigo/60 mb-2">
                 Guests (Private Boat)
               </label>
-              <div className="flex items-center justify-between bg-cloud-dancer/50 border border-deep-indigo/10 rounded-xl px-4 py-2">
+              <div className="flex items-center justify-between bg-cloud-dancer/50 border border-deep-indigo/10 rounded-xl px-3 h-[52px]">
                 <button 
                   type="button"
                   onClick={() => setFormData(p => ({ ...p, guests: Math.max(2, p.guests - 1) }))}
-                  className="w-10 h-10 rounded-lg bg-white border border-deep-indigo/10 text-deep-indigo font-bold text-lg hover:bg-transformative-teal hover:text-white transition-colors flex items-center justify-center active:scale-95"
+                  className="w-9 h-9 rounded-lg bg-white border border-deep-indigo/10 text-deep-indigo font-bold text-lg hover:bg-transformative-teal hover:text-white transition-colors flex items-center justify-center active:scale-95 shrink-0"
                 >
                   -
                 </button>
-                <div className="text-center">
-                  <span className="text-lg font-bold text-deep-indigo block leading-none">{formData.guests}</span>
-                  <span className="text-[9px] text-deep-indigo/50 font-medium">Guests</span>
-                </div>
+                <span className="text-xl font-bold text-deep-indigo leading-none select-none">
+                  {formData.guests}
+                </span>
                 <button 
                   type="button"
                   onClick={() => setFormData(p => ({ ...p, guests: Math.min(8, p.guests + 1) }))}
-                  className="w-10 h-10 rounded-lg bg-white border border-deep-indigo/10 text-deep-indigo font-bold text-lg hover:bg-transformative-teal hover:text-white transition-colors flex items-center justify-center active:scale-95"
+                  className="w-9 h-9 rounded-lg bg-white border border-deep-indigo/10 text-deep-indigo font-bold text-lg hover:bg-transformative-teal hover:text-white transition-colors flex items-center justify-center active:scale-95 shrink-0"
                 >
                   +
                 </button>

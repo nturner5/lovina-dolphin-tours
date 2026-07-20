@@ -753,11 +753,11 @@ function CheckoutForm() {
                 <span className="text-xl">🐬</span>
                 <div>
                   <strong className="block text-xs sm:text-sm font-serif tracking-wide text-white">BALI DOLPHIN TOURS</strong>
-                  <span className="text-[9px] text-white/60 uppercase tracking-widest block">Private Charter Boarding Voucher</span>
+                  <span className="text-[9px] text-white/60 uppercase tracking-widest block">Checkout Summary</span>
                 </div>
               </div>
               <span className="text-[10px] font-mono bg-white/10 px-2.5 py-1 rounded-md text-coral-pop border border-white/10 font-bold uppercase">
-                VOUCHER #BDT-2026
+                SECURE CHECKOUT
               </span>
             </div>
 
@@ -842,24 +842,41 @@ function CheckoutForm() {
           </div>
 
           {/* Submit / Pay Button */}
-          <div className="flex items-center justify-between gap-3 pt-2">
-            <button
-              type="button"
-              onClick={() => setStep(2)}
-              className="bg-white border border-deep-indigo/20 text-deep-indigo px-6 py-4 rounded-full text-xs font-bold hover:bg-cloud-dancer transition-all active:scale-95"
-            >
-              ← Back
-            </button>
-            <button 
-              type="submit" 
-              disabled={loading}
-              className="flex-1 bg-coral-pop text-cloud-dancer py-4 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-95 disabled:opacity-50 cursor-pointer"
-            >
-              {loading 
-                ? t('btnSubmitLoading', locale) 
-                : (isLastMinute ? t('btnSubmitWhatsApp', locale) : `Pay $${grandTotal} USD via Stripe`)
-              }
-            </button>
+          <div className="space-y-3 pt-2">
+            <div className="flex items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => setStep(2)}
+                className="bg-white border border-deep-indigo/20 text-deep-indigo px-5 py-4 rounded-full text-xs font-bold hover:bg-cloud-dancer transition-all active:scale-95 shrink-0"
+              >
+                ← Back
+              </button>
+              <button 
+                type="submit" 
+                disabled={loading}
+                className="flex-1 bg-coral-pop text-cloud-dancer py-4 px-6 rounded-full text-sm sm:text-base font-bold hover:bg-deep-indigo transition-all shadow-xl active:scale-95 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+              >
+                {loading 
+                  ? t('btnSubmitLoading', locale) 
+                  : (isLastMinute ? t('btnSubmitWhatsApp', locale) : `🔒 Secure Reservation — Pay $${grandTotal} USD`)
+                }
+              </button>
+            </div>
+
+            {/* Trust Payment Method Badges */}
+            {!isLastMinute && (
+              <div className="flex flex-col items-center gap-1.5 text-deep-indigo/60 pt-1">
+                <div className="flex items-center justify-center gap-2 flex-wrap font-medium">
+                  <span className="bg-white border border-deep-indigo/10 px-2.5 py-1 rounded text-[9.5px] font-bold text-deep-indigo shadow-2xs">💳 Visa</span>
+                  <span className="bg-white border border-deep-indigo/10 px-2.5 py-1 rounded text-[9.5px] font-bold text-deep-indigo shadow-2xs">💳 Mastercard</span>
+                  <span className="bg-white border border-deep-indigo/10 px-2.5 py-1 rounded text-[9.5px] font-bold text-deep-indigo shadow-2xs">🍎 Apple Pay</span>
+                  <span className="bg-white border border-deep-indigo/10 px-2.5 py-1 rounded text-[9.5px] font-bold text-deep-indigo shadow-2xs">G Pay</span>
+                </div>
+                <span className="text-[9px] text-deep-indigo/40 font-light flex items-center gap-1.5">
+                  <span>🔒 256-Bit SSL Encrypted</span> • <span>⚡ Instant Confirmation</span>
+                </span>
+              </div>
+            )}
           </div>
         </form>
       )}

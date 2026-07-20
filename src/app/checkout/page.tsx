@@ -842,7 +842,7 @@ function CheckoutForm() {
           </div>
 
           {/* Submit / Pay Button */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-2 pt-2">
             <div className="flex items-center justify-between gap-3">
               <button
                 type="button"
@@ -854,28 +854,20 @@ function CheckoutForm() {
               <button 
                 type="submit" 
                 disabled={loading}
-                className="flex-1 bg-coral-pop text-cloud-dancer py-4 px-6 rounded-full text-sm sm:text-base font-bold hover:bg-deep-indigo transition-all shadow-xl active:scale-95 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+                className="flex-1 bg-coral-pop text-cloud-dancer py-4 px-6 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-xl active:scale-95 disabled:opacity-50 cursor-pointer text-center"
               >
                 {loading 
                   ? t('btnSubmitLoading', locale) 
-                  : (isLastMinute ? t('btnSubmitWhatsApp', locale) : `🔒 Secure Reservation — Pay $${grandTotal} USD`)
+                  : (isLastMinute ? t('btnSubmitWhatsApp', locale) : `Pay $${grandTotal} USD`)
                 }
               </button>
             </div>
 
-            {/* Trust Payment Method Badges */}
+            {/* Clean Security Subtext */}
             {!isLastMinute && (
-              <div className="flex flex-col items-center gap-1.5 text-deep-indigo/60 pt-1">
-                <div className="flex items-center justify-center gap-2 flex-wrap font-medium">
-                  <span className="bg-white border border-deep-indigo/10 px-2.5 py-1 rounded text-[9.5px] font-bold text-deep-indigo shadow-2xs">💳 Visa</span>
-                  <span className="bg-white border border-deep-indigo/10 px-2.5 py-1 rounded text-[9.5px] font-bold text-deep-indigo shadow-2xs">💳 Mastercard</span>
-                  <span className="bg-white border border-deep-indigo/10 px-2.5 py-1 rounded text-[9.5px] font-bold text-deep-indigo shadow-2xs">🍎 Apple Pay</span>
-                  <span className="bg-white border border-deep-indigo/10 px-2.5 py-1 rounded text-[9.5px] font-bold text-deep-indigo shadow-2xs">G Pay</span>
-                </div>
-                <span className="text-[9px] text-deep-indigo/40 font-light flex items-center gap-1.5">
-                  <span>🔒 256-Bit SSL Encrypted</span> • <span>⚡ Instant Confirmation</span>
-                </span>
-              </div>
+              <p className="text-[10px] text-deep-indigo/40 text-center font-light pt-0.5">
+                🔒 256-Bit SSL Encrypted  •  Instant Confirmation
+              </p>
             )}
           </div>
         </form>

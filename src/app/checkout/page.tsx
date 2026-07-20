@@ -468,12 +468,21 @@ function CheckoutForm() {
                 type="date" 
                 required
                 min={minDate}
-                className={`w-full rounded-xl px-4 py-3.5 focus:outline-none transition-all text-deep-indigo font-medium ${
+                className={`w-full rounded-xl px-4 py-3.5 focus:outline-none transition-all text-deep-indigo font-medium cursor-pointer ${
                   showDateError 
                     ? 'bg-coral-pop/10 border-2 border-coral-pop ring-2 ring-coral-pop/20' 
                     : 'bg-cloud-dancer/50 border border-deep-indigo/10 focus:ring-2 focus:ring-transformative-teal'
                 }`}
                 value={formData.date}
+                onClick={(e) => {
+                  try {
+                    if ('showPicker' in e.currentTarget) {
+                      e.currentTarget.showPicker();
+                    }
+                  } catch (err) {
+                    // Browser context fallback
+                  }
+                }}
                 onChange={(e) => {
                   setFormData({ ...formData, date: e.target.value });
                   if (e.target.value) setShowDateError(false);

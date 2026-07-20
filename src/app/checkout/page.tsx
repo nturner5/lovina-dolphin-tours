@@ -247,7 +247,7 @@ function CheckoutForm() {
   const selectedTour = tours.find(t => t.id === formData.tourId) || tours[0];
 
   return (
-    <main className="bg-cloud-dancer min-h-screen px-4 sm:px-6 pt-12 pb-32 md:pb-24 lg:pt-16 lg:px-12">
+    <main className="bg-cloud-dancer min-h-screen px-4 sm:px-6 pt-12 pb-32 md:pb-24 lg:pt-16 lg:px-12 overflow-x-hidden max-w-full">
       <div className="max-w-6xl mx-auto">
         {/* Secure SSL Trust Indicator */}
         <div className="flex items-center justify-center gap-2 mb-3 text-transformative-teal/70 font-semibold tracking-widest text-[10px] uppercase select-none animate-in fade-in duration-700">
@@ -262,9 +262,9 @@ function CheckoutForm() {
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           {/* Left Column: Form Capsule */}
           <div className="lg:col-span-7">
-            <form id="checkout-form" onSubmit={handleCheckout} className="space-y-6 bg-white p-5 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] shadow-sm border border-deep-indigo/5">
+            <form id="checkout-form" onSubmit={handleCheckout} className="space-y-6 bg-white p-4 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] shadow-sm border border-deep-indigo/5 max-w-full overflow-hidden">
               {/* Trust Badge Banner */}
-              <div className="flex flex-wrap items-center justify-between gap-2 bg-transformative-teal/5 px-6 py-3.5 rounded-2xl border border-transformative-teal/10 text-[11px] leading-none mb-2">
+              <div className="flex flex-wrap items-center justify-between gap-2 bg-transformative-teal/5 px-4 sm:px-6 py-3.5 rounded-2xl border border-transformative-teal/10 text-[11px] leading-none mb-2">
                 <span className="font-bold text-deep-indigo">★ 4.9 Guest Rating</span>
                 <span className="text-deep-indigo/50 font-light">From premium villa travelers</span>
               </div>
@@ -390,7 +390,7 @@ function CheckoutForm() {
                   
                   {/* Visual Status Indicator */}
                   {whatsappNumber && (
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs flex items-center gap-1 select-none z-20 pointer-events-none">
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs flex items-center gap-1 select-none z-20 pointer-events-none">
                       {isValidPhone ? (
                         <span className="text-transformative-teal text-base animate-in zoom-in duration-300">✅</span>
                       ) : (
@@ -444,7 +444,7 @@ function CheckoutForm() {
 
               {/* Dynamic Transfer Details Box */}
               {formData.pickupLocation === 'none' ? (
-                <div className="bg-transformative-teal/5 p-6 rounded-3xl border border-transformative-teal/10 space-y-3 text-xs leading-normal animate-in fade-in duration-300">
+                <div className="bg-transformative-teal/5 p-4 sm:p-6 rounded-3xl border border-transformative-teal/10 space-y-3 text-xs leading-normal animate-in fade-in duration-300 break-words">
                   {locale === 'en' ? (
                     <>
                   <div className="flex items-center gap-2 text-transformative-teal font-bold">
@@ -520,7 +520,7 @@ function CheckoutForm() {
                   )}
                 </div>
               ) : (
-                <div className="bg-transformative-teal/5 p-6 rounded-3xl border border-transformative-teal/10 space-y-3 text-xs leading-normal animate-in fade-in duration-300">
+                <div className="bg-transformative-teal/5 p-4 sm:p-6 rounded-3xl border border-transformative-teal/10 space-y-3 text-xs leading-normal animate-in fade-in duration-300 break-words">
                   {locale === 'en' ? (
                     <>
                   <div className="flex items-center gap-2 text-transformative-teal font-bold">
@@ -646,9 +646,9 @@ function CheckoutForm() {
               )}
 
               {/* Pricing Summary */}
-              <div className="bg-cloud-dancer/30 p-6 rounded-2xl border border-deep-indigo/5 space-y-3 text-sm">
-                <div className="flex justify-between text-deep-indigo/60">
-                  <span>
+              <div className="bg-cloud-dancer/30 p-4 sm:p-6 rounded-2xl border border-deep-indigo/5 space-y-3 text-sm max-w-full">
+                <div className="flex justify-between items-start gap-3 text-deep-indigo/60">
+                  <span className="min-w-0 shrink leading-snug">
                     {formData.tourId === 'seven-am-ethical' 
                       ? t('tour1Title', locale) 
                       : formData.tourId === 'dolphin-swim' 
@@ -656,11 +656,11 @@ function CheckoutForm() {
                         : t('tour2Title', locale)
                     } (${tours.find(t => t.id === formData.tourId)?.price} × {formData.guests} guests)
                   </span>
-                  <span>${(tours.find(t => t.id === formData.tourId)?.price || 0) * formData.guests} USD</span>
+                  <span className="shrink-0 font-medium">${(tours.find(t => t.id === formData.tourId)?.price || 0) * formData.guests} USD</span>
                 </div>
                 {formData.pickupLocation !== 'none' && (
-                  <div className="flex justify-between text-deep-indigo/60">
-                    <span>
+                  <div className="flex justify-between items-start gap-3 text-deep-indigo/60">
+                    <span className="min-w-0 shrink leading-snug">
                       {formData.pickupLocation === 'none' 
                         ? t('noDriver', locale) 
                         : formData.pickupLocation === 'lovina' 
@@ -672,7 +672,7 @@ function CheckoutForm() {
                               : t('uluwatuDriver', locale)
                       }
                     </span>
-                    <span>
+                    <span className="shrink-0 font-medium">
                       {pickupOptions.find(p => p.id === formData.pickupLocation)?.price === 0 
                         ? 'Free' 
                         : `$${pickupOptions.find(p => p.id === formData.pickupLocation)?.price} USD`
@@ -680,9 +680,9 @@ function CheckoutForm() {
                     </span>
                   </div>
                 )}
-                <div className="border-t border-deep-indigo/10 pt-3 flex justify-between font-bold text-deep-indigo text-base">
+                <div className="border-t border-deep-indigo/10 pt-3 flex justify-between items-center font-bold text-deep-indigo text-base">
                   <span>{t("summaryTotal", locale)}</span>
-                  <span>
+                  <span className="shrink-0">
                     ${((tours.find(t => t.id === formData.tourId)?.price || 0) * formData.guests) + 
                       (pickupOptions.find(p => p.id === formData.pickupLocation)?.price || 0)
                     } USD

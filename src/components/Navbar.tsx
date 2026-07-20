@@ -29,7 +29,7 @@ export default function Navbar() {
           <span className="font-bold bg-coral-pop text-white uppercase tracking-widest text-[9px] sm:text-[10px] mr-2 px-2 py-0.5 rounded shadow-sm">
             {t("guaranteeBannerBadge", locale)}
           </span>
-          <Link href={hrefFor("/#ethics")} className="hover:underline transition-all inline-flex items-center gap-1 group font-semibold text-white/90 hover:text-white">
+          <Link href={hrefFor("/#ethics")} className="hover:underline transition-all inline-flex flex-wrap items-center justify-center gap-1 group font-semibold text-white/90 hover:text-white">
             {locale === 'en' ? (
               <>See wild dolphins or ride again completely free! <span className="text-coral-pop font-bold group-hover:text-white transition-colors ml-1.5">Learn More →</span></>
             ) : locale === 'ru' ? (
@@ -40,10 +40,10 @@ export default function Navbar() {
           </Link>
         </span>
       </div>
-      <nav className="relative flex items-center justify-between px-6 py-4 lg:px-12 bg-cloud-dancer border-b border-deep-indigo/10 z-40">
+      <nav className="relative flex items-center justify-between px-4 sm:px-6 py-4 lg:px-12 bg-cloud-dancer border-b border-deep-indigo/10 z-40 max-w-full overflow-hidden">
       <div className="flex items-center">
         <Link href={hrefFor("/")} className="flex items-center group">
-          <div className="relative w-[240px] h-[80px] sm:w-[300px] sm:h-[100px] transition-transform duration-500 group-hover:scale-[1.02]">
+          <div className="relative w-[190px] h-[63px] sm:w-[260px] sm:h-[87px] md:w-[300px] md:h-[100px] transition-transform duration-500 group-hover:scale-[1.02]">
             <Image 
               src="/balidolphinlogo.svg" 
               alt="Bali Dolphin Tours Logo" 

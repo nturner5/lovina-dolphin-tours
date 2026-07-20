@@ -453,9 +453,9 @@ export default async function Home({ searchParams }: PageProps) {
               <div>
                 <strong>{locale === 'en' ? 'Staying in Ubud or South Bali?' : locale === 'ru' ? 'Остановились в Убуде или на юге Бали?' : '入住乌布或巴厘岛南部？'}</strong>{' '}
                 {t("packagesBannerText", locale)}{' '}
-                <a href="#scenic-stops" className="underline text-transformative-teal hover:text-coral-pop font-bold transition-colors">
+                <Link href={hrefFor("/#scenic-stops")} className="underline text-transformative-teal hover:text-coral-pop font-bold transition-colors">
                   {t("packagesBannerLink", locale)} &rarr;
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -717,7 +717,7 @@ export default async function Home({ searchParams }: PageProps) {
                   id="cta-select-snorkel-tour-home"
                   className="block w-full bg-coral-pop text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-98 relative group"
                 >
-                  <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
+                  <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75 pointer-events-none"></span>
                   {t("tour2Btn", locale)} (${tour3Price})
                 </Link>
               </div>

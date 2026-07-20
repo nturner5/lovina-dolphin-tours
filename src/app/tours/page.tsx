@@ -310,7 +310,7 @@ export default async function ToursPage({ searchParams }: PageProps) {
                 id="cta-select-snorkel-tour"
                 className="block w-full bg-coral-pop text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-98 relative group"
               >
-                <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75"></span>
+                <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75 pointer-events-none"></span>
                 {t("tour2Btn", locale)} (${tour3Price})
               </Link>
             </div>

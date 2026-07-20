@@ -42,7 +42,7 @@ export default function WhatsAppButton() {
         aria-label="Chat on WhatsApp"
       >
         {/* Pulsing ring outer container */}
-        <span className="absolute -inset-1.5 rounded-full border-2 border-transformative-teal/20 animate-ping opacity-75 group-hover:animate-none"></span>
+        <span className="absolute -inset-1.5 rounded-full border-2 border-transformative-teal/20 animate-ping opacity-75 group-hover:animate-none pointer-events-none"></span>
         
         {/* WhatsApp Custom SVG Path (high resolution & official) */}
         <svg 

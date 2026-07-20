@@ -39,9 +39,9 @@ const DEFAULT_TOURS = [
 const DEFAULT_PICKUP_OPTIONS = [
   { id: 'none', name: 'No Driver (Meet at Lovina Beach by 6:30 AM)', price: 0, icon: '⛵', note: 'Self-Drive to Beach' },
   { id: 'lovina', name: 'Free Local Shuttle (Lovina Beach Area)', price: 0, icon: '🛺', note: 'Within 2km of Beach' },
-  { id: 'ubud', name: 'Ubud Round-trip Private Driver (~4:30 AM Pickup)', price: 42, icon: '🌴', note: 'Flat rate per SUV (up to 4 guests)' },
-  { id: 'canggu-kuta', name: 'Canggu / Seminyak / Kuta Round-trip Driver (~4:00 AM Pickup)', price: 60, icon: '🏖️', note: 'Flat rate per SUV (up to 4 guests)' },
-  { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Driver (~3:30 AM Pickup)', price: 78, icon: '🌊', note: 'Flat rate per SUV (up to 4 guests)' },
+  { id: 'ubud', name: 'Ubud Round-trip Private Driver (~4:30 AM Pickup)', price: 42, icon: '🌴', note: 'Flat rate per SUV (up to 4 guests) — Includes free scenic stopovers on return trip' },
+  { id: 'canggu-kuta', name: 'Canggu / Seminyak / Kuta Round-trip Driver (~4:00 AM Pickup)', price: 60, icon: '🏖️', note: 'Flat rate per SUV (up to 4 guests) — Includes free scenic stopovers on return trip' },
+  { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Driver (~3:30 AM Pickup)', price: 78, icon: '🌊', note: 'Flat rate per SUV (up to 4 guests) — Includes free scenic stopovers on return trip' },
 ];
 
 const getBaliDateString = (offsetDays = 0) => {

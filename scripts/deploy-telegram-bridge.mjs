@@ -32,7 +32,7 @@ async function main() {
   const chatId = env['TELEGRAM_CHAT_ID'];
   const phoneId = env['META_PHONE_NUMBER_ID'];
   const metaToken = env['META_ACCESS_TOKEN'];
-  const adminPassword = env['ADMIN_PASSWORD'] || 'Blhuanca15!';
+  const adminPassword = env['ADMIN_PASSWORD'] || 'Bdhuanca15!';
 
   if (!apiKey || !botToken || !chatId || !phoneId || !metaToken) {
     console.error('✖ Error: Missing required variables in .env.local (N8N_API_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, META_PHONE_NUMBER_ID, META_ACCESS_TOKEN)');

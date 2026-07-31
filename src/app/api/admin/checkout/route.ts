@@ -10,7 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function POST(req: Request) {
   try {
     const password = req.headers.get('x-admin-password');
-    if (password !== (process.env.ADMIN_PASSWORD || 'Blhuanca15!')) {
+    if (password !== (process.env.ADMIN_PASSWORD || 'Bdhuanca15!')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 // Helper to check admin authentication
 function checkAuth(req: Request) {
   const password = req.headers.get('x-admin-password');
-  return password === (process.env.ADMIN_PASSWORD || 'Blhuanca15!');
+  return password === (process.env.ADMIN_PASSWORD || 'Bdhuanca15!');
 }
 
 export async function GET(req: Request) {

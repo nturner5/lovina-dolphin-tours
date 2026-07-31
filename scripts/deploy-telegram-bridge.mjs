@@ -429,7 +429,8 @@ if (text.includes('/create_booking')) {
   
   let pickupLocation = 'none';
   if (rawPickup.includes('ubud')) pickupLocation = 'ubud';
-  else if (rawPickup.includes('canggu') || rawPickup.includes('seminyak') || rawPickup.includes('kuta') || rawPickup.includes('south')) pickupLocation = 'canggu';
+  else if (rawPickup.includes('canggu') || rawPickup.includes('seminyak') || rawPickup.includes('kuta') || rawPickup.includes('south')) pickupLocation = 'canggu-kuta';
+  else if (rawPickup.includes('uluwatu') || rawPickup.includes('nusadua')) pickupLocation = 'uluwatu';
 
   if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(rawDate)) {
     return [{
@@ -498,7 +499,8 @@ else if (rawTour === 'transport') tourId = 'transport-only';
 
 let pickupLocation = 'none';
 if (rawPickup === 'ubud') pickupLocation = 'ubud';
-else if (rawPickup === 'canggu' || rawPickup === 'seminyak' || rawPickup === 'kuta' || rawPickup === 'south') pickupLocation = 'canggu';
+else if (rawPickup === 'canggu' || rawPickup === 'seminyak' || rawPickup === 'kuta' || rawPickup === 'south' || rawPickup === 'canggu-kuta') pickupLocation = 'canggu-kuta';
+else if (rawPickup === 'uluwatu' || rawPickup === 'nusadua') pickupLocation = 'uluwatu';
 
 if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(rawDate)) {
   return [{

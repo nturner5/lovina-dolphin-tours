@@ -24,7 +24,7 @@ function loadEnvLocal() {
 }
 
 async function main() {
-  console.log('🔄 Upgrading Telegram-to-WhatsApp Support Bridge with /draft commands...');
+  console.log('🔄 Upgrading Telegram-to-WhatsApp Support Bridge with /pay checkout generator...');
   const env = loadEnvLocal();
   
   const apiKey = env['N8N_API_KEY'];
@@ -32,6 +32,7 @@ async function main() {
   const chatId = env['TELEGRAM_CHAT_ID'];
   const phoneId = env['META_PHONE_NUMBER_ID'];
   const metaToken = env['META_ACCESS_TOKEN'];
+  const adminPassword = env['ADMIN_PASSWORD'] || 'Blhuanca15!';
 
   if (!apiKey || !botToken || !chatId || !phoneId || !metaToken) {
     console.error('✖ Error: Missing required variables in .env.local (N8N_API_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, META_PHONE_NUMBER_ID, META_ACCESS_TOKEN)');
@@ -107,9 +108,9 @@ async function main() {
   }
 
   // ==========================================
-  // STEP 2: Create Upgraded Telegram Reply Bridge Workflow (With Command Dispatcher)
+  // STEP 2: Create Upgraded Telegram Reply Bridge Workflow (With Command Dispatcher & Checkout Generator)
   // ==========================================
-  console.log('\n- Creating Telegram Reply Bridge workflow...');
+  console.log('\n- Creating Telegram Reply & Checkout Bridge workflow...');
   
   const bridgePayload = {
     name: "Telegram: WhatsApp Reply Bridge",
@@ -133,7 +134,7 @@ async function main() {
               {
                 value1: "={{ $json.body.message ? ($json.body.message.text ? $json.body.message.text.toLowerCase() : '') : '' }}",
                 operation: "regex",
-                value2: "^/(draft|template)"
+                value2: "^/(draft|template|pay|link)"
               }
             ]
           }
@@ -143,6 +144,24 @@ async function main() {
         type: "n8n-nodes-base.if",
         typeVersion: 1,
         position: [300, 150]
+      },
+      {
+        parameters: {
+          conditions: {
+            string: [
+              {
+                value1: "={{ $json.body.message.text.toLowerCase() }}",
+                operation: "regex",
+                value2: "^/(draft|template)"
+              }
+            ]
+          }
+        },
+        id: "is-draft-cmd-id",
+        name: "Is /draft Command?",
+        type: "n8n-nodes-base.if",
+        typeVersion: 1,
+        position: [500, 50]
       },
       {
         parameters: {
@@ -157,7 +176,153 @@ async function main() {
         name: "Send WhatsApp Templates",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [520, 50]
+        position: [700, -30]
+      },
+      {
+        parameters: {
+          jsCode: `const message = items[0].json.body?.message;
+if (!message) return [];
+
+const text = message.text || '';
+const args = text.split(/\\s+/).slice(1); // Remove '/pay' or '/link'
+
+if (args.length < 4) {
+  return [{
+    json: {
+      error: 'usage',
+      chatId: message.chat.id
+    }
+  }];
+}
+
+const rawDate = args[0]; 
+const guests = Number(args[1]);
+const rawTour = args[2].toLowerCase();
+const rawPickup = args[3].toLowerCase();
+const rawTime = args[4] || '7:00 AM';
+
+let tourId = 'seven-am-ethical';
+if (rawTour === 'swim') tourId = 'dolphin-swim';
+else if (rawTour === 'snorkel') tourId = 'swim-snorkel';
+else if (rawTour === 'transport') tourId = 'transport-only';
+else if (rawTour === 'watching' || rawTour === 'ethical') tourId = 'seven-am-ethical';
+
+let pickupLocation = 'none';
+if (rawPickup === 'ubud') pickupLocation = 'ubud';
+else if (rawPickup === 'canggu' || rawPickup === 'seminyak' || rawPickup === 'kuta' || rawPickup === 'south') pickupLocation = 'canggu';
+
+if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(rawDate)) {
+  return [{
+    json: {
+      error: 'date_format',
+      chatId: message.chat.id,
+      provided: rawDate
+    }
+  }];
+}
+
+if (isNaN(guests) || guests <= 0) {
+  return [{
+    json: {
+      error: 'guests_format',
+      chatId: message.chat.id,
+      provided: args[1]
+    }
+  }];
+}
+
+return [{
+  json: {
+    command: 'pay',
+    chatId: message.chat.id,
+    tourId,
+    date: rawDate,
+    guests,
+    pickupLocation,
+    tourTime: rawTime
+  }
+}];`
+        },
+        id: "parse-pay-args-id",
+        name: "Parse Pay Command",
+        type: "n8n-nodes-base.code",
+        typeVersion: 2,
+        position: [700, 150]
+      },
+      {
+        parameters: {
+          conditions: {
+            string: [
+              {
+                value1: "={{ $json.error }}",
+                operation: "isNotEmpty"
+              }
+            ]
+          }
+        },
+        id: "has-parse-error-id",
+        name: "Has Parse Error?",
+        type: "n8n-nodes-base.if",
+        typeVersion: 1,
+        position: [900, 150]
+      },
+      {
+        parameters: {
+          method: "POST",
+          url: `https://api.telegram.org/bot${botToken}/sendMessage`,
+          sendBody: true,
+          specifyBody: "json",
+          jsonBody: "={\n  \"chat_id\": \"{{ $json.chatId }}\",\n  \"text\": \"⚠️ *Invalid /pay command syntax!*\\n\\n*Usage:*\\n`/pay <date> <guests> <tour> <pickup> [time]`\\n\\n*Options:*\\n• Tour: `ethical` (watching only), `swim`, `snorkel`, `transport` (transport only)\\n• Pickup: `none`, `ubud`, `canggu` (covers south Bali)\\n• Time (optional): defaults to `7:00 AM`\\n\\n*Example:*\\n`/pay 2026-08-05 3 snorkel ubud 7:00AM`\",\n  \"parse_mode\": \"Markdown\"\n}",
+          options: {}
+        },
+        id: "send-pay-error-id",
+        name: "Send Pay Usage Error",
+        type: "n8n-nodes-base.httpRequest",
+        typeVersion: 4.1,
+        position: [1100, 50]
+      },
+      {
+        parameters: {
+          method: "POST",
+          url: "https://balidolphintours.com/api/admin/checkout",
+          sendHeaders: true,
+          headerParameters: {
+            parameters: [
+              {
+                name: "x-admin-password",
+                value: adminPassword
+              },
+              {
+                name: "Content-Type",
+                value: "application/json"
+              }
+            ]
+          },
+          sendBody: true,
+          specifyBody: "json",
+          jsonBody: "={\n  \"tourId\": \"{{ $json.tourId }}\",\n  \"date\": \"{{ $json.date }}\",\n  \"guests\": {{ $json.guests }},\n  \"pickupLocation\": \"{{ $json.pickupLocation }}\",\n  \"tourTime\": \"{{ $json.tourTime }}\",\n  \"name\": \"Manual Telegram Booking\"\n}",
+          options: {}
+        },
+        id: "create-checkout-link-id",
+        name: "Create Stripe Checkout Link",
+        type: "n8n-nodes-base.httpRequest",
+        typeVersion: 4.1,
+        position: [1100, 230]
+      },
+      {
+        parameters: {
+          method: "POST",
+          url: `https://api.telegram.org/bot${botToken}/sendMessage`,
+          sendBody: true,
+          specifyBody: "json",
+          jsonBody: "={\n  \"chat_id\": \"{{ $('Parse Pay Command').item.json.chatId }}\",\n  \"text\": \"🔗 *Stripe Checkout Link Created!*\\n\\n👉 [Click to Open Checkout]({{ $json.url }})\\n\\n`{{ $json.url }}`\",\n  \"parse_mode\": \"Markdown\"\n}",
+          options: {}
+        },
+        id: "send-checkout-link-id",
+        name: "Send Checkout Link",
+        type: "n8n-nodes-base.httpRequest",
+        typeVersion: 4.1,
+        position: [1300, 230]
       },
       {
         parameters: {
@@ -175,7 +340,7 @@ async function main() {
         name: "Is Valid Reply?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [520, 270]
+        position: [500, 350]
       },
       {
         parameters: {
@@ -221,7 +386,7 @@ return [{
         name: "Parse Telegram Message",
         type: "n8n-nodes-base.code",
         typeVersion: 2,
-        position: [740, 250]
+        position: [700, 330]
       },
       {
         parameters: {
@@ -238,7 +403,7 @@ return [{
         name: "Is Media?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [940, 250]
+        position: [900, 330]
       },
       {
         parameters: {
@@ -259,7 +424,7 @@ return [{
         name: "Get Telegram File Path",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1140, 150]
+        position: [1100, 410]
       },
       {
         parameters: {
@@ -287,7 +452,7 @@ return [{
         name: "Send WhatsApp Media Message",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1360, 150]
+        position: [1300, 410]
       },
       {
         parameters: {
@@ -315,7 +480,7 @@ return [{
         name: "Send WhatsApp Text Message",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1140, 330]
+        position: [1100, 570]
       }
     ],
     connections: {
@@ -334,7 +499,7 @@ return [{
         main: [
           [
             {
-              "node": "Send WhatsApp Templates",
+              "node": "Is /draft Command?",
               "type": "main",
               "index": 0
             }
@@ -342,6 +507,64 @@ return [{
           [
             {
               "node": "Is Valid Reply?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is /draft Command?": {
+        main: [
+          [
+            {
+              "node": "Send WhatsApp Templates",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Parse Pay Command",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Parse Pay Command": {
+        main: [
+          [
+            {
+              "node": "Has Parse Error?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Has Parse Error?": {
+        main: [
+          [
+            {
+              "node": "Send Pay Usage Error",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Create Stripe Checkout Link",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create Stripe Checkout Link": {
+        main: [
+          [
+            {
+              "node": "Send Checkout Link",
               "type": "main",
               "index": 0
             }

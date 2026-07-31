@@ -24,7 +24,7 @@ function loadEnvLocal() {
 }
 
 async function main() {
-  console.log('🔄 Upgrading Telegram-to-WhatsApp Support Bridge with /pay checkout generator...');
+  console.log('🔄 Upgrading Telegram-to-WhatsApp Support Bridge with /pay interactive checkout flow...');
   const env = loadEnvLocal();
   
   const apiKey = env['N8N_API_KEY'];
@@ -134,7 +134,7 @@ async function main() {
               {
                 value1: "={{ $json.body.message ? ($json.body.message.text ? $json.body.message.text.toLowerCase() : '') : '' }}",
                 operation: "regex",
-                value2: "^/(draft|template|pay|link)"
+                value2: "^/(draft|template|pay|link|create_booking)"
               }
             ]
           }
@@ -184,7 +184,86 @@ async function main() {
 if (!message) return [];
 
 const text = message.text || '';
-const args = text.split(/\\s+/).slice(1); // Remove '/pay' or '/link'
+
+// Handle template submission
+if (text.includes('/create_booking')) {
+  const dateMatch = text.match(/•?\\s*Date:\\s*([^\\n]+)/i);
+  const guestsMatch = text.match(/•?\\s*Guests:\\s*([^\\n]+)/i);
+  const tourMatch = text.match(/•?\\s*Tour:\\s*([^\\n]+)/i);
+  const pickupMatch = text.match(/•?\\s*Pickup:\\s*([^\\n]+)/i);
+  const timeMatch = text.match(/•?\\s*Time:\\s*([^\\n]+)/i);
+  const nameMatch = text.match(/•?\\s*Guest Name:\\s*([^\\n]+)/i);
+
+  if (!dateMatch || !guestsMatch || !tourMatch || !pickupMatch) {
+    return [{
+      json: {
+        error: 'missing_fields',
+        chatId: message.chat.id
+      }
+    }];
+  }
+
+  const rawDate = dateMatch[1].trim();
+  const guests = Number(guestsMatch[1].trim());
+  const rawTour = tourMatch[1].trim().toLowerCase();
+  const rawPickup = pickupMatch[1].trim().toLowerCase();
+  const rawTime = timeMatch ? timeMatch[1].trim() : '7:00 AM';
+  const guestName = nameMatch ? nameMatch[1].trim() : 'Manual Telegram Booking';
+
+  let tourId = 'seven-am-ethical';
+  if (rawTour.includes('swim')) tourId = 'dolphin-swim';
+  else if (rawTour.includes('snorkel')) tourId = 'swim-snorkel';
+  else if (rawTour.includes('transport')) tourId = 'transport-only';
+  
+  let pickupLocation = 'none';
+  if (rawPickup.includes('ubud')) pickupLocation = 'ubud';
+  else if (rawPickup.includes('canggu') || rawPickup.includes('seminyak') || rawPickup.includes('kuta') || rawPickup.includes('south')) pickupLocation = 'canggu';
+
+  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(rawDate)) {
+    return [{
+      json: {
+        error: 'date_format',
+        chatId: message.chat.id,
+        provided: rawDate
+      }
+    }];
+  }
+
+  if (isNaN(guests) || guests <= 0) {
+    return [{
+      json: {
+        error: 'guests_format',
+        chatId: message.chat.id,
+        provided: guestsMatch[1]
+      }
+    }];
+  }
+
+  return [{
+    json: {
+      command: 'pay',
+      chatId: message.chat.id,
+      tourId,
+      date: rawDate,
+      guests,
+      pickupLocation,
+      tourTime: rawTime,
+      guestName
+    }
+  }];
+}
+
+// Handle positional command /pay <date> <guests> <tour> <pickup> [time]
+const args = text.split(/\\s+/).slice(1);
+if (args.length === 0) {
+  // Return interactive template response
+  return [{
+    json: {
+      error: 'show_template',
+      chatId: message.chat.id
+    }
+  }];
+}
 
 if (args.length < 4) {
   return [{
@@ -205,7 +284,6 @@ let tourId = 'seven-am-ethical';
 if (rawTour === 'swim') tourId = 'dolphin-swim';
 else if (rawTour === 'snorkel') tourId = 'swim-snorkel';
 else if (rawTour === 'transport') tourId = 'transport-only';
-else if (rawTour === 'watching' || rawTour === 'ethical') tourId = 'seven-am-ethical';
 
 let pickupLocation = 'none';
 if (rawPickup === 'ubud') pickupLocation = 'ubud';
@@ -239,7 +317,8 @@ return [{
     date: rawDate,
     guests,
     pickupLocation,
-    tourTime: rawTime
+    tourTime: rawTime,
+    guestName: 'Manual Telegram Booking'
   }
 }];`
         },
@@ -268,18 +347,51 @@ return [{
       },
       {
         parameters: {
+          conditions: {
+            string: [
+              {
+                value1: "={{ $json.error }}",
+                operation: "equals",
+                value2: "show_template"
+              }
+            ]
+          }
+        },
+        id: "is-show-template-id",
+        name: "Is Show Template?",
+        type: "n8n-nodes-base.if",
+        typeVersion: 1,
+        position: [1100, 50]
+      },
+      {
+        parameters: {
           method: "POST",
           url: `https://api.telegram.org/bot${botToken}/sendMessage`,
           sendBody: true,
           specifyBody: "json",
-          jsonBody: "={\n  \"chat_id\": \"{{ $json.chatId }}\",\n  \"text\": \"⚠️ *Invalid /pay command syntax!*\\n\\n*Usage:*\\n`/pay <date> <guests> <tour> <pickup> [time]`\\n\\n*Options:*\\n• Tour: `ethical` (watching only), `swim`, `snorkel`, `transport` (transport only)\\n• Pickup: `none`, `ubud`, `canggu` (covers south Bali)\\n• Time (optional): defaults to `7:00 AM`\\n\\n*Example:*\\n`/pay 2026-08-05 3 snorkel ubud 7:00AM`\",\n  \"parse_mode\": \"Markdown\"\n}",
+          jsonBody: "={\n  \"chat_id\": \"{{ $json.chatId }}\",\n  \"text\": \"✍️ *Stripe Link Generator*\\n\\nCopy the block below, edit the details, and send it back to generate a link:\\n\\n```\\n/create_booking\\n• Date: 2026-08-05\\n• Guests: 3\\n• Tour: swim\\n• Pickup: ubud\\n• Time: 7:00 AM\\n• Guest Name: John Doe\\n```\\n\\n*Options:*\\n• Tour: `watching` / `swim` / `snorkel`\\n• Pickup: `none` / `ubud` / `canggu` (south Bali)\",\n  \"parse_mode\": \"Markdown\"\n}",
+          options: {}
+        },
+        id: "send-interactive-template-id",
+        name: "Send Interactive Template",
+        type: "n8n-nodes-base.httpRequest",
+        typeVersion: 4.1,
+        position: [1300, -20]
+      },
+      {
+        parameters: {
+          method: "POST",
+          url: `https://api.telegram.org/bot${botToken}/sendMessage`,
+          sendBody: true,
+          specifyBody: "json",
+          jsonBody: "={\n  \"chat_id\": \"{{ $json.chatId }}\",\n  \"text\": \"⚠️ *Invalid /pay command syntax!*\\n\\n*Usage:*\\n`/pay <date> <guests> <tour> <pickup> [time]`\\n\\n*Options:*\\n• Tour: `ethical`, `swim`, `snorkel`, `transport`\\n• Pickup: `none`, `ubud`, `canggu`\\n\\n*Or just type:* `/pay` to get a copy-paste form!\",\n  \"parse_mode\": \"Markdown\"\n}",
           options: {}
         },
         id: "send-pay-error-id",
         name: "Send Pay Usage Error",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1100, 50]
+        position: [1300, 120]
       },
       {
         parameters: {
@@ -300,14 +412,14 @@ return [{
           },
           sendBody: true,
           specifyBody: "json",
-          jsonBody: "={\n  \"tourId\": \"{{ $json.tourId }}\",\n  \"date\": \"{{ $json.date }}\",\n  \"guests\": {{ $json.guests }},\n  \"pickupLocation\": \"{{ $json.pickupLocation }}\",\n  \"tourTime\": \"{{ $json.tourTime }}\",\n  \"name\": \"Manual Telegram Booking\"\n}",
+          jsonBody: "={\n  \"tourId\": \"{{ $json.tourId }}\",\n  \"date\": \"{{ $json.date }}\",\n  \"guests\": {{ $json.guests }},\n  \"pickupLocation\": \"{{ $json.pickupLocation }}\",\n  \"tourTime\": \"{{ $json.tourTime }}\",\n  \"name\": \"{{ $json.guestName }}\"\n}",
           options: {}
         },
         id: "create-checkout-link-id",
         name: "Create Stripe Checkout Link",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1100, 230]
+        position: [1100, 250]
       },
       {
         parameters: {
@@ -322,7 +434,7 @@ return [{
         name: "Send Checkout Link",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1300, 230]
+        position: [1300, 250]
       },
       {
         parameters: {
@@ -340,7 +452,7 @@ return [{
         name: "Is Valid Reply?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [500, 350]
+        position: [500, 370]
       },
       {
         parameters: {
@@ -386,7 +498,7 @@ return [{
         name: "Parse Telegram Message",
         type: "n8n-nodes-base.code",
         typeVersion: 2,
-        position: [700, 330]
+        position: [700, 350]
       },
       {
         parameters: {
@@ -403,7 +515,7 @@ return [{
         name: "Is Media?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [900, 330]
+        position: [900, 350]
       },
       {
         parameters: {
@@ -424,7 +536,7 @@ return [{
         name: "Get Telegram File Path",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1100, 410]
+        position: [1100, 430]
       },
       {
         parameters: {
@@ -452,7 +564,7 @@ return [{
         name: "Send WhatsApp Media Message",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1300, 410]
+        position: [1300, 430]
       },
       {
         parameters: {
@@ -480,7 +592,7 @@ return [{
         name: "Send WhatsApp Text Message",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1100, 570]
+        position: [1100, 590]
       }
     ],
     connections: {
@@ -546,7 +658,7 @@ return [{
         main: [
           [
             {
-              "node": "Send Pay Usage Error",
+              "node": "Is Show Template?",
               "type": "main",
               "index": 0
             }
@@ -554,6 +666,24 @@ return [{
           [
             {
               "node": "Create Stripe Checkout Link",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is Show Template?": {
+        main: [
+          [
+            {
+              "node": "Send Interactive Template",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Send Pay Usage Error",
               "type": "main",
               "index": 0
             }

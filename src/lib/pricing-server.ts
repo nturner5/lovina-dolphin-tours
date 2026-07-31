@@ -8,16 +8,16 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 // Default static fallback pricing to prevent breaks
 export const DEFAULT_PRICING = {
   tours: [
-    { id: 'seven-am-ethical', name: '7:00 AM Private Dolphin Watching Tour', price: 812000, time: '7:00 AM' },
-    { id: 'dolphin-swim', name: '7:00 AM Private Dolphin Watching & Swimming Tour', price: 993000, time: '7:00 AM' },
-    { id: 'swim-snorkel', name: '7:00 AM Private Dolphin Watching Tour + Swim & Snorkel', price: 1173000, time: '7:00 AM' },
+    { id: 'seven-am-ethical', name: '7:00 AM Private Dolphin Watching Tour', price: 812000, priceUsd: 45, time: '7:00 AM' },
+    { id: 'dolphin-swim', name: '7:00 AM Private Dolphin Watching & Swimming Tour', price: 993000, priceUsd: 55, time: '7:00 AM' },
+    { id: 'swim-snorkel', name: '7:00 AM Private Dolphin Watching Tour + Swim & Snorkel', price: 1173000, priceUsd: 65, time: '7:00 AM' },
   ],
   pickups: [
-    { id: 'none', name: 'No Driver (Meet at Lovina Beach by 6:30 AM)', price: 0 },
-    { id: 'lovina', name: 'Free Local Shuttle (Lovina Beach Area - Pickup ~6:30 AM)', price: 0 },
-    { id: 'ubud', name: 'Ubud Round-trip Private Driver (Pickup ~4:30 AM)', price: 758000 },
-    { id: 'canggu-kuta', name: 'Canggu / Seminyak / Kuta Round-trip Private Driver (Pickup ~4:00 AM)', price: 1083000 },
-    { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Private Driver (Pickup ~3:30 AM)', price: 1408000 },
+    { id: 'none', name: 'No Driver (Meet at Lovina Beach by 6:30 AM)', price: 0, priceUsd: 0 },
+    { id: 'lovina', name: 'Free Local Shuttle (Lovina Beach Area - Pickup ~6:30 AM)', price: 0, priceUsd: 0 },
+    { id: 'ubud', name: 'Ubud Round-trip Private Driver (Pickup ~4:30 AM)', price: 758000, priceUsd: 42 },
+    { id: 'canggu-kuta', name: 'Canggu / Seminyak / Kuta Round-trip Private Driver (Pickup ~4:00 AM)', price: 1083000, priceUsd: 60 },
+    { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Private Driver (Pickup ~3:30 AM)', price: 1408000, priceUsd: 78 },
   ]
 };
 
@@ -47,16 +47,23 @@ export const getPricingData = unstable_cache(
         const isIdr = defaultPrice.currency.toLowerCase() === 'idr';
         const stripePrice = (defaultPrice.unit_amount || 0) / 100;
         
-        // If USD, convert to IDR using the 18053 exchange rate and round to the nearest 1000 IDR
-        const price = isIdr 
-          ? stripePrice 
-          : Math.round((stripePrice * 18053) / 1000) * 1000;
+        let price = 0;
+        let priceUsd = 0;
+
+        if (isIdr) {
+          price = stripePrice;
+          priceUsd = Math.round(price / 18053);
+        } else {
+          priceUsd = stripePrice;
+          price = Math.round((priceUsd * 18053) / 1000) * 1000;
+        }
 
         if (product.metadata.tour_id) {
           tours.push({
             id: product.metadata.tour_id,
             name: product.name,
             price: price,
+            priceUsd: priceUsd,
             priceId: defaultPrice.id,
             time: product.metadata.time || '7:00 AM',
           });
@@ -65,6 +72,7 @@ export const getPricingData = unstable_cache(
             id: product.metadata.pickup_id,
             name: product.name,
             price: price,
+            priceUsd: priceUsd,
             priceId: defaultPrice.id,
           });
         }

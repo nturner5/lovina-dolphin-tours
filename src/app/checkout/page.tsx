@@ -55,20 +55,26 @@ const getBaliDateString = (offsetDays = 0) => {
   return `${y}-${m}-${d}`;
 };
 
-const formatPrice = (idrAmount: number, showEstimate = true) => {
-  if (idrAmount === 0) return 'Free';
-  const idrStr = `Rp ${idrAmount.toLocaleString('id-ID')}`;
-  if (!showEstimate) return idrStr;
-  const usdEst = Math.round(idrAmount / 18053);
-  return `${idrStr} (~$${usdEst} USD)`;
-};
-
 function CheckoutForm() {
   const locale = useLocale();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [loading, setLoading] = useState(false);
   const [tours, setTours] = useState(DEFAULT_TOURS);
   const [pickupOptions, setPickupOptions] = useState(DEFAULT_PICKUP_OPTIONS);
+  const [billingCurrency, setBillingCurrency] = useState<'idr' | 'usd'>('idr');
+
+  const formatPrice = (idrAmount: number, showEstimate = true) => {
+    if (idrAmount === 0) return 'Free';
+    const usdAmount = Math.round(idrAmount / 18053);
+    
+    if (billingCurrency === 'idr') {
+      const idrStr = `Rp ${idrAmount.toLocaleString('id-ID')}`;
+      return showEstimate ? `${idrStr} (~$${usdAmount} USD)` : idrStr;
+    } else {
+      const usdStr = `$${usdAmount} USD`;
+      return showEstimate ? `${usdStr} (~Rp ${idrAmount.toLocaleString('id-ID')} IDR)` : usdStr;
+    }
+  };
 
   const [formData, setFormData] = useState({
     tourId: DEFAULT_TOURS[0].id,
@@ -116,13 +122,13 @@ function CheckoutForm() {
           if (data.tours && data.tours.length > 0) {
             setTours(prev => prev.map(pt => {
               const matched = data.tours.find((dt: any) => dt.id === pt.id);
-              return matched ? { ...pt, price: matched.price } : pt;
+              return matched ? { ...pt, price: matched.price, priceUsd: matched.priceUsd } : pt;
             }));
           }
           if (data.pickups && data.pickups.length > 0) {
             setPickupOptions(prev => prev.map(po => {
               const matched = data.pickups.find((dp: any) => dp.id === po.id);
-              return matched ? { ...po, price: matched.price } : po;
+              return matched ? { ...po, price: matched.price, priceUsd: matched.priceUsd } : po;
             }));
           }
         }
@@ -253,6 +259,7 @@ function CheckoutForm() {
           whatsappNumber: whatsappNumber,
           tourName: selectedTour.name,
           price: selectedTour.price,
+          billingCurrency: billingCurrency,
         }),
       });
 
@@ -404,9 +411,36 @@ function CheckoutForm() {
       {step === 1 && (
         <div className="space-y-6 animate-in fade-in duration-300">
           <div className="space-y-4">
-            <label className="block text-xs font-bold uppercase tracking-widest text-deep-indigo/70">
-              Select Private Package
-            </label>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <label className="block text-xs font-bold uppercase tracking-widest text-deep-indigo/70">
+                Select Private Package
+              </label>
+              
+              <div className="bg-deep-indigo/5 p-1 rounded-xl flex items-center border border-deep-indigo/10 self-start sm:self-auto">
+                <button
+                  type="button"
+                  onClick={() => setBillingCurrency('idr')}
+                  className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                    billingCurrency === 'idr' 
+                      ? 'bg-deep-indigo text-white shadow-sm' 
+                      : 'text-deep-indigo/60 hover:text-deep-indigo'
+                  }`}
+                >
+                  Pay in IDR (Rp)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setBillingCurrency('usd')}
+                  className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                    billingCurrency === 'usd' 
+                      ? 'bg-deep-indigo text-white shadow-sm' 
+                      : 'text-deep-indigo/60 hover:text-deep-indigo'
+                  }`}
+                >
+                  Pay in USD ($)
+                </button>
+              </div>
+            </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {tours.map(tour => {

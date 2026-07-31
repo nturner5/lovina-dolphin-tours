@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(req: Request) {
   try {
-    const { tourId, date, guests, pickupLocation, whatsappNumber, hotelDetails } = await req.json();
+    const { tourId, date, guests, pickupLocation, whatsappNumber, hotelDetails, billingCurrency = 'idr' } = await req.json();
 
     // Fetch dynamic pricing data from the cache / Stripe
     const pricing = await getPricingData();
@@ -25,8 +25,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: `Invalid pickup choice: ${pickupLocation}` }, { status: 400 });
     }
 
+    const currency = billingCurrency.toLowerCase() === 'usd' ? 'usd' : 'idr';
+
     // Calculate pickup price and name
-    const pickupFee = pickup.price;
+    const pickupFee = currency === 'usd' ? (pickup.priceUsd || 0) : (pickup.price || 0);
+    const tourPrice = currency === 'usd' ? (tour.priceUsd || 0) : (tour.price || 0);
     const pickupName = pickup.name;
     const pickupDesc = pickupLocation === 'none'
       ? 'No transfer selected. Meet at the beach.'
@@ -35,12 +38,12 @@ export async function POST(req: Request) {
     const lineItems: any[] = [
       {
         price_data: {
-          currency: 'idr',
+          currency: currency,
           product_data: {
             name: `${tour.name} (Private Boat)`,
             description: `Ethical Dolphin Tour for ${guests} guests on ${date}`,
           },
-          unit_amount: tour.price * 100, // Stripe expects IDR in cents/sen (two-decimals)
+          unit_amount: tourPrice * 100, // Stripe expects USD/IDR in sub-units (cents/sen)
         },
         // Enforce guest count scaling by using quantity
         quantity: Math.max(2, Number(guests) || 2),
@@ -51,12 +54,12 @@ export async function POST(req: Request) {
     if (pickupFee > 0) {
       lineItems.push({
         price_data: {
-          currency: 'idr',
+          currency: currency,
           product_data: {
             name: pickupName,
             description: pickupDesc,
           },
-          unit_amount: pickupFee * 100, // Stripe expects IDR in cents/sen (two-decimals)
+          unit_amount: pickupFee * 100, // Stripe expects USD/IDR in sub-units (cents/sen)
         },
         quantity: 1,
       });

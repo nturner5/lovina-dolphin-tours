@@ -24,7 +24,7 @@ function loadEnvLocal() {
 }
 
 async function main() {
-  console.log('🔄 Upgrading Telegram-to-WhatsApp Support Bridge with /pay interactive checkout flow...');
+  console.log('🔄 Upgrading Telegram-to-WhatsApp Support Bridge with /quote generator...');
   const env = loadEnvLocal();
   
   const apiKey = env['N8N_API_KEY'];
@@ -108,7 +108,7 @@ async function main() {
   }
 
   // ==========================================
-  // STEP 2: Create Upgraded Telegram Reply Bridge Workflow (With Command Dispatcher & Checkout Generator)
+  // STEP 2: Create Upgraded Telegram Reply Bridge Workflow (With Command Dispatcher, /pay & /quote)
   // ==========================================
   console.log('\n- Creating Telegram Reply & Checkout Bridge workflow...');
   
@@ -135,20 +135,23 @@ if (!message) {
     json: {
       isCommand: false,
       isDraft: false,
+      isQuote: false,
       isReply: false
     }
   }];
 }
 
 const text = message.text || '';
-const isCommand = /^\\/(draft|template|pay|link|create_booking)/i.test(text);
+const isCommand = /^\\/(draft|template|pay|link|create_booking|quote)/i.test(text);
 const isDraft = /^\\/(draft|template)/i.test(text);
+const isQuote = /^\\/quote/i.test(text);
 const isReply = !!(message.reply_to_message?.text && message.reply_to_message.text.match(/📞 Phone:\\s*\\+?(\\d+)/));
 
 return [{
   json: {
     isCommand,
     isDraft,
+    isQuote,
     isReply,
     body: items[0].json.body
   }
@@ -196,18 +199,191 @@ return [{
       },
       {
         parameters: {
+          conditions: {
+            boolean: [
+              {
+                value1: "={{ $json.isQuote }}",
+                value2: true
+              }
+            ]
+          }
+        },
+        id: "is-quote-cmd-id",
+        name: "Is /quote Command?",
+        type: "n8n-nodes-base.if",
+        typeVersion: 1,
+        position: [700, 200]
+      },
+      {
+        parameters: {
           method: "POST",
           url: `https://api.telegram.org/bot${botToken}/sendMessage`,
           sendBody: true,
           specifyBody: "json",
-          jsonBody: "={\n  \"chat_id\": \"{{ $json.body.message.chat.id }}\",\n  \"text\": \"📋 *Captain & Driver Templates* (Tap code blocks to copy):\\n\\n*1. Captain Availability Check*\\n```\\nHello, do you have an available private boat for a customer of mine for a dolphin tour?\\n\\n• Date: \\n• Time:  (7:00 AM / 8:00 AM)\\n• Guests:  people (Private boat)\\n• Package: \\n• Transport: \\n• Breakfast: Coffee and fruit included\\n\\nAre you available to run this? Thanks!\\n```\\n\\n*2. Confirmed Booking Details (Captain)*\\n```\\nThanks. Here are the guest details:\\n\\n• Tour Time: \\n• Guest Name: \\n• Total:  people (Private boat tour)\\n• Package: \\n• Breakfast: Coffee and fruit included\\n• Guest WA Contact: \\n\\n*Driver Pickup:*\\n• Pickup Location: \\n• Pickup Time: \\n\\nPlease let me know once you have contacted the guest. Thanks!\\n```\\n\\n*3. Driver Request (English)*\\n```\\nHello, do you have an available driver for a customer transfer?\\n\\n• Date: \\n• Route: \\n• Pickup Time: \\n• Guest Name: \\n• Guest WA Contact: \\n• Pickup Location: \\n• Drop Location: \\n• Note: The customer will likely stop at 2-3 sightseeing spots along the way.\\n\\nCan you do this route? Thanks!\\n```\\n\\n*4. Driver Request (Bahasa Indonesia)*\\n```\\nHalo Bli, ada driver kosong untuk transfer tamu?\\n\\n• Tanggal: \\n• Rute: \\n• Jam Jemput: \\n• Nama Tamu: \\n• Kontak WA Tamu: \\n• Lokasi Jemput: \\n• Lokasi Drop: \\n• Catatan: Tamu kemungkinan akan berhenti di 2-3 tempat wisata di perjalanan.\\n\\nBisa jalan Bli? Suksma! 🚗\\n```\",\n  \"parse_mode\": \"Markdown\"\n}",
+          jsonBody: "={\n  \"chat_id\": \"{{ $json.body.message.chat.id }}\",\n  \"text\": \"📋 *Captain & Driver Templates* (Tap code blocks to copy):\\n\\n*1. Captain Availability Check*\\n```\\nHello, do you have an available private boat for a customer of mine for a dolphin tour?\\n\\n• Date: \\n• Time:  (7:00 AM / 8:00 AM)\\n• Guests:   people (Private boat)\\n• Package: \\n• Transport: \\n• Breakfast: Coffee and fruit included\\n\\nAre you available to run this? Thanks!\\n```\\n\\n*2. Confirmed Booking Details (Captain)*\\n```\\nThanks. Here are the guest details:\\n\\n• Tour Time: \\n• Guest Name: \\n• Total:  people (Private boat tour)\\n• Package: \\n• Breakfast: Coffee and fruit included\\n• Guest WA Contact: \\n\\n*Driver Pickup:*\\n• Pickup Location: \\n• Pickup Time: \\n\\nPlease let me know once you have contacted the guest. Thanks!\\n```\\n\\n*3. Driver Request (English)*\\n```\\nHello, do you have an available driver for a customer transfer?\\n\\n• Date: \\n• Route: \\n• Pickup Time: \\n• Guest Name: \\n• Guest WA Contact: \\n• Pickup Location: \\n• Drop Location: \\n• Note: The customer will likely stop at 2-3 sightseeing spots along the way.\\n\\nCan you do this route? Thanks!\\n```\\n\\n*4. Driver Request (Bahasa Indonesia)*\\n```\\nHalo Bli, ada driver kosong untuk transfer tamu?\\n\\n• Tanggal: \\n• Rute: \\n• Jam Jemput: \\n• Nama Tamu: \\n• Kontak WA Tamu: \\n• Lokasi Jemput: \\n• Lokasi Drop: \\n• Catatan: Tamu kemungkinan akan berhenti di 2-3 tempat wisata di perjalanan.\\n\\nBisa jalan Bli? Suksma! 🚗\\n```\",\n  \"parse_mode\": \"Markdown\"\n}",
           options: {}
         },
         id: "send-templates-id",
         name: "Send WhatsApp Templates",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [900, -30]
+        position: [900, -50]
+      },
+      {
+        parameters: {
+          jsCode: `const message = items[0].json.body?.message;
+if (!message) return [];
+
+const text = message.text || '';
+const args = text.split(/\\s+/).slice(1);
+
+if (args.length === 0) {
+  return [{
+    json: {
+      error: 'show_template',
+      chatId: message.chat.id
+    }
+  }];
+}
+
+if (args.length < 3) {
+  return [{
+    json: {
+      error: 'usage',
+      chatId: message.chat.id
+    }
+  }];
+}
+
+const tourNum = Number(args[0]);
+const guests = Number(args[1]);
+const transNum = Number(args[2]);
+
+if (isNaN(tourNum) || isNaN(guests) || isNaN(transNum)) {
+  return [{
+    json: {
+      error: 'usage',
+      chatId: message.chat.id
+    }
+  }];
+}
+
+let tourName = '';
+let tourPrice = 0;
+if (tourNum === 1) {
+  tourName = 'Dolphin Watching Tour';
+  tourPrice = 45;
+} else if (tourNum === 2) {
+  tourName = 'Dolphin Watching & Swimming Tour';
+  tourPrice = 55;
+} else if (tourNum === 3) {
+  tourName = 'Dolphin Watching Tour + Swim & Snorkel';
+  tourPrice = 65;
+} else {
+  return [{
+    json: {
+      error: 'invalid_tour',
+      chatId: message.chat.id
+    }
+  }];
+}
+
+let pickupName = '';
+let pickupPrice = 0;
+let hasTransport = false;
+
+if (transNum === 0) {
+  pickupName = 'No Driver (Lovina Beach Area)';
+  pickupPrice = 0;
+} else if (transNum === 1) {
+  pickupName = 'Ubud Round-trip Private Driver';
+  pickupPrice = 42;
+  hasTransport = true;
+} else if (transNum === 2) {
+  pickupName = 'Canggu / Seminyak / Kuta Round-trip Private Driver';
+  pickupPrice = 60;
+  hasTransport = true;
+} else if (transNum === 3) {
+  pickupName = 'Uluwatu / Nusa Dua Round-trip Private Driver';
+  pickupPrice = 78;
+  hasTransport = true;
+} else {
+  return [{
+    json: {
+      error: 'invalid_pickup',
+      chatId: message.chat.id
+    }
+  }];
+}
+
+const usdTotal = (tourPrice * guests) + pickupPrice;
+const idrTotal = usdTotal * 18053;
+const idrFormatted = 'Rp ' + (Math.round(idrTotal / 1000) * 1000).toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\");
+
+return [{
+  json: {
+    chatId: message.chat.id,
+    tourName,
+    guests,
+    pickupName,
+    hasTransport,
+    usdTotal,
+    idrFormatted
+  }
+}];`
+        },
+        id: "parse-quote-cmd-id",
+        name: "Parse Quote Command",
+        type: "n8n-nodes-base.code",
+        typeVersion: 2,
+        position: [900, 200]
+      },
+      {
+        parameters: {
+          conditions: {
+            string: [
+              {
+                value1: "={{ $json.error }}",
+                operation: "isNotEmpty"
+              }
+            ]
+          }
+        },
+        id: "has-quote-error-id",
+        name: "Has Quote Error?",
+        type: "n8n-nodes-base.if",
+        typeVersion: 1,
+        position: [1100, 200]
+      },
+      {
+        parameters: {
+          method: "POST",
+          url: `https://api.telegram.org/bot${botToken}/sendMessage`,
+          sendBody: true,
+          specifyBody: "json",
+          jsonBody: "={\n  \"chat_id\": \"{{ $json.chatId }}\",\n  \"text\": \"📋 *Dolphin Tour Quote Helper*\\n\\n*Usage:*\\n`/quote <tour_num> <guests> <transport_num>`\\n\\n*Tours:*\\n• `1`: Dolphin Watching ($45/person)\\n• `2`: Watching & Swimming ($55/person)\\n• `3`: Watch, Swim & Snorkel ($65/person)\\n\\n*Transport:*\\n• `0`: None (beach meet)\\n• `1`: Ubud ($42 roundtrip)\\n• `2`: South Bali (Canggu/Kuta/Airport) ($60 roundtrip)\\n• `3`: Uluwatu ($78 roundtrip)\\n\\n*Example:*\\n`/quote 2 3 1` (3 guests, Swim tour, Ubud pickup)\",\n  \"parse_mode\": \"Markdown\"\n}",
+          options: {}
+        },
+        id: "send-quote-error-id",
+        name: "Send Quote Usage Error",
+        type: "n8n-nodes-base.httpRequest",
+        typeVersion: 4.1,
+        position: [1300, 100]
+      },
+      {
+        parameters: {
+          method: "POST",
+          url: `https://api.telegram.org/bot${botToken}/sendMessage`,
+          sendBody: true,
+          specifyBody: "json",
+          jsonBody: "={\n  \"chat_id\": \"{{ $json.chatId }}\",\n  \"text\": \"📋 *Bali Dolphin Tours: Custom Quote*\\n\\nHere is your private tour itinerary and pricing summary:\\n\\n• *Package*: 7:00 AM Private {{ $json.tourName }}\\n• *Guests*: {{ $json.guests }} people (Private Boat)\\n• *Transport*: {{ $json.pickupName }}\\n\\n💰 *Total Pricing Summary:*\\n• *USD Price*: **${{ $json.usdTotal }} USD**\\n• *IDR Price*: **{{ $json.idrFormatted }} IDR** (Roughly)\\n\\n✨ *Special Inclusions (For Free!):*\\n{{ $json.hasTransport ? '🚗 *Free Scenic Road Trip Stops:*\\\\nSince you booked private transport, you get up to 3 free sightseeing stops on the way back (e.g. Beratan Lake Temple, waterfalls, or coffee farms)!\\\\n👉 Read more: https://balidolphintours.com/blog/canggu-to-lovina-3-day-roadtrip\\\\n\\\\n' : '' }}🌅 *Private Boat Charter:*\\nYour boat is 100% private. No strangers, just your group and a peaceful, non-intrusive parallel dolphin encounter.\\n\\nBook direct with us on WhatsApp or get your custom link:\\nhttps://wa.me/6285190422839\",\n  \"parse_mode\": \"Markdown\"\n}",
+          options: {}
+        },
+        id: "send-quote-msg-id",
+        name: "Send Quote Message",
+        type: "n8n-nodes-base.httpRequest",
+        typeVersion: 4.1,
+        position: [1300, 240]
       },
       {
         parameters: {
@@ -287,7 +463,6 @@ if (text.includes('/create_booking')) {
 // Handle positional command /pay <date> <guests> <tour> <pickup> [time]
 const args = text.split(/\\s+/).slice(1);
 if (args.length === 0) {
-  // Return interactive template response
   return [{
     json: {
       error: 'show_template',
@@ -357,7 +532,7 @@ return [{
         name: "Parse Pay Command",
         type: "n8n-nodes-base.code",
         typeVersion: 2,
-        position: [900, 150]
+        position: [900, 500]
       },
       {
         parameters: {
@@ -374,7 +549,7 @@ return [{
         name: "Has Parse Error?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [1100, 150]
+        position: [1100, 500]
       },
       {
         parameters: {
@@ -391,7 +566,7 @@ return [{
         name: "Is Show Template?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [1300, 50]
+        position: [1300, 400]
       },
       {
         parameters: {
@@ -406,7 +581,7 @@ return [{
         name: "Send Interactive Template",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1500, -20]
+        position: [1500, 330]
       },
       {
         parameters: {
@@ -421,7 +596,7 @@ return [{
         name: "Send Pay Usage Error",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1500, 120]
+        position: [1500, 470]
       },
       {
         parameters: {
@@ -449,7 +624,7 @@ return [{
         name: "Create Stripe Checkout Link",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1300, 250]
+        position: [1300, 600]
       },
       {
         parameters: {
@@ -464,7 +639,7 @@ return [{
         name: "Send Checkout Link",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1500, 250]
+        position: [1500, 600]
       },
       {
         parameters: {
@@ -481,7 +656,7 @@ return [{
         name: "Is Valid Reply?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [500, 370]
+        position: [500, 750]
       },
       {
         parameters: {
@@ -527,7 +702,7 @@ return [{
         name: "Parse Telegram Message",
         type: "n8n-nodes-base.code",
         typeVersion: 2,
-        position: [700, 350]
+        position: [700, 730]
       },
       {
         parameters: {
@@ -544,7 +719,7 @@ return [{
         name: "Is Media?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [900, 350]
+        position: [900, 730]
       },
       {
         parameters: {
@@ -565,7 +740,7 @@ return [{
         name: "Get Telegram File Path",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1100, 430]
+        position: [1100, 810]
       },
       {
         parameters: {
@@ -593,7 +768,7 @@ return [{
         name: "Send WhatsApp Media Message",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1300, 430]
+        position: [1300, 810]
       },
       {
         parameters: {
@@ -621,7 +796,7 @@ return [{
         name: "Send WhatsApp Text Message",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1100, 590]
+        position: [1100, 970]
       }
     ],
     connections: {
@@ -676,7 +851,54 @@ return [{
           ],
           [
             {
+              "node": "Is /quote Command?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is /quote Command?": {
+        main: [
+          [
+            {
+              "node": "Parse Quote Command",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
               "node": "Parse Pay Command",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Parse Quote Command": {
+        main: [
+          [
+            {
+              "node": "Has Quote Error?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Has Quote Error?": {
+        main: [
+          [
+            {
+              "node": "Send Quote Usage Error",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Send Quote Message",
               "type": "main",
               "index": 0
             }

@@ -950,13 +950,13 @@ export default function AdminDashboard() {
                   onChange={(e) => setManualForm({ ...manualForm, tourId: e.target.value as any })}
                 >
                   <option value="seven-am-ethical">
-                    7:00 AM Private Dolphin watching (${pricingData.tours.find((t: any) => t.id === 'seven-am-ethical')?.price || 45}/person)
+                    7:00 AM Private Dolphin watching (Rp {pricingData.tours.find((t: any) => t.id === 'seven-am-ethical')?.price?.toLocaleString('id-ID') || '812.000'}/person)
                   </option>
                   <option value="dolphin-swim">
-                    7:00 AM Private Dolphin + Swim (${pricingData.tours.find((t: any) => t.id === 'dolphin-swim')?.price || 55}/person)
+                    7:00 AM Private Dolphin + Swim (Rp {pricingData.tours.find((t: any) => t.id === 'dolphin-swim')?.price?.toLocaleString('id-ID') || '993.000'}/person)
                   </option>
                   <option value="swim-snorkel">
-                    7:00 AM Private Dolphin + Swim & Snorkel (${pricingData.tours.find((t: any) => t.id === 'swim-snorkel')?.price || 65}/person)
+                    7:00 AM Private Dolphin + Swim & Snorkel (Rp {pricingData.tours.find((t: any) => t.id === 'swim-snorkel')?.price?.toLocaleString('id-ID') || '1.173.000'}/person)
                   </option>
                 </select>
               </div>
@@ -969,9 +969,9 @@ export default function AdminDashboard() {
                 >
                   <option value="none">No Driver (Self-Drive Meetup)</option>
                   <option value="lovina">Free Local Shuttle (~7:30 AM)</option>
-                  <option value="ubud">Ubud Return Transfer (+${pricingData.pickups.find((p: any) => p.id === 'ubud')?.price || 42})</option>
-                  <option value="canggu-kuta">Canggu/Kuta Return Transfer (+${pricingData.pickups.find((p: any) => p.id === 'canggu-kuta')?.price || 60})</option>
-                  <option value="uluwatu">Uluwatu Return Transfer (+${pricingData.pickups.find((p: any) => p.id === 'uluwatu')?.price || 78})</option>
+                  <option value="ubud">Ubud Return Transfer (+Rp {pricingData.pickups.find((p: any) => p.id === 'ubud')?.price?.toLocaleString('id-ID') || '758.000'})</option>
+                  <option value="canggu-kuta">Canggu/Kuta Return Transfer (+Rp {pricingData.pickups.find((p: any) => p.id === 'canggu-kuta')?.price?.toLocaleString('id-ID') || '1.083.000'})</option>
+                  <option value="uluwatu">Uluwatu Return Transfer (+Rp {pricingData.pickups.find((p: any) => p.id === 'uluwatu')?.price?.toLocaleString('id-ID') || '1.408.000'})</option>
                 </select>
               </div>
               <div className="sm:col-span-2">
@@ -1052,15 +1052,18 @@ export default function AdminDashboard() {
                 <div className="border-l border-deep-indigo/10 pl-6">
                   <span className="block text-[9px] font-bold uppercase tracking-widest text-deep-indigo/40 mb-1">Calculated Price</span>
                   <span className="text-xl font-serif font-bold text-transformative-teal">
-                    ${((manualForm.customTourPrice !== ''
-                        ? Number(manualForm.customTourPrice)
-                        : (pricingData.tours.find((t: any) => t.id === manualForm.tourId)?.price ||
-                           (manualForm.tourId === 'seven-am-ethical' ? 45 : manualForm.tourId === 'dolphin-swim' ? 55 : 65))
-                      ) * Number(manualForm.guests)) +
-                      (manualForm.customPickupPrice !== ''
-                        ? Number(manualForm.customPickupPrice)
-                        : (pricingData.pickups.find((p: any) => p.id === manualForm.pickupLocation)?.price || 0)
-                      )} USD
+                    {(() => {
+                      const totalIdr = ((manualForm.customTourPrice !== ''
+                          ? Number(manualForm.customTourPrice)
+                          : (pricingData.tours.find((t: any) => t.id === manualForm.tourId)?.price ||
+                             (manualForm.tourId === 'seven-am-ethical' ? 812000 : manualForm.tourId === 'dolphin-swim' ? 993000 : 1173000))
+                        ) * Number(manualForm.guests)) +
+                        (manualForm.customPickupPrice !== ''
+                          ? Number(manualForm.customPickupPrice)
+                          : (pricingData.pickups.find((p: any) => p.id === manualForm.pickupLocation)?.price || 0)
+                        );
+                      return `Rp ${totalIdr.toLocaleString('id-ID')} (~$${Math.round(totalIdr / 18053)} USD)`;
+                    })()}
                   </span>
                 </div>
               </div>

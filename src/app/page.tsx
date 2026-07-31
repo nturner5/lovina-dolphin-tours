@@ -484,12 +484,15 @@ export default async function Home({ searchParams }: PageProps) {
                     <p className="text-xs text-deep-indigo/50 font-light uppercase tracking-widest">{t("tour1Subtitle", locale)}</p>
                   </div>
 
-                  <div className="flex items-baseline gap-2 border-b border-deep-indigo/5 pb-5">
-                    <span className="text-3xl font-bold text-deep-indigo">${tour1Price}</span>
-                    <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
-                    <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
-                      {t("tour1MinGuests", locale)}
-                    </span>
+                  <div className="flex flex-col gap-0.5 border-b border-deep-indigo/5 pb-5 w-full">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl sm:text-3xl font-bold text-deep-indigo">Rp {tour1Price.toLocaleString('id-ID')}</span>
+                      <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
+                      <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
+                        {t("tour1MinGuests", locale)}
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-light text-deep-indigo/50">(~${Math.round(tour1Price / 18053)} USD)</span>
                   </div>
 
                   <div className="space-y-4">
@@ -541,7 +544,7 @@ export default async function Home({ searchParams }: PageProps) {
                   id="cta-select-ethical-tour-home"
                   className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md active:scale-98"
                 >
-                  {t("tour1Btn", locale)} (${tour1Price})
+                  {t("tour1Btn", locale)} (Rp {tour1Price.toLocaleString('id-ID')})
                 </Link>
               </div>
             </div>
@@ -569,12 +572,15 @@ export default async function Home({ searchParams }: PageProps) {
                     <p className="text-xs text-deep-indigo/50 font-light uppercase tracking-widest">{t("tour1_5Subtitle", locale)}</p>
                   </div>
 
-                  <div className="flex items-baseline gap-2 border-b border-deep-indigo/5 pb-5">
-                    <span className="text-3xl font-bold text-deep-indigo">${tour2Price}</span>
-                    <span className="text-sm font-light text-deep-indigo/60">{t("tour1_5PriceDesc", locale)}</span>
-                    <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
-                      {t("tour1_5MinGuests", locale)}
-                    </span>
+                  <div className="flex flex-col gap-0.5 border-b border-deep-indigo/5 pb-5 w-full">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl sm:text-3xl font-bold text-deep-indigo">Rp {tour2Price.toLocaleString('id-ID')}</span>
+                      <span className="text-sm font-light text-deep-indigo/60">{t("tour1_5PriceDesc", locale)}</span>
+                      <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
+                        {t("tour1_5MinGuests", locale)}
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-light text-deep-indigo/50">(~${Math.round(tour2Price / 18053)} USD)</span>
                   </div>
 
                   <div className="space-y-4">
@@ -626,7 +632,7 @@ export default async function Home({ searchParams }: PageProps) {
                   id="cta-select-swim-tour-home"
                   className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md active:scale-98"
                 >
-                  {t("tour1_5Btn", locale)} (${tour2Price})
+                  {t("tour1_5Btn", locale)} (Rp {tour2Price.toLocaleString('id-ID')})
                 </Link>
               </div>
             </div>
@@ -658,12 +664,15 @@ export default async function Home({ searchParams }: PageProps) {
                     <p className="text-xs text-transformative-teal font-bold uppercase tracking-widest">{t("tour2Subtitle", locale)}</p>
                   </div>
 
-                  <div className="flex items-baseline gap-2 border-b border-deep-indigo/5 pb-5">
-                    <span className="text-3xl font-bold text-deep-indigo">${tour3Price}</span>
-                    <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
-                    <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
-                      {t("tour1MinGuests", locale)}
-                    </span>
+                  <div className="flex flex-col gap-0.5 border-b border-deep-indigo/5 pb-5 w-full">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl sm:text-3xl font-bold text-deep-indigo">Rp {tour3Price.toLocaleString('id-ID')}</span>
+                      <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
+                      <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
+                        {t("tour1MinGuests", locale)}
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-light text-deep-indigo/50">(~${Math.round(tour3Price / 18053)} USD)</span>
                   </div>
 
                   <div className="space-y-4">
@@ -718,7 +727,7 @@ export default async function Home({ searchParams }: PageProps) {
                   className="block w-full bg-coral-pop text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-98 relative group"
                 >
                   <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75 pointer-events-none"></span>
-                  {t("tour2Btn", locale)} (${tour3Price})
+                  {t("tour2Btn", locale)} (Rp {tour3Price.toLocaleString('id-ID')})
                 </Link>
               </div>
             </div>

@@ -35,12 +35,12 @@ export async function POST(req: Request) {
     const lineItems: any[] = [
       {
         price_data: {
-          currency: 'usd',
+          currency: 'idr',
           product_data: {
             name: `${tour.name} (Private Boat)`,
             description: `Ethical Dolphin Tour for ${guests} guests on ${date}`,
           },
-          unit_amount: tour.price * 100, // Secure price from Stripe cache
+          unit_amount: tour.price, // IDR is zero-decimal
         },
         // Enforce guest count scaling by using quantity
         quantity: Math.max(2, Number(guests) || 2),
@@ -51,12 +51,12 @@ export async function POST(req: Request) {
     if (pickupFee > 0) {
       lineItems.push({
         price_data: {
-          currency: 'usd',
+          currency: 'idr',
           product_data: {
             name: pickupName,
             description: pickupDesc,
           },
-          unit_amount: pickupFee * 100, // Secure price from Stripe cache
+          unit_amount: pickupFee, // IDR is zero-decimal
         },
         quantity: 1,
       });

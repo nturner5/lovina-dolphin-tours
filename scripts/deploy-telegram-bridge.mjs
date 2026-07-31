@@ -273,15 +273,15 @@ let tourPrice = 0;
 let checkoutUrl = '';
 if (tourNum === 1) {
   tourName = 'Dolphin Watching Tour';
-  tourPrice = 45;
+  tourPrice = 812000;
   checkoutUrl = 'https://www.balidolphintours.com/checkout?tour=seven-am-ethical';
 } else if (tourNum === 2) {
   tourName = 'Dolphin Watching & Swimming Tour';
-  tourPrice = 55;
+  tourPrice = 993000;
   checkoutUrl = 'https://www.balidolphintours.com/checkout?tour=dolphin-swim';
 } else if (tourNum === 3) {
   tourName = 'Dolphin Watching Tour + Swim & Snorkel';
-  tourPrice = 65;
+  tourPrice = 1173000;
   checkoutUrl = 'https://www.balidolphintours.com/checkout?tour=swim-snorkel';
 } else {
   return [{
@@ -301,15 +301,15 @@ if (transNum === 0) {
   pickupPrice = 0;
 } else if (transNum === 1) {
   pickupName = 'Ubud Round-trip Private Driver';
-  pickupPrice = 42;
+  pickupPrice = 758000;
   hasTransport = true;
 } else if (transNum === 2) {
   pickupName = 'Canggu / Seminyak / Kuta Round-trip Private Driver';
-  pickupPrice = 60;
+  pickupPrice = 1083000;
   hasTransport = true;
 } else if (transNum === 3) {
   pickupName = 'Uluwatu / Nusa Dua Round-trip Private Driver';
-  pickupPrice = 78;
+  pickupPrice = 1408000;
   hasTransport = true;
 } else {
   return [{
@@ -320,9 +320,9 @@ if (transNum === 0) {
   }];
 }
 
-const usdTotal = (tourPrice * guests) + pickupPrice;
-const idrTotal = usdTotal * 18053;
-const idrFormatted = 'Rp ' + (Math.round(idrTotal / 1000) * 1000).toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\");
+const idrTotal = (tourPrice * guests) + pickupPrice;
+const usdTotal = Math.round(idrTotal / 18053);
+const idrFormatted = 'Rp ' + idrTotal.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\");
 
 return [{
   json: {

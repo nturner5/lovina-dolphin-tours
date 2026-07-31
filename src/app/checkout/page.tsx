@@ -13,7 +13,7 @@ const DEFAULT_TOURS = [
   { 
     id: 'seven-am-ethical', 
     name: '7:00 AM Private Dolphin Watching Tour', 
-    price: 45, 
+    price: 812000, 
     time: '7:00 AM',
     badge: '🐬 Dolphin Watching',
     image: '/hero_dolphins.png'
@@ -21,7 +21,7 @@ const DEFAULT_TOURS = [
   { 
     id: 'dolphin-swim', 
     name: '7:00 AM Private Dolphin Watching & Swimming Tour', 
-    price: 55, 
+    price: 993000, 
     time: '7:00 AM',
     badge: '🏊 Open Sea Swim',
     image: '/dolphin_plus_swim.png'
@@ -29,7 +29,7 @@ const DEFAULT_TOURS = [
   { 
     id: 'swim-snorkel', 
     name: '7:00 AM Private Dolphin Watching Tour + Swim & Snorkel', 
-    price: 65, 
+    price: 1173000, 
     time: '7:00 AM',
     badge: '🐢 Recommended',
     image: '/snorkeling_lovina_realistic.jpg'
@@ -39,9 +39,9 @@ const DEFAULT_TOURS = [
 const DEFAULT_PICKUP_OPTIONS = [
   { id: 'none', name: 'No Driver (Meet at Lovina Beach by 6:30 AM)', price: 0, icon: '⛵', note: 'Self-Drive to Beach' },
   { id: 'lovina', name: 'Free Local Shuttle (Lovina Beach Area)', price: 0, icon: '🛺', note: 'Within 2km of Beach' },
-  { id: 'ubud', name: 'Ubud Round-trip Private Driver (~4:30 AM Pickup)', price: 42, icon: '🌴', note: 'Flat rate per SUV (up to 4 guests) — Includes free scenic stopovers on return trip' },
-  { id: 'canggu-kuta', name: 'Canggu / Seminyak / Kuta Round-trip Driver (~4:00 AM Pickup)', price: 60, icon: '🏖️', note: 'Flat rate per SUV (up to 4 guests) — Includes free scenic stopovers on return trip' },
-  { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Driver (~3:30 AM Pickup)', price: 78, icon: '🌊', note: 'Flat rate per SUV (up to 4 guests) — Includes free scenic stopovers on return trip' },
+  { id: 'ubud', name: 'Ubud Round-trip Private Driver (~4:30 AM Pickup)', price: 758000, icon: '🌴', note: 'Flat rate per SUV (up to 4 guests) — Includes free scenic stopovers on return trip' },
+  { id: 'canggu-kuta', name: 'Canggu / Seminyak / Kuta Round-trip Driver (~4:00 AM Pickup)', price: 1083000, icon: '🏖️', note: 'Flat rate per SUV (up to 4 guests) — Includes free scenic stopovers on return trip' },
+  { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Driver (~3:30 AM Pickup)', price: 1408000, icon: '🌊', note: 'Flat rate per SUV (up to 4 guests) — Includes free scenic stopovers on return trip' },
 ];
 
 const getBaliDateString = (offsetDays = 0) => {
@@ -53,6 +53,14 @@ const getBaliDateString = (offsetDays = 0) => {
   const m = String(tzDate.getMonth() + 1).padStart(2, '0');
   const d = String(tzDate.getDate()).padStart(2, '0');
   return `${y}-${m}-${d}`;
+};
+
+const formatPrice = (idrAmount: number, showEstimate = true) => {
+  if (idrAmount === 0) return 'Free';
+  const idrStr = `Rp ${idrAmount.toLocaleString('id-ID')}`;
+  if (!showEstimate) return idrStr;
+  const usdEst = Math.round(idrAmount / 18053);
+  return `${idrStr} (~$${usdEst} USD)`;
 };
 
 function CheckoutForm() {
@@ -438,7 +446,7 @@ function CheckoutForm() {
                         {tourName}
                       </h3>
                       <p className="text-xs text-transformative-teal font-semibold mb-3">
-                        ${tour.price} USD <span className="text-[10px] text-deep-indigo/50 font-normal">/ guest</span>
+                        {formatPrice(tour.price)} <span className="text-[10px] text-deep-indigo/50 font-normal">/ guest</span>
                       </p>
                     </div>
 
@@ -582,7 +590,7 @@ function CheckoutForm() {
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
                       <span className="text-xs font-bold text-deep-indigo">
-                        {option.price === 0 ? 'Free' : `+$${option.price} USD`}
+                        {option.price === 0 ? 'Free' : `+${formatPrice(option.price)}`}
                       </span>
                       <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
                         isSelected ? 'bg-transformative-teal text-white' : 'border border-deep-indigo/20 text-transparent'
@@ -772,10 +780,10 @@ function CheckoutForm() {
                   <div>
                     <h4 className="font-serif font-bold text-deep-indigo text-xs sm:text-sm leading-tight">{selectedTour.name}</h4>
                     <span className="text-[11px] text-deep-indigo/60 font-light block mt-1">
-                      📅 {formData.date || 'Date Pending'} • 👥 {formData.guests} Guests (${selectedTour.price}/person)
+                      📅 {formData.date || 'Date Pending'} • 👥 {formData.guests} Guests ({formatPrice(selectedTour.price)}/person)
                     </span>
                   </div>
-                  <span className="font-bold text-deep-indigo text-sm shrink-0">${tourTotal} USD</span>
+                  <span className="font-bold text-deep-indigo text-sm shrink-0">{formatPrice(tourTotal)}</span>
                 </div>
               </div>
 
@@ -792,7 +800,7 @@ function CheckoutForm() {
                     </span>
                   </div>
                   <span className="font-bold text-deep-indigo text-xs shrink-0">
-                    {pickupTotal === 0 ? 'Included' : `$${pickupTotal} USD`}
+                    {pickupTotal === 0 ? 'Included' : formatPrice(pickupTotal)}
                   </span>
                 </div>
               </div>
@@ -828,7 +836,7 @@ function CheckoutForm() {
                 <span className="text-[9px] font-bold text-deep-indigo/50 uppercase tracking-widest block">Total Reservation Amount</span>
                 <span className="text-[10px] text-deep-indigo/40 font-light">All taxes, fuel & boat fees included</span>
               </div>
-              <span className="text-xl sm:text-2xl font-bold text-transformative-teal font-serif">${grandTotal} USD</span>
+              <span className="text-xl sm:text-2xl font-bold text-transformative-teal font-serif">{formatPrice(grandTotal)}</span>
             </div>
           </div>
 
@@ -858,7 +866,7 @@ function CheckoutForm() {
               >
                 {loading 
                   ? t('btnSubmitLoading', locale) 
-                  : (isLastMinute ? t('btnSubmitWhatsApp', locale) : `Pay $${grandTotal} USD`)
+                  : (isLastMinute ? t('btnSubmitWhatsApp', locale) : `Pay ${formatPrice(grandTotal, false)}`)
                 }
               </button>
             </div>

@@ -83,12 +83,12 @@ export async function POST(req: Request) {
       // Allow creating line item even if manual override is set to 0 (free promotional tour)
       lineItems.push({
         price_data: {
-          currency: 'usd',
+          currency: 'idr',
           product_data: {
             name: `${tourName} (Private Boat)`,
             description: `Ethical Dolphin Tour for ${guests} guests on ${date}`,
           },
-          unit_amount: Math.round(price * 100), // Convert to cents safely
+          unit_amount: Math.round(price), // IDR is zero-decimal
         },
         quantity: Math.max(1, Number(guests) || 1),
       });
@@ -97,12 +97,12 @@ export async function POST(req: Request) {
     if (pickupFee > 0) {
       lineItems.push({
         price_data: {
-          currency: 'usd',
+          currency: 'idr',
           product_data: {
             name: pickupName,
             description: pickupDesc,
           },
-          unit_amount: Math.round(pickupFee * 100), // Convert to cents safely
+          unit_amount: Math.round(pickupFee), // IDR is zero-decimal
         },
         quantity: 1,
       });

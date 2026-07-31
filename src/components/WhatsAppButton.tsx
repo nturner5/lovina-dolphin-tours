@@ -10,7 +10,7 @@ export default function WhatsAppButton() {
   const isCheckoutPage = pathname === '/checkout';
   
   // Official Balinese phone number
-  const phoneNumber = '18018556266';
+  const phoneNumber = '6285190422839';
   const prefilledMessage = encodeURIComponent("Hi Bali Dolphin Tours! I'd like to inquire about booking a private dolphin tour.");
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${prefilledMessage}`;
 

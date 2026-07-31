@@ -54,7 +54,7 @@ export default function Footer() {
             <span className="text-deep-indigo opacity-100 font-bold uppercase tracking-widest text-[10px]">Connect</span>
             <Link href="https://instagram.com" className="hover:text-transformative-teal">Instagram</Link>
             <Link 
-              href="https://wa.me/18018556266" 
+              href="https://wa.me/6285190422839" 
               onClick={() => trackWhatsAppClick('Footer Link')}
               className="hover:text-transformative-teal"
             >

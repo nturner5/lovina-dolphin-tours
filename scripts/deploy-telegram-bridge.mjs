@@ -1,0 +1,443 @@
+import fs from 'fs';
+import path from 'path';
+
+function loadEnvLocal() {
+  const envPath = path.resolve(process.cwd(), '.env.local');
+  if (!fs.existsSync(envPath)) return {};
+  const content = fs.readFileSync(envPath, 'utf8');
+  const env = {};
+  content.split('\n').forEach(line => {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) return;
+    const firstEquals = trimmed.indexOf('=');
+    if (firstEquals === -1) return;
+    const key = trimmed.substring(0, firstEquals).trim();
+    let val = trimmed.substring(firstEquals + 1).trim();
+    if (val.startsWith('"') && val.endsWith('"')) {
+      val = val.substring(1, val.length - 1);
+    } else if (val.startsWith("'") && val.endsWith("'")) {
+      val = val.substring(1, val.length - 1);
+    }
+    env[key] = val;
+  });
+  return env;
+}
+
+async function main() {
+  console.log('🔄 Upgrading Telegram-to-WhatsApp Support Bridge to support Media...');
+  const env = loadEnvLocal();
+  
+  const apiKey = env['N8N_API_KEY'];
+  const botToken = env['TELEGRAM_BOT_TOKEN'];
+  const chatId = env['TELEGRAM_CHAT_ID'];
+  const phoneId = env['META_PHONE_NUMBER_ID'];
+  const metaToken = env['META_ACCESS_TOKEN'];
+
+  if (!apiKey || !botToken || !chatId || !phoneId || !metaToken) {
+    console.error('✖ Error: Missing required variables in .env.local (N8N_API_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, META_PHONE_NUMBER_ID, META_ACCESS_TOKEN)');
+    process.exit(1);
+  }
+
+  // ==========================================
+  // STEP 1: Update Lovina 2 (Bypass Chatwoot)
+  // ==========================================
+  const lovina2Id = 'BksrAXQCChEmzwIV';
+  console.log(`\n- Fetching workflow Lovina 2 (${lovina2Id})...`);
+  
+  try {
+    const getRes = await fetch(`https://n8n.balidolphintours.com/api/v1/workflows/${lovina2Id}`, {
+      headers: { 'X-N8N-API-KEY': apiKey }
+    });
+    
+    if (!getRes.ok) {
+      throw new Error(`Failed to fetch Lovina 2 workflow (HTTP ${getRes.status})`);
+    }
+    
+    const workflow = await getRes.json();
+    
+    // Filter out 'Forward to Chatwoot' node
+    workflow.nodes = workflow.nodes.filter(n => n.name !== 'Forward to Chatwoot');
+    
+    // Rewire connections: Parse Payload Data -> Is Captain Action?
+    delete workflow.connections['Forward to Chatwoot'];
+    
+    workflow.connections['Parse Payload Data'] = {
+      main: [
+        [
+          {
+            node: "Is Captain Action?",
+            type: "main",
+            index: 0
+          }
+        ]
+      ]
+    };
+    
+    console.log(`- Rewired Lovina 2: 'Parse Payload Data' -> 'Is Captain Action?' (Chatwoot bypassed).`);
+    
+    const cleanSettings = {};
+    if (workflow.settings) {
+      if (workflow.settings.errorWorkflow) cleanSettings.errorWorkflow = workflow.settings.errorWorkflow;
+      if (workflow.settings.timezone) cleanSettings.timezone = workflow.settings.timezone;
+      if (workflow.settings.saveExecutionProgress !== undefined) cleanSettings.saveExecutionProgress = workflow.settings.saveExecutionProgress;
+    }
+
+    const updateRes = await fetch(`https://n8n.balidolphintours.com/api/v1/workflows/${lovina2Id}`, {
+      method: 'PUT',
+      headers: {
+        'X-N8N-API-KEY': apiKey,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: workflow.name,
+        nodes: workflow.nodes,
+        connections: workflow.connections,
+        settings: cleanSettings
+      })
+    });
+    
+    if (!updateRes.ok) {
+      const errTxt = await updateRes.text();
+      throw new Error(`Failed to update Lovina 2: ${errTxt}`);
+    }
+    console.log('✔ Lovina 2 updated successfully.');
+  } catch (err) {
+    console.error('✖ Error updating Lovina 2:', err.message);
+    process.exit(1);
+  }
+
+  // ==========================================
+  // STEP 2: Create Upgraded Telegram Reply Bridge Workflow (With Media Support)
+  // ==========================================
+  console.log('\n- Creating Telegram Reply Bridge workflow (With Media Support)...');
+  
+  const bridgePayload = {
+    name: "Telegram: WhatsApp Reply Bridge",
+    nodes: [
+      {
+        parameters: {
+          httpMethod: "POST",
+          path: "telegram-reply-callback",
+          options: {}
+        },
+        id: "tg-webhook-trigger-id",
+        name: "Telegram Webhook Trigger",
+        type: "n8n-nodes-base.webhook",
+        typeVersion: 1,
+        position: [150, 250]
+      },
+      {
+        parameters: {
+          conditions: {
+            string: [
+              {
+                value1: "={{ $json.body.message ? ($json.body.message.reply_to_message ? $json.body.message.reply_to_message.text : '') : '' }}",
+                operation: "regex",
+                value2: "📞 Phone:\\s*\\+?(\\d+)"
+              }
+            ]
+          }
+        },
+        id: "is-reply-id",
+        name: "Is Valid Reply?",
+        type: "n8n-nodes-base.if",
+        typeVersion: 1,
+        position: [360, 250]
+      },
+      {
+        parameters: {
+          jsCode: `const message = items[0].json.body?.message;
+if (!message) return [];
+
+const replyTo = message.reply_to_message;
+if (!replyTo || !replyTo.text) return [];
+
+const phoneMatch = replyTo.text.match(/📞 Phone:\\s*\\+?(\\d+)/);
+if (!phoneMatch) return [];
+
+const recipientPhone = phoneMatch[1];
+const replyText = message.text || '';
+const caption = message.caption || '';
+
+let mediaType = null;
+let fileId = null;
+
+if (message.photo && message.photo.length > 0) {
+  mediaType = 'image';
+  // Get largest photo size
+  fileId = message.photo[message.photo.length - 1].file_id;
+} else if (message.video) {
+  mediaType = 'video';
+  fileId = message.video.file_id;
+} else if (message.document) {
+  mediaType = 'document';
+  fileId = message.document.file_id;
+}
+
+return [{
+  json: {
+    recipientPhone,
+    replyText,
+    caption,
+    mediaType,
+    fileId
+  }
+}];`
+        },
+        id: "parse-message-id",
+        name: "Parse Telegram Message",
+        type: "n8n-nodes-base.code",
+        typeVersion: 2,
+        position: [560, 230]
+      },
+      {
+        parameters: {
+          conditions: {
+            string: [
+              {
+                value1: "={{ $json.mediaType }}",
+                operation: "isNotEmpty"
+              }
+            ]
+          }
+        },
+        id: "is-media-id",
+        name: "Is Media?",
+        type: "n8n-nodes-base.if",
+        typeVersion: 1,
+        position: [780, 230]
+      },
+      {
+        parameters: {
+          method: "GET",
+          url: `https://api.telegram.org/bot${botToken}/getFile`,
+          sendQuery: true,
+          queryParameters: {
+            parameters: [
+              {
+                name: "file_id",
+                value: "={{ $json.fileId }}"
+              }
+            ]
+          },
+          options: {}
+        },
+        id: "get-file-id",
+        name: "Get Telegram File Path",
+        type: "n8n-nodes-base.httpRequest",
+        typeVersion: 4.1,
+        position: [980, 130]
+      },
+      {
+        parameters: {
+          method: "POST",
+          url: `https://graph.facebook.com/v19.0/${phoneId}/messages`,
+          sendHeaders: true,
+          headerParameters: {
+            parameters: [
+              {
+                name: "Authorization",
+                value: `Bearer ${metaToken}`
+              },
+              {
+                name: "Content-Type",
+                value: "application/json"
+              }
+            ]
+          },
+          sendBody: true,
+          specifyBody: "json",
+          jsonBody: `={\n  "messaging_product": "whatsapp",\n  "recipient_type": "individual",\n  "to": "{{ $('Parse Telegram Message').item.json.recipientPhone }}",\n  "type": "{{ $('Parse Telegram Message').item.json.mediaType }}",\n  "{{ $('Parse Telegram Message').item.json.mediaType }}": {\n    "link": "https://api.telegram.org/file/bot${botToken}/{{ $json.result.file_path }}",\n    "caption": "{{ $('Parse Telegram Message').item.json.caption }}"\n  }\n}`,
+          options: {}
+        },
+        id: "meta-send-media-id",
+        name: "Send WhatsApp Media Message",
+        type: "n8n-nodes-base.httpRequest",
+        typeVersion: 4.1,
+        position: [1200, 130]
+      },
+      {
+        parameters: {
+          method: "POST",
+          url: `https://graph.facebook.com/v19.0/${phoneId}/messages`,
+          sendHeaders: true,
+          headerParameters: {
+            parameters: [
+              {
+                name: "Authorization",
+                value: `Bearer ${metaToken}`
+              },
+              {
+                name: "Content-Type",
+                value: "application/json"
+              }
+            ]
+          },
+          sendBody: true,
+          specifyBody: "json",
+          jsonBody: "={\n  \"messaging_product\": \"whatsapp\",\n  \"recipient_type\": \"individual\",\n  \"to\": \"{{ $json.recipientPhone }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"{{ $json.replyText }}\"\n  }\n}",
+          options: {}
+        },
+        id: "meta-send-text-id",
+        name: "Send WhatsApp Text Message",
+        type: "n8n-nodes-base.httpRequest",
+        typeVersion: 4.1,
+        position: [980, 310]
+      }
+    ],
+    connections: {
+      "Telegram Webhook Trigger": {
+        main: [
+          [
+            {
+              "node": "Is Valid Reply?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is Valid Reply?": {
+        main: [
+          [
+            {
+              "node": "Parse Telegram Message",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          []
+        ]
+      },
+      "Parse Telegram Message": {
+        main: [
+          [
+            {
+              "node": "Is Media?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is Media?": {
+        main: [
+          [
+            {
+              "node": "Get Telegram File Path",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Send WhatsApp Text Message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Telegram File Path": {
+        main: [
+          [
+            {
+              "node": "Send WhatsApp Media Message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    settings: {
+      errorWorkflow: "GlobalErrHandler"
+    }
+  };
+
+  let bridgeId = null;
+  try {
+    const listRes = await fetch('https://n8n.balidolphintours.com/api/v1/workflows', {
+      headers: { 'X-N8N-API-KEY': apiKey }
+    });
+    if (listRes.ok) {
+      const listData = await listRes.json();
+      const match = listData.data.find(w => w.name === "Telegram: WhatsApp Reply Bridge");
+      if (match) {
+        bridgeId = match.id;
+        console.log(`- Found existing bridge workflow with ID: ${bridgeId}`);
+      }
+    }
+  } catch (err) {
+    console.warn('⚠️ Error checking existing workflows:', err.message);
+  }
+
+  if (bridgeId) {
+    const updateUrl = `https://n8n.balidolphintours.com/api/v1/workflows/${bridgeId}`;
+    const res = await fetch(updateUrl, {
+      method: 'PUT',
+      headers: {
+        'X-N8N-API-KEY': apiKey,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(bridgePayload)
+    });
+    if (!res.ok) {
+      throw new Error(`Failed to update bridge workflow: ${await res.text()}`);
+    }
+    console.log('✔ Telegram Reply Bridge updated successfully.');
+  } else {
+    const res = await fetch('https://n8n.balidolphintours.com/api/v1/workflows', {
+      method: 'POST',
+      headers: {
+        'X-N8N-API-KEY': apiKey,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(bridgePayload)
+    });
+    if (!res.ok) {
+      throw new Error(`Failed to create bridge workflow: ${await res.text()}`);
+    }
+    const data = await res.json();
+    bridgeId = data.id;
+    console.log(`✔ Telegram Reply Bridge created (ID: ${bridgeId}).`);
+  }
+
+  // Activate the bridge workflow
+  console.log(`- Activating the bridge workflow (ID: ${bridgeId})...`);
+  const activateRes = await fetch(`https://n8n.balidolphintours.com/api/v1/workflows/${bridgeId}/activate`, {
+    method: 'POST',
+    headers: { 'X-N8N-API-KEY': apiKey }
+  });
+  if (activateRes.ok) {
+    console.log('✔ Telegram Reply Bridge workflow is now ACTIVE!');
+  } else {
+    console.error('✖ Failed to activate bridge workflow:', activateRes.status, await activateRes.text());
+    process.exit(1);
+  }
+
+  // ==========================================
+  // STEP 3: Register Webhook with Telegram
+  // ==========================================
+  const webhookUrl = 'https://n8n.balidolphintours.com/webhook/telegram-reply-callback';
+  console.log(`\n- Registering webhook with Telegram API: ${webhookUrl}`);
+  
+  try {
+    const tgRes = await fetch(`https://api.telegram.org/bot${botToken}/setWebhook?url=${webhookUrl}`);
+    const tgData = await tgRes.json();
+    if (tgData.ok) {
+      console.log('✔ Telegram bot webhook registered successfully!');
+    } else {
+      throw new Error(tgData.description || 'Unknown Telegram error');
+    }
+  } catch (err) {
+    console.error('✖ Failed to register Telegram webhook:', err.message);
+    process.exit(1);
+  }
+
+  console.log('\n🎉 SUCCESS! Telegram-to-WhatsApp Support Bridge is fully upgraded for Media!');
+}
+
+main();

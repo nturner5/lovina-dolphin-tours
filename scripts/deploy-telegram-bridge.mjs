@@ -163,11 +163,10 @@ return [{
       {
         parameters: {
           conditions: {
-            string: [
+            boolean: [
               {
-                value1: "={{ $json.isCommand.toString() }}",
-                operation: "equals",
-                value2: "true"
+                value1: "={{ $json.isCommand }}",
+                value2: true
               }
             ]
           }
@@ -181,11 +180,10 @@ return [{
       {
         parameters: {
           conditions: {
-            string: [
+            boolean: [
               {
-                value1: "={{ $json.isDraft.toString() }}",
-                operation: "equals",
-                value2: "true"
+                value1: "={{ $json.isDraft }}",
+                value2: true
               }
             ]
           }
@@ -384,7 +382,6 @@ return [{
             string: [
               {
                 value1: "={{ $json.error }}",
-                operation: "equals",
                 value2: "show_template"
               }
             ]
@@ -472,11 +469,10 @@ return [{
       {
         parameters: {
           conditions: {
-            string: [
+            boolean: [
               {
-                value1: "={{ $json.isReply.toString() }}",
-                operation: "equals",
-                value2: "true"
+                value1: "={{ $json.isReply }}",
+                value2: true
               }
             ]
           }

@@ -24,7 +24,7 @@ function loadEnvLocal() {
 }
 
 async function main() {
-  console.log('🔄 Upgrading Telegram-to-WhatsApp Support Bridge to support Media...');
+  console.log('🔄 Upgrading Telegram-to-WhatsApp Support Bridge with /draft commands...');
   const env = loadEnvLocal();
   
   const apiKey = env['N8N_API_KEY'];
@@ -107,9 +107,9 @@ async function main() {
   }
 
   // ==========================================
-  // STEP 2: Create Upgraded Telegram Reply Bridge Workflow (With Media Support)
+  // STEP 2: Create Upgraded Telegram Reply Bridge Workflow (With Command Dispatcher)
   // ==========================================
-  console.log('\n- Creating Telegram Reply Bridge workflow (With Media Support)...');
+  console.log('\n- Creating Telegram Reply Bridge workflow...');
   
   const bridgePayload = {
     name: "Telegram: WhatsApp Reply Bridge",
@@ -124,7 +124,40 @@ async function main() {
         name: "Telegram Webhook Trigger",
         type: "n8n-nodes-base.webhook",
         typeVersion: 1,
-        position: [150, 250]
+        position: [100, 250]
+      },
+      {
+        parameters: {
+          conditions: {
+            string: [
+              {
+                value1: "={{ $json.body.message ? ($json.body.message.text ? $json.body.message.text.toLowerCase() : '') : '' }}",
+                operation: "regex",
+                value2: "^/(draft|template)"
+              }
+            ]
+          }
+        },
+        id: "is-command-id",
+        name: "Is Command?",
+        type: "n8n-nodes-base.if",
+        typeVersion: 1,
+        position: [300, 150]
+      },
+      {
+        parameters: {
+          method: "POST",
+          url: `https://api.telegram.org/bot${botToken}/sendMessage`,
+          sendBody: true,
+          specifyBody: "json",
+          jsonBody: "={\n  \"chat_id\": \"{{ $json.body.message.chat.id }}\",\n  \"text\": \"📋 *Captain WhatsApp Templates* (Tap code blocks to copy):\\n\\n*1. Availability Check*\\n```\\nHello, do you have an available private boat for a dolphin tour?\\n\\n• Date: \\n• Time:  (7:00 AM / 8:00 AM)\\n• Guests:  people (Private boat)\\n• Package: \\n• Transport: \\n\\nAre you available to run this? Thanks!\\n```\\n\\n*2. Confirmed Booking Details*\\n```\\nThanks. Here are the guest details:\\n\\n• Tour Time: \\n• Guest Name: \\n• Total:  people (Private boat tour)\\n• Package: \\n• Guest WA Contact: \\n\\n*Driver Pickup:*\\n• Pickup Location: \\n• Pickup Time: \\n\\nPlease let me know once you have contacted the guest. Thanks!\\n```\\n\\n*3. Driver Request (Transport Only)*\\n```\\nHello, do you have an available driver for a guest transfer?\\n\\n• Date: \\n• Route: \\n• Pickup Time: \\n• Guest Name: \\n• Guest WA Contact: \\n• Pickup Location: \\n• Drop Location: \\n\\nCan you do this route? Thanks!\\n```\",\n  \"parse_mode\": \"Markdown\"\n}",
+          options: {}
+        },
+        id: "send-templates-id",
+        name: "Send WhatsApp Templates",
+        type: "n8n-nodes-base.httpRequest",
+        typeVersion: 4.1,
+        position: [520, 50]
       },
       {
         parameters: {
@@ -142,7 +175,7 @@ async function main() {
         name: "Is Valid Reply?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [360, 250]
+        position: [520, 270]
       },
       {
         parameters: {
@@ -188,7 +221,7 @@ return [{
         name: "Parse Telegram Message",
         type: "n8n-nodes-base.code",
         typeVersion: 2,
-        position: [560, 230]
+        position: [740, 250]
       },
       {
         parameters: {
@@ -205,7 +238,7 @@ return [{
         name: "Is Media?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [780, 230]
+        position: [940, 250]
       },
       {
         parameters: {
@@ -226,7 +259,7 @@ return [{
         name: "Get Telegram File Path",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [980, 130]
+        position: [1140, 150]
       },
       {
         parameters: {
@@ -254,7 +287,7 @@ return [{
         name: "Send WhatsApp Media Message",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1200, 130]
+        position: [1360, 150]
       },
       {
         parameters: {
@@ -282,12 +315,30 @@ return [{
         name: "Send WhatsApp Text Message",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [980, 310]
+        position: [1140, 330]
       }
     ],
     connections: {
       "Telegram Webhook Trigger": {
         main: [
+          [
+            {
+              "node": "Is Command?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is Command?": {
+        main: [
+          [
+            {
+              "node": "Send WhatsApp Templates",
+              "type": "main",
+              "index": 0
+            }
+          ],
           [
             {
               "node": "Is Valid Reply?",
@@ -437,7 +488,7 @@ return [{
     process.exit(1);
   }
 
-  console.log('\n🎉 SUCCESS! Telegram-to-WhatsApp Support Bridge is fully upgraded for Media!');
+  console.log('\n🎉 SUCCESS! Telegram-to-WhatsApp Support Bridge is fully upgraded!');
 }
 
 main();

@@ -129,12 +129,45 @@ async function main() {
       },
       {
         parameters: {
+          jsCode: `const message = items[0].json.body?.message;
+if (!message) {
+  return [{
+    json: {
+      isCommand: false,
+      isDraft: false,
+      isReply: false
+    }
+  }];
+}
+
+const text = message.text || '';
+const isCommand = /^\\/(draft|template|pay|link|create_booking)/i.test(text);
+const isDraft = /^\\/(draft|template)/i.test(text);
+const isReply = !!(message.reply_to_message?.text && message.reply_to_message.text.match(/📞 Phone:\\s*\\+?(\\d+)/));
+
+return [{
+  json: {
+    isCommand,
+    isDraft,
+    isReply,
+    body: items[0].json.body
+  }
+}];`
+        },
+        id: "check-message-id",
+        name: "Check Message",
+        type: "n8n-nodes-base.code",
+        typeVersion: 2,
+        position: [300, 250]
+      },
+      {
+        parameters: {
           conditions: {
             string: [
               {
-                value1: "={{ $json.body.message ? ($json.body.message.text ? $json.body.message.text.toLowerCase() : '') : '' }}",
-                operation: "regex",
-                value2: "^/(draft|template|pay|link|create_booking)"
+                value1: "={{ $json.isCommand.toString() }}",
+                operation: "equals",
+                value2: "true"
               }
             ]
           }
@@ -143,16 +176,16 @@ async function main() {
         name: "Is Command?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [300, 150]
+        position: [500, 150]
       },
       {
         parameters: {
           conditions: {
             string: [
               {
-                value1: "={{ $json.body.message.text.toLowerCase() }}",
-                operation: "regex",
-                value2: "^/(draft|template)"
+                value1: "={{ $json.isDraft.toString() }}",
+                operation: "equals",
+                value2: "true"
               }
             ]
           }
@@ -161,7 +194,7 @@ async function main() {
         name: "Is /draft Command?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [500, 50]
+        position: [700, 50]
       },
       {
         parameters: {
@@ -176,7 +209,7 @@ async function main() {
         name: "Send WhatsApp Templates",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [700, -30]
+        position: [900, -30]
       },
       {
         parameters: {
@@ -326,7 +359,7 @@ return [{
         name: "Parse Pay Command",
         type: "n8n-nodes-base.code",
         typeVersion: 2,
-        position: [700, 150]
+        position: [900, 150]
       },
       {
         parameters: {
@@ -343,7 +376,7 @@ return [{
         name: "Has Parse Error?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [900, 150]
+        position: [1100, 150]
       },
       {
         parameters: {
@@ -361,7 +394,7 @@ return [{
         name: "Is Show Template?",
         type: "n8n-nodes-base.if",
         typeVersion: 1,
-        position: [1100, 50]
+        position: [1300, 50]
       },
       {
         parameters: {
@@ -376,7 +409,7 @@ return [{
         name: "Send Interactive Template",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1300, -20]
+        position: [1500, -20]
       },
       {
         parameters: {
@@ -391,7 +424,7 @@ return [{
         name: "Send Pay Usage Error",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1300, 120]
+        position: [1500, 120]
       },
       {
         parameters: {
@@ -419,7 +452,7 @@ return [{
         name: "Create Stripe Checkout Link",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1100, 250]
+        position: [1300, 250]
       },
       {
         parameters: {
@@ -434,16 +467,16 @@ return [{
         name: "Send Checkout Link",
         type: "n8n-nodes-base.httpRequest",
         typeVersion: 4.1,
-        position: [1300, 250]
+        position: [1500, 250]
       },
       {
         parameters: {
           conditions: {
             string: [
               {
-                value1: "={{ $json.body.message ? ($json.body.message.reply_to_message ? $json.body.message.reply_to_message.text : '') : '' }}",
-                operation: "regex",
-                value2: "📞 Phone:\\s*\\+?(\\d+)"
+                value1: "={{ $json.isReply.toString() }}",
+                operation: "equals",
+                value2: "true"
               }
             ]
           }
@@ -597,6 +630,17 @@ return [{
     ],
     connections: {
       "Telegram Webhook Trigger": {
+        main: [
+          [
+            {
+              "node": "Check Message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Check Message": {
         main: [
           [
             {

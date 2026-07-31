@@ -445,9 +445,10 @@ function CheckoutForm() {
                       <h3 className="font-serif font-bold text-deep-indigo text-base leading-tight mb-1">
                         {tourName}
                       </h3>
-                      <p className="text-xs text-transformative-teal font-semibold mb-3">
-                        {formatPrice(tour.price)} <span className="text-[10px] text-deep-indigo/50 font-normal">/ guest</span>
-                      </p>
+                      <div className="flex items-center gap-1.5 text-xs text-transformative-teal font-semibold mb-3">
+                        <span className="whitespace-nowrap">{formatPrice(tour.price)}</span>
+                        <span className="text-[10px] text-deep-indigo/50 font-normal whitespace-nowrap">/ guest</span>
+                      </div>
                     </div>
 
                     <div className="flex items-center justify-between pt-2 border-t border-deep-indigo/5 text-[11px]">

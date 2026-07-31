@@ -87,7 +87,7 @@ export default async function ToursPage({ searchParams }: PageProps) {
                 </div>
 
                 <div className="flex flex-col gap-0.5 border-b border-deep-indigo/5 pb-5 w-full">
-                  <div className="flex items-baseline gap-2">
+                  <div className="flex items-center gap-2">
                     <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">Rp {tour1Price.toLocaleString('id-ID')}</span>
                     <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
                     <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
@@ -172,7 +172,7 @@ export default async function ToursPage({ searchParams }: PageProps) {
                 </div>
 
                 <div className="flex flex-col gap-0.5 border-b border-deep-indigo/5 pb-5 w-full">
-                  <div className="flex items-baseline gap-2">
+                  <div className="flex items-center gap-2">
                     <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">Rp {tour2Price.toLocaleString('id-ID')}</span>
                     <span className="text-sm font-light text-deep-indigo/60">{t("tour1_5PriceDesc", locale)}</span>
                     <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
@@ -263,7 +263,7 @@ export default async function ToursPage({ searchParams }: PageProps) {
                 </div>
 
                 <div className="flex flex-col gap-0.5 border-b border-deep-indigo/5 pb-5 w-full">
-                  <div className="flex items-baseline gap-2">
+                  <div className="flex items-center gap-2">
                     <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">Rp {tour3Price.toLocaleString('id-ID')}</span>
                     <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
                     <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">

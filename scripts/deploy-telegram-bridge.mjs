@@ -270,15 +270,19 @@ if (isNaN(tourNum) || isNaN(guests) || isNaN(transNum)) {
 
 let tourName = '';
 let tourPrice = 0;
+let checkoutUrl = '';
 if (tourNum === 1) {
   tourName = 'Dolphin Watching Tour';
   tourPrice = 45;
+  checkoutUrl = 'https://www.balidolphintours.com/checkout?tour=seven-am-ethical';
 } else if (tourNum === 2) {
   tourName = 'Dolphin Watching & Swimming Tour';
   tourPrice = 55;
+  checkoutUrl = 'https://www.balidolphintours.com/checkout?tour=dolphin-swim';
 } else if (tourNum === 3) {
   tourName = 'Dolphin Watching Tour + Swim & Snorkel';
   tourPrice = 65;
+  checkoutUrl = 'https://www.balidolphintours.com/checkout?tour=swim-snorkel';
 } else {
   return [{
     json: {
@@ -328,7 +332,8 @@ return [{
     pickupName,
     hasTransport,
     usdTotal,
-    idrFormatted
+    idrFormatted,
+    checkoutUrl
   }
 }];`
         },
@@ -376,7 +381,7 @@ return [{
           url: `https://api.telegram.org/bot${botToken}/sendMessage`,
           sendBody: true,
           specifyBody: "json",
-          jsonBody: "={\n  \"chat_id\": \"{{ $json.chatId }}\",\n  \"text\": \"📋 *Bali Dolphin Tours: Custom Quote*\\n\\nHere is your private tour itinerary and pricing summary:\\n\\n• *Package*: 7:00 AM Private {{ $json.tourName }}\\n• *Guests*: {{ $json.guests }} people (Private Boat)\\n• *Transport*: {{ $json.pickupName }}\\n\\n💰 *Total Pricing Summary:*\\n• *USD Price*: **${{ $json.usdTotal }} USD**\\n• *IDR Price*: **{{ $json.idrFormatted }} IDR** (Roughly)\\n\\n✨ *Special Inclusions (For Free!):*\\n{{ $json.hasTransport ? '🚗 *Free Scenic Road Trip Stops:*\\\\nSince you booked private transport, you get up to 3 free sightseeing stops on the way back (e.g. Beratan Lake Temple, waterfalls, or coffee farms)!\\\\n👉 Read more: https://balidolphintours.com/blog/canggu-to-lovina-3-day-roadtrip\\\\n\\\\n' : '' }}🌅 *Private Boat Charter:*\\nYour boat is 100% private. No strangers, just your group and a peaceful, non-intrusive parallel dolphin encounter.\\n\\nBook direct with us on WhatsApp or get your custom link:\\nhttps://wa.me/6285190422839\",\n  \"parse_mode\": \"Markdown\"\n}",
+          jsonBody: "={\n  \"chat_id\": \"{{ $json.chatId }}\",\n  \"text\": \"📋 *Bali Dolphin Tours: Custom Quote*\\n\\nHere is your private tour itinerary and pricing summary:\\n\\n• *Package*: 7:00 AM Private {{ $json.tourName }}\\n• *Guests*: {{ $json.guests }} people (Private Boat)\\n• *Transport*: {{ $json.pickupName }}\\n\\n💰 *Total Pricing Summary:*\\n• *USD Price*: **${{ $json.usdTotal }} USD**\\n• *IDR Price*: **{{ $json.idrFormatted }} IDR** (Roughly)\\n\\n✨ *Special Inclusions (For Free!):*\\n{{ $json.hasTransport ? '🚗 *Free Scenic Road Trip Stops:*\\\\nSince you booked private transport, you get up to 3 free sightseeing stops on the way back (e.g. Beratan Lake Temple, waterfalls, or coffee farms)!\\\\n👉 Read more: https://www.balidolphintours.com/blog/lovina-to-south-bali-our-favorite-road-trip-stops\\\\n\\\\n' : '' }}🌅 *Private Boat Charter:*\\nYour boat is 100% private. No strangers, just your group and a peaceful, non-intrusive parallel dolphin encounter.\\n\\n👇 *Book direct with us here:*\\n{{ $json.checkoutUrl }}\",\n  \"parse_mode\": \"Markdown\"\n}",
           options: {}
         },
         id: "send-quote-msg-id",

@@ -88,7 +88,7 @@ export async function POST(req: Request) {
             name: `${tourName} (Private Boat)`,
             description: `Ethical Dolphin Tour for ${guests} guests on ${date}`,
           },
-          unit_amount: Math.round(price), // IDR is zero-decimal
+          unit_amount: Math.round(price * 100), // Stripe expects IDR in cents/sen (two-decimals)
         },
         quantity: Math.max(1, Number(guests) || 1),
       });
@@ -102,7 +102,7 @@ export async function POST(req: Request) {
             name: pickupName,
             description: pickupDesc,
           },
-          unit_amount: Math.round(pickupFee), // IDR is zero-decimal
+          unit_amount: Math.round(pickupFee * 100), // Stripe expects IDR in cents/sen (two-decimals)
         },
         quantity: 1,
       });

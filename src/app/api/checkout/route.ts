@@ -40,7 +40,7 @@ export async function POST(req: Request) {
             name: `${tour.name} (Private Boat)`,
             description: `Ethical Dolphin Tour for ${guests} guests on ${date}`,
           },
-          unit_amount: tour.price, // IDR is zero-decimal
+          unit_amount: tour.price * 100, // Stripe expects IDR in cents/sen (two-decimals)
         },
         // Enforce guest count scaling by using quantity
         quantity: Math.max(2, Number(guests) || 2),
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
             name: pickupName,
             description: pickupDesc,
           },
-          unit_amount: pickupFee, // IDR is zero-decimal
+          unit_amount: pickupFee * 100, // Stripe expects IDR in cents/sen (two-decimals)
         },
         quantity: 1,
       });

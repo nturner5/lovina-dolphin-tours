@@ -45,12 +45,12 @@ export const getPricingData = unstable_cache(
         if (!defaultPrice) continue;
 
         const isIdr = defaultPrice.currency.toLowerCase() === 'idr';
-        const rawAmount = defaultPrice.unit_amount || 0;
+        const stripePrice = (defaultPrice.unit_amount || 0) / 100;
         
         // If USD, convert to IDR using the 18053 exchange rate and round to the nearest 1000 IDR
         const price = isIdr 
-          ? rawAmount 
-          : Math.round(((rawAmount / 100) * 18053) / 1000) * 1000;
+          ? stripePrice 
+          : Math.round((stripePrice * 18053) / 1000) * 1000;
 
         if (product.metadata.tour_id) {
           tours.push({

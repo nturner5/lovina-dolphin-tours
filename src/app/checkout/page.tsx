@@ -539,7 +539,7 @@ function CheckoutForm() {
           <div className="bg-transformative-teal/5 p-4 rounded-2xl border border-transformative-teal/15 flex items-center justify-between">
             <div>
               <span className="text-xs text-deep-indigo/60 block">Tour Subtotal ({formData.guests} guests)</span>
-              <strong className="text-xl font-bold text-deep-indigo">${tourTotal} USD</strong>
+              <strong className="text-xl font-bold text-deep-indigo">{formatPrice(tourTotal)}</strong>
             </div>
             <button
               type="button"
@@ -885,7 +885,7 @@ function CheckoutForm() {
       <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-deep-indigo/10 px-4 py-3 flex items-center justify-between z-50 shadow-[0_-8px_30px_rgb(0,0,0,0.1)] md:hidden">
         <div className="flex flex-col">
           <span className="text-[9px] uppercase tracking-wider text-deep-indigo/40 font-bold">Total Amount</span>
-          <span className="text-base font-bold text-deep-indigo">${grandTotal} USD</span>
+          <span className="text-base font-bold text-deep-indigo">{formatPrice(grandTotal)}</span>
         </div>
         {step === 1 && (
           <button 

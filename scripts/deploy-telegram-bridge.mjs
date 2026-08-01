@@ -268,20 +268,40 @@ if (isNaN(tourNum) || isNaN(guests) || isNaN(transNum)) {
   }];
 }
 
+let rate = 18053;
+let pricingTours = [];
+let pricingPickups = [];
+
+try {
+  const res = await fetch('https://www.balidolphintours.com/api/pricing');
+  if (res.ok) {
+    const data = await res.json();
+    if (data.exchangeRate) {
+      rate = data.exchangeRate;
+    }
+    if (data.tours) {
+      pricingTours = data.tours;
+    }
+    if (data.pickups) {
+      pricingPickups = data.pickups;
+    }
+  }
+} catch (e) {}
+
 let tourName = '';
 let tourPrice = 0;
 let checkoutUrl = '';
 if (tourNum === 1) {
   tourName = 'Dolphin Watching Tour';
-  tourPrice = 812000;
+  tourPrice = pricingTours.find(t => t.id === 'seven-am-ethical')?.price || 812000;
   checkoutUrl = 'https://www.balidolphintours.com/checkout?tour=seven-am-ethical';
 } else if (tourNum === 2) {
   tourName = 'Dolphin Watching & Swimming Tour';
-  tourPrice = 993000;
+  tourPrice = pricingTours.find(t => t.id === 'dolphin-swim')?.price || 993000;
   checkoutUrl = 'https://www.balidolphintours.com/checkout?tour=dolphin-swim';
 } else if (tourNum === 3) {
   tourName = 'Dolphin Watching Tour + Swim & Snorkel';
-  tourPrice = 1173000;
+  tourPrice = pricingTours.find(t => t.id === 'swim-snorkel')?.price || 1173000;
   checkoutUrl = 'https://www.balidolphintours.com/checkout?tour=swim-snorkel';
 } else {
   return [{
@@ -301,15 +321,15 @@ if (transNum === 0) {
   pickupPrice = 0;
 } else if (transNum === 1) {
   pickupName = 'Ubud Round-trip Private Driver';
-  pickupPrice = 758000;
+  pickupPrice = pricingPickups.find(p => p.id === 'ubud')?.price || 758000;
   hasTransport = true;
 } else if (transNum === 2) {
   pickupName = 'Canggu / Seminyak / Kuta Round-trip Private Driver';
-  pickupPrice = 1083000;
+  pickupPrice = pricingPickups.find(p => p.id === 'canggu-kuta')?.price || 1083000;
   hasTransport = true;
 } else if (transNum === 3) {
   pickupName = 'Uluwatu / Nusa Dua Round-trip Private Driver';
-  pickupPrice = 1408000;
+  pickupPrice = pricingPickups.find(p => p.id === 'uluwatu')?.price || 1408000;
   hasTransport = true;
 } else {
   return [{
@@ -321,7 +341,7 @@ if (transNum === 0) {
 }
 
 const idrTotal = (tourPrice * guests) + pickupPrice;
-const usdTotal = Math.round(idrTotal / 18053);
+const usdTotal = Math.round(idrTotal / rate);
 const idrFormatted = 'Rp ' + (idrTotal / 1000).toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\") + 'k';
 
 return [{

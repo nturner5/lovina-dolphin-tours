@@ -31,11 +31,11 @@ export default function Navbar() {
           </span>
           <span>
             {locale === 'en' ? (
-              <>See dolphins or ride free<span className="hidden sm:inline"> completely</span>! <span className="text-coral-pop font-bold underline sm:no-underline ml-0.5">Learn More →</span></>
+              <>See dolphins or return for free! <span className="text-coral-pop font-bold underline sm:no-underline ml-0.5">Learn More →</span></>
             ) : locale === 'ru' ? (
-              <>Увидите дельфинов или поездка бесплатно! <span className="text-coral-pop font-bold underline sm:no-underline ml-0.5">Подробнее →</span></>
+              <>Увидите дельфинов или вернитесь бесплатно! <span className="text-coral-pop font-bold underline sm:no-underline ml-0.5">Подробнее →</span></>
             ) : (
-              <>看见海豚或免费再玩！ <span className="text-coral-pop font-bold underline sm:no-underline ml-0.5">了解更多 →</span></>
+              <>看见海豚或免费再来！ <span className="text-coral-pop font-bold underline sm:no-underline ml-0.5">了解更多 →</span></>
             )}
           </span>
         </Link>

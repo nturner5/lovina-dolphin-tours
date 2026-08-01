@@ -144,9 +144,9 @@ export const translations = {
     // Inclusions List for Checkout Summary
     noDriver: "No Driver (Meet at Lovina Beach by 6:30 AM)",
     freeShuttle: "Free Local Shuttle (Lovina Beach Area - Pickup ~6:30 AM)",
-    ubudDriver: "Ubud Round-trip Private Driver (Pickup ~4:30 AM) (+$42)",
-    cangguDriver: "Canggu / Seminyak / Kuta Round-trip Private Driver (Pickup ~4:00 AM) (+$60)",
-    uluwatuDriver: "Uluwatu / Nusa Dua Round-trip Private Driver (Pickup ~3:30 AM) (+$78)",
+    ubudDriver: "Ubud Round-trip Private Driver (Pickup ~4:30 AM)",
+    cangguDriver: "Canggu / Seminyak / Kuta Round-trip Private Driver (Pickup ~4:00 AM)",
+    uluwatuDriver: "Uluwatu / Nusa Dua Round-trip Private Driver (Pickup ~3:30 AM)",
 
     // Homepage Timeline / Schedule
     timelineHeader: "The Itinerary",
@@ -431,9 +431,9 @@ export const translations = {
     // Inclusions List for Checkout Summary
     noDriver: "Без водителя (Встреча на пляже Ловина к 6:30 утра)",
     freeShuttle: "Бесплатный местный шаттл (Район пляжа Ловина - трансфер ~6:30 утра)",
-    ubudDriver: "Трансфер из Убуда туда и обратно (Трансфер ~4:30 утра) (+$42)",
-    cangguDriver: "Трансфер из Чангу/Семиньяка/Куты туда и обратно (Трансфер ~4:00 утра) (+$60)",
-    uluwatuDriver: "Трансфер из Улувату/Нуса-Дуа туда и обратно (Трансфер ~3:30 утра) (+$78)",
+    ubudDriver: "Трансфер из Убуда туда и обратно (Трансфер ~4:30 утра)",
+    cangguDriver: "Трансфер из Чангу/Семиньяка/Куты туда и обратно (Трансфер ~4:00 утра)",
+    uluwatuDriver: "Трансфер из Улувату/Нуса-Дуа туда и обратно (Трансфер ~3:30 утра)",
 
     // Homepage Timeline / Schedule
     timelineHeader: "Маршрут",
@@ -718,9 +718,9 @@ export const translations = {
     // Inclusions List for Checkout Summary
     noDriver: "无需接送 (请于早上6:30前在罗威那海滩集合)",
     freeShuttle: "免费区域接送 (罗威那海滩周边——约早上6:30接人)",
-    ubudDriver: "乌布往返私人接送 (约早上4:30接人) (+42美元)",
-    cangguDriver: "仓谷/水明漾/库塔往返私人接送 (约早上4:00接人) (+60美元)",
-    uluwatuDriver: "乌鲁瓦图/努沙杜瓦往返私人接送 (约早上3:30接人) (+78美元)",
+    ubudDriver: "乌布往返私人接送 (约早上4:30接人)",
+    cangguDriver: "仓谷/水明漾/库塔往返私人接送 (约早上4:00接人)",
+    uluwatuDriver: "乌鲁瓦图/努沙杜瓦往返私人接送 (约早上3:30接人)",
 
     // Homepage Timeline / Schedule
     timelineHeader: "行程安排",

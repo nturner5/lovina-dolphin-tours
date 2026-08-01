@@ -322,7 +322,7 @@ if (transNum === 0) {
 
 const idrTotal = (tourPrice * guests) + pickupPrice;
 const usdTotal = Math.round(idrTotal / 18053);
-const idrFormatted = 'Rp ' + idrTotal.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\");
+const idrFormatted = 'Rp ' + (idrTotal / 1000).toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\") + 'k';
 
 return [{
   json: {
@@ -381,7 +381,7 @@ return [{
           url: `https://api.telegram.org/bot${botToken}/sendMessage`,
           sendBody: true,
           specifyBody: "json",
-          jsonBody: "={\n  \"chat_id\": \"{{ $json.chatId }}\",\n  \"text\": \"📋 *Bali Dolphin Tours: Custom Quote*\\n\\nHere is your private tour itinerary and pricing summary:\\n\\n• *Package*: 7:00 AM Private {{ $json.tourName }}\\n• *Guests*: {{ $json.guests }} people (Private Boat)\\n• *Transport*: {{ $json.pickupName }}\\n\\n💰 *Total Pricing Summary:*\\n• *USD Price*: **${{ $json.usdTotal }} USD**\\n• *IDR Price*: **{{ $json.idrFormatted }} IDR** (Roughly)\\n\\n✨ *Special Inclusions (For Free!):*\\n{{ $json.hasTransport ? '🚗 *Free Scenic Road Trip Stops:*\\\\nSince you booked private transport, you get up to 3 free sightseeing stops on the way back (e.g. Beratan Lake Temple, waterfalls, or coffee farms)!\\\\n👉 Read more: https://www.balidolphintours.com/blog/lovina-to-south-bali-our-favorite-road-trip-stops\\\\n\\\\n' : '' }}🌅 *Private Boat Charter:*\\nYour boat is 100% private. No strangers, just your group and a peaceful, non-intrusive parallel dolphin encounter.\\n\\n👇 *Book direct with us here:*\\n{{ $json.checkoutUrl }}\",\n  \"parse_mode\": \"Markdown\"\n}",
+          jsonBody: "={\n  \"chat_id\": \"{{ $json.chatId }}\",\n  \"text\": \"📋 *Bali Dolphin Tours: Custom Quote*\\n\\nHere is your private tour itinerary and pricing summary:\\n\\n• *Package*: 7:00 AM Private {{ $json.tourName }}\\n• *Guests*: {{ $json.guests }} people (Private Boat)\\n• *Transport*: {{ $json.pickupName }}\\n\\n💰 *Total Pricing Summary:*\\n• *USD Price*: **${{ $json.usdTotal }} USD**\\n• *IDR Price*: **{{ $json.idrFormatted }}** (Roughly)\\n\\n✨ *Special Inclusions (For Free!):*\\n{{ $json.hasTransport ? '🚗 *Free Scenic Road Trip Stops:*\\\\nSince you booked private transport, you get up to 3 free sightseeing stops on the way back (e.g. Beratan Lake Temple, waterfalls, or coffee farms)!\\\\n👉 Read more: https://www.balidolphintours.com/blog/lovina-to-south-bali-our-favorite-road-trip-stops\\\\n\\\\n' : '' }}🌅 *Private Boat Charter:*\\nYour boat is 100% private. No strangers, just your group and a peaceful, non-intrusive parallel dolphin encounter.\\n\\n👇 *Book direct with us here:*\\n{{ $json.checkoutUrl }}\",\n  \"parse_mode\": \"Markdown\"\n}",
           options: {}
         },
         id: "send-quote-msg-id",

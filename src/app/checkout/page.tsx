@@ -69,12 +69,14 @@ function CheckoutForm() {
     if (idrAmount === 0) return 'Free';
     const usdAmount = Math.round(idrAmount / exchangeRate);
     
+    const kAmount = idrAmount / 1000;
+    const formattedIdr = `Rp ${kAmount.toLocaleString('id-ID')}k`;
+    
     if (billingCurrency === 'idr') {
-      const idrStr = `Rp ${idrAmount.toLocaleString('id-ID')}`;
-      return showEstimate ? `${idrStr} (~$${usdAmount} USD)` : idrStr;
+      return showEstimate ? `${formattedIdr} (~$${usdAmount} USD)` : formattedIdr;
     } else {
       const usdStr = `$${usdAmount} USD`;
-      return showEstimate ? `${usdStr} (~Rp ${idrAmount.toLocaleString('id-ID')} IDR)` : usdStr;
+      return showEstimate ? `${usdStr} (~${formattedIdr})` : usdStr;
     }
   };
 

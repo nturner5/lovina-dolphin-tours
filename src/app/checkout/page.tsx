@@ -61,7 +61,7 @@ function CheckoutForm() {
   const [loading, setLoading] = useState(false);
   const [tours, setTours] = useState(DEFAULT_TOURS);
   const [pickupOptions, setPickupOptions] = useState(DEFAULT_PICKUP_OPTIONS);
-  const [billingCurrency, setBillingCurrency] = useState<'idr' | 'usd'>('idr');
+  const [billingCurrency, setBillingCurrency] = useState<'idr' | 'usd'>('usd');
 
   const [exchangeRate, setExchangeRate] = useState(18053);
 

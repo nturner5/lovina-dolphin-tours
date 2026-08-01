@@ -64,18 +64,17 @@ function CheckoutForm() {
 
   const [exchangeRate, setExchangeRate] = useState(18053);
 
-  const formatPrice = (idrAmount: number, showEstimate = true) => {
+  const formatPrice = (idrAmount: number) => {
     if (idrAmount === 0) return 'Free';
-    const usdAmount = Math.round(idrAmount / exchangeRate);
     
     const kAmount = idrAmount / 1000;
     const formattedIdr = `Rp ${kAmount.toLocaleString('id-ID')}k`;
     
     if (billingCurrency === 'idr') {
-      return showEstimate ? `${formattedIdr} (~$${usdAmount} USD)` : formattedIdr;
+      return formattedIdr;
     } else {
-      const usdStr = `$${usdAmount} USD`;
-      return showEstimate ? `${usdStr} (~${formattedIdr})` : usdStr;
+      const usdAmount = Math.round(idrAmount / exchangeRate);
+      return `$${usdAmount} USD`;
     }
   };
 
@@ -954,7 +953,7 @@ function CheckoutForm() {
               >
                 {loading 
                   ? t('btnSubmitLoading', locale) 
-                  : (isLastMinute ? t('btnSubmitWhatsApp', locale) : `Pay ${formatPrice(grandTotal, false)}`)
+                  : (isLastMinute ? t('btnSubmitWhatsApp', locale) : `Pay ${formatPrice(grandTotal)}`)
                 }
               </button>
             </div>

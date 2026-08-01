@@ -27,10 +27,13 @@ export async function POST(req: Request) {
       customTourPrice,
       customPickupPrice,
       tourTime,
+      billingCurrency = 'usd',
     } = await req.json();
 
     // Fetch dynamic pricing data from the cache / Stripe
     const pricing = await getPricingData();
+
+    const currency = billingCurrency.toLowerCase() === 'idr' ? 'idr' : 'usd';
 
     let price = 0;
     let tourName = '';
@@ -44,7 +47,7 @@ export async function POST(req: Request) {
       if (!tour) {
         return NextResponse.json({ error: `Invalid tour choice: ${tourId}` }, { status: 400 });
       }
-      price = tour.price;
+      price = currency === 'usd' ? (tour.priceUsd || 0) : (tour.price || 0);
       tourName = tour.name;
       defaultTime = tour.time || '7:00 AM';
     }
@@ -63,7 +66,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: `Invalid pickup choice: ${pickupLocation}` }, { status: 400 });
     }
 
-    let pickupFee = pickup.price;
+    let pickupFee = currency === 'usd' ? (pickup.priceUsd || 0) : (pickup.price || 0);
     const pickupName = pickup.name;
     const pickupDesc = pickupLocation === 'none'
       ? 'No transfer selected. Meet at the beach.'
@@ -83,12 +86,12 @@ export async function POST(req: Request) {
       // Allow creating line item even if manual override is set to 0 (free promotional tour)
       lineItems.push({
         price_data: {
-          currency: 'idr',
+          currency: currency,
           product_data: {
             name: `${tourName} (Private Boat)`,
             description: `Ethical Dolphin Tour for ${guests} guests on ${date}`,
           },
-          unit_amount: Math.round(price * 100), // Stripe expects IDR in cents/sen (two-decimals)
+          unit_amount: Math.round(price * 100), // Stripe expects USD/IDR in sub-units (cents/sen)
         },
         quantity: Math.max(1, Number(guests) || 1),
       });
@@ -97,12 +100,12 @@ export async function POST(req: Request) {
     if (pickupFee > 0) {
       lineItems.push({
         price_data: {
-          currency: 'idr',
+          currency: currency,
           product_data: {
             name: pickupName,
             description: pickupDesc,
           },
-          unit_amount: Math.round(pickupFee * 100), // Stripe expects IDR in cents/sen (two-decimals)
+          unit_amount: Math.round(pickupFee * 100), // Stripe expects USD/IDR in sub-units (cents/sen)
         },
         quantity: 1,
       });

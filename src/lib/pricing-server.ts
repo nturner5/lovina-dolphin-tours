@@ -54,7 +54,6 @@ export const DEFAULT_PRICING = {
   ],
   pickups: [
     { id: 'none', name: 'No Driver (Meet at Lovina Beach by 6:30 AM)', price: 0, priceUsd: 0 },
-    { id: 'lovina', name: 'Free Local Shuttle (Lovina Beach Area - Pickup ~6:30 AM)', price: 0, priceUsd: 0 },
     { id: 'ubud', name: 'Ubud Round-trip Private Driver (Pickup ~4:30 AM)', price: 758000, priceUsd: 42 },
     { id: 'canggu-kuta', name: 'Canggu / Seminyak / Kuta Round-trip Private Driver (Pickup ~4:00 AM)', price: 1083000, priceUsd: 60 },
     { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Private Driver (Pickup ~3:30 AM)', price: 1408000, priceUsd: 78 },
@@ -110,6 +109,7 @@ export const getPricingData = unstable_cache(
             time: product.metadata.time || '7:00 AM',
           });
         } else if (product.metadata.pickup_id) {
+          if (product.metadata.pickup_id === 'lovina') continue;
           pickups.push({
             id: product.metadata.pickup_id,
             name: product.name,

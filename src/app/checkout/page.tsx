@@ -38,7 +38,6 @@ const DEFAULT_TOURS = [
 
 const DEFAULT_PICKUP_OPTIONS = [
   { id: 'none', name: 'No Driver (Meet at Lovina Beach by 6:30 AM)', price: 0, icon: '⛵', note: 'Self-Drive to Beach' },
-  { id: 'lovina', name: 'Free Local Shuttle (Lovina Beach Area)', price: 0, icon: '🛺', note: 'Within 2km of Beach' },
   { id: 'ubud', name: 'Ubud Round-trip Private Driver (~4:30 AM Pickup)', price: 758000, icon: '🌴', note: 'Flat rate per SUV (up to 4 guests) — Includes free scenic stopovers on return trip' },
   { id: 'canggu-kuta', name: 'Canggu / Seminyak / Kuta Round-trip Driver (~4:00 AM Pickup)', price: 1083000, icon: '🏖️', note: 'Flat rate per SUV (up to 4 guests) — Includes free scenic stopovers on return trip' },
   { id: 'uluwatu', name: 'Uluwatu / Nusa Dua Round-trip Driver (~3:30 AM Pickup)', price: 1408000, icon: '🌊', note: 'Flat rate per SUV (up to 4 guests) — Includes free scenic stopovers on return trip' },
@@ -656,7 +655,6 @@ function CheckoutForm() {
                 const isSelected = formData.pickupLocation === option.id;
                 let optionName = '';
                 if (option.id === 'none') optionName = t('noDriver', locale);
-                else if (option.id === 'lovina') optionName = t('freeShuttle', locale);
                 else if (option.id === 'ubud') optionName = t('ubudDriver', locale);
                 else if (option.id === 'canggu-kuta') optionName = t('cangguDriver', locale);
                 else if (option.id === 'uluwatu') optionName = t('uluwatuDriver', locale);

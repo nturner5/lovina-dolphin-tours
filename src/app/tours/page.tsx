@@ -22,16 +22,30 @@ export default async function ToursPage({ searchParams }: PageProps) {
   const pricing = await getPricingData();
   const rate = await getExchangeRate();
 
-  // Find dynamic price values from Stripe
-  const tour1Price = pricing.tours.find((t: any) => t.id === 'seven-am-ethical')?.price || 812000;
-  const tour2Price = pricing.tours.find((t: any) => t.id === 'dolphin-swim')?.price || 993000;
-  const tour3Price = pricing.tours.find((t: any) => t.id === 'swim-snorkel')?.price || 1173000;
+  const currencyParam = resolvedParams.currency;
+  const activeCurrency = typeof currencyParam === 'string' && currencyParam.toLowerCase() === 'idr' ? 'idr' : 'usd';
+
+  // Find dynamic price values from Stripe (IDR and USD)
+  const tour1 = pricing.tours.find((t: any) => t.id === 'seven-am-ethical');
+  const tour1Price = tour1?.price || 812000;
+  const tour1PriceUsd = tour1?.priceUsd || 45;
+
+  const tour2 = pricing.tours.find((t: any) => t.id === 'dolphin-swim');
+  const tour2Price = tour2?.price || 993000;
+  const tour2PriceUsd = tour2?.priceUsd || 55;
+
+  const tour3 = pricing.tours.find((t: any) => t.id === 'swim-snorkel');
+  const tour3Price = tour3?.price || 1173000;
+  const tour3PriceUsd = tour3?.priceUsd || 65;
   
-  const hrefFor = (path: string) => {
-    if (locale === 'en') return path;
-    const separator = path.includes('?') ? '&' : '?';
-    return `${path}${separator}lang=${locale}`;
+  const checkoutHrefFor = (tourKey: string) => {
+    let path = `/checkout?tour=${tourKey}&currency=${activeCurrency}`;
+    if (locale !== 'en') {
+      path += `&lang=${locale}`;
+    }
+    return path;
   };
+
   return (
     <main className="bg-cloud-dancer min-h-screen">
       {/* Editorial Luxury Hero Section */}
@@ -57,6 +71,32 @@ export default async function ToursPage({ searchParams }: PageProps) {
     <>避开日出的混乱。我们的私人海豚观赏船游于<strong>上午7:00</strong>出发——此时早起拥挤的旅游船正返回岸边。与优先考虑海豚福利的经审核的当地船长一起，享受风平浪静的海面和优质的服务。</>
   )}
         </p>
+
+        {/* Dynamic Currency Switcher Toggle */}
+        <div className="flex justify-center mt-8 animate-in fade-in duration-500">
+          <div className="inline-flex bg-deep-indigo/5 p-1 rounded-full border border-deep-indigo/10 shadow-inner">
+            <Link
+              href={`/tours?currency=usd${locale !== 'en' ? `&lang=${locale}` : ''}`}
+              className={`px-5 py-2 rounded-full text-xs font-bold transition-all active:scale-95 flex items-center gap-1.5 ${
+                activeCurrency === 'usd'
+                  ? 'bg-deep-indigo text-white shadow-md'
+                  : 'text-deep-indigo/70 hover:text-deep-indigo'
+              }`}
+            >
+              🇺🇸 USD ($)
+            </Link>
+            <Link
+              href={`/tours?currency=idr${locale !== 'en' ? `&lang=${locale}` : ''}`}
+              className={`px-5 py-2 rounded-full text-xs font-bold transition-all active:scale-95 flex items-center gap-1.5 ${
+                activeCurrency === 'idr'
+                  ? 'bg-deep-indigo text-white shadow-md'
+                  : 'text-deep-indigo/70 hover:text-deep-indigo'
+              }`}
+            >
+              🇮🇩 IDR (Rp)
+            </Link>
+          </div>
+        </div>
       </section>
 
       <section className="px-4 sm:px-6 pb-24 lg:pb-32 max-w-6xl mx-auto">
@@ -89,13 +129,17 @@ export default async function ToursPage({ searchParams }: PageProps) {
 
                 <div className="flex flex-col gap-0.5 border-b border-deep-indigo/5 pb-5 w-full">
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">Rp {Math.round(tour1Price / 1000).toLocaleString('id-ID')}k</span>
+                    <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">
+                      {activeCurrency === 'usd' ? `$${tour1PriceUsd} USD` : `Rp ${Math.round(tour1Price / 1000).toLocaleString('id-ID')}k`}
+                    </span>
                     <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
                     <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
                       {t("tour1MinGuests", locale)}
                     </span>
                   </div>
-                  <span className="text-[10px] font-light text-deep-indigo/50">(~${Math.round(tour1Price / rate)} USD)</span>
+                  <span className="text-[10px] font-light text-deep-indigo/50">
+                    {activeCurrency === 'usd' ? `(~Rp ${Math.round(tour1Price / 1000).toLocaleString('id-ID')}k)` : `(~$${tour1PriceUsd} USD)`}
+                  </span>
                 </div>
 
                 {/* Inclusions list */}
@@ -138,11 +182,11 @@ export default async function ToursPage({ searchParams }: PageProps) {
             {/* Card Action */}
             <div className="p-8 sm:p-10 pt-0">
               <Link 
-                href={hrefFor("/checkout?tour=seven-am-ethical")}
+                href={checkoutHrefFor("seven-am-ethical")}
                 id="cta-select-ethical-tour"
                 className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md active:scale-98"
               >
-                {t("tour1Btn", locale)} (Rp {Math.round(tour1Price / 1000).toLocaleString('id-ID')}k)
+                {t("tour1Btn", locale)} ({activeCurrency === 'usd' ? `$${tour1PriceUsd} USD` : `Rp ${Math.round(tour1Price / 1000).toLocaleString('id-ID')}k`})
               </Link>
             </div>
           </div>
@@ -174,13 +218,17 @@ export default async function ToursPage({ searchParams }: PageProps) {
 
                 <div className="flex flex-col gap-0.5 border-b border-deep-indigo/5 pb-5 w-full">
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">Rp {Math.round(tour2Price / 1000).toLocaleString('id-ID')}k</span>
+                    <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">
+                      {activeCurrency === 'usd' ? `$${tour2PriceUsd} USD` : `Rp ${Math.round(tour2Price / 1000).toLocaleString('id-ID')}k`}
+                    </span>
                     <span className="text-sm font-light text-deep-indigo/60">{t("tour1_5PriceDesc", locale)}</span>
                     <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
                       {t("tour1_5MinGuests", locale)}
                     </span>
                   </div>
-                  <span className="text-[10px] font-light text-deep-indigo/50">(~${Math.round(tour2Price / rate)} USD)</span>
+                  <span className="text-[10px] font-light text-deep-indigo/50">
+                    {activeCurrency === 'usd' ? `(~Rp ${Math.round(tour2Price / 1000).toLocaleString('id-ID')}k)` : `(~$${tour2PriceUsd} USD)`}
+                  </span>
                 </div>
 
                 {/* Inclusions list */}
@@ -223,11 +271,11 @@ export default async function ToursPage({ searchParams }: PageProps) {
             {/* Card Action */}
             <div className="p-8 sm:p-10 pt-0">
               <Link 
-                href={hrefFor("/checkout?tour=dolphin-swim")}
+                href={checkoutHrefFor("dolphin-swim")}
                 id="cta-select-swim-tour"
                 className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md active:scale-98"
               >
-                {t("tour1_5Btn", locale)} (Rp {Math.round(tour2Price / 1000).toLocaleString('id-ID')}k)
+                {t("tour1_5Btn", locale)} ({activeCurrency === 'usd' ? `$${tour2PriceUsd} USD` : `Rp ${Math.round(tour2Price / 1000).toLocaleString('id-ID')}k`})
               </Link>
             </div>
           </div>
@@ -265,13 +313,17 @@ export default async function ToursPage({ searchParams }: PageProps) {
 
                 <div className="flex flex-col gap-0.5 border-b border-deep-indigo/5 pb-5 w-full">
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">Rp {Math.round(tour3Price / 1000).toLocaleString('id-ID')}k</span>
+                    <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">
+                      {activeCurrency === 'usd' ? `$${tour3PriceUsd} USD` : `Rp ${Math.round(tour3Price / 1000).toLocaleString('id-ID')}k`}
+                    </span>
                     <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
                     <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
                       {t("tour1MinGuests", locale)}
                     </span>
                   </div>
-                  <span className="text-[10px] font-light text-deep-indigo/50">(~${Math.round(tour3Price / rate)} USD)</span>
+                  <span className="text-[10px] font-light text-deep-indigo/50">
+                    {activeCurrency === 'usd' ? `(~Rp ${Math.round(tour3Price / 1000).toLocaleString('id-ID')}k)` : `(~$${tour3PriceUsd} USD)`}
+                  </span>
                 </div>
 
                 {/* Inclusions list */}
@@ -316,12 +368,12 @@ export default async function ToursPage({ searchParams }: PageProps) {
             {/* Card Action */}
             <div className="p-8 sm:p-10 pt-0">
               <Link 
-                href={hrefFor("/checkout?tour=swim-snorkel")}
+                href={checkoutHrefFor("swim-snorkel")}
                 id="cta-select-snorkel-tour"
                 className="block w-full bg-coral-pop text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-98 relative group"
               >
                 <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75 pointer-events-none"></span>
-                {t("tour2Btn", locale)} (Rp {Math.round(tour3Price / 1000).toLocaleString('id-ID')}k)
+                {t("tour2Btn", locale)} ({activeCurrency === 'usd' ? `$${tour3PriceUsd} USD` : `Rp ${Math.round(tour3Price / 1000).toLocaleString('id-ID')}k`})
               </Link>
             </div>
           </div>

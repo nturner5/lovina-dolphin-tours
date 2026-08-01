@@ -12,7 +12,7 @@ import Image from 'next/image';
 const DEFAULT_TOURS = [
   { 
     id: 'seven-am-ethical', 
-    name: '7:00 AM Private Dolphin Watching Tour', 
+    name: 'Dolphin Watching', 
     price: 812000, 
     time: '7:00 AM',
     badge: '🐬 Dolphin Watching',
@@ -20,7 +20,7 @@ const DEFAULT_TOURS = [
   },
   { 
     id: 'dolphin-swim', 
-    name: '7:00 AM Private Dolphin Watching & Swimming Tour', 
+    name: 'Dolphin Watching & Swim', 
     price: 993000, 
     time: '7:00 AM',
     badge: '🏊 Open Sea Swim',
@@ -28,7 +28,7 @@ const DEFAULT_TOURS = [
   },
   { 
     id: 'swim-snorkel', 
-    name: '7:00 AM Private Dolphin Watching Tour + Swim & Snorkel', 
+    name: 'Dolphin Watching & Swim & Reef Snorkel', 
     price: 1173000, 
     time: '7:00 AM',
     badge: '🐢 Recommended',

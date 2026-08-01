@@ -2,7 +2,7 @@ export const translations = {
   en: {
     // Navbar
     dolphinRules: "Dolphin Rules",
-    tours: "Tours",
+    tours: "Tours & Pricing",
     gallery: "Gallery",
     faq: "FAQ",
     blog: "Blog",
@@ -52,7 +52,7 @@ export const translations = {
     privateBoatTours: "Private Boat Tours",
     selectYourTour: "Select Your Private Dolphin Tour",
     tourSelectorDesc: "Skip the sunrise chaos. Our private dolphin watching boat tours depart at 7:00 AM—as the early crowded tourist boats return to shore. Enjoy a calm, quiet sea and excellent service with vetted local captains who prioritize dolphin welfare.",
-    tour1Title: "Private Dolphin Watching Encounter",
+    tour1Title: "Dolphin Watching",
     tour1Subtitle: "Sails at 7:00 AM to skip the crowded sunrise boat swarm & chaotic chasing",
     tour1PriceDesc: "per guest",
     tour1MinGuests: "Min. 2 guests",
@@ -67,7 +67,7 @@ export const translations = {
     tour1Inc4Desc: "Hot Balinese coffee, local premium tea, and fresh fruits served on board.",
     tour1Btn: "Book Dolphin Watching",
     
-    tour1_5Title: "Open Ocean Dolphin Swim & Watch",
+    tour1_5Title: "Dolphin Watching & Swim",
     tour1_5Subtitle: "Sails at 7:00 AM — hold the outrigger ropes to swim alongside wild dolphins",
     tour1_5PriceDesc: "per guest",
     tour1_5MinGuests: "Min. 2 guests",
@@ -79,12 +79,12 @@ export const translations = {
     tour1_5Inc3Desc: "Standard safety vests and swim assistance provided by your captain.",
     tour1_5Inc4Title: "Post-Sunrise Quiet",
     tour1_5Inc4Desc: "Sailing at 7:00 AM means less noise and crowded boats, making the dolphins calmer.",
-    tour1_5Btn: "Book Dolphin Swim & Watch",
+    tour1_5Btn: "Book Dolphin Swim",
     
-    tour2Title: "The Ultimate Dolphin Swim & Reef Snorkel",
+    tour2Title: "Dolphin Watching & Swim & Reef Snorkel",
     tour2Subtitle: "Sails at 7:00 AM — our signature double encounter (swim with dolphins + coral reef snorkeling)",
     recommended: "Highly Recommended",
-    signatureTag: "Dolphin Swim & Reef Snorkel",
+    signatureTag: "Dolphin Watching & Swim & Reef Snorkel",
     tour2Inc1Title: "Everything in Dolphin Watching",
     tour2Inc1Desc: "Private outrigger boat charter, vetted captain, coffee, tea, and fruit platter.",
     tour2Inc2Title: "Premium Snorkeling Gear",
@@ -93,7 +93,7 @@ export const translations = {
     tour2Inc3Desc: "Swim alongside dolphin pods using the boat's safe holding bars.",
     tour2Inc4Title: "Vetted Reef Guide",
     tour2Inc4Desc: "Your captain acts as your water guide, ensuring safety and pointing out sea life.",
-    tour2Btn: "Book Dolphin Swim & Snorkel",
+    tour2Btn: "Book Watch, Swim & Snorkel",
     
     // Checkout Page
     checkoutTitle: "Secure Your Private Boat",
@@ -292,7 +292,7 @@ export const translations = {
   ru: {
     // Navbar
     dolphinRules: "Правила дельфинов",
-    tours: "Экскурсии",
+    tours: "Туры и цены",
     gallery: "Галерея",
     faq: "Вопросы и ответы",
     blog: "Блог",
@@ -342,7 +342,7 @@ export const translations = {
     privateBoatTours: "Частные лодочные туры",
     selectYourTour: "Выберите свой частный тур к дельфинам",
     tourSelectorDesc: "Избегайте утреннего хаоса. Наши частные туры к дельфинам отправляются в 7:00 утра — когда ранние переполненные туристические лодки возвращаются на берег. Наслаждайтесь спокойным морем и отличным сервисом с проверенными местными капитанами, которые ставят благополучие дельфинов на первое место.",
-    tour1Title: "Индивидуальная встреча с дельфинами",
+    tour1Title: "Наблюдение за дельфинами",
     tour1Subtitle: "Отправление в 7:00 утра — избегайте рассветного хаоса и преследования дельфинов лодками",
     tour1PriceDesc: "за гостя",
     tour1MinGuests: "Мин. 2 гостя",
@@ -357,7 +357,7 @@ export const translations = {
     tour1Inc4Desc: "Горячий балийский кофе, местный чай премиум-класса и свежие фрукты на борту.",
     tour1Btn: "Забронировать наблюдение",
     
-    tour1_5Title: "Наблюдение и плавание с дельфинами в океане",
+    tour1_5Title: "Наблюдение и плавание с дельфинами",
     tour1_5Subtitle: "Отправление в 7:00 утра — плывите рядом с дельфинами, держась за поручни лодки",
     tour1_5Inc1Title: "Все, что входит в наблюдение",
     tour1_5Inc1Desc: "Частная лодка-балансир, проверенный капитан, кофе, чай и фруктовая тарелка.",
@@ -369,10 +369,10 @@ export const translations = {
     tour1_5Inc4Desc: "Плавание в 7:00 утра означает меньше шума и лодок, что делает дельфинов спокойнее.",
     tour1_5Btn: "Забронировать плавание",
     
-    tour2Title: "Плавание с дельфинами и сноркелинг на рифе",
+    tour2Title: "Наблюдение, плавание с дельфинами и сноркелинг на рифе",
     tour2Subtitle: "Отправление в 7:00 утра — наше фирменное комбо (дельфины + сноркелинг на коралловом рифе)",
     recommended: "Рекомендуем",
-    signatureTag: "Плавание с дельфинами и сноркелинг",
+    signatureTag: "Наблюдение, плавание с дельфинами и сноркелинг",
     tour2Inc1Title: "Все, что входит в наблюдение за дельфинами",
     tour2Inc1Desc: "Частная лодка-балансир, проверенный капитан, кофе, чай и фруктовая тарелка.",
     tour2Inc2Title: "Премиальное снаряжение",
@@ -381,7 +381,7 @@ export const translations = {
     tour2Inc3Desc: "Плавайте рядом с дельфинами, используя безопасные поручни лодки.",
     tour2Inc4Title: "Проверенный гид по рифу",
     tour2Inc4Desc: "Ваш капитан выступает в качестве водного гида, обеспечивая безопасность и показывая морскую жизнь.",
-    tour2Btn: "Забронировать сноркелинг",
+    tour2Btn: "Забронировать комбо-тур",
     
     // Checkout Page
     checkoutTitle: "Забронируйте частную лодку",
@@ -579,7 +579,7 @@ export const translations = {
   zh: {
     // Navbar
     dolphinRules: "海豚规则",
-    tours: "观赏行程",
+    tours: "行程与价格",
     gallery: "画廊",
     faq: "常见问题",
     blog: "官方部落格",
@@ -629,7 +629,7 @@ export const translations = {
     privateBoatTours: "私人游船之旅",
     selectYourTour: "选择您的私人海豚之旅",
     tourSelectorDesc: "避开日出的混乱。我们的私人海豚观赏船游于上午7:00出发——此时早起拥挤的旅游船正返回岸边。与优先考虑海豚福利的经审核的当地船长一起，享受风平浪静的海面和优质的服务。",
-    tour1Title: "私人海豚温情邂逅之旅",
+    tour1Title: "海豚观赏",
     tour1Subtitle: "上午 7:00 出发 —— 完美避开日出时分拥挤嘈杂的追逐船流",
     tour1PriceDesc: "每位游客",
     tour1MinGuests: "最少2位游客",
@@ -644,7 +644,7 @@ export const translations = {
     tour1Inc4Desc: "船上供应热巴厘岛咖啡、当地优质茶和新鲜水果。",
     tour1Btn: "预订海豚观赏",
     
-    tour1_5Title: "公海海豚观赏与并肩共游",
+    tour1_5Title: "海豚观赏与共游",
     tour1_5Subtitle: "上午 7:00 出发 —— 握住安全侧栏，与野生海豚家族同游",
     tour1_5Inc1Title: "包含海豚观赏的所有内容",
     tour1_5Inc1Desc: "私人舷外浮材船租用、经审核的船长、咖啡、茶和水果拼盘。",
@@ -654,12 +654,12 @@ export const translations = {
     tour1_5Inc3Desc: "提供标准救生衣和由船长提供的水上安全协助。",
     tour1_5Inc4Title: "日出后的静谧",
     tour1_5Inc4Desc: "上午 7:00 出发意味着更少的噪音和拥挤的船只，让海豚更加放松。",
-    tour1_5Btn: "预订观赏与共游",
+    tour1_5Btn: "预订海豚共游",
     
-    tour2Title: "海豚共游与珊瑚礁浮潜终极体验",
+    tour2Title: "海豚观赏、共游与珊瑚礁浮潜",
     tour2Subtitle: "上午 7:00 出发 —— 我们的招牌双重项目（海豚共游 + 珊瑚礁浮潜）",
     recommended: "强烈推荐",
-    signatureTag: "海豚游泳与珊瑚礁浮潜",
+    signatureTag: "海豚观赏、共游与珊瑚礁浮潜",
     tour2Inc1Title: "包含海豚观赏的所有内容",
     tour2Inc1Desc: "私人舷外浮材船租用、经审核的船长、咖啡、茶和水果拼盘。",
     tour2Inc2Title: "优质浮潜装备",
@@ -668,7 +668,7 @@ export const translations = {
     tour2Inc3Desc: "使用船上的安全把手与海豚群并肩游泳。",
     tour2Inc4Title: "经审核的的珊瑚礁导游",
     tour2Inc4Desc: "您的船长将担任水上导游，确保安全并指出海洋生物。",
-    tour2Btn: "预订海豚共游与浮潜",
+    tour2Btn: "预订三合一体验",
     
     // Checkout Page
     checkoutTitle: "锁定您的私人船只",

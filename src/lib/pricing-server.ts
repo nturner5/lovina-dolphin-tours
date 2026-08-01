@@ -48,9 +48,9 @@ export const getExchangeRate = unstable_cache(
 // Default static fallback pricing to prevent breaks
 export const DEFAULT_PRICING = {
   tours: [
-    { id: 'seven-am-ethical', name: '7:00 AM Private Dolphin Watching Tour', price: 812000, priceUsd: 45, time: '7:00 AM' },
-    { id: 'dolphin-swim', name: '7:00 AM Private Dolphin Watching & Swimming Tour', price: 993000, priceUsd: 55, time: '7:00 AM' },
-    { id: 'swim-snorkel', name: '7:00 AM Private Dolphin Watching Tour + Swim & Snorkel', price: 1173000, priceUsd: 65, time: '7:00 AM' },
+    { id: 'seven-am-ethical', name: 'Dolphin Watching', price: 812000, priceUsd: 45, time: '7:00 AM' },
+    { id: 'dolphin-swim', name: 'Dolphin Watching & Swim', price: 993000, priceUsd: 55, time: '7:00 AM' },
+    { id: 'swim-snorkel', name: 'Dolphin Watching & Swim & Reef Snorkel', price: 1173000, priceUsd: 65, time: '7:00 AM' },
   ],
   pickups: [
     { id: 'none', name: 'No Driver (Meet at Lovina Beach by 6:30 AM)', price: 0, priceUsd: 0 },

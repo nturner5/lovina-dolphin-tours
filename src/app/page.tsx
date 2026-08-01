@@ -22,10 +22,21 @@ export default async function Home({ searchParams }: PageProps) {
   const pricing = await getPricingData();
   const rate = await getExchangeRate();
 
-  // Find dynamic price values from Stripe
-  const tour1Price = pricing.tours.find((t: any) => t.id === 'seven-am-ethical')?.price || 812000;
-  const tour2Price = pricing.tours.find((t: any) => t.id === 'dolphin-swim')?.price || 993000;
-  const tour3Price = pricing.tours.find((t: any) => t.id === 'swim-snorkel')?.price || 1173000;
+  const currencyParam = resolvedParams.currency;
+  const activeCurrency = typeof currencyParam === 'string' && currencyParam.toLowerCase() === 'idr' ? 'idr' : 'usd';
+
+  // Find dynamic price values from Stripe (IDR and USD)
+  const tour1 = pricing.tours.find((t: any) => t.id === 'seven-am-ethical');
+  const tour1Price = tour1?.price || 812000;
+  const tour1PriceUsd = tour1?.priceUsd || 45;
+
+  const tour2 = pricing.tours.find((t: any) => t.id === 'dolphin-swim');
+  const tour2Price = tour2?.price || 993000;
+  const tour2PriceUsd = tour2?.priceUsd || 55;
+
+  const tour3 = pricing.tours.find((t: any) => t.id === 'swim-snorkel');
+  const tour3Price = tour3?.price || 1173000;
+  const tour3PriceUsd = tour3?.priceUsd || 65;
 
   const hrefFor = (path: string) => {
     const [basePath, hash] = path.split('#');
@@ -34,6 +45,14 @@ export default async function Home({ searchParams }: PageProps) {
     if (locale === 'en') return `${cleanPath}${hashPart}`;
     const separator = cleanPath.includes('?') ? '&' : '?';
     return `${cleanPath}${separator}lang=${locale}${hashPart}`;
+  };
+
+  const checkoutHrefFor = (tourKey: string) => {
+    let path = `/checkout?tour=${tourKey}&currency=${activeCurrency}`;
+    if (locale !== 'en') {
+      path += `&lang=${locale}`;
+    }
+    return path;
   };
 
   const sanityReels = await client.fetch(groq`*[_type == "reel"] | order(_createdAt desc)[0...4]`);
@@ -449,6 +468,33 @@ export default async function Home({ searchParams }: PageProps) {
             <p className="text-sm text-deep-indigo/60 max-w-lg mx-auto mt-4 font-light leading-relaxed">
               {t("tourSelectorDesc", locale)}
             </p>
+
+            {/* Dynamic Currency Switcher Toggle */}
+            <div className="flex justify-center mt-6 animate-in fade-in duration-500">
+              <div className="inline-flex bg-deep-indigo/5 p-1 rounded-full border border-deep-indigo/10 shadow-inner">
+                <Link
+                  href={`/?currency=usd${locale !== 'en' ? `&lang=${locale}` : ''}#packages`}
+                  className={`px-5 py-2 rounded-full text-xs font-bold transition-all active:scale-95 flex items-center gap-1.5 ${
+                    activeCurrency === 'usd'
+                      ? 'bg-deep-indigo text-white shadow-md'
+                      : 'text-deep-indigo/70 hover:text-deep-indigo'
+                  }`}
+                >
+                  🇺🇸 USD ($)
+                </Link>
+                <Link
+                  href={`/?currency=idr${locale !== 'en' ? `&lang=${locale}` : ''}#packages`}
+                  className={`px-5 py-2 rounded-full text-xs font-bold transition-all active:scale-95 flex items-center gap-1.5 ${
+                    activeCurrency === 'idr'
+                      ? 'bg-deep-indigo text-white shadow-md'
+                      : 'text-deep-indigo/70 hover:text-deep-indigo'
+                  }`}
+                >
+                  🇮🇩 IDR (Rp)
+                </Link>
+              </div>
+            </div>
+
             <div className="mt-8 bg-transformative-teal/5 p-4.5 rounded-2xl border border-transformative-teal/15 max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm text-deep-indigo font-light text-center sm:text-left shadow-sm">
               <span className="text-xl shrink-0">🌴</span>
               <div>
@@ -487,13 +533,17 @@ export default async function Home({ searchParams }: PageProps) {
 
                   <div className="flex flex-col gap-0.5 border-b border-deep-indigo/5 pb-5 w-full">
                     <div className="flex items-center gap-2">
-                      <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">Rp {Math.round(tour1Price / 1000).toLocaleString('id-ID')}k</span>
+                      <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">
+                        {activeCurrency === 'usd' ? `$${tour1PriceUsd} USD` : `Rp ${Math.round(tour1Price / 1000).toLocaleString('id-ID')}k`}
+                      </span>
                       <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
                       <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
                         {t("tour1MinGuests", locale)}
                       </span>
                     </div>
-                    <span className="text-[10px] font-light text-deep-indigo/50">(~${Math.round(tour1Price / rate)} USD)</span>
+                    <span className="text-[10px] font-light text-deep-indigo/50">
+                      {activeCurrency === 'usd' ? `(~Rp ${Math.round(tour1Price / 1000).toLocaleString('id-ID')}k)` : `(~$${tour1PriceUsd} USD)`}
+                    </span>
                   </div>
 
                   <div className="space-y-4">
@@ -541,11 +591,11 @@ export default async function Home({ searchParams }: PageProps) {
 
               <div className="p-8 sm:p-10 pt-4">
                 <Link 
-                  href={hrefFor("/checkout?tour=seven-am-ethical")}
+                  href={checkoutHrefFor("seven-am-ethical")}
                   id="cta-select-ethical-tour-home"
                   className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md active:scale-98"
                 >
-                  {t("tour1Btn", locale)} (Rp {Math.round(tour1Price / 1000).toLocaleString('id-ID')}k)
+                  {t("tour1Btn", locale)} ({activeCurrency === 'usd' ? `$${tour1PriceUsd} USD` : `Rp ${Math.round(tour1Price / 1000).toLocaleString('id-ID')}k`})
                 </Link>
               </div>
             </div>
@@ -575,13 +625,17 @@ export default async function Home({ searchParams }: PageProps) {
 
                   <div className="flex flex-col gap-0.5 border-b border-deep-indigo/5 pb-5 w-full">
                     <div className="flex items-center gap-2">
-                      <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">Rp {Math.round(tour2Price / 1000).toLocaleString('id-ID')}k</span>
+                      <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">
+                        {activeCurrency === 'usd' ? `$${tour2PriceUsd} USD` : `Rp ${Math.round(tour2Price / 1000).toLocaleString('id-ID')}k`}
+                      </span>
                       <span className="text-sm font-light text-deep-indigo/60">{t("tour1_5PriceDesc", locale)}</span>
                       <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
                         {t("tour1_5MinGuests", locale)}
                       </span>
                     </div>
-                    <span className="text-[10px] font-light text-deep-indigo/50">(~${Math.round(tour2Price / rate)} USD)</span>
+                    <span className="text-[10px] font-light text-deep-indigo/50">
+                      {activeCurrency === 'usd' ? `(~Rp ${Math.round(tour2Price / 1000).toLocaleString('id-ID')}k)` : `(~$${tour2PriceUsd} USD)`}
+                    </span>
                   </div>
 
                   <div className="space-y-4">
@@ -629,11 +683,11 @@ export default async function Home({ searchParams }: PageProps) {
 
               <div className="p-8 sm:p-10 pt-4">
                 <Link 
-                  href={hrefFor("/checkout?tour=dolphin-swim")}
+                  href={checkoutHrefFor("dolphin-swim")}
                   id="cta-select-swim-tour-home"
                   className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md active:scale-98"
                 >
-                  {t("tour1_5Btn", locale)} (Rp {Math.round(tour2Price / 1000).toLocaleString('id-ID')}k)
+                  {t("tour1_5Btn", locale)} ({activeCurrency === 'usd' ? `$${tour2PriceUsd} USD` : `Rp ${Math.round(tour2Price / 1000).toLocaleString('id-ID')}k`})
                 </Link>
               </div>
             </div>
@@ -667,13 +721,17 @@ export default async function Home({ searchParams }: PageProps) {
 
                   <div className="flex flex-col gap-0.5 border-b border-deep-indigo/5 pb-5 w-full">
                     <div className="flex items-center gap-2">
-                      <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">Rp {Math.round(tour3Price / 1000).toLocaleString('id-ID')}k</span>
+                      <span className="text-2xl sm:text-3xl font-bold text-deep-indigo whitespace-nowrap">
+                        {activeCurrency === 'usd' ? `$${tour3PriceUsd} USD` : `Rp ${Math.round(tour3Price / 1000).toLocaleString('id-ID')}k`}
+                      </span>
                       <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
                       <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
                         {t("tour1MinGuests", locale)}
                       </span>
                     </div>
-                    <span className="text-[10px] font-light text-deep-indigo/50">(~${Math.round(tour3Price / rate)} USD)</span>
+                    <span className="text-[10px] font-light text-deep-indigo/50">
+                      {activeCurrency === 'usd' ? `(~Rp ${Math.round(tour3Price / 1000).toLocaleString('id-ID')}k)` : `(~$${tour3PriceUsd} USD)`}
+                    </span>
                   </div>
 
                   <div className="space-y-4">
@@ -723,12 +781,12 @@ export default async function Home({ searchParams }: PageProps) {
 
               <div className="p-8 sm:p-10 pt-4">
                 <Link 
-                  href={hrefFor("/checkout?tour=swim-snorkel")}
+                  href={checkoutHrefFor("swim-snorkel")}
                   id="cta-select-snorkel-tour-home"
                   className="block w-full bg-coral-pop text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-deep-indigo transition-all shadow-lg active:scale-98 relative group"
                 >
                   <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75 pointer-events-none"></span>
-                  {t("tour2Btn", locale)} (Rp {Math.round(tour3Price / 1000).toLocaleString('id-ID')}k)
+                  {t("tour2Btn", locale)} ({activeCurrency === 'usd' ? `$${tour3PriceUsd} USD` : `Rp ${Math.round(tour3Price / 1000).toLocaleString('id-ID')}k`})
                 </Link>
               </div>
             </div>

@@ -765,7 +765,7 @@ function CheckoutForm() {
         <form onSubmit={handleCheckout} className="space-y-6 animate-in fade-in duration-300">
           <div className="bg-white p-5 rounded-2xl border border-deep-indigo/5 shadow-sm space-y-4">
             <label className="block text-xs font-bold uppercase tracking-widest text-deep-indigo/70">
-              Traveler Information
+              Contact Information
             </label>
 
             <div>

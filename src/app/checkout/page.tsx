@@ -788,7 +788,6 @@ function CheckoutForm() {
               </label>
               <input 
                 type="email" 
-                required
                 placeholder={t("emailPlaceholder", locale)}
                 className="w-full bg-cloud-dancer/50 border border-deep-indigo/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-transformative-teal text-deep-indigo text-xs"
                 value={formData.email}

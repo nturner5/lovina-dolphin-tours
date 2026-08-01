@@ -417,6 +417,27 @@ if (!message) return [];
 
 const text = message.text || '';
 
+// Fetch dynamic pricing data once at the start of Parse Pay Command node
+let rate = 18053;
+let pricingTours = [];
+let pricingPickups = [];
+
+try {
+  const res = await fetch('https://www.balidolphintours.com/api/pricing');
+  if (res.ok) {
+    const data = await res.json();
+    if (data.exchangeRate) {
+      rate = data.exchangeRate;
+    }
+    if (data.tours) {
+      pricingTours = data.tours;
+    }
+    if (data.pickups) {
+      pricingPickups = data.pickups;
+    }
+  }
+} catch (e) {}
+
 // Handle template submission
 if (text.includes('/create_booking')) {
   const dateMatch = text.match(/•?\\s*Date:\\s*([^\\n]+)/i);
@@ -442,15 +463,36 @@ if (text.includes('/create_booking')) {
   const rawTime = timeMatch ? timeMatch[1].trim() : '7:00 AM';
   const guestName = nameMatch ? nameMatch[1].trim() : 'Manual Telegram Booking';
 
+  let tourName = '';
   let tourId = 'seven-am-ethical';
-  if (rawTour.includes('swim')) tourId = 'dolphin-swim';
-  else if (rawTour.includes('snorkel')) tourId = 'swim-snorkel';
-  else if (rawTour.includes('transport')) tourId = 'transport-only';
+  if (rawTour.includes('swim')) {
+    tourId = 'dolphin-swim';
+    tourName = 'Dolphin Watching & Swimming Tour';
+  } else if (rawTour.includes('snorkel')) {
+    tourId = 'swim-snorkel';
+    tourName = 'Dolphin Watching Tour + Swim & Snorkel';
+  } else {
+    tourName = 'Dolphin Watching Tour';
+  }
   
+  let pickupName = '';
   let pickupLocation = 'none';
-  if (rawPickup.includes('ubud')) pickupLocation = 'ubud';
-  else if (rawPickup.includes('canggu') || rawPickup.includes('seminyak') || rawPickup.includes('kuta') || rawPickup.includes('south')) pickupLocation = 'canggu-kuta';
-  else if (rawPickup.includes('uluwatu') || rawPickup.includes('nusadua')) pickupLocation = 'uluwatu';
+  let hasTransport = false;
+  if (rawPickup.includes('ubud')) {
+    pickupLocation = 'ubud';
+    pickupName = 'Ubud Round-trip Private Driver';
+    hasTransport = true;
+  } else if (rawPickup.includes('canggu') || rawPickup.includes('seminyak') || rawPickup.includes('kuta') || rawPickup.includes('south')) {
+    pickupLocation = 'canggu-kuta';
+    pickupName = 'Canggu / Seminyak / Kuta Round-trip Private Driver';
+    hasTransport = true;
+  } else if (rawPickup.includes('uluwatu') || rawPickup.includes('nusadua')) {
+    pickupLocation = 'uluwatu';
+    pickupName = 'Uluwatu / Nusa Dua Round-trip Private Driver';
+    hasTransport = true;
+  } else {
+    pickupName = 'No Driver (Lovina Beach Area)';
+  }
 
   if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(rawDate)) {
     return [{
@@ -472,6 +514,15 @@ if (text.includes('/create_booking')) {
     }];
   }
 
+  const tourPrice = pricingTours.find(t => t.id === tourId)?.price || 
+    (tourId === 'seven-am-ethical' ? 812000 : tourId === 'dolphin-swim' ? 993000 : 1173000);
+  const pickupPrice = pickupLocation === 'none' ? 0 : (pricingPickups.find(p => p.id === pickupLocation)?.price || 
+    (pickupLocation === 'ubud' ? 758000 : pickupLocation === 'canggu-kuta' ? 1083000 : 1408000));
+
+  const idrTotal = (tourPrice * guests) + pickupPrice;
+  const usdTotal = Math.round(idrTotal / rate);
+  const idrFormatted = 'Rp ' + (idrTotal / 1000).toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\") + 'k';
+
   return [{
     json: {
       command: 'pay',
@@ -481,7 +532,12 @@ if (text.includes('/create_booking')) {
       guests,
       pickupLocation,
       tourTime: rawTime,
-      guestName
+      guestName,
+      tourName,
+      pickupName,
+      hasTransport,
+      usdTotal,
+      idrFormatted
     }
   }];
 }
@@ -512,15 +568,36 @@ const rawTour = args[2].toLowerCase();
 const rawPickup = args[3].toLowerCase();
 const rawTime = args[4] || '7:00 AM';
 
+let tourName = '';
 let tourId = 'seven-am-ethical';
-if (rawTour === 'swim') tourId = 'dolphin-swim';
-else if (rawTour === 'snorkel') tourId = 'swim-snorkel';
-else if (rawTour === 'transport') tourId = 'transport-only';
+if (rawTour === 'swim') {
+  tourId = 'dolphin-swim';
+  tourName = 'Dolphin Watching & Swimming Tour';
+} else if (rawTour === 'snorkel') {
+  tourId = 'swim-snorkel';
+  tourName = 'Dolphin Watching Tour + Swim & Snorkel';
+} else {
+  tourName = 'Dolphin Watching Tour';
+}
 
+let pickupName = '';
 let pickupLocation = 'none';
-if (rawPickup === 'ubud') pickupLocation = 'ubud';
-else if (rawPickup === 'canggu' || rawPickup === 'seminyak' || rawPickup === 'kuta' || rawPickup === 'south' || rawPickup === 'canggu-kuta') pickupLocation = 'canggu-kuta';
-else if (rawPickup === 'uluwatu' || rawPickup === 'nusadua') pickupLocation = 'uluwatu';
+let hasTransport = false;
+if (rawPickup === 'ubud') {
+  pickupLocation = 'ubud';
+  pickupName = 'Ubud Round-trip Private Driver';
+  hasTransport = true;
+} else if (rawPickup === 'canggu' || rawPickup === 'seminyak' || rawPickup === 'kuta' || rawPickup === 'south' || rawPickup === 'canggu-kuta') {
+  pickupLocation = 'canggu-kuta';
+  pickupName = 'Canggu / Seminyak / Kuta Round-trip Private Driver';
+  hasTransport = true;
+} else if (rawPickup === 'uluwatu' || rawPickup === 'nusadua') {
+  pickupLocation = 'uluwatu';
+  pickupName = 'Uluwatu / Nusa Dua Round-trip Private Driver';
+  hasTransport = true;
+} else {
+  pickupName = 'No Driver (Lovina Beach Area)';
+}
 
 if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(rawDate)) {
   return [{
@@ -542,6 +619,15 @@ if (isNaN(guests) || guests <= 0) {
   }];
 }
 
+const tourPrice = pricingTours.find(t => t.id === tourId)?.price || 
+  (tourId === 'seven-am-ethical' ? 812000 : tourId === 'dolphin-swim' ? 993000 : 1173000);
+const pickupPrice = pickupLocation === 'none' ? 0 : (pricingPickups.find(p => p.id === pickupLocation)?.price || 
+  (pickupLocation === 'ubud' ? 758000 : pickupLocation === 'canggu-kuta' ? 1083000 : 1408000));
+
+const idrTotal = (tourPrice * guests) + pickupPrice;
+const usdTotal = Math.round(idrTotal / rate);
+const idrFormatted = 'Rp ' + (idrTotal / 1000).toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\") + 'k';
+
 return [{
   json: {
     command: 'pay',
@@ -551,7 +637,12 @@ return [{
     guests,
     pickupLocation,
     tourTime: rawTime,
-    guestName: 'Manual Telegram Booking'
+    guestName: 'Manual Telegram Booking',
+    tourName,
+    pickupName,
+    hasTransport,
+    usdTotal,
+    idrFormatted
   }
 }];`
         },
@@ -659,7 +750,7 @@ return [{
           url: `https://api.telegram.org/bot${botToken}/sendMessage`,
           sendBody: true,
           specifyBody: "json",
-          jsonBody: "={\n  \"chat_id\": \"{{ $('Parse Pay Command').item.json.chatId }}\",\n  \"text\": \"🔗 *Stripe Checkout Link Created!*\\n\\n👉 [Click to Open Checkout]({{ $json.url }})\\n\\n`{{ $json.url }}`\",\n  \"parse_mode\": \"Markdown\"\n}",
+          jsonBody: "={\n  \"chat_id\": \"{{ $('Parse Pay Command').item.json.chatId }}\",\n  \"text\": \"📋 *Bali Dolphin Tours: Private Booking Created!*\\n\\nHere is the custom itinerary and secure checkout link for your guest:\\n\\n• *Guest Name*: **{{ $('Parse Pay Command').item.json.guestName }}**\\n• *Package*: **{{ $('Parse Pay Command').item.json.tourTime }} Private {{ $('Parse Pay Command').item.json.tourName }}**\\n• *Date*: **{{ $('Parse Pay Command').item.json.date }}**\\n• *Guests*: **{{ $('Parse Pay Command').item.json.guests }} people** (Private Boat)\\n• *Transport*: **{{ $('Parse Pay Command').item.json.pickupName }}**\\n\\n💰 *Total Pricing Summary:*\\n• *USD Price*: **${{ $('Parse Pay Command').item.json.usdTotal }} USD**\\n• *IDR Price*: **{{ $('Parse Pay Command').item.json.idrFormatted }}** (Roughly)\\n\\n✨ *Special Inclusions (For Free!):*\\n{{ $('Parse Pay Command').item.json.hasTransport ? '🚗 *Free Scenic Road Trip Stops:*\\\\nSince you booked private transport, you get up to 3 free sightseeing stops on the way back (e.g. Beratan Lake Temple, waterfalls, or coffee farms)!\\\\n👉 Read more: https://www.balidolphintours.com/blog/lovina-to-south-bali-our-favorite-road-trip-stops\\\\n\\\\n' : '' }}🌅 *Private Boat Charter:*\\\\nYour boat is 100% private. No strangers, just your group and a respectful parallel dolphin encounter.\\n\\n👇 *Click below to open secure checkout:*\\\\n{{ $json.url }}\",\n  \"parse_mode\": \"Markdown\"\n}",
           options: {}
         },
         id: "send-checkout-link-id",

@@ -410,42 +410,43 @@ function CheckoutForm() {
           <span className={step === 2 ? 'text-transformative-teal' : ''}>2. Logistics</span>
           <span className={step === 3 ? 'text-coral-pop' : ''}>3. Pay</span>
         </div>
+
+        {/* Global Currency Toggle */}
+        <div className="flex justify-center sm:justify-end mt-6">
+          <div className="bg-deep-indigo/5 p-1 rounded-2xl flex items-center border border-deep-indigo/10">
+            <button
+              type="button"
+              onClick={() => setBillingCurrency('idr')}
+              className={`px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                billingCurrency === 'idr' 
+                  ? 'bg-deep-indigo text-white shadow-sm' 
+                  : 'text-deep-indigo/60 hover:text-deep-indigo'
+              }`}
+            >
+              Pay in IDR (Rp)
+            </button>
+            <button
+              type="button"
+              onClick={() => setBillingCurrency('usd')}
+              className={`px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                billingCurrency === 'usd' 
+                  ? 'bg-deep-indigo text-white shadow-sm' 
+                  : 'text-deep-indigo/60 hover:text-deep-indigo'
+              }`}
+            >
+              Pay in USD ($)
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* STEP 1: EXPERIENCE & DATE */}
       {step === 1 && (
         <div className="space-y-6 animate-in fade-in duration-300">
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <label className="block text-xs font-bold uppercase tracking-widest text-deep-indigo/70">
-                Select Private Package
-              </label>
-              
-              <div className="bg-deep-indigo/5 p-1 rounded-xl flex items-center border border-deep-indigo/10 self-start sm:self-auto">
-                <button
-                  type="button"
-                  onClick={() => setBillingCurrency('idr')}
-                  className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                    billingCurrency === 'idr' 
-                      ? 'bg-deep-indigo text-white shadow-sm' 
-                      : 'text-deep-indigo/60 hover:text-deep-indigo'
-                  }`}
-                >
-                  Pay in IDR (Rp)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setBillingCurrency('usd')}
-                  className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                    billingCurrency === 'usd' 
-                      ? 'bg-deep-indigo text-white shadow-sm' 
-                      : 'text-deep-indigo/60 hover:text-deep-indigo'
-                  }`}
-                >
-                  Pay in USD ($)
-                </button>
-              </div>
-            </div>
+            <label className="block text-xs font-bold uppercase tracking-widest text-deep-indigo/70">
+              Select Private Package
+            </label>
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {tours.map(tour => {

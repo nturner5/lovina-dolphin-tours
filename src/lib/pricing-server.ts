@@ -5,6 +5,46 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-01-27.acacia' as any,
 });
 
+// Dynamic exchange rate fetcher with multiple fallback sources and short timeout
+export const getExchangeRate = unstable_cache(
+  async () => {
+    // Source 1: Frankfurter API
+    try {
+      const res = await fetch('https://api.frankfurter.app/latest?from=USD&to=IDR', { signal: AbortSignal.timeout(3000) });
+      if (res.ok) {
+        const data = await res.json();
+        const rate = data.rates?.IDR;
+        if (rate && typeof rate === 'number' && rate > 10000) {
+          console.log(`Frankfurter exchange rate: 1 USD = ${rate} IDR`);
+          return rate;
+        }
+      }
+    } catch (e: any) {
+      console.warn('Frankfurter exchange rate fetch failed:', e.message);
+    }
+
+    // Source 2: JSDelivr Currency API
+    try {
+      const res = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json', { signal: AbortSignal.timeout(3000) });
+      if (res.ok) {
+        const data = await res.json();
+        const rate = data.usd?.idr;
+        if (rate && typeof rate === 'number' && rate > 10000) {
+          console.log(`JSDelivr exchange rate: 1 USD = ${rate} IDR`);
+          return rate;
+        }
+      }
+    } catch (e: any) {
+      console.warn('JSDelivr exchange rate fetch failed:', e.message);
+    }
+
+    // Default static fallback
+    return 18053;
+  },
+  ['usd-idr-exchange-rate-cache'],
+  { revalidate: 86400 } // 24 hours cache
+);
+
 // Default static fallback pricing to prevent breaks
 export const DEFAULT_PRICING = {
   tours: [
@@ -30,6 +70,8 @@ export const getPricingData = unstable_cache(
     }
 
     try {
+      const rate = await getExchangeRate();
+
       // Fetch active products with their default price objects expanded
       const products = await stripe.products.list({
         active: true,
@@ -52,10 +94,10 @@ export const getPricingData = unstable_cache(
 
         if (isIdr) {
           price = stripePrice;
-          priceUsd = Math.round(price / 18053);
+          priceUsd = Math.round(price / rate);
         } else {
           priceUsd = stripePrice;
-          price = Math.round((priceUsd * 18053) / 1000) * 1000;
+          price = Math.round((priceUsd * rate) / 1000) * 1000;
         }
 
         if (product.metadata.tour_id) {

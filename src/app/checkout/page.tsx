@@ -63,9 +63,11 @@ function CheckoutForm() {
   const [pickupOptions, setPickupOptions] = useState(DEFAULT_PICKUP_OPTIONS);
   const [billingCurrency, setBillingCurrency] = useState<'idr' | 'usd'>('idr');
 
+  const [exchangeRate, setExchangeRate] = useState(18053);
+
   const formatPrice = (idrAmount: number, showEstimate = true) => {
     if (idrAmount === 0) return 'Free';
-    const usdAmount = Math.round(idrAmount / 18053);
+    const usdAmount = Math.round(idrAmount / exchangeRate);
     
     if (billingCurrency === 'idr') {
       const idrStr = `Rp ${idrAmount.toLocaleString('id-ID')}`;
@@ -119,6 +121,9 @@ function CheckoutForm() {
         const response = await fetch('/api/pricing');
         if (response.ok) {
           const data = await response.json();
+          if (data.exchangeRate) {
+            setExchangeRate(data.exchangeRate);
+          }
           if (data.tours && data.tours.length > 0) {
             setTours(prev => prev.map(pt => {
               const matched = data.tours.find((dt: any) => dt.id === pt.id);

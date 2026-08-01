@@ -13,6 +13,13 @@ function SuccessPageContent() {
     // Track the purchase event with a standard average value ($140.00 USD)
     // and the transaction ID for Gtag deduplication.
     trackPurchase(140.00, sessionId);
+
+    // Clear saved checkout session state upon successful booking
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('checkout_form');
+      sessionStorage.removeItem('checkout_step');
+      sessionStorage.removeItem('checkout_currency');
+    }
   }, [sessionId]);
 
   return (

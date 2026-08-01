@@ -99,6 +99,53 @@ function CheckoutForm() {
     trackPageView(window.location.pathname);
   }, []);
 
+  // Restore form state from sessionStorage on component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedForm = sessionStorage.getItem('checkout_form');
+      if (savedForm) {
+        try {
+          const parsed = JSON.parse(savedForm);
+          if (parsed && typeof parsed === 'object') {
+            setFormData(prev => ({ ...prev, ...parsed }));
+          }
+        } catch (e) {}
+      }
+
+      const savedStep = sessionStorage.getItem('checkout_step');
+      if (savedStep) {
+        const s = Number(savedStep);
+        if (s === 1 || s === 2 || s === 3) {
+          setStep(s as 1 | 2 | 3);
+        }
+      }
+
+      const savedCurrency = sessionStorage.getItem('checkout_currency');
+      if (savedCurrency === 'idr' || savedCurrency === 'usd') {
+        setBillingCurrency(savedCurrency);
+      }
+    }
+  }, []);
+
+  // Save form state to sessionStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('checkout_form', JSON.stringify(formData));
+    }
+  }, [formData]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('checkout_step', String(step));
+    }
+  }, [step]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('checkout_currency', billingCurrency);
+    }
+  }, [billingCurrency]);
+
   useEffect(() => {
     if (hasTrackedBegin || tours.length === 0) return;
     const selectedTour = tours.find(t => t.id === formData.tourId) || tours[0];

@@ -114,8 +114,7 @@ export default async function Home({ searchParams }: PageProps) {
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-serif text-deep-indigo mb-6 leading-[1.1] tracking-tight">
-              {t('heroTitle', locale)}<br />
-              <span className="italic font-light text-transformative-teal">{t('heroTitleItalic', locale)}</span>
+              {t('heroTitle', locale)}
             </h1>
 
             {/* Mobile-only Dolphin Image Card */}

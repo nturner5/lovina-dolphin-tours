@@ -25,8 +25,8 @@ export const translations = {
     // Hero
     heroBadge: "Avoid the Boat Crowds",
     heroAltText: "Two sleek wild dolphins gliding peacefully in the calm, misty morning ocean of North Bali",
-    heroTitle: "Meet Lovina’s Dolphin Pods—",
-    heroTitleItalic: "On a Quiet Sea.",
+    heroTitle: "Private Dolphin Tours in Lovina",
+    heroTitleItalic: "Depart After the Morning Boat Rush.",
     heroDesc: "Enjoy a peaceful morning on the water. Book a private, comfortable outrigger boat with our professional local captains. By departing after the sunrise rush, you skip the chaotic boat crowds and enjoy the wild dolphin pods in a much quieter, peaceful setting.",
     zeroSwarmingTitle: "Zero Swarming",
     zeroSwarmingDesc: "Engines to neutral; respectful parallel approach.",
@@ -317,8 +317,8 @@ export const translations = {
     // Hero
     heroBadge: "Избегайте толпы лодок",
     heroAltText: "Два гладких диких дельфина мирно скользят в тихом туманном утреннем океане Северного Бали",
-    heroTitle: "Встретьте дельфинов Ловины—",
-    heroTitleItalic: "На спокойном море.",
+    heroTitle: "Частные туры к дельфинам в Ловине",
+    heroTitleItalic: "Отправляйтесь после утреннего скопления лодок.",
     heroDesc: "Наслаждайтесь мирным утром на воде. Забронируйте частную комфортабельную лодку-балансир с нашими профессиональными местными капитанами. Отправляясь после рассветной суеты, вы избегаете хаотичной толпы лодок и наслаждаетесь дикими стаями дельфинов в гораздо более тихой и спокойной обстановке.",
     zeroSwarmingTitle: "Никакого окружения",
     zeroSwarmingDesc: "Двигатели на нейтрали, параллельное сближение.",
@@ -606,8 +606,8 @@ export const translations = {
     // Hero
     heroBadge: "避开拥挤的游船",
     heroAltText: "两只圆润的野生海豚在巴厘岛北部平静而薄雾笼罩的晨间海洋中安详地游动",
-    heroTitle: "邂逅罗威那野生海豚——",
-    heroTitleItalic: "在宁静的沧海之上",
+    heroTitle: "罗威那私人海豚之旅",
+    heroTitleItalic: "避开早间拥挤的游船人潮出发",
     heroDesc: "在水面上享受宁静的早晨。向我们的专业当地船长预订一艘私人、舒适的舷外浮材船。在日出高峰过后出发，您将避开混乱的游船人潮，在更加安静、祥和的环境中欣赏野生海豚群。",
     zeroSwarmingTitle: "零围攻",
     zeroSwarmingDesc: "发动机置空挡，平行接近。",

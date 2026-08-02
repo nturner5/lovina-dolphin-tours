@@ -100,25 +100,25 @@ export default async function Home({ searchParams }: PageProps) {
   return (
     <main className="flex-1 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative px-6 pt-10 pb-20 lg:pt-14 lg:pb-24 overflow-hidden bg-cloud-dancer">
-        <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+      <section className="relative px-4 pt-8 pb-12 sm:px-6 lg:pt-14 lg:pb-24 overflow-hidden bg-cloud-dancer">
+        <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-12 gap-8 lg:gap-16 items-center relative z-10">
           
           {/* Left Column: Brand Content & Scannable Highlights */}
           <div className="lg:col-span-7 flex flex-col items-start text-left animate-in fade-in slide-in-from-bottom-8 duration-1000">
             {/* Elegant Tag Badge */}
-            <div className="bg-transformative-teal/10 text-transformative-teal px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest inline-flex items-center gap-2 mb-6 border border-transformative-teal/20">
+            <div className="bg-transformative-teal/10 text-transformative-teal px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest inline-flex items-center gap-2 mb-4 lg:mb-6 border border-transformative-teal/20">
               <svg className="w-3.5 h-3.5 text-transformative-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v3m0 12v3m9-9h-3M6 12H3m14.243-6.243l-2.122 2.122M8.879 15.121l-2.122 2.122M17.243 17.243l-2.122-2.122M8.879 8.879L6.757 6.757M12 8a4 4 0 014 4H8a4 4 0 014-4zM4 20h16" />
               </svg>
               {t('heroBadge', locale)}
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-serif text-deep-indigo mb-6 leading-[1.1] tracking-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-serif text-deep-indigo mb-4 lg:mb-6 leading-[1.1] tracking-tight">
               {t('heroTitle', locale)}
             </h1>
 
             {/* Mobile-only Dolphin Image Card */}
-            <div className="lg:hidden w-full my-6 relative animate-in fade-in zoom-in duration-1000 delay-200">
+            <div className="lg:hidden w-full my-4 relative animate-in fade-in zoom-in duration-1000 delay-200">
               <div className="aspect-[16/9] w-full rounded-[2rem] overflow-hidden bg-deep-indigo/5 shadow-xl border border-deep-indigo/10 relative group">
                 <Image 
                   src="/hero_dolphins.png" 
@@ -137,7 +137,7 @@ export default async function Home({ searchParams }: PageProps) {
             </div>
 
             {/* Scannable Value Proposition Badges */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-10 w-full max-w-lg text-left">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 lg:mb-8 w-full max-w-lg text-left">
               {[
                 {
                   icon: (
@@ -205,7 +205,7 @@ export default async function Home({ searchParams }: PageProps) {
             </div>
 
             {/* Quick Trust Seals / Badges directly under CTAs */}
-            <div className="mt-6 flex flex-wrap gap-4 text-xs font-light text-deep-indigo/60 justify-center sm:justify-start">
+            <div className="mt-4 lg:mt-6 flex flex-wrap gap-4 text-xs font-light text-deep-indigo/60 justify-center sm:justify-start">
               <span className="flex items-center gap-1.5">✓ 100% Private Boat</span>
               <span className="text-deep-indigo/20 hidden sm:inline">•</span>
               <span className="flex items-center gap-1.5">✓ Vetted Local Captains</span>

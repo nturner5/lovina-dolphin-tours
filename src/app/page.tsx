@@ -197,7 +197,7 @@ export default async function Home({ searchParams }: PageProps) {
       {/* Tour Selection / Packages Section */}
       <section id="packages" className="py-16 lg:py-24 px-6 bg-white border-b border-deep-indigo/10">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12 lg:mb-16">
+          <div className="text-center mb-6 lg:mb-8">
 
             <h3 className="text-4xl lg:text-5xl font-serif text-deep-indigo">
               {locale === 'en' ? (
@@ -209,8 +209,28 @@ export default async function Home({ searchParams }: PageProps) {
               )}
             </h3>
 
+            {/* Expandable Transport Details */}
+            <details className="group mt-4 text-center max-w-xl mx-auto text-xs sm:text-sm text-deep-indigo/60">
+              <summary className="cursor-pointer hover:text-transformative-teal transition-all font-semibold inline-flex items-center gap-1.5 list-none select-none justify-center">
+                <span>📍</span>
+                <span>{locale === 'en' ? 'Staying in Ubud or South Bali?' : locale === 'ru' ? 'Остановились в Убуде или на юге Бали?' : '入住乌布或巴厘岛南部？'}</span>
+                <span className="text-transformative-teal font-normal underline decoration-transformative-teal/30 hover:decoration-transformative-teal group-open:hidden ml-1">
+                  {locale === 'en' ? 'Show transport options' : locale === 'ru' ? 'Показать варианты трансфера' : '显示接送方案'} &darr;
+                </span>
+                <span className="text-transformative-teal font-normal underline decoration-transformative-teal/30 hover:decoration-transformative-teal hidden group-open:inline ml-1">
+                  {locale === 'en' ? 'Hide options' : locale === 'ru' ? 'Скрыть варианты' : '隐藏方案'} &uarr;
+                </span>
+              </summary>
+              <div className="mt-3 text-xs text-deep-indigo/60 font-light leading-relaxed animate-in fade-in duration-300">
+                {t("packagesBannerText", locale)}{' '}
+                <Link href={hrefFor("/#scenic-stops")} className="underline text-transformative-teal hover:text-coral-pop font-bold transition-colors">
+                  {t("packagesBannerLink", locale)} &rarr;
+                </Link>
+              </div>
+            </details>
+
             {/* Dynamic Currency Switcher Toggle */}
-            <div className="flex justify-center mt-6 animate-in fade-in duration-500">
+            <div className="flex justify-center mt-5 animate-in fade-in duration-500">
               <div className="inline-flex bg-deep-indigo/5 p-1 rounded-full border border-deep-indigo/10 shadow-inner">
                 <Link
                   href={`/?currency=usd${locale !== 'en' ? `&lang=${locale}` : ''}#packages`}
@@ -234,25 +254,6 @@ export default async function Home({ searchParams }: PageProps) {
                 </Link>
               </div>
             </div>
-
-            <details className="group mt-6 text-center max-w-xl mx-auto text-xs sm:text-sm text-deep-indigo/60 border-t border-deep-indigo/5 pt-6">
-              <summary className="cursor-pointer hover:text-transformative-teal transition-all font-semibold inline-flex items-center gap-1.5 list-none select-none justify-center">
-                <span>📍</span>
-                <span>{locale === 'en' ? 'Staying in Ubud or South Bali?' : locale === 'ru' ? 'Остановились в Убуде или на юге Бали?' : '入住乌布或巴厘岛南部？'}</span>
-                <span className="text-transformative-teal font-normal underline decoration-transformative-teal/30 hover:decoration-transformative-teal group-open:hidden ml-1">
-                  {locale === 'en' ? 'Show transport options' : locale === 'ru' ? 'Показать варианты трансфера' : '显示接送方案'} &darr;
-                </span>
-                <span className="text-transformative-teal font-normal underline decoration-transformative-teal/30 hover:decoration-transformative-teal hidden group-open:inline ml-1">
-                  {locale === 'en' ? 'Hide options' : locale === 'ru' ? 'Скрыть варианты' : '隐藏方案'} &uarr;
-                </span>
-              </summary>
-              <div className="mt-3 text-xs text-deep-indigo/60 font-light leading-relaxed animate-in fade-in duration-300">
-                {t("packagesBannerText", locale)}{' '}
-                <Link href={hrefFor("/#scenic-stops")} className="underline text-transformative-teal hover:text-coral-pop font-bold transition-colors">
-                  {t("packagesBannerLink", locale)} &rarr;
-                </Link>
-              </div>
-            </details>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 lg:gap-8 items-stretch max-w-6xl mx-auto">

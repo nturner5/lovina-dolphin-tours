@@ -137,10 +137,8 @@ export default async function Home({ searchParams }: PageProps) {
             <div className="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto mt-6">
               <Link 
                 href={hrefFor("/#packages")} 
-                className="bg-coral-pop text-cloud-dancer px-11 py-3.5 rounded-full text-base font-semibold tracking-wide hover:bg-deep-indigo transition-all shadow-md hover:shadow-lg hover:shadow-coral-pop/35 active:scale-95 text-center relative group w-full max-w-xs sm:w-auto"
+                className="bg-coral-pop text-cloud-dancer px-11 py-3.5 rounded-full text-base font-semibold tracking-wide hover:bg-deep-indigo transition-all shadow-md shadow-coral-pop/30 hover:shadow-lg hover:shadow-coral-pop/50 active:scale-95 text-center relative group w-full max-w-xs sm:w-auto"
               >
-                {/* Pulsing ring outer container */}
-                <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75 pointer-events-none"></span>
                 {t('btnBookTour', locale)}
               </Link>
               <Link 
@@ -377,7 +375,7 @@ export default async function Home({ searchParams }: PageProps) {
                 <Link 
                   href={checkoutHrefFor("seven-am-ethical")}
                   id="cta-select-ethical-tour-home"
-                  className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md hover:shadow-lg hover:shadow-deep-indigo/20 active:scale-98"
+                  className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md shadow-deep-indigo/25 hover:shadow-lg hover:shadow-deep-indigo/45 active:scale-98"
                 >
                   {t("tour1Btn", locale)} ({activeCurrency === 'usd' ? `$${tour1PriceUsd} USD` : `Rp ${Math.round(tour1Price / 1000).toLocaleString('id-ID')}k`})
                 </Link>
@@ -504,7 +502,7 @@ export default async function Home({ searchParams }: PageProps) {
                 <Link 
                   href={checkoutHrefFor("dolphin-swim")}
                   id="cta-select-swim-tour-home"
-                  className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md hover:shadow-lg hover:shadow-deep-indigo/20 active:scale-98"
+                  className="block w-full bg-deep-indigo text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-transformative-teal transition-all shadow-md shadow-deep-indigo/25 hover:shadow-lg hover:shadow-deep-indigo/45 active:scale-98"
                 >
                   {t("tour1_5Btn", locale)} ({activeCurrency === 'usd' ? `$${tour2PriceUsd} USD` : `Rp ${Math.round(tour2Price / 1000).toLocaleString('id-ID')}k`})
                 </Link>
@@ -635,9 +633,8 @@ export default async function Home({ searchParams }: PageProps) {
                 <Link 
                   href={checkoutHrefFor("swim-snorkel")}
                   id="cta-select-snorkel-tour-home"
-                  className="block w-full bg-coral-pop text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-deep-indigo transition-all shadow-lg hover:shadow-xl hover:shadow-coral-pop/35 active:scale-98 relative group"
+                  className="block w-full bg-coral-pop text-cloud-dancer py-4.5 rounded-full text-center text-sm font-bold hover:bg-deep-indigo transition-all shadow-lg shadow-coral-pop/30 hover:shadow-xl hover:shadow-coral-pop/50 active:scale-98 relative group"
                 >
-                  <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75 pointer-events-none"></span>
                   {t("tour2Btn", locale)} ({activeCurrency === 'usd' ? `$${tour3PriceUsd} USD` : `Rp ${Math.round(tour3Price / 1000).toLocaleString('id-ID')}k`})
                 </Link>
               </div>

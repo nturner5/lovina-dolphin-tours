@@ -141,7 +141,7 @@ export const translations = {
     trustEthicalDesc: "We slow down near the pods and maintain a safe parallel distance, letting the dolphins guide the encounter.",
     trustSupportTitle: "Bali Support Bridge",
     trustSupportDesc: "Need custom help? Chat with a local Captain instantly on WhatsApp:",
-    trustSecureStripe: "Secure USD via Stripe",
+    trustSecureStripe: "Secure Card & IDR Payments",
     trustImmediateConfirmation: "Immediate Confirmation",
     
     // Inclusions List for Checkout Summary
@@ -196,7 +196,7 @@ export const translations = {
     bring4Desc: "Helpful for spotting dolphins swimming beneath the surface.",
     
     secureGuaranteeTitle: "Secure Booking Guarantee",
-    secureGuaranteeDesc: "Secure payment in USD with Stripe Checkout. Immediate confirmation via email and WhatsApp.",
+    secureGuaranteeDesc: "Secure payment in USD/IDR via encrypted checkout. Immediate confirmation via email and WhatsApp.",
     
     // Brand Promise Highlights
     promise1Title: "The 7:00 AM Sea",
@@ -268,8 +268,8 @@ export const translations = {
     trustItemSafetyDesc: "Vetted local captains, certified high-visibility safety vests, and guided swim assistance on every tour.",
     trustItemSightingTitle: "Sighting Guarantee",
     trustItemSightingDesc: "If no dolphins are spotted, join us on a second morning cruise absolutely free.",
-    trustItemPaymentTitle: "Secure Stripe Payments",
-    trustItemPaymentDesc: "Secure checkout in USD. Immediate booking confirmation and dispatch details via email and WhatsApp.",
+    trustItemPaymentTitle: "Secure Card Payments",
+    trustItemPaymentDesc: "Secure checkout in USD/IDR. Immediate booking confirmation and dispatch details via email and WhatsApp.",
     packagesBannerText: "Book private driver transport at checkout and stop at waterfalls, mountain temples, or coffee gardens along the way for free!",
     packagesBannerLink: "See scenic stops below",
     freeStopsInclusionTitle: "Free Personalized Sightseeing Stops",
@@ -431,7 +431,7 @@ export const translations = {
     trustEthicalDesc: "Мы замедляем ход рядом со стаями и соблюдаем безопасную дистанцию, позволяя дельфинам направлять встречу.",
     trustSupportTitle: "Служба поддержки на Бали",
     trustSupportDesc: "Нужна помощь? Мгновенно свяжитесь с местным капитаном в WhatsApp:",
-    trustSecureStripe: "Безопасная оплата в USD через Stripe",
+    trustSecureStripe: "Безопасная оплата картой и IDR",
     trustImmediateConfirmation: "Мгновенное подтверждение",
     
     // Inclusions List for Checkout Summary
@@ -486,7 +486,7 @@ export const translations = {
     bring4Desc: "Поляризационные очки помогут лучше разглядеть дельфинов под водой.",
     
     secureGuaranteeTitle: "Гарантия безопасности",
-    secureGuaranteeDesc: "Безопасная оплата в USD через Stripe. Мгновенное подтверждение по email и WhatsApp.",
+    secureGuaranteeDesc: "Безопасная оплата в USD или IDR через защищенный платеж. Мгновенное подтверждение по email и WhatsApp.",
     
     // Brand Promise Highlights
     promise1Title: "Море в 7:00 утра",
@@ -558,8 +558,8 @@ export const translations = {
     trustItemSafetyDesc: "Проверенные капитаны, сертифицированные спасательные жилеты и поддержка гида на воде во время каждого тура.",
     trustItemSightingTitle: "Гарантия встречи",
     trustItemSightingDesc: "Если мы не увидим дельфинов, вы сможете присоединиться к нам на следующее утро совершенно бесплатно.",
-    trustItemPaymentTitle: "Безопасность Stripe",
-    trustItemPaymentDesc: "Надежная оплата в USD через Stripe. Мгновенное подтверждение бронирования по email и WhatsApp.",
+    trustItemPaymentTitle: "Безопасная онлайн-оплата",
+    trustItemPaymentDesc: "Надежная оплата в USD или IDR. Мгновенное подтверждение бронирования по email и WhatsApp.",
     packagesBannerText: "Закажите частный трансфер и сделайте остановки у водопадов, храмов или кофейных плантаций бесплатно!",
     packagesBannerLink: "Посмотреть остановки в пути",
     freeStopsInclusionTitle: "Свои остановки для осмотра (Бесплатно)",
@@ -721,7 +721,7 @@ export const translations = {
     trustEthicalDesc: "我们在海豚群附近减速并保持安全的平行距离，让海豚引导这次邂逅。",
     trustSupportTitle: "巴厘岛本地支持",
     trustSupportDesc: "需要个性化帮助？立即在 WhatsApp 上与本地船长直接联系：",
-    trustSecureStripe: "通过 Stripe 安全支付美元",
+    trustSecureStripe: "安全信用卡与印尼盾支付",
     trustImmediateConfirmation: "即时预订确认",
     
     // Inclusions List for Checkout Summary
@@ -776,7 +776,7 @@ export const translations = {
     bring4Desc: "有助于观察浮出水面下游泳的海豚（自备）。",
     
     secureGuaranteeTitle: "安全预订保障",
-    secureGuaranteeDesc: "通过 Stripe Checkout 以美元进行安全支付。通过电子邮件和 WhatsApp 立即收到确认信。",
+    secureGuaranteeDesc: "通过安全加密结账支付美元/印尼盾。通过电子邮件和 WhatsApp 立即收到确认信息。",
     
     // Brand Promise Highlights
     promise1Title: "上午7:00的海面",
@@ -848,8 +848,8 @@ export const translations = {
     trustItemSafetyDesc: "经审核的本地船长、通过认证的高能见度救生衣，以及每次行程中的全程水上安全协助。",
     trustItemSightingTitle: "海豚偶遇保证",
     trustItemSightingDesc: "如果航程中未看到海豚，可在第二个早晨免费再次加入我们的晨间巡游。",
-    trustItemPaymentTitle: "Stripe 安全支付保障",
-    trustItemPaymentDesc: "以美元进行安全结账。预订完成后，立即通过电子邮件和 WhatsApp 发送确认信与出行细节。",
+    trustItemPaymentTitle: "安全在线结账",
+    trustItemPaymentDesc: "安全以美元/印尼盾结账。预订完成后，立即通过电子邮件和 WhatsApp 发送确认信与出行细节。",
     packagesBannerText: "在结账时选购私人司机接送，即可在往返途中免费经停山间瀑布、湖畔水神庙或咖啡种植园！",
     packagesBannerLink: "查看沿途经停景点",
     freeStopsInclusionTitle: "免费随心定制沿途景点",

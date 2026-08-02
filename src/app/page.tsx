@@ -141,28 +141,44 @@ export default async function Home({ searchParams }: PageProps) {
             <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-10 w-full max-w-lg text-left">
               {[
                 {
-                  icon: "🐬",
+                  icon: (
+                    <svg className="w-5 h-5 text-transformative-teal shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6h2.25l5.03-5.03c.37-.37.97-.11.97.41v14.14c0 .52-.6.78-.97.41L11.25 15.75H9A3 3 0 016 12.75v-1.5A3 3 0 019 9.75z" />
+                    </svg>
+                  ),
                   title: t('zeroSwarmingTitle', locale),
                   desc: t('zeroSwarmingDesc', locale)
                 },
                 {
-                  icon: "🌅",
+                  icon: (
+                    <svg className="w-5 h-5 text-transformative-teal shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  ),
                   title: t('noCrowdsTitle', locale),
                   desc: t('noCrowdsDesc', locale)
                 },
                 {
-                  icon: "⛵",
+                  icon: (
+                    <svg className="w-5 h-5 text-transformative-teal shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v13.5m0-13.5L5.25 14.25H12m0-11.25l6.75 11.25H12m-9 3h18c-1.5 3-4.5 3-9 3s-7.5 0-9-3z" />
+                    </svg>
+                  ),
                   title: t('privateComfortTitle', locale),
                   desc: t('privateComfortDesc', locale)
                 },
                 {
-                  icon: "👨‍✈️",
+                  icon: (
+                    <svg className="w-5 h-5 text-transformative-teal shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18zm0 0V3m0 9h9M3 12h9m0 0l-6.364 6.364M12 12l6.364-6.364M12 12l-6.364-6.364M12 12l6.364 6.364" />
+                    </svg>
+                  ),
                   title: t('localCaptainsTitle', locale),
                   desc: t('localCaptainsDesc', locale)
                 }
               ].map((item, index) => (
                 <div key={index} className="bg-white/50 border border-deep-indigo/5 p-4 rounded-2xl flex items-start gap-3 shadow-sm hover:shadow-md transition-all duration-300">
-                  <span className="text-xl sm:text-2xl shrink-0">{item.icon}</span>
+                  {item.icon}
                   <div>
                     <h4 className="font-bold text-xs sm:text-sm text-deep-indigo leading-tight tracking-tight">{item.title}</h4>
                     <p className="text-[10px] sm:text-xs text-deep-indigo/60 font-light mt-1 leading-normal">{item.desc}</p>

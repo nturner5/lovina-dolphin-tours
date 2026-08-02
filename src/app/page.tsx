@@ -195,7 +195,7 @@ export default async function Home({ searchParams }: PageProps) {
       </section>
 
       {/* Tour Selection / Packages Section */}
-      <section id="packages" className="py-16 lg:py-24 px-6 bg-cloud-dancer/30 border-b border-deep-indigo/10">
+      <section id="packages" className="py-16 lg:py-24 px-6 bg-deep-indigo/[0.02] border-b border-deep-indigo/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-6 lg:mb-8">
 
@@ -755,7 +755,7 @@ export default async function Home({ searchParams }: PageProps) {
       </section>
 
       {/* Hotel Pickups & Scenic Transfers Banner */}
-      <section id="scenic-stops" className="py-16 px-6 bg-cloud-dancer/20 border-t border-deep-indigo/5">
+      <section id="scenic-stops" className="py-16 px-6 bg-deep-indigo/[0.02] border-t border-deep-indigo/5">
         <div className="max-w-4xl mx-auto bg-deep-indigo text-cloud-dancer rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden shadow-xl">
           {/* Subtle decoration */}
           <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-transformative-teal/10 rounded-full blur-3xl" />
@@ -808,7 +808,7 @@ export default async function Home({ searchParams }: PageProps) {
       <ReviewsSection locale={locale} />
 
       {/* Social Proof (Reels Grid) */}
-      <section className="py-16 lg:py-24 px-6 bg-cloud-dancer/20">
+      <section className="py-16 lg:py-24 px-6 bg-deep-indigo/[0.02]">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
             <div>

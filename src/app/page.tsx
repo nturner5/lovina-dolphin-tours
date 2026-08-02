@@ -142,7 +142,7 @@ export default async function Home({ searchParams }: PageProps) {
               {[
                 {
                   icon: (
-                    <svg className="w-5 h-5 text-transformative-teal shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                    <svg className="w-5 h-5 text-transformative-teal shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6h2.25l5.03-5.03c.37-.37.97-.11.97.41v14.14c0 .52-.6.78-.97.41L11.25 15.75H9A3 3 0 016 12.75v-1.5A3 3 0 019 9.75z" />
                     </svg>
                   ),
@@ -151,7 +151,7 @@ export default async function Home({ searchParams }: PageProps) {
                 },
                 {
                   icon: (
-                    <svg className="w-5 h-5 text-transformative-teal shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                    <svg className="w-5 h-5 text-transformative-teal shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   ),
@@ -160,7 +160,7 @@ export default async function Home({ searchParams }: PageProps) {
                 },
                 {
                   icon: (
-                    <svg className="w-5 h-5 text-transformative-teal shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                    <svg className="w-5 h-5 text-transformative-teal shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v13.5m0-13.5L5.25 14.25H12m0-11.25l6.75 11.25H12m-9 3h18c-1.5 3-4.5 3-9 3s-7.5 0-9-3z" />
                     </svg>
                   ),
@@ -169,7 +169,7 @@ export default async function Home({ searchParams }: PageProps) {
                 },
                 {
                   icon: (
-                    <svg className="w-5 h-5 text-transformative-teal shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                    <svg className="w-5 h-5 text-transformative-teal shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18zm0 0V3m0 9h9M3 12h9m0 0l-6.364 6.364M12 12l6.364-6.364M12 12l-6.364-6.364M12 12l6.364 6.364" />
                     </svg>
                   ),
@@ -177,7 +177,7 @@ export default async function Home({ searchParams }: PageProps) {
                   desc: t('localCaptainsDesc', locale)
                 }
               ].map((item, index) => (
-                <div key={index} className="bg-white/50 border border-deep-indigo/5 p-4 rounded-2xl flex items-start gap-3 shadow-sm hover:shadow-md transition-all duration-300">
+                <div key={index} className="bg-white/50 border border-deep-indigo/5 p-4 rounded-2xl flex items-center gap-3 shadow-sm hover:shadow-md transition-all duration-300">
                   {item.icon}
                   <div>
                     <h4 className="font-bold text-xs sm:text-sm text-deep-indigo leading-tight tracking-tight">{item.title}</h4>
@@ -209,7 +209,7 @@ export default async function Home({ searchParams }: PageProps) {
             <div className="mt-6 flex flex-wrap gap-4 text-xs font-light text-deep-indigo/60 justify-center sm:justify-start">
               <span className="flex items-center gap-1.5">✓ 100% Private Boat</span>
               <span className="text-deep-indigo/20 hidden sm:inline">•</span>
-              <span className="flex items-center gap-1.5">✓ 4.9/5 TripAdvisor Rating</span>
+              <span className="flex items-center gap-1.5">✓ Vetted Local Captains</span>
               <span className="text-deep-indigo/20 hidden sm:inline">•</span>
               <span className="flex items-center gap-1.5">✓ Sighting Guarantee</span>
               <span className="text-deep-indigo/20 hidden sm:inline">•</span>

@@ -152,14 +152,14 @@ export default async function Home({ searchParams }: PageProps) {
             </div>
 
             {/* Quick Trust Seals / Badges directly under CTAs */}
-            <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-xs font-light text-deep-indigo/60 justify-center sm:justify-start">
-              <span className="flex items-center gap-1.5">✓ 100% Private Boat</span>
+            <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 sm:flex sm:flex-wrap sm:gap-x-6 sm:gap-y-2 text-xs sm:text-sm font-light text-deep-indigo/70 w-full sm:w-auto">
+              <span className="flex items-center gap-1.5 justify-center sm:justify-start">✓ 100% Private Boat</span>
               <span className="text-deep-indigo/20 hidden sm:inline">•</span>
-              <span className="flex items-center gap-1.5">✓ Zero Chase / Swarm</span>
+              <span className="flex items-center gap-1.5 justify-center sm:justify-start">✓ Zero Chase / Swarm</span>
               <span className="text-deep-indigo/20 hidden sm:inline">•</span>
-              <span className="flex items-center gap-1.5">✓ Sighting Guarantee</span>
+              <span className="flex items-center gap-1.5 justify-center sm:justify-start">✓ Sighting Guarantee</span>
               <span className="text-deep-indigo/20 hidden sm:inline">•</span>
-              <span className="flex items-center gap-1.5">✓ Vetted Local Captains</span>
+              <span className="flex items-center gap-1.5 justify-center sm:justify-start">✓ Vetted Local Captains</span>
             </div>
           </div>
           

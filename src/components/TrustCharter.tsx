@@ -7,7 +7,7 @@ interface TrustCharterProps {
 
 export default function TrustCharter({ locale }: TrustCharterProps) {
   return (
-    <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 border border-deep-indigo/5 shadow-sm max-w-6xl mx-auto mt-16 lg:mt-24 select-none">
+    <div id="ethics" className="bg-white rounded-[2.5rem] p-8 sm:p-12 border border-deep-indigo/5 shadow-sm max-w-6xl mx-auto mt-16 lg:mt-24 select-none">
       <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
         <h4 className="text-2xl sm:text-3xl font-serif text-deep-indigo mb-3">
           {t('trustCharterTitle', locale)}

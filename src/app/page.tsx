@@ -209,6 +209,8 @@ export default async function Home({ searchParams }: PageProps) {
               <span className="flex items-center gap-1.5">✓ 4.9/5 TripAdvisor Rating</span>
               <span className="text-deep-indigo/20 hidden sm:inline">•</span>
               <span className="flex items-center gap-1.5">✓ Sighting Guarantee</span>
+              <span className="text-deep-indigo/20 hidden sm:inline">•</span>
+              <span className="flex items-center gap-1.5">✓ Direct Local Captains</span>
             </div>
           </div>
           
@@ -240,69 +242,6 @@ export default async function Home({ searchParams }: PageProps) {
             </div>
           </div>
 
-        </div>
-      </section>
-
-      {/* The Ethical Difference (Moat) */}
-      <section id="ethics" className="py-12 lg:py-16 bg-deep-indigo px-6 text-cloud-dancer">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-[10px] font-medium tracking-[0.2em] uppercase text-sage-leaf/80 mb-2">{t('whatMakesUsDifferent', locale)}</h2>
-            <h3 className="text-3xl lg:text-4xl font-serif">{t('whyChooseUs', locale)}</h3>
-          </div>
-          
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                title: t('promise1Title', locale),
-                desc: t('promise1Desc', locale),
-                icon: (
-                  <svg className="w-6 h-6 text-sage-leaf" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v3m0 12v3m9-9h-3M6 12H3m14.243-6.243l-2.122 2.122M8.879 15.121l-2.122 2.122M17.243 17.243l-2.122-2.122M8.879 8.879L6.757 6.757M12 8a4 4 0 014 4H8a4 4 0 014-4zM4 20h16" />
-                  </svg>
-                )
-              },
-              {
-                title: t('promise2Title', locale),
-                desc: t('promise2Desc', locale),
-                icon: (
-                  <svg className="w-6 h-6 text-sage-leaf" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6h2.25l5.03-5.03c.37-.37.97-.11.97.41v14.14c0 .52-.6.78-.97.41L11.25 15.75H9A3 3 0 016 12.75v-1.5A3 3 0 019 9.75z" />
-                  </svg>
-                )
-              },
-              {
-                title: t('promise3Title', locale),
-                desc: t('promise3Desc', locale),
-                icon: (
-                  <svg className="w-6 h-6 text-sage-leaf" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                    <circle cx="12" cy="12" r="4" />
-                    <circle cx="12" cy="12" r="8" />
-                    <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07L19.07 4.93" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )
-              },
-              {
-                title: t('promise4Title', locale),
-                desc: t('promise4Desc', locale),
-                icon: (
-                  <svg className="w-6 h-6 text-sage-leaf" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.105-2.59-.308-3.837A11.986 11.986 0 0112 2.714z" />
-                  </svg>
-                )
-              }
-            ].map((item, i) => (
-              <div key={i} className="flex gap-4 items-start text-left p-6 rounded-3xl bg-cloud-dancer/5 border border-cloud-dancer/10 hover:border-coral-pop/30 transition-all hover:bg-cloud-dancer/10">
-                <div className="shrink-0 text-sage-leaf bg-sage-leaf/10 p-2.5 rounded-2xl">
-                  {item.icon}
-                </div>
-                <div>
-                  <h4 className="text-lg font-serif text-cloud-dancer mb-2">{item.title}</h4>
-                  <p className="text-cloud-dancer/70 leading-relaxed font-light text-xs">{item.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

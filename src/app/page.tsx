@@ -251,9 +251,7 @@ export default async function Home({ searchParams }: PageProps) {
       <section id="packages" className="py-16 lg:py-24 px-6 bg-white border-b border-deep-indigo/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 lg:mb-16">
-            <span className="text-[10px] font-bold text-transformative-teal uppercase tracking-[0.2em] bg-transformative-teal/5 px-4 py-1.5 rounded-full border border-transformative-teal/10 inline-block mb-4">
-              {t("privateBoatTours", locale)}
-            </span>
+
             <h3 className="text-4xl lg:text-5xl font-serif text-deep-indigo">
               {locale === 'en' ? (
                 <>Select Your <span className="italic font-light text-transformative-teal">Private Dolphin Tour</span></>
@@ -263,9 +261,6 @@ export default async function Home({ searchParams }: PageProps) {
                 <>选择您的<span className="italic font-light text-transformative-teal">私人海豚之旅</span></>
               )}
             </h3>
-            <p className="text-sm text-deep-indigo/60 max-w-lg mx-auto mt-4 font-light leading-relaxed">
-              {t("tourSelectorDesc", locale)}
-            </p>
 
             {/* Dynamic Currency Switcher Toggle */}
             <div className="flex justify-center mt-6 animate-in fade-in duration-500">

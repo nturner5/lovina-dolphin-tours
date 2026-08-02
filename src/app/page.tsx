@@ -137,7 +137,7 @@ export default async function Home({ searchParams }: PageProps) {
             <div className="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto mt-6">
               <Link 
                 href={hrefFor("/#packages")} 
-                className="bg-coral-pop text-cloud-dancer px-11 py-3.5 rounded-full text-base font-semibold tracking-wide hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group w-full sm:w-auto"
+                className="bg-coral-pop text-cloud-dancer px-11 py-3.5 rounded-full text-base font-semibold tracking-wide hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group w-full max-w-xs sm:w-auto"
               >
                 {/* Pulsing ring outer container */}
                 <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75 pointer-events-none"></span>

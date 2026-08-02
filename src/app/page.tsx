@@ -106,10 +106,7 @@ export default async function Home({ searchParams }: PageProps) {
           {/* Left Column: Brand Content & Scannable Highlights */}
           <div className="lg:col-span-7 flex flex-col items-start text-left animate-in fade-in slide-in-from-bottom-8 duration-1000">
             {/* Elegant Tag Badge */}
-            <div className="bg-transformative-teal/10 text-transformative-teal px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest inline-flex items-center gap-2 mb-4 lg:mb-6 border border-transformative-teal/20">
-              <svg className="w-3.5 h-3.5 text-transformative-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v3m0 12v3m9-9h-3M6 12H3m14.243-6.243l-2.122 2.122M8.879 15.121l-2.122 2.122M17.243 17.243l-2.122-2.122M8.879 8.879L6.757 6.757M12 8a4 4 0 014 4H8a4 4 0 014-4zM4 20h16" />
-              </svg>
+            <div className="bg-transformative-teal/10 text-transformative-teal px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest inline-block mb-4 lg:mb-6 border border-transformative-teal/20">
               {t('heroBadge', locale)}
             </div>
 

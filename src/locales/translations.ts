@@ -23,7 +23,7 @@ export const translations = {
     bookNow: "Book Now",
     
     // Hero
-    heroBadge: "Private Ethical Charters",
+    heroBadge: "★ Bali's #1 Private Dolphin Charter",
     heroAltText: "Two sleek wild dolphins gliding peacefully in the calm, misty morning ocean of North Bali",
     heroTitle: "Private Dolphin Tours in Lovina",
     heroTitleItalic: "Depart After the Morning Boat Rush.",
@@ -315,7 +315,7 @@ export const translations = {
     bookNow: "Забронировать",
     
     // Hero
-    heroBadge: "Частные этичные туры",
+    heroBadge: "★ Частный дельфин-чартер №1 на Бали",
     heroAltText: "Два гладких диких дельфина мирно скользят в тихом туманном утреннем океане Северного Бали",
     heroTitle: "Частные туры к дельфинам в Ловине",
     heroTitleItalic: "Отправляйтесь после утреннего скопления лодок.",
@@ -604,7 +604,7 @@ export const translations = {
     bookNow: "立即预订",
     
     // Hero
-    heroBadge: "私人环保游船",
+    heroBadge: "★ 巴厘岛第一私人海豚包船",
     heroAltText: "两只圆润的野生海豚在巴厘岛北部平静而薄雾笼罩的晨间海洋中安详地游动",
     heroTitle: "罗威那私人海豚之旅",
     heroTitleItalic: "避开早间拥挤的游船人潮出发",

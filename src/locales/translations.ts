@@ -2,7 +2,7 @@ export const translations = {
   en: {
     // Navbar
     dolphinRules: "Dolphin Rules",
-    tours: "Tours & Pricing",
+    tours: "Tours & Prices",
     gallery: "Gallery",
     faq: "FAQ",
     blog: "Blog",
@@ -23,7 +23,7 @@ export const translations = {
     bookNow: "Book Now",
     
     // Hero
-    heroBadge: "Avoid the Boat Crowds",
+    heroBadge: "Private Ethical Charters",
     heroAltText: "Two sleek wild dolphins gliding peacefully in the calm, misty morning ocean of North Bali",
     heroTitle: "Private Dolphin Tours in Lovina",
     heroTitleItalic: "Depart After the Morning Boat Rush.",
@@ -315,7 +315,7 @@ export const translations = {
     bookNow: "Забронировать",
     
     // Hero
-    heroBadge: "Избегайте толпы лодок",
+    heroBadge: "Частные этичные туры",
     heroAltText: "Два гладких диких дельфина мирно скользят в тихом туманном утреннем океане Северного Бали",
     heroTitle: "Частные туры к дельфинам в Ловине",
     heroTitleItalic: "Отправляйтесь после утреннего скопления лодок.",
@@ -604,7 +604,7 @@ export const translations = {
     bookNow: "立即预订",
     
     // Hero
-    heroBadge: "避开拥挤的游船",
+    heroBadge: "私人环保游船",
     heroAltText: "两只圆润的野生海豚在巴厘岛北部平静而薄雾笼罩的晨间海洋中安详地游动",
     heroTitle: "罗威那私人海豚之旅",
     heroTitleItalic: "避开早间拥挤的游船人潮出发",

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { trackWhatsAppClick } from "@/lib/analytics";
 import { useLocale } from "@/locales/i18n-client";
+import { t } from "@/locales/i18n";
 
 export default function Footer() {
   const locale = useLocale();
@@ -39,10 +40,12 @@ export default function Footer() {
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-16">
           <div className="flex flex-col gap-4">
-            <span className="text-deep-indigo opacity-100 font-bold uppercase tracking-widest text-[10px]">Navigate</span>
-            <Link href={hrefFor("/#ethics")} className="hover:text-transformative-teal">Dolphin Rules</Link>
-            <Link href={hrefFor("/#packages")} className="hover:text-transformative-teal">Tours</Link>
-            <Link href={hrefFor("/blog")} className="hover:text-transformative-teal">Blog</Link>
+            <span className="text-deep-indigo opacity-100 font-bold uppercase tracking-widest text-[10px]">
+              {locale === 'en' ? "Navigate" : locale === 'ru' ? "Навигация" : "导航"}
+            </span>
+            <Link href={hrefFor("/#ethics")} className="hover:text-transformative-teal">{t('dolphinRules', locale)}</Link>
+            <Link href={hrefFor("/#packages")} className="hover:text-transformative-teal">{t('tours', locale)}</Link>
+            <Link href={hrefFor("/blog")} className="hover:text-transformative-teal">{t('blog', locale)}</Link>
           </div>
           <div className="flex flex-col gap-4">
             <span className="text-deep-indigo opacity-100 font-bold uppercase tracking-widest text-[10px]">Legal</span>

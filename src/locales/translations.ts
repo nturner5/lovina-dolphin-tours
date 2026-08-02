@@ -38,7 +38,7 @@ export const translations = {
     localCaptainsDesc: "Direct bookings support native Balinese families.",
     ratingText: "★ 4.9 Guest Rating",
     ratingSubtext: "From premium villa travelers",
-    btnBookTour: "Book Dolphin Watching Tour",
+    btnBookTour: "View Tours & Prices",
     
     // Moat
     whatMakesUsDifferent: "What Makes Us Different",
@@ -330,7 +330,7 @@ export const translations = {
     localCaptainsDesc: "Прямые бронирования поддерживают балийские семьи.",
     ratingText: "★ 4.9 Оценка гостей",
     ratingSubtext: "От путешественников из премиум-вилл",
-    btnBookTour: "Забронировать тур к дельфинам",
+    btnBookTour: "Посмотреть туры и цены",
     
     // Moat
     whatMakesUsDifferent: "Что делает нас особенными",
@@ -619,7 +619,7 @@ export const translations = {
     localCaptainsDesc: "直接预订支持巴厘岛当地家庭。",
     ratingText: "★ 4.9 宾客评分",
     ratingSubtext: "来自高端度假别墅旅客",
-    btnBookTour: "预订海豚观赏之旅",
+    btnBookTour: "查看行程与价格",
     
     // Moat
     whatMakesUsDifferent: "我们的独特之处",

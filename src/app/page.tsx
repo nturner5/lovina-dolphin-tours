@@ -176,7 +176,7 @@ export default async function Home({ searchParams }: PageProps) {
                   desc: t('localCaptainsDesc', locale)
                 }
               ].map((item, index) => (
-                <div key={index} className="bg-white/50 border border-deep-indigo/5 p-4 rounded-2xl flex items-center gap-3 shadow-sm hover:shadow-md transition-all duration-300">
+                <div key={index} className="bg-white/50 border border-deep-indigo/5 p-2.5 rounded-xl flex items-center gap-2.5 shadow-sm hover:shadow-md transition-all duration-300">
                   {item.icon}
                   <div>
                     <h4 className="font-bold text-xs sm:text-sm text-deep-indigo leading-tight tracking-tight">{item.title}</h4>

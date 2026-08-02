@@ -137,48 +137,35 @@ export default async function Home({ searchParams }: PageProps) {
               </div>
             </div>
 
-            <p className="text-base lg:text-lg text-deep-indigo/70 max-w-xl mb-10 leading-relaxed font-light">
-              {t('heroDesc', locale)}
-            </p>
-
-            {/* Three Scannable Promise Highlights */}
-            <div className="space-y-6 mb-10 w-full max-w-lg">
+            {/* Scannable Value Proposition Badges */}
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-10 w-full max-w-lg text-left">
               {[
                 {
-                  icon: (
-                    <svg className="w-8 h-8 text-deep-indigo" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6h2.25l5.03-5.03c.37-.37.97-.11.97.41v14.14c0 .52-.6.78-.97.41L11.25 15.75H9A3 3 0 016 12.75v-1.5A3 3 0 019 9.75z" />
-                    </svg>
-                  ),
+                  icon: "🐬",
                   title: t('zeroSwarmingTitle', locale),
                   desc: t('zeroSwarmingDesc', locale)
                 },
                 {
-                  icon: (
-                    <svg className="w-8 h-8 text-deep-indigo" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v3m0 12v3m9-9h-3M6 12H3m14.243-6.243l-2.122 2.122M8.879 15.121l-2.122 2.122M17.243 17.243l-2.122-2.122M8.879 8.879L6.757 6.757M12 8a4 4 0 014 4H8a4 4 0 014-4zM4 20h16" />
-                    </svg>
-                  ),
+                  icon: "🌅",
                   title: t('noCrowdsTitle', locale),
                   desc: t('noCrowdsDesc', locale)
                 },
                 {
-                  icon: (
-                    <svg className="w-8 h-8 text-deep-indigo" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v13.5m0-13.5L5.25 14.25H12m0-11.25l6.75 11.25H12m-9 3h18c-1.5 3-4.5 3-9 3s-7.5 0-9-3z" />
-                    </svg>
-                  ),
+                  icon: "⛵",
                   title: t('privateComfortTitle', locale),
                   desc: t('privateComfortDesc', locale)
+                },
+                {
+                  icon: "👨‍✈️",
+                  title: t('localCaptainsTitle', locale),
+                  desc: t('localCaptainsDesc', locale)
                 }
               ].map((item, index) => (
-                <div key={index} className="flex gap-4 items-center group">
-                  <div className="text-deep-indigo shrink-0 group-hover:scale-105 transition-transform duration-300">
-                    {item.icon}
-                  </div>
+                <div key={index} className="bg-white/50 border border-deep-indigo/5 p-4 rounded-2xl flex items-start gap-3 shadow-sm hover:shadow-md transition-all duration-300">
+                  <span className="text-xl sm:text-2xl shrink-0">{item.icon}</span>
                   <div>
-                    <h3 className="font-bold text-sm text-deep-indigo tracking-tight">{item.title}</h3>
-                    <p className="text-xs text-deep-indigo/60 font-light leading-normal">{item.desc}</p>
+                    <h4 className="font-bold text-xs sm:text-sm text-deep-indigo leading-tight tracking-tight">{item.title}</h4>
+                    <p className="text-[10px] sm:text-xs text-deep-indigo/60 font-light mt-1 leading-normal">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -766,27 +753,6 @@ export default async function Home({ searchParams }: PageProps) {
 
             {/* Right Column: Gear and Details */}
             <div className="lg:col-span-5 space-y-10 lg:sticky lg:top-8 bg-cloud-dancer/30 p-10 rounded-[3rem] border border-deep-indigo/5">
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-deep-indigo mb-6 border-b border-deep-indigo/10 pb-3">{t("includedHeader", locale)}</h4>
-                <ul className="space-y-4">
-                  {[
-                    { label: t("inc1Title", locale), desc: t("inc1Desc", locale) },
-                    { label: t("inc2Title", locale), desc: t("inc2Desc", locale) },
-                    { label: t("inc3Title", locale), desc: t("inc3Desc", locale) },
-                    { label: t("inc4Title", locale), desc: t("inc4Desc", locale) },
-                    { label: t("inc5Title", locale), desc: t("inc5Desc", locale) }
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <span className="text-transformative-teal font-bold text-lg leading-none">✓</span>
-                      <div>
-                        <span className="text-sm font-bold text-deep-indigo block leading-tight">{item.label}</span>
-                        <span className="text-xs text-deep-indigo/50 font-light">{item.desc}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-widest text-deep-indigo mb-6 border-b border-deep-indigo/10 pb-3">{t("bringHeader", locale)}</h4>
                 <ul className="space-y-4">

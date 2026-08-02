@@ -246,7 +246,7 @@ export default async function Home({ searchParams }: PageProps) {
       </section>
 
       {/* Tour Selection / Packages Section */}
-      <section id="packages" className="py-16 lg:py-24 px-6 bg-cloud-dancer/30 border-b border-deep-indigo/10">
+      <section id="packages" className="py-16 lg:py-24 px-6 bg-white border-b border-deep-indigo/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 lg:mb-16">
             <span className="text-[10px] font-bold text-transformative-teal uppercase tracking-[0.2em] bg-transformative-teal/5 px-4 py-1.5 rounded-full border border-transformative-teal/10 inline-block mb-4">
@@ -594,7 +594,7 @@ export default async function Home({ searchParams }: PageProps) {
       </section>
 
       {/* Tours / Itinerary Section */}
-      <section id="tours" className="py-16 lg:py-28 px-6 bg-white border-t border-b border-deep-indigo/10">
+      <section id="tours" className="py-16 lg:py-28 px-6 bg-cloud-dancer/20 border-t border-b border-deep-indigo/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 lg:mb-20">
             <h2 className="text-sm font-medium tracking-[0.2em] uppercase text-transformative-teal mb-4">{t('timelineHeader', locale)}</h2>
@@ -766,7 +766,7 @@ export default async function Home({ searchParams }: PageProps) {
       <ReviewsSection locale={locale} />
 
       {/* Social Proof (Reels Grid) */}
-      <section className="py-16 lg:py-24 px-6 bg-cloud-dancer">
+      <section className="py-16 lg:py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
             <div>
@@ -785,7 +785,7 @@ export default async function Home({ searchParams }: PageProps) {
 
 
       {/* FAQ Section */}
-      <section id="faq" className="py-16 lg:py-24 px-6 bg-cloud-dancer border-t border-deep-indigo/5">
+      <section id="faq" className="py-16 lg:py-24 px-6 bg-cloud-dancer/20 border-t border-deep-indigo/5">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-4xl lg:text-5xl font-serif text-deep-indigo mb-12 lg:mb-16 text-center">{t("faqTitle", locale)}</h2>
           <div className="space-y-8 lg:space-y-12">

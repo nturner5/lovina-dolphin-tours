@@ -39,6 +39,7 @@ export const translations = {
     ratingText: "★ 4.9 Guest Rating",
     ratingSubtext: "From premium villa travelers",
     btnBookTour: "View Tours & Prices",
+    dolphinRulesLink: "How we protect Lovina's wild dolphins →",
     
     // Moat
     whatMakesUsDifferent: "What Makes Us Different",
@@ -331,6 +332,7 @@ export const translations = {
     ratingText: "★ 4.9 Оценка гостей",
     ratingSubtext: "От путешественников из премиум-вилл",
     btnBookTour: "Посмотреть туры и цены",
+    dolphinRulesLink: "Как мы защищаем диких дельфинов Ловины →",
     
     // Moat
     whatMakesUsDifferent: "Что делает нас особенными",
@@ -620,6 +622,7 @@ export const translations = {
     ratingText: "★ 4.9 宾客评分",
     ratingSubtext: "来自高端度假别墅旅客",
     btnBookTour: "查看行程与价格",
+    dolphinRulesLink: "我们如何保护罗威那的野生海豚 →",
     
     // Moat
     whatMakesUsDifferent: "我们的独特之处",

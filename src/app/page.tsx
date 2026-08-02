@@ -134,10 +134,10 @@ export default async function Home({ searchParams }: PageProps) {
             </div>
 
             {/* Action CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-6">
+            <div className="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto mt-6">
               <Link 
                 href={hrefFor("/#packages")} 
-                className="bg-coral-pop text-cloud-dancer px-10 py-4 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group"
+                className="bg-coral-pop text-cloud-dancer px-10 py-4 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-md active:scale-95 text-center relative group w-full sm:w-auto"
               >
                 {/* Pulsing ring outer container */}
                 <span className="absolute -inset-1 rounded-full border border-coral-pop/30 animate-pulse opacity-75 pointer-events-none"></span>
@@ -145,9 +145,9 @@ export default async function Home({ searchParams }: PageProps) {
               </Link>
               <Link 
                 href={hrefFor("/#ethics")} 
-                className="bg-white border border-deep-indigo/10 text-deep-indigo px-10 py-4 rounded-full text-base font-bold hover:bg-cloud-dancer/50 transition-all active:scale-95 text-center shadow-sm"
+                className="text-deep-indigo hover:text-transformative-teal transition-colors font-semibold text-sm underline underline-offset-4 decoration-deep-indigo/30 hover:decoration-transformative-teal text-center"
               >
-                {t('dolphinRules', locale)}
+                {t('dolphinRulesLink', locale)}
               </Link>
             </div>
 

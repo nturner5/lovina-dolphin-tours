@@ -345,40 +345,75 @@ export default async function Home({ searchParams }: PageProps) {
                   <div className="space-y-4">
                     <span className="text-[10px] font-bold text-deep-indigo/40 uppercase tracking-widest block">{t("inclusions", locale)}</span>
                     <ul className="space-y-3.5 text-xs text-deep-indigo/80 font-light leading-relaxed">
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("tour1Inc1Title", locale)}</strong>
-                          <span>{t("tour1Inc1Desc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("tour1Inc1Title", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("tour1Inc1Desc", locale)}
+                          </div>
+                        </details>
                       </li>
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("tour1Inc2Title", locale)}</strong>
-                          <span>{t("tour1Inc2Desc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("tour1Inc2Title", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("tour1Inc2Desc", locale)}
+                          </div>
+                        </details>
                       </li>
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("tour1Inc3Title", locale)}</strong>
-                          <span>{t("tour1Inc3Desc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("tour1Inc3Title", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("tour1Inc3Desc", locale)}
+                          </div>
+                        </details>
                       </li>
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("tour1Inc4Title", locale)}</strong>
-                          <span>{t("tour1Inc4Desc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("tour1Inc4Title", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("tour1Inc4Desc", locale)}
+                          </div>
+                        </details>
                       </li>
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("freeStopsInclusionTitle", locale)}</strong>
-                          <span>{t("freeStopsInclusionDesc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("freeStopsInclusionTitle", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("freeStopsInclusionDesc", locale)}
+                          </div>
+                        </details>
                       </li>
                     </ul>
                   </div>
@@ -437,40 +472,75 @@ export default async function Home({ searchParams }: PageProps) {
                   <div className="space-y-4">
                     <span className="text-[10px] font-bold text-deep-indigo/40 uppercase tracking-widest block">{t("inclusions", locale)}</span>
                     <ul className="space-y-3.5 text-xs text-deep-indigo/80 font-light leading-relaxed">
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("tour1_5Inc1Title", locale)}</strong>
-                          <span>{t("tour1_5Inc1Desc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("tour1_5Inc1Title", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("tour1_5Inc1Desc", locale)}
+                          </div>
+                        </details>
                       </li>
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("tour1_5Inc2Title", locale)}</strong>
-                          <span>{t("tour1_5Inc2Desc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("tour1_5Inc2Title", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("tour1_5Inc2Desc", locale)}
+                          </div>
+                        </details>
                       </li>
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("tour1_5Inc3Title", locale)}</strong>
-                          <span>{t("tour1_5Inc3Desc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("tour1_5Inc3Title", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("tour1_5Inc3Desc", locale)}
+                          </div>
+                        </details>
                       </li>
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("tour1_5Inc4Title", locale)}</strong>
-                          <span>{t("tour1_5Inc4Desc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("tour1_5Inc4Title", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("tour1_5Inc4Desc", locale)}
+                          </div>
+                        </details>
                       </li>
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("freeStopsInclusionTitle", locale)}</strong>
-                          <span>{t("freeStopsInclusionDesc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("freeStopsInclusionTitle", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("freeStopsInclusionDesc", locale)}
+                          </div>
+                        </details>
                       </li>
                     </ul>
                   </div>
@@ -533,42 +603,75 @@ export default async function Home({ searchParams }: PageProps) {
                   <div className="space-y-4">
                     <span className="text-[10px] font-bold text-deep-indigo/40 uppercase tracking-widest block">{t("inclusions", locale)}</span>
                     <ul className="space-y-3.5 text-xs text-deep-indigo/80 font-light leading-relaxed">
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("tour2Inc1Title", locale)}</strong>
-                          <span>{t("tour2Inc1Desc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("tour2Inc1Title", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("tour2Inc1Desc", locale)}
+                          </div>
+                        </details>
                       </li>
-                      <li className="flex gap-3 items-start text-transformative-teal bg-transformative-teal/5 p-4 rounded-2xl border border-transformative-teal/10 -mx-2">
-                        <span className="text-lg leading-none shrink-0">✦</span>
-                        <div>
-                          <strong className="block text-sm font-bold leading-tight">{t("tour2SnorkelAdditionTitle", locale)}</strong>
-                          <span className="text-[11px] text-transformative-teal/80 block mt-1 leading-normal">
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden bg-transformative-teal/5 rounded-2xl border border-transformative-teal/10 p-4 -mx-2">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between text-transformative-teal">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-lg leading-none shrink-0">✦</span>
+                              <strong className="block text-xs font-bold leading-tight">{t("tour2SnorkelAdditionTitle", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-transformative-teal/50 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-2 text-[11px] text-transformative-teal/80 font-light leading-normal">
                             {t("tour2SnorkelAdditionDesc", locale)}
-                          </span>
-                        </div>
+                          </div>
+                        </details>
                       </li>
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("tour2Inc2Title", locale)}</strong>
-                          <span>{t("tour2Inc2Desc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("tour2Inc2Title", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("tour2Inc2Desc", locale)}
+                          </div>
+                        </details>
                       </li>
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("tour2Inc4Title", locale)}</strong>
-                          <span>{t("tour2Inc4Desc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("tour2Inc4Title", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("tour2Inc4Desc", locale)}
+                          </div>
+                        </details>
                       </li>
-                      <li className="flex gap-3 items-start">
-                        <span className="text-transformative-teal font-bold text-base leading-none">✓</span>
-                        <div>
-                          <strong className="text-deep-indigo block font-bold">{t("freeStopsInclusionTitle", locale)}</strong>
-                          <span>{t("freeStopsInclusionDesc", locale)}</span>
-                        </div>
+                      <li className="border-b border-deep-indigo/5 pb-3.5 last:border-b-0 last:pb-0">
+                        <details className="group [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex items-start gap-3 cursor-pointer list-none select-none justify-between">
+                            <div className="flex items-start gap-3 text-left">
+                              <span className="text-transformative-teal font-bold text-base leading-none shrink-0">✓</span>
+                              <strong className="text-deep-indigo block font-bold text-xs">{t("freeStopsInclusionTitle", locale)}</strong>
+                            </div>
+                            <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-0.5 ml-2">▼</span>
+                          </summary>
+                          <div className="pl-6 pt-1.5 text-xs text-deep-indigo/60 font-light leading-relaxed">
+                            {t("freeStopsInclusionDesc", locale)}
+                          </div>
+                        </details>
                       </li>
                     </ul>
                   </div>

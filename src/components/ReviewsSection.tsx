@@ -424,7 +424,7 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
   }, [filteredReviews, isExpanded]);
 
   return (
-    <section id="testimonials" className="py-16 lg:py-24 px-4 sm:px-6 bg-cloud-dancer/30 border-b border-deep-indigo/5">
+    <section id="testimonials" className="py-16 lg:py-24 px-4 sm:px-6 bg-white border-b border-deep-indigo/5">
       <div className="max-w-6xl mx-auto">
         
         {/* Trust Summary Header Section */}

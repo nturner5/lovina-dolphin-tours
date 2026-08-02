@@ -195,7 +195,7 @@ export default async function Home({ searchParams }: PageProps) {
       </section>
 
       {/* Tour Selection / Packages Section */}
-      <section id="packages" className="py-16 lg:py-24 px-6 bg-white border-b border-deep-indigo/10">
+      <section id="packages" className="py-16 lg:py-24 px-6 bg-cloud-dancer/30 border-b border-deep-indigo/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-6 lg:mb-8">
 
@@ -650,7 +650,7 @@ export default async function Home({ searchParams }: PageProps) {
       </section>
 
       {/* Tours / Itinerary Section */}
-      <section id="tours" className="py-16 lg:py-28 px-6 bg-cloud-dancer/20 border-t border-b border-deep-indigo/10">
+      <section id="tours" className="py-16 lg:py-28 px-6 bg-white border-t border-b border-deep-indigo/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 lg:mb-20">
             <h2 className="text-sm font-medium tracking-[0.2em] uppercase text-transformative-teal mb-4">{t('timelineHeader', locale)}</h2>
@@ -755,7 +755,7 @@ export default async function Home({ searchParams }: PageProps) {
       </section>
 
       {/* Hotel Pickups & Scenic Transfers Banner */}
-      <section id="scenic-stops" className="py-16 px-6 bg-white border-t border-deep-indigo/5">
+      <section id="scenic-stops" className="py-16 px-6 bg-cloud-dancer/20 border-t border-deep-indigo/5">
         <div className="max-w-4xl mx-auto bg-deep-indigo text-cloud-dancer rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden shadow-xl">
           {/* Subtle decoration */}
           <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-transformative-teal/10 rounded-full blur-3xl" />
@@ -808,7 +808,7 @@ export default async function Home({ searchParams }: PageProps) {
       <ReviewsSection locale={locale} />
 
       {/* Social Proof (Reels Grid) */}
-      <section className="py-16 lg:py-24 px-6 bg-white">
+      <section className="py-16 lg:py-24 px-6 bg-cloud-dancer/20">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
             <div>
@@ -827,7 +827,7 @@ export default async function Home({ searchParams }: PageProps) {
 
 
       {/* FAQ Section */}
-      <section id="faq" className="py-16 lg:py-24 px-6 bg-cloud-dancer/20 border-t border-deep-indigo/5">
+      <section id="faq" className="py-16 lg:py-24 px-6 bg-white border-t border-deep-indigo/5">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-4xl lg:text-5xl font-serif text-deep-indigo mb-12 lg:mb-16 text-center">{t("faqTitle", locale)}</h2>
           <div className="space-y-8 lg:space-y-12">

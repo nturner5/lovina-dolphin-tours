@@ -235,16 +235,24 @@ export default async function Home({ searchParams }: PageProps) {
               </div>
             </div>
 
-            <div className="mt-8 bg-transformative-teal/5 p-4.5 rounded-2xl border border-transformative-teal/15 max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm text-deep-indigo font-light text-center sm:text-left shadow-sm">
-              <span className="text-xl shrink-0">🌴</span>
-              <div>
-                <strong>{locale === 'en' ? 'Staying in Ubud or South Bali?' : locale === 'ru' ? 'Остановились в Убуде или на юге Бали?' : '入住乌布或巴厘岛南部？'}</strong>{' '}
+            <details className="group mt-6 text-center max-w-xl mx-auto text-xs sm:text-sm text-deep-indigo/60 border-t border-deep-indigo/5 pt-6">
+              <summary className="cursor-pointer hover:text-transformative-teal transition-all font-semibold inline-flex items-center gap-1.5 list-none select-none justify-center">
+                <span>📍</span>
+                <span>{locale === 'en' ? 'Staying in Ubud or South Bali?' : locale === 'ru' ? 'Остановились в Убуде или на юге Бали?' : '入住乌布或巴厘岛南部？'}</span>
+                <span className="text-transformative-teal font-normal underline decoration-transformative-teal/30 hover:decoration-transformative-teal group-open:hidden ml-1">
+                  {locale === 'en' ? 'Show transport options' : locale === 'ru' ? 'Показать варианты трансфера' : '显示接送方案'} &darr;
+                </span>
+                <span className="text-transformative-teal font-normal underline decoration-transformative-teal/30 hover:decoration-transformative-teal hidden group-open:inline ml-1">
+                  {locale === 'en' ? 'Hide options' : locale === 'ru' ? 'Скрыть варианты' : '隐藏方案'} &uarr;
+                </span>
+              </summary>
+              <div className="mt-3 text-xs text-deep-indigo/60 font-light leading-relaxed animate-in fade-in duration-300">
                 {t("packagesBannerText", locale)}{' '}
                 <Link href={hrefFor("/#scenic-stops")} className="underline text-transformative-teal hover:text-coral-pop font-bold transition-colors">
                   {t("packagesBannerLink", locale)} &rarr;
                 </Link>
               </div>
-            </div>
+            </details>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 lg:gap-8 items-stretch max-w-6xl mx-auto">

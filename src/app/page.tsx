@@ -715,7 +715,7 @@ export default async function Home({ searchParams }: PageProps) {
 
           <div className="grid lg:grid-cols-12 gap-16 items-start">
             {/* Left Column: Timeline */}
-            <div className="lg:col-span-7 space-y-12 relative before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-[1px] before:bg-deep-indigo/10">
+            <div className="lg:col-span-7 space-y-4 relative before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-[1px] before:bg-deep-indigo/10">
               {[
                 {
                   time: t("time1", locale),
@@ -743,17 +743,24 @@ export default async function Home({ searchParams }: PageProps) {
                   desc: t("desc5", locale)
                 }
               ].map((step, i) => (
-                <div key={i} className="flex gap-8 relative group">
-                  {/* Timeline dot */}
-                  <div className="w-9 h-9 rounded-full bg-cloud-dancer border border-deep-indigo/10 flex items-center justify-center text-xs font-bold text-transformative-teal relative z-10 group-hover:bg-transformative-teal group-hover:text-cloud-dancer transition-colors">
-                    {i + 1}
+                <details key={i} className="group [&_summary::-webkit-details-marker]:hidden relative">
+                  <summary className="flex gap-8 cursor-pointer list-none select-none justify-between items-start">
+                    <div className="flex gap-8 items-start flex-1">
+                      {/* Timeline dot */}
+                      <div className="w-9 h-9 rounded-full bg-cloud-dancer border border-deep-indigo/10 flex items-center justify-center text-xs font-bold text-transformative-teal relative z-10 group-hover:bg-transformative-teal group-hover:text-cloud-dancer transition-colors shrink-0">
+                        {i + 1}
+                      </div>
+                      <div className="pt-1 text-left">
+                        <span className="text-xs font-bold tracking-widest text-coral-pop uppercase block mb-1">{step.time}</span>
+                        <h4 className="text-xl font-serif text-deep-indigo leading-tight group-hover:text-transformative-teal transition-colors">{step.title}</h4>
+                      </div>
+                    </div>
+                    <span className="text-[10px] text-deep-indigo/40 group-open:rotate-180 transition-transform duration-200 shrink-0 pt-4 ml-4">▼</span>
+                  </summary>
+                  <div className="pl-[68px] pt-3 text-sm text-deep-indigo/60 leading-relaxed font-light">
+                    {step.desc}
                   </div>
-                  <div className="flex-1 pt-1">
-                    <span className="text-xs font-bold tracking-widest text-coral-pop uppercase block mb-1">{step.time}</span>
-                    <h4 className="text-xl font-serif text-deep-indigo mb-2">{step.title}</h4>
-                    <p className="text-sm text-deep-indigo/60 leading-relaxed font-light">{step.desc}</p>
-                  </div>
-                </div>
+                </details>
               ))}
             </div>
 

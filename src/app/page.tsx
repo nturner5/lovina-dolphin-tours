@@ -258,7 +258,7 @@ export default async function Home({ searchParams }: PageProps) {
 
           <div className="grid md:grid-cols-3 gap-6 lg:gap-8 items-stretch max-w-6xl mx-auto">
             {/* Card 1: 7:00 AM Private Dolphin Watching Tour */}
-            <div className="group bg-white rounded-[2.5rem] border border-deep-indigo/5 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between">
+            <div className="group bg-white rounded-[2.5rem] border border-deep-indigo/5 shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col justify-between">
               <div>
                 <div className="relative w-full aspect-[16/10] overflow-hidden bg-deep-indigo/5 border-b border-deep-indigo/5">
                   <Image 
@@ -385,7 +385,7 @@ export default async function Home({ searchParams }: PageProps) {
             </div>
 
             {/* Card 1.5: 7:00 AM Private Dolphin Watching & Swimming Tour */}
-            <div className="group bg-white rounded-[2.5rem] border border-deep-indigo/5 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between">
+            <div className="group bg-white rounded-[2.5rem] border border-deep-indigo/5 shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col justify-between">
               <div>
                 <div className="relative w-full aspect-[16/10] overflow-hidden bg-deep-indigo/5 border-b border-deep-indigo/5">
                   <Image 
@@ -512,7 +512,7 @@ export default async function Home({ searchParams }: PageProps) {
             </div>
 
             {/* Card 2: 7:00 AM Private Dolphin Watching Tour + Swim & Snorkel */}
-            <div className="group bg-white rounded-[2.5rem] border-2 border-transformative-teal shadow-md hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-between relative">
+            <div className="group bg-white rounded-[2.5rem] border-2 border-transformative-teal shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col justify-between relative">
               <span className="absolute top-4 right-6 bg-transformative-teal text-cloud-dancer px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest shadow-md z-20">
                 ✦ {t("recommended", locale)}
               </span>

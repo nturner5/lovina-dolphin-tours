@@ -209,14 +209,13 @@ export default async function Home({ searchParams }: PageProps) {
 
             {/* Expandable Transport Details */}
             <details className="group mt-4 text-center max-w-xl mx-auto text-xs sm:text-sm text-deep-indigo/60">
-              <summary className="cursor-pointer hover:text-transformative-teal transition-all font-semibold inline-flex items-center gap-1.5 list-none select-none justify-center">
-                <span>📍</span>
-                <span>{locale === 'en' ? 'Staying in Ubud or South Bali?' : locale === 'ru' ? 'Остановились в Убуде или на юге Бали?' : '入住乌布或巴厘岛南部？'}</span>
-                <span className="text-transformative-teal font-normal underline decoration-transformative-teal/30 hover:decoration-transformative-teal group-open:hidden ml-1">
-                  {locale === 'en' ? 'Show transport options' : locale === 'ru' ? 'Показать варианты трансфера' : '显示接送方案'} &darr;
+              <summary className="cursor-pointer hover:text-transformative-teal transition-all font-semibold text-center list-none select-none justify-center">
+                📍 {locale === 'en' ? 'Staying in Ubud or South Bali?' : locale === 'ru' ? 'Остановились в Убуде или на юге Бали?' : '入住乌布或巴厘岛南部？'}{' '}
+                <span className="text-transformative-teal font-normal underline decoration-transformative-teal/30 hover:decoration-transformative-teal group-open:hidden">
+                  {locale === 'en' ? 'Show transport options ↓' : locale === 'ru' ? 'показать трансфер ↓' : '显示接送方案 ↓'}
                 </span>
-                <span className="text-transformative-teal font-normal underline decoration-transformative-teal/30 hover:decoration-transformative-teal hidden group-open:inline ml-1">
-                  {locale === 'en' ? 'Hide options' : locale === 'ru' ? 'Скрыть варианты' : '隐藏方案'} &uarr;
+                <span className="text-transformative-teal font-normal underline decoration-transformative-teal/30 hover:decoration-transformative-teal hidden group-open:inline">
+                  {locale === 'en' ? 'hide options ↑' : locale === 'ru' ? 'скрыть ↑' : '隐藏方案 ↑'}
                 </span>
               </summary>
               <div className="mt-3 text-xs text-deep-indigo/60 font-light leading-relaxed animate-in fade-in duration-300">

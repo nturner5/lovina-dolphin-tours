@@ -283,9 +283,14 @@ export default async function Home({ searchParams }: PageProps) {
                         {activeCurrency === 'usd' ? `$${tour1PriceUsd} USD` : `Rp ${Math.round(tour1Price / 1000).toLocaleString('id-ID')}k`}
                       </span>
                       <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
-                      <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
-                        {t("tour1MinGuests", locale)}
-                      </span>
+                      <details className="group relative ml-auto [&_summary::-webkit-details-marker]:hidden">
+                        <summary className="cursor-pointer text-[9px] font-bold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 select-none hover:bg-transformative-teal/10 transition-all flex items-center gap-1">
+                          {t("soloPillTitle", locale)} &darr;
+                        </summary>
+                        <div className="absolute right-0 top-full mt-1.5 z-20 w-48 bg-white border border-deep-indigo/10 shadow-lg rounded-xl p-3 text-[10px] text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in slide-in-from-top-1 duration-200">
+                          {t("soloPillTooltip", locale)}
+                        </div>
+                      </details>
                     </div>
                     <span className="text-[10px] font-light text-deep-indigo/50">
                       {activeCurrency === 'usd' ? `(~Rp ${Math.round(tour1Price / 1000).toLocaleString('id-ID')}k)` : `(~$${tour1PriceUsd} USD)`}
@@ -410,9 +415,14 @@ export default async function Home({ searchParams }: PageProps) {
                         {activeCurrency === 'usd' ? `$${tour2PriceUsd} USD` : `Rp ${Math.round(tour2Price / 1000).toLocaleString('id-ID')}k`}
                       </span>
                       <span className="text-sm font-light text-deep-indigo/60">{t("tour1_5PriceDesc", locale)}</span>
-                      <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
-                        {t("tour1_5MinGuests", locale)}
-                      </span>
+                      <details className="group relative ml-auto [&_summary::-webkit-details-marker]:hidden">
+                        <summary className="cursor-pointer text-[9px] font-bold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 select-none hover:bg-transformative-teal/10 transition-all flex items-center gap-1">
+                          {t("soloPillTitle", locale)} &darr;
+                        </summary>
+                        <div className="absolute right-0 top-full mt-1.5 z-20 w-48 bg-white border border-deep-indigo/10 shadow-lg rounded-xl p-3 text-[10px] text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in slide-in-from-top-1 duration-200">
+                          {t("soloPillTooltip", locale)}
+                        </div>
+                      </details>
                     </div>
                     <span className="text-[10px] font-light text-deep-indigo/50">
                       {activeCurrency === 'usd' ? `(~Rp ${Math.round(tour2Price / 1000).toLocaleString('id-ID')}k)` : `(~$${tour2PriceUsd} USD)`}
@@ -541,9 +551,14 @@ export default async function Home({ searchParams }: PageProps) {
                         {activeCurrency === 'usd' ? `$${tour3PriceUsd} USD` : `Rp ${Math.round(tour3Price / 1000).toLocaleString('id-ID')}k`}
                       </span>
                       <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
-                      <span className="text-[9px] font-semibold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 ml-auto">
-                        {t("tour1MinGuests", locale)}
-                      </span>
+                      <details className="group relative ml-auto [&_summary::-webkit-details-marker]:hidden">
+                        <summary className="cursor-pointer text-[9px] font-bold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 select-none hover:bg-transformative-teal/10 transition-all flex items-center gap-1">
+                          {t("soloPillTitle", locale)} &darr;
+                        </summary>
+                        <div className="absolute right-0 top-full mt-1.5 z-20 w-48 bg-white border border-deep-indigo/10 shadow-lg rounded-xl p-3 text-[10px] text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in slide-in-from-top-1 duration-200">
+                          {t("soloPillTooltip", locale)}
+                        </div>
+                      </details>
                     </div>
                     <span className="text-[10px] font-light text-deep-indigo/50">
                       {activeCurrency === 'usd' ? `(~Rp ${Math.round(tour3Price / 1000).toLocaleString('id-ID')}k)` : `(~$${tour3PriceUsd} USD)`}

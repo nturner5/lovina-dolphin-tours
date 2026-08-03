@@ -284,10 +284,10 @@ export default async function Home({ searchParams }: PageProps) {
                       </span>
                       <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
                       <details className="group relative ml-auto [&_summary::-webkit-details-marker]:hidden">
-                        <summary className="cursor-pointer text-[9px] font-bold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 select-none hover:bg-transformative-teal/10 transition-all flex items-center gap-1">
-                          {t("soloPillTitle", locale)} &darr;
+                        <summary className="cursor-pointer text-[10px] font-medium text-transformative-teal border-b border-dashed border-transformative-teal/40 hover:border-transformative-teal transition-all select-none flex items-center gap-0.5">
+                          {t("soloPillTitle", locale)}
                         </summary>
-                        <div className="absolute right-0 top-full mt-1.5 z-20 w-48 bg-white border border-deep-indigo/10 shadow-lg rounded-xl p-3 text-[10px] text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in slide-in-from-top-1 duration-200">
+                        <div className="absolute right-0 top-full mt-2.5 z-20 w-52 bg-white border border-deep-indigo/10 shadow-xl rounded-xl p-3 text-[10px] text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in slide-in-from-top-1 duration-200">
                           {t("soloPillTooltip", locale)}
                         </div>
                       </details>
@@ -416,10 +416,10 @@ export default async function Home({ searchParams }: PageProps) {
                       </span>
                       <span className="text-sm font-light text-deep-indigo/60">{t("tour1_5PriceDesc", locale)}</span>
                       <details className="group relative ml-auto [&_summary::-webkit-details-marker]:hidden">
-                        <summary className="cursor-pointer text-[9px] font-bold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 select-none hover:bg-transformative-teal/10 transition-all flex items-center gap-1">
-                          {t("soloPillTitle", locale)} &darr;
+                        <summary className="cursor-pointer text-[10px] font-medium text-transformative-teal border-b border-dashed border-transformative-teal/40 hover:border-transformative-teal transition-all select-none flex items-center gap-0.5">
+                          {t("soloPillTitle", locale)}
                         </summary>
-                        <div className="absolute right-0 top-full mt-1.5 z-20 w-48 bg-white border border-deep-indigo/10 shadow-lg rounded-xl p-3 text-[10px] text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in slide-in-from-top-1 duration-200">
+                        <div className="absolute right-0 top-full mt-2.5 z-20 w-52 bg-white border border-deep-indigo/10 shadow-xl rounded-xl p-3 text-[10px] text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in slide-in-from-top-1 duration-200">
                           {t("soloPillTooltip", locale)}
                         </div>
                       </details>
@@ -552,10 +552,10 @@ export default async function Home({ searchParams }: PageProps) {
                       </span>
                       <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
                       <details className="group relative ml-auto [&_summary::-webkit-details-marker]:hidden">
-                        <summary className="cursor-pointer text-[9px] font-bold text-transformative-teal uppercase bg-transformative-teal/5 px-2.5 py-1 rounded-md border border-transformative-teal/10 select-none hover:bg-transformative-teal/10 transition-all flex items-center gap-1">
-                          {t("soloPillTitle", locale)} &darr;
+                        <summary className="cursor-pointer text-[10px] font-medium text-transformative-teal border-b border-dashed border-transformative-teal/40 hover:border-transformative-teal transition-all select-none flex items-center gap-0.5">
+                          {t("soloPillTitle", locale)}
                         </summary>
-                        <div className="absolute right-0 top-full mt-1.5 z-20 w-48 bg-white border border-deep-indigo/10 shadow-lg rounded-xl p-3 text-[10px] text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in slide-in-from-top-1 duration-200">
+                        <div className="absolute right-0 top-full mt-2.5 z-20 w-52 bg-white border border-deep-indigo/10 shadow-xl rounded-xl p-3 text-[10px] text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in slide-in-from-top-1 duration-200">
                           {t("soloPillTooltip", locale)}
                         </div>
                       </details>

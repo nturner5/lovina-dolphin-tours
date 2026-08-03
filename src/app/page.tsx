@@ -9,6 +9,7 @@ import { getLocaleServer } from '@/locales/i18n-server';
 import TrustCharter from "@/components/TrustCharter";
 import ReviewsSection from "@/components/ReviewsSection";
 import { getPricingData, getExchangeRate } from "@/lib/pricing-server";
+import SoloTravelDropdown from "@/components/SoloTravelDropdown";
 
 export const revalidate = 60;
 
@@ -283,14 +284,7 @@ export default async function Home({ searchParams }: PageProps) {
                         {activeCurrency === 'usd' ? `$${tour1PriceUsd} USD` : `Rp ${Math.round(tour1Price / 1000).toLocaleString('id-ID')}k`}
                       </span>
                       <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
-                      <details className="group relative ml-auto [&_summary::-webkit-details-marker]:hidden">
-                        <summary className="cursor-pointer text-[10px] font-medium text-transformative-teal border-b border-dashed border-transformative-teal/40 hover:border-transformative-teal transition-all select-none flex items-center gap-0.5">
-                          {t("soloPillTitle", locale)}
-                        </summary>
-                        <div className="absolute right-0 top-full mt-2.5 z-20 w-52 bg-white border border-deep-indigo/10 shadow-xl rounded-xl p-3 text-[10px] text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in slide-in-from-top-1 duration-200">
-                          {t("soloPillTooltip", locale)}
-                        </div>
-                      </details>
+                      <SoloTravelDropdown title={t("soloPillTitle", locale)} tooltip={t("soloPillTooltip", locale)} />
                     </div>
                     <span className="text-[10px] font-light text-deep-indigo/50">
                       {activeCurrency === 'usd' ? `(~Rp ${Math.round(tour1Price / 1000).toLocaleString('id-ID')}k)` : `(~$${tour1PriceUsd} USD)`}
@@ -415,14 +409,7 @@ export default async function Home({ searchParams }: PageProps) {
                         {activeCurrency === 'usd' ? `$${tour2PriceUsd} USD` : `Rp ${Math.round(tour2Price / 1000).toLocaleString('id-ID')}k`}
                       </span>
                       <span className="text-sm font-light text-deep-indigo/60">{t("tour1_5PriceDesc", locale)}</span>
-                      <details className="group relative ml-auto [&_summary::-webkit-details-marker]:hidden">
-                        <summary className="cursor-pointer text-[10px] font-medium text-transformative-teal border-b border-dashed border-transformative-teal/40 hover:border-transformative-teal transition-all select-none flex items-center gap-0.5">
-                          {t("soloPillTitle", locale)}
-                        </summary>
-                        <div className="absolute right-0 top-full mt-2.5 z-20 w-52 bg-white border border-deep-indigo/10 shadow-xl rounded-xl p-3 text-[10px] text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in slide-in-from-top-1 duration-200">
-                          {t("soloPillTooltip", locale)}
-                        </div>
-                      </details>
+                      <SoloTravelDropdown title={t("soloPillTitle", locale)} tooltip={t("soloPillTooltip", locale)} />
                     </div>
                     <span className="text-[10px] font-light text-deep-indigo/50">
                       {activeCurrency === 'usd' ? `(~Rp ${Math.round(tour2Price / 1000).toLocaleString('id-ID')}k)` : `(~$${tour2PriceUsd} USD)`}
@@ -551,14 +538,7 @@ export default async function Home({ searchParams }: PageProps) {
                         {activeCurrency === 'usd' ? `$${tour3PriceUsd} USD` : `Rp ${Math.round(tour3Price / 1000).toLocaleString('id-ID')}k`}
                       </span>
                       <span className="text-sm font-light text-deep-indigo/60">{t("tour1PriceDesc", locale)}</span>
-                      <details className="group relative ml-auto [&_summary::-webkit-details-marker]:hidden">
-                        <summary className="cursor-pointer text-[10px] font-medium text-transformative-teal border-b border-dashed border-transformative-teal/40 hover:border-transformative-teal transition-all select-none flex items-center gap-0.5">
-                          {t("soloPillTitle", locale)}
-                        </summary>
-                        <div className="absolute right-0 top-full mt-2.5 z-20 w-52 bg-white border border-deep-indigo/10 shadow-xl rounded-xl p-3 text-[10px] text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in slide-in-from-top-1 duration-200">
-                          {t("soloPillTooltip", locale)}
-                        </div>
-                      </details>
+                      <SoloTravelDropdown title={t("soloPillTitle", locale)} tooltip={t("soloPillTooltip", locale)} />
                     </div>
                     <span className="text-[10px] font-light text-deep-indigo/50">
                       {activeCurrency === 'usd' ? `(~Rp ${Math.round(tour3Price / 1000).toLocaleString('id-ID')}k)` : `(~$${tour3PriceUsd} USD)`}

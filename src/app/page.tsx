@@ -834,7 +834,8 @@ export default async function Home({ searchParams }: PageProps) {
               { q: t("q4", locale), a: t("a4", locale) },
               { q: t("q5", locale), a: t("a5", locale) },
               { q: t("q6", locale), a: t("a6", locale) },
-              { q: t("q7", locale), a: t("a7", locale) }
+              { q: t("q7", locale), a: t("a7", locale) },
+              { q: t("q8", locale), a: t("a8", locale) }
             ].map((item, i) => (
               <details key={i} className="group bg-white rounded-2xl border border-deep-indigo/5 p-4 sm:p-5 hover:shadow-md transition-all duration-300 [&_summary::-webkit-details-marker]:hidden">
                 <summary className="flex items-center justify-between cursor-pointer list-none select-none">

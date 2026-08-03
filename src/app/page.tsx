@@ -825,30 +825,34 @@ export default async function Home({ searchParams }: PageProps) {
 
       {/* FAQ Section */}
       <section id="faq" className="py-16 lg:py-24 px-6 bg-white border-t border-deep-indigo/5">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl lg:text-5xl font-serif text-deep-indigo mb-12 lg:mb-16 text-center">{t("faqTitle", locale)}</h2>
-          <div className="space-y-8 lg:space-y-12">
+          <div className="space-y-4">
             {[
-              {
-                q: t("q1", locale),
-                a: t("a1", locale)
-              },
-              {
-                q: t("q2", locale),
-                a: t("a2", locale)
-              },
-              {
-                q: t("q3", locale),
-                a: t("a3", locale)
-              }
+              { q: t("q1", locale), a: t("a1", locale) },
+              { q: t("q2", locale), a: t("a2", locale) },
+              { q: t("q3", locale), a: t("a3", locale) },
+              { q: t("q4", locale), a: t("a4", locale) },
+              { q: t("q5", locale), a: t("a5", locale) },
+              { q: t("q6", locale), a: t("a6", locale) },
+              { q: t("q7", locale), a: t("a7", locale) }
             ].map((item, i) => (
-              <div key={i} className="group">
-                <h4 className="text-2xl font-serif text-deep-indigo mb-4 flex items-start gap-4 group-hover:text-transformative-teal transition-colors">
-                  <span className="text-coral-pop font-light serif italic">0{i+1}</span>
-                  {item.q}
-                </h4>
-                <p className="text-deep-indigo/60 leading-relaxed font-light pl-12 border-l border-deep-indigo/10 ml-4">{item.a}</p>
-              </div>
+              <details key={i} className="group bg-white rounded-3xl border border-deep-indigo/5 p-6 hover:shadow-md transition-all duration-300 [&_summary::-webkit-details-marker]:hidden">
+                <summary className="flex items-center justify-between cursor-pointer list-none select-none">
+                  <h4 className="text-lg sm:text-xl font-serif text-deep-indigo flex items-center gap-4 group-open:text-transformative-teal transition-colors text-left pr-4">
+                    <span className="text-coral-pop font-light serif italic text-sm sm:text-base">0{i+1}</span>
+                    {item.q}
+                  </h4>
+                  <span className="w-8 h-8 rounded-full bg-deep-indigo/5 flex items-center justify-center text-deep-indigo transition-transform duration-300 group-open:rotate-180 group-hover:bg-transformative-teal/10 group-hover:text-transformative-teal shrink-0">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                </summary>
+                <div className="mt-4 pl-10 sm:pl-12 border-t border-deep-indigo/5 pt-4 text-sm text-deep-indigo/70 font-light leading-relaxed text-left animate-in fade-in duration-300">
+                  {item.a}
+                </div>
+              </details>
             ))}
           </div>
         </div>

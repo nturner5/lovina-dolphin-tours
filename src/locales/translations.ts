@@ -243,9 +243,9 @@ export const translations = {
     q5: "What time are the pickups, and which areas do you cover?",
     a5: "We offer private driver pickups from Canggu, Seminyak, Kuta, Ubud, Sanur, and local Lovina. Pickups from South Bali and Ubud start between 4:00 AM and 4:30 AM to arrive in Lovina by 7:00 AM. Local Lovina pickups start at 6:45 AM.",
     q6: "What is included in the tour price?",
-    a6: "Every tour includes a private boat charter, life jackets, snorkeling gear (for snorkeling tiers), a light breakfast box (fresh pastries, fruit, coffee/tea, mineral water), and all entrance/marine park fees.",
+    a6: "Every tour includes a private boat charter, life jackets, snorkeling gear (for snorkeling tiers), fresh fruit, hot Balinese coffee or tea, bottled mineral water, and all entrance/marine park fees.",
     q7: "What is your cancellation and weather policy?",
-    a7: "If our captains cancel the tour due to rough seas or unsafe weather, you will receive a 100% refund or free reschedule. You can cancel or reschedule your booking for free up to 24 hours before departure.",
+    a7: "If our captains cancel the tour due to rough seas or unsafe weather, we will reschedule your trip to any other morning for free. You can also reschedule your booking for any reason up to 24 hours before departure. Bookings are reschedulable but non-refundable.",
     
     // Footer Booking Section
     ctaTitle: "Ready for a",
@@ -262,7 +262,7 @@ export const translations = {
     review1Quote: "Waking up at 5 AM is normal in Bali, but leaving at 7:00 AM for this private tour was a revelation. By the time we sailed out, the main swarm of 100+ boats was already heading back. We had the ocean to ourselves, and wild dolphins swam right next to our outrigger. Our captain kept the engine off and respected them. Absolute magic.",
     review2Name: "The Henderson Family",
     review2Country: "Australia",
-    review2Quote: "We were skeptical about bringing our 6 and 9-year-olds on a long drive from Ubud, but the private pickup and the 7:00 AM departure made it so easy. The breakfast boxes were a lifesaver for the kids. Swimming alongside the dolphin pods holding the boat's safety bars is something our kids will never forget. Vetted, ethical, and extremely professional.",
+    review2Quote: "We were skeptical about bringing our 6 and 9-year-olds on a long drive from Ubud, but the private pickup and the 7:00 AM departure made it so easy. The fresh fruit and hot coffee on board kept everyone happy. Swimming alongside the dolphin pods holding the boat's safety bars is something our kids will never forget. Vetted, ethical, and extremely professional.",
     review3Name: "Elena R.",
     review3Country: "Germany",
     review3Quote: "I've seen the photos of 50 boats chasing a single dolphin in Lovina and refused to participate. When I found Bali Dolphin Tours, I was thrilled. They practice strict parallel sailing and never swarm the animals. The sea at 7:00 AM is like glass. Worth every penny to know we weren't stressing these beautiful creatures.",
@@ -541,9 +541,9 @@ export const translations = {
     q5: "Во сколько начинается трансфер и какие районы вы обслуживаете?",
     a5: "Мы предлагаем трансфер из Чангу, Семиньяка, Куты, Убуда, Санура и Ловины. Выезд из Южного Бали и Убуда начинается между 4:00 и 4:30 утра, чтобы прибыть к 7:00. Местный трансфер в Ловине начинается в 6:45 утра.",
     q6: "Что входит в стоимость тура?",
-    a6: "Каждый тур включает аренду частной лодки, спасательные жилеты, снаряжение для сноркелинга (для соответствующих тарифов), завтрак-бокс (свежая выпечка, фрукты, кофе/чай, минеральная вода) и все сборы морского парка.",
+    a6: "Каждый тур включает аренду частной лодки, спасательные жилеты, снаряжение для сноркелинга (для соответствующих тарифов), свежие фрукты, балийский кофе или чай, минеральную воду и все сборы морского парка.",
     q7: "Каковы правила отмены и действия при плохой погоде?",
-    a7: "Если капитаны отменяют тур из-за шторма или небезопасной погоды, вы получите 100% возврат или перенос. Вы можете бесплатно отменить или перенести бронирование за 24 часа до отправления.",
+    a7: "Если наши капитаны отменяют тур из-за шторма или небезопасной погоды, мы бесплатно перенесем вашу поездку на любое другое утро. Вы также можете перенести бронирование по любой причине за 24 часа до отправления. Бронирования подлежат переносу, но не подлежат возврату.",
     
     // Footer Booking Section
     ctaTitle: "Готовы к",
@@ -560,7 +560,7 @@ export const translations = {
     review1Quote: "Просыпаться в 5 утра на Бали — обычное дело, но выезд в 7:00 на этот частный тур стал настоящим открытием. К тому времени, как мы отплыли, основная толпа из 100+ лодок уже возвращалась. Океан был в нашем полном распоряжении, а дикие дельфины плавали прямо рядом с нашей лодкой. Капитан выключил двигатель и проявил к ним уважение. Абсолютная магия.",
     review2Name: "Семья Хендерсон",
     review2Country: "Австралия",
-    review2Quote: "Мы сомневались, стоит ли везти детей 6 и 9 лет в такую дальнюю дорогу из Убуда, но трансфер и отправление в 7:00 сделали поездку легкой. Коробки с завтраком спасли детей от голода. Плавание рядом с дельфинами, держась за поручни лодки — это то, что наши дети никогда не забудут. Профессионально и этично.",
+    review2Quote: "Мы сомневались, стоит ли везти детей 6 и 9 лет в такую дальнюю дорогу из Убуда, но трансфер и отправление в 7:00 сделали поездку легкой. Свежие фрукты и горячий кофе на борту порадовали всю семью. Плавание рядом с дельфинами, держась за поручни лодки — это то, что наши дети никогда не забудут. Профессионально и этично.",
     review3Name: "Елена Р.",
     review3Country: "Германия",
     review3Quote: "Я видела фотографии, где 50 лодок гоняются за одним дельфином в Ловине, и отказалась в этом участвовать. Когда я нашла Bali Dolphin Tours, я была в восторге. Они плывут строго параллельно дельфинам и никогда не окружают их. Море в 7:00 утра похоже на зеркало. Это стоит каждого цента, зная, что мы не причиняем вреда животным.",
@@ -839,9 +839,9 @@ export const translations = {
     q5: "接送时间是几点？覆盖哪些区域？",
     a5: "我们提供 Canggu、Seminyak、Kuta、Ubud、Sanur 以及 Lovina 本地的私人司机往返接送。巴厘岛南部及乌布的接送时间为凌晨 4:00 至 4:30 之间，以便在 7:00 前抵达。Lovina 本地接送时间为早上 6:45。",
     q6: "费用包含哪些项目？",
-    a6: "每个项目均包含私人专船、救生衣、浮潜装备（浮潜套餐）、轻便早餐盒（新鲜糕点、水果、咖啡/茶、矿泉水）以及所有海洋公园及景点门票费用。",
+    a6: "每个项目均包含私人专船、救生衣、浮潜装备（浮潜套餐）、新鲜水果、热巴厘岛咖啡或茶、矿泉水以及所有海洋公园门票费用。",
     q7: "退改及天气政策是怎样的？",
-    a7: "如果因风浪过大或天气不安全导致船长取消行程，您将获得 100% 全额退款或免费改期。您可以在出发前 24 小时免费取消或修改您的预订。",
+    a7: "如果因风浪过大或天气不安全导致船长取消行程，我们将为您免费改期至其他早晨。您也可以在出发前 24 小时因任何原因免费改期。所有预订均可改期，但不可退款。",
     
     // Footer Booking Section
     ctaTitle: "准备好享受",
@@ -858,7 +858,7 @@ export const translations = {
     review1Quote: "在巴厘岛早上5点起床是常态，但早上7:00开始这个私人行程真是一个明智的发现。当我们出海时，100多艘拥挤的日出游船已经开始返回。我们独享了整片宁静的大海，野生海豚就在我们的船旁游动。船长关掉了发动机，非常尊重它们。绝对的魔幻体验。",
     review2Name: "Henderson 一家",
     review2Country: "澳大利亚",
-    review2Quote: "我们原本担心带着6岁和9岁的孩子从乌布长途乘车会很累，但私人接送和早上7:00出发让一切变得非常轻松。早餐盒拯救了孩子们。双手握着船只的安全把手与海豚群并肩游泳，是孩子们永远不会忘记的经历。专业、环保且极为贴心。",
+    review2Quote: "我们原本担心带着6岁和9岁的孩子从乌布长途乘车会很累，但私人接送和早上7:00出发让一切变得非常轻松。船上的新鲜水果和热咖啡让大家都非常开心。双手握着船只的安全把手与海豚群并肩游泳，是孩子们永远不会忘记的经历。专业、环保且极为贴心。",
     review3Name: "Elena R.",
     review3Country: "德国",
     review3Quote: "我见过50多艘船围追堵截一只海豚的照片，并拒绝参与那样的行程。当我找到 Bali Dolphin Tours 时，我太兴奋了。他们严格执行平行航行，绝不围攻动物。早上7:00的大海平滑如镜。知道我们没有给这些美丽的生物带来压力，每一分钱都花得值。",

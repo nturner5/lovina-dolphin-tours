@@ -42,3 +42,10 @@ CREATE INDEX idx_captains_priority ON captains(priority);
 INSERT INTO captains (captain_name, whatsapp_number, priority) 
 VALUES ('Wayan', '+6281234567890', 1)
 ON CONFLICT DO NOTHING;
+
+-- 4. Enable Row Level Security (RLS)
+-- This blocks public anonymous API access to keep customer data safe, 
+-- while allowing our Next.js backend and n8n to bypass RLS via the service_role key.
+ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE captains ENABLE ROW LEVEL SECURITY;
+ALTER TABLE keep_alive ENABLE ROW LEVEL SECURITY;

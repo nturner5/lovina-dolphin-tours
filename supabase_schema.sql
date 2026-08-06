@@ -43,7 +43,14 @@ INSERT INTO captains (captain_name, whatsapp_number, priority)
 VALUES ('Wayan', '+6281234567890', 1)
 ON CONFLICT DO NOTHING;
 
--- 4. Enable Row Level Security (RLS)
+-- 4. Keep Alive Table (used by n8n cron to prevent Supabase from pausing)
+CREATE TABLE IF NOT EXISTS keep_alive (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  dummy TEXT DEFAULT 'ping',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 5. Enable Row Level Security (RLS)
 -- This blocks public anonymous API access to keep customer data safe, 
 -- while allowing our Next.js backend and n8n to bypass RLS via the service_role key.
 ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;

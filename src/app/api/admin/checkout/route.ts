@@ -27,6 +27,7 @@ export async function POST(req: Request) {
       customTourPrice,
       customPickupPrice,
       tourTime,
+      customPickupLocationName,
       billingCurrency = 'usd',
     } = await req.json();
 
@@ -62,15 +63,27 @@ export async function POST(req: Request) {
 
     // Find the chosen pickup option
     const pickup = pricing.pickups.find((p: any) => p.id === pickupLocation);
-    if (!pickup) {
-      return NextResponse.json({ error: `Invalid pickup choice: ${pickupLocation}` }, { status: 400 });
-    }
+    let pickupFee = 0;
+    let pickupName = '';
+    let pickupDesc = '';
 
-    let pickupFee = currency === 'usd' ? (pickup.priceUsd || 0) : (pickup.price || 0);
-    const pickupName = pickup.name;
-    const pickupDesc = pickupLocation === 'none'
-      ? 'No transfer selected. Meet at the beach.'
-      : `Private return transport from your hotel in ${pickupLocation} to Lovina for your dolphin tour on ${date}.`;
+    if (!pickup) {
+      if (pickupLocation === 'custom' || customPickupLocationName) {
+        pickupFee = 0; // overridden by customPickupPrice below
+        pickupName = customPickupLocationName
+          ? `Private Driver from ${customPickupLocationName}`
+          : 'Custom Private Driver Transfer';
+        pickupDesc = `Private return transport to Lovina for your dolphin tour on ${date}.`;
+      } else {
+        return NextResponse.json({ error: `Invalid pickup choice: ${pickupLocation}` }, { status: 400 });
+      }
+    } else {
+      pickupFee = currency === 'usd' ? (pickup.priceUsd || 0) : (pickup.price || 0);
+      pickupName = pickup.name;
+      pickupDesc = pickupLocation === 'none'
+        ? 'No transfer selected. Meet at the beach.'
+        : `Private return transport from your hotel in ${pickupLocation} to Lovina for your dolphin tour on ${date}.`;
+    }
 
     // Apply custom price override for the transfer if provided
     if (customPickupPrice !== undefined && customPickupPrice !== null && customPickupPrice !== '') {

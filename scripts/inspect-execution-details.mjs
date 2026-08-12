@@ -3,12 +3,12 @@ import path from 'path';
 import { execSync } from 'child_process';
 
 async function main() {
-  console.log('🔍 Fetching detailed data for Execution 307...');
+  console.log('🔍 Fetching detailed data for Execution 412...');
 
   const sqlQuery = `
 .headers off
 .mode json
-SELECT data FROM execution_data WHERE executionId = 307;
+SELECT data FROM execution_data WHERE executionId = 412;
 `;
 
   const localSqlFile = path.resolve(process.cwd(), 'scripts/temp_exec_data.sql');
@@ -24,7 +24,7 @@ SELECT data FROM execution_data WHERE executionId = 307;
     const output = execSync(`gcloud compute ssh n8n-server --zone=us-central1-a --command="${remoteCommand}"`, { maxBuffer: 30 * 1024 * 1024 }).toString().trim();
 
     if (!output) {
-      console.log('No data found for Execution 307.');
+      console.log('No data found for Execution 412.');
       return;
     }
 

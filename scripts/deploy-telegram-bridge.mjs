@@ -446,6 +446,8 @@ if (text.includes('/create_booking')) {
   const pickupMatch = text.match(/•?\\s*Pickup:\\s*([^\\n]+)/i);
   const timeMatch = text.match(/•?\\s*Time:\\s*([^\\n]+)/i);
   const nameMatch = text.match(/•?\\s*Guest Name:\\s*([^\\n]+)/i);
+  const customLocationMatch = text.match(/•?\\s*Custom Pickup Location:\\s*([^\\n]*)/i);
+  const customPriceMatch = text.match(/•?\\s*Transport Price:\\s*(?:\\$)?([0-9.]*)/i);
 
   if (!dateMatch || !guestsMatch || !tourMatch || !pickupMatch) {
     return [{
@@ -462,6 +464,8 @@ if (text.includes('/create_booking')) {
   const rawPickup = pickupMatch[1].trim().toLowerCase();
   const rawTime = timeMatch ? timeMatch[1].trim() : '7:00 AM';
   const guestName = nameMatch ? nameMatch[1].trim() : 'Manual Telegram Booking';
+  const customPickupLocationName = (customLocationMatch && customLocationMatch[1]) ? customLocationMatch[1].trim() : '';
+  const customPickupPrice = (customPriceMatch && customPriceMatch[1]) ? Number(customPriceMatch[1].trim()) : 0;
 
   let tourName = '';
   let tourId = 'seven-am-ethical';
@@ -490,6 +494,10 @@ if (text.includes('/create_booking')) {
     pickupLocation = 'uluwatu';
     pickupName = 'Uluwatu / Nusa Dua Round-trip Private Driver';
     hasTransport = true;
+  } else if (rawPickup.includes('custom') || customPickupLocationName) {
+    pickupLocation = 'custom';
+    pickupName = customPickupLocationName ? 'Private Driver from ' + customPickupLocationName : 'Custom Private Driver Transfer';
+    hasTransport = true;
   } else {
     pickupName = 'No Driver (Lovina Beach Area)';
   }
@@ -516,8 +524,14 @@ if (text.includes('/create_booking')) {
 
   const tourPrice = pricingTours.find(t => t.id === tourId)?.price || 
     (tourId === 'seven-am-ethical' ? 812000 : tourId === 'dolphin-swim' ? 993000 : 1173000);
-  const pickupPrice = pickupLocation === 'none' ? 0 : (pricingPickups.find(p => p.id === pickupLocation)?.price || 
-    (pickupLocation === 'ubud' ? 758000 : pickupLocation === 'canggu-kuta' ? 1083000 : 1408000));
+  
+  let pickupPrice = 0;
+  if (pickupLocation === 'custom') {
+    pickupPrice = customPickupPrice > 0 ? Math.round(customPickupPrice * rate) : 0;
+  } else if (pickupLocation !== 'none') {
+    pickupPrice = pricingPickups.find(p => p.id === pickupLocation)?.price || 
+      (pickupLocation === 'ubud' ? 758000 : pickupLocation === 'canggu-kuta' ? 1083000 : 1408000);
+  }
 
   const idrTotal = (tourPrice * guests) + pickupPrice;
   const usdTotal = Math.round(idrTotal / rate);
@@ -537,7 +551,9 @@ if (text.includes('/create_booking')) {
       pickupName,
       hasTransport,
       usdTotal,
-      idrFormatted
+      idrFormatted,
+      customPickupPrice,
+      customPickupLocationName
     }
   }];
 }
@@ -642,7 +658,9 @@ return [{
     pickupName,
     hasTransport,
     usdTotal,
-    idrFormatted
+    idrFormatted,
+    customPickupPrice: 0,
+    customPickupLocationName: ''
   }
 }];`
         },
@@ -692,7 +710,7 @@ return [{
           url: `https://api.telegram.org/bot${botToken}/sendMessage`,
           sendBody: true,
           specifyBody: "json",
-          jsonBody: "={\n  \"chat_id\": \"{{ $json.chatId }}\",\n  \"text\": \"✍️ *Stripe Link Generator*\\n\\nCopy the block below, edit the details, and send it back to generate a link:\\n\\n```\\n/create_booking\\n• Date: 2026-08-05\\n• Guests: 3\\n• Tour: swim\\n• Pickup: ubud\\n• Time: 7:00 AM\\n• Guest Name: John Doe\\n```\\n\\n*Options:*\\n• Tour: `watching` / `swim` / `snorkel`\\n• Pickup: `none` / `ubud` / `canggu` (south Bali)\",\n  \"parse_mode\": \"Markdown\"\n}",
+          jsonBody: "={\n  \"chat_id\": \"{{ $json.chatId }}\",\n  \"text\": \"✍️ *Stripe Link Generator*\\n\\nCopy the block below, edit the details, and send it back to generate a link:\\n\\n```\\n/create_booking\\n• Date: 2026-08-05\\n• Guests: 3\\n• Tour: swim\\n• Pickup: custom\\n• Time: 7:00 AM\\n• Guest Name: John Doe\\n• Custom Pickup Location: Sidemen\\n• Transport Price: 50\\n```\\n\\n*Options:*\\n• Tour: `watching` / `swim` / `snorkel`\\n• Pickup: `none` / `ubud` / `canggu` / `custom` (specify Custom Pickup Location & Transport Price in USD)\",\n  \"parse_mode\": \"Markdown\"\n}",
           options: {}
         },
         id: "send-interactive-template-id",
@@ -735,7 +753,7 @@ return [{
           },
           sendBody: true,
           specifyBody: "json",
-          jsonBody: "={\n  \"tourId\": \"{{ $json.tourId }}\",\n  \"date\": \"{{ $json.date }}\",\n  \"guests\": {{ $json.guests }},\n  \"pickupLocation\": \"{{ $json.pickupLocation }}\",\n  \"tourTime\": \"{{ $json.tourTime }}\",\n  \"name\": \"{{ $json.guestName }}\"\n}",
+          jsonBody: "={\n  \"tourId\": \"{{ $json.tourId }}\",\n  \"date\": \"{{ $json.date }}\",\n  \"guests\": {{ $json.guests }},\n  \"pickupLocation\": \"{{ $json.pickupLocation }}\",\n  \"tourTime\": \"{{ $json.tourTime }}\",\n  \"name\": \"{{ $json.guestName }}\",\n  \"customPickupPrice\": {{ $json.customPickupPrice || 0 }},\n  \"customPickupLocationName\": \"{{ $json.customPickupLocationName || '' }}\"\n}",
           options: {}
         },
         id: "create-checkout-link-id",

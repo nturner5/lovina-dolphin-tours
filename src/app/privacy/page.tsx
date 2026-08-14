@@ -130,7 +130,23 @@ export default function PrivacyPolicyPage() {
 
           <section className="space-y-4">
             <h2 className="text-lg sm:text-xl font-serif text-deep-indigo font-bold tracking-tight border-b border-deep-indigo/5 pb-2">
-              5. Your Legal Rights
+              5. Cookies & Tracking Technologies
+            </h2>
+            <p>
+              We use functional and analytical cookies to support the core booking flow and secure transactions:
+            </p>
+            <ul className="list-disc list-inside space-y-2 pl-4">
+              <li><strong>Functional Cookies:</strong> We store a small language preference cookie (<code>lang</code>) to preserve your preferred language choice across pages.</li>
+              <li><strong>Secure Transactions:</strong> Stripe Checkout relies on third-party security and verification cookies to identify browser sessions and prevent fraudulent transactions during payment checkout.</li>
+            </ul>
+            <p>
+              You can choose to disable cookies through your browser settings or decline non-essential cookies via our consent banner. However, doing so may prevent you from checking out securely.
+            </p>
+          </section>
+
+          <section className="space-y-4">
+            <h2 className="text-lg sm:text-xl font-serif text-deep-indigo font-bold tracking-tight border-b border-deep-indigo/5 pb-2">
+              6. Your Legal Rights
             </h2>
             <p>
               Under global data protection standards (including GDPR compliance for our European travelers), you have the following rights regarding your personal records:
@@ -147,7 +163,7 @@ export default function PrivacyPolicyPage() {
 
           <section className="space-y-4">
             <h2 className="text-lg sm:text-xl font-serif text-deep-indigo font-bold tracking-tight border-b border-deep-indigo/5 pb-2">
-              6. Contact Our Marine Desk
+              7. Contact Our Marine Desk
             </h2>
             <p>
               For general inquiries regarding our visual guidelines, ethical captain contract, automated data routing, or this Privacy Policy, please reach out to us:

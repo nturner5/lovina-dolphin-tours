@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import WhatsAppButton from './WhatsAppButton';
+import CookieConsent from './CookieConsent';
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -26,6 +27,9 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
         <Footer />
       </Suspense>
       <WhatsAppButton />
+      <Suspense fallback={null}>
+        <CookieConsent />
+      </Suspense>
     </>
   );
 }

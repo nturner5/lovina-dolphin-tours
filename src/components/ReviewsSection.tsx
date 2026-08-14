@@ -684,6 +684,15 @@ export default function ReviewsSection({ locale }: ReviewsSectionProps) {
           </div>
         )}
 
+        {/* FTC Disclosure Footnote */}
+        <p className="text-[10px] text-deep-indigo/30 font-light leading-normal text-center mt-10 max-w-xl mx-auto">
+          {locale === 'en' 
+            ? "*Disclosures: Testimonials displayed are historical traveler reviews from our partner outrigger operators in Lovina, reflecting the exact boat quality, routing, and wildlife guidelines provided on this site."
+            : locale === 'ru'
+              ? "*Примечание: Представленные отзывы — это реальные отзывы путешественников от наших лодочных партнеров в Ловине, отражающие точное качество лодок, маршруты и правила наблюдения за дельфинами."
+              : "*声明：所有评价均为在罗威那合作伙伴处真实旅客的评价，反映了该航线相同的行程质量、环保指南与观赏标准。"}
+        </p>
+
       </div>
     </section>
   );

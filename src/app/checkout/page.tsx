@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
 import { t } from '@/locales/i18n';
 import { useLocale } from '@/locales/i18n-client';
 import { trackWhatsAppClick, trackBeginCheckout, trackPageView } from '@/lib/analytics';
@@ -94,6 +95,7 @@ function CheckoutForm() {
   const [hasTrackedBegin, setHasTrackedBegin] = useState(false);
   const [showDateError, setShowDateError] = useState(false);
   const [showHotelError, setShowHotelError] = useState(false);
+  const [agreedToPolicies, setAgreedToPolicies] = useState(false);
 
   useEffect(() => {
     trackPageView(window.location.pathname);
@@ -287,6 +289,12 @@ function CheckoutForm() {
 
     if (!isValidPhone) {
       alert(t('invalidPhoneAlert', locale));
+      setLoading(false);
+      return;
+    }
+
+    if (!agreedToPolicies) {
+      alert(locale === 'en' ? 'Please agree to the Terms of Service and Refund Policy to proceed.' : locale === 'ru' ? 'Пожалуйста, согласитесь с Условиями предоставления услуг и Политикой возврата.' : '请同意服务条款和退款政策以继续。');
       setLoading(false);
       return;
     }
@@ -935,6 +943,27 @@ function CheckoutForm() {
             </div>
           </div>
 
+          {/* Active Consent Checkbox (Card Brand & Stripe Compliance) */}
+          <div className="flex items-start gap-3 p-1 select-none animate-in fade-in duration-300">
+            <input 
+              type="checkbox" 
+              id="legal-agreement" 
+              checked={agreedToPolicies} 
+              onChange={(e) => setAgreedToPolicies(e.target.checked)}
+              className="w-4.5 h-4.5 mt-0.5 border-deep-indigo/25 text-transformative-teal focus:ring-transformative-teal rounded cursor-pointer shrink-0"
+              required
+            />
+            <label htmlFor="legal-agreement" className="text-[11px] sm:text-xs text-deep-indigo/60 leading-normal font-light cursor-pointer">
+              {locale === 'en' ? (
+                <>I agree to the <Link href="/terms" target="_blank" className="underline hover:text-transformative-teal font-medium">Terms of Service</Link> and <Link href="/refunds" target="_blank" className="underline hover:text-transformative-teal font-medium">Refund & Cancellation Policy</Link>.</>
+              ) : locale === 'ru' ? (
+                <>Я принимаю <Link href="/terms" target="_blank" className="underline hover:text-transformative-teal font-medium">Условия предоставления услуг</Link> и <Link href="/refunds" target="_blank" className="underline hover:text-transformative-teal font-medium">Правила возврата средств</Link>.</>
+              ) : (
+                <>我同意 <Link href="/terms" target="_blank" className="underline hover:text-transformative-teal font-medium">服务条款</Link> 和 <Link href="/refunds" target="_blank" className="underline hover:text-transformative-teal font-medium">退款及取消政策</Link>。</>
+              )}
+            </label>
+          </div>
+
           {/* Submit / Pay Button */}
           <div className="space-y-2 pt-2">
             <div className="flex items-center justify-between gap-3">
@@ -947,8 +976,8 @@ function CheckoutForm() {
               </button>
               <button 
                 type="submit" 
-                disabled={loading}
-                className="flex-1 bg-coral-pop text-cloud-dancer py-4 px-6 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-xl active:scale-95 disabled:opacity-50 cursor-pointer text-center"
+                disabled={loading || !agreedToPolicies}
+                className="flex-1 bg-coral-pop text-cloud-dancer py-4 px-6 rounded-full text-base font-bold hover:bg-deep-indigo transition-all shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-center"
               >
                 {loading 
                   ? t('btnSubmitLoading', locale) 
@@ -995,7 +1024,7 @@ function CheckoutForm() {
           <button 
             type="submit"
             onClick={handleCheckout}
-            disabled={loading}
+            disabled={loading || !agreedToPolicies}
             className="bg-coral-pop text-white px-6 py-3 rounded-full text-xs font-bold active:scale-95 disabled:opacity-50"
           >
             {loading ? 'Processing...' : (isLastMinute ? 'WhatsApp' : 'Pay Now')}
